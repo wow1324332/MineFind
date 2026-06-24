@@ -1,12 +1,44 @@
-import React, { useState } from 'react';
+// src/components/LoginModal.jsx
+import React, { useState, useEffect } from 'react';
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function LoginModal() {
-  const [isLoginTab, setIsLoginTab] = useState(true); // true: 로그인, false: 계정생성
+  const [isLoginTab, setIsLoginTab] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  
+  // PWA 설치 프롬프트 상태
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+
+  // PWA 설치 가능 여부 감지
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault(); // 기본 설치 팝업 막기
+      setDeferredPrompt(e); // 이벤트를 저장해둠
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  // 설치 버튼 클릭 핸들러
+  const handleInstallClick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt(); // 브라우저 설치 팝업 띄우기
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        console.log('사용자가 앱 설치를 수락했습니다.');
+      } else {
+        console.log('사용자가 앱 설치를 거부했습니다.');
+      }
+      setDeferredPrompt(null); // 프롬프트 사용 후 초기화
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -14,14 +46,11 @@ export default function LoginModal() {
     
     try {
       if (isLoginTab) {
-        // 로그인 로직
         await signInWithEmailAndPassword(auth, email, password);
       } else {
-        // 계정 생성 로직
         await createUserWithEmailAndPassword(auth, email, password);
       }
     } catch (err) {
-      // 에러 메시지 한글화 처리
       if (err.code === 'auth/email-already-in-use') setError('이미 사용 중인 이메일입니다.');
       else if (err.code === 'auth/weak-password') setError('비밀번호는 6자리 이상이어야 합니다.');
       else if (err.code === 'auth/invalid-credential') setError('이메일이나 비밀번호가 틀렸습니다.');
@@ -31,17 +60,24 @@ export default function LoginModal() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
-      {/* 백그라운드 이미지 설정 (public 폴더의 login-bg.jpg) */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
         style={{ backgroundImage: "url('/login-bg.jpg')" }}
       ></div>
       
-      {/* 모달 창 (어두운 유리 질감) */}
+      {/* PWA 설치 버튼 (우측 상단 고정) */}
+      {deferredPrompt && (
+        <button 
+          onClick={handleInstallClick}
+          className="absolute top-4 right-4 z-20 bg-white/20 hover:bg-white/30 border border-white/40 text-white px-4 py-2 rounded-full font-bold shadow-lg backdrop-blur-sm transition-all active:scale-95 flex items-center gap-2"
+        >
+          <span>📲</span> 앱 설치
+        </button>
+      )}
+
       <div className="relative z-10 w-full max-w-sm mx-4 p-6 bg-neutral-900/80 rounded-2xl shadow-2xl border border-neutral-700 backdrop-blur-md">
         <h1 className="text-3xl font-bold text-center text-white mb-6 tracking-widest drop-shadow-md">MINE LEGENDS</h1>
         
-        {/* 탭 버튼 */}
         <div className="flex mb-6 border-b border-neutral-600">
           <button 
             className={`flex-1 pb-2 font-bold text-lg transition-colors ${isLoginTab ? 'text-blue-400 border-b-2 border-blue-400' : 'text-neutral-400 hover:text-neutral-200'}`}
@@ -57,7 +93,6 @@ export default function LoginModal() {
           </button>
         </div>
 
-        {/* 폼 영역 */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <input 
