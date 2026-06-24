@@ -80,13 +80,13 @@ export default function LoginModal() {
             className={`flex-1 pb-1.5 font-bold transition-colors ${isLoginTab ? 'text-blue-400 border-b-2 border-blue-500' : 'text-neutral-400 hover:text-neutral-200'}`}
             onClick={() => setIsLoginTab(true)}
           >
-            로그인
+            Login
           </button>
           <button 
             className={`flex-1 pb-1.5 font-bold transition-colors ${!isLoginTab ? 'text-red-400 border-b-2 border-red-500' : 'text-neutral-400 hover:text-neutral-200'}`}
             onClick={() => setIsLoginTab(false)}
           >
-            계정 생성
+            Create
           </button>
         </div>
 
@@ -95,7 +95,7 @@ export default function LoginModal() {
           <div>
             <input 
               type="email" 
-              placeholder="이메일 (ID)" 
+              placeholder="ID" 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-3.5 py-2.5 bg-black/60 text-white text-sm rounded-lg border border-white/10 focus:outline-none focus:border-blue-500 placeholder-neutral-500"
@@ -105,7 +105,7 @@ export default function LoginModal() {
           <div>
             <input 
               type="password" 
-              placeholder="비밀번호" 
+              placeholder="Password" 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-3.5 py-2.5 bg-black/60 text-white text-sm rounded-lg border border-white/10 focus:outline-none focus:border-blue-500 placeholder-neutral-500"
@@ -120,7 +120,7 @@ export default function LoginModal() {
             type="submit" 
             className={`w-full py-2.5 rounded-lg font-bold text-sm text-white shadow-md transition-all active:scale-95 ${isLoginTab ? 'bg-blue-600/80 hover:bg-blue-600' : 'bg-red-700/80 hover:bg-red-700'}`}
           >
-            {isLoginTab ? '던전 입장' : '정화자 등록'}
+            {isLoginTab ? 'Login' : 'Create'}
           </button>
         </form>
       </div>
