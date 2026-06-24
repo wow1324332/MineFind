@@ -1,0 +1,17 @@
+{
+  "name": "Mine Legends",
+  "short_name": "MineLegends",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#171717",
+  "theme_color": "#171717",
+  "description": "다크 판타지 컨셉의 지뢰찾기 퍼즐 게임",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1154/1154460.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
