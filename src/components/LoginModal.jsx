@@ -118,7 +118,7 @@ export default function LoginModal() {
           {/* 버튼 높이 축소 (py-3 -> py-2.5) */}
           <button 
             type="submit" 
-            className={`w-full py-2.5 rounded-lg font-bold text-sm text-white shadow-md transition-all active:scale-95 ${isLoginTab ? 'bg-blue-600/80 hover:bg-blue-600' : 'bg-red-700/80 hover:bg-red-700'}`}
+            className={`w-full py-2.5 rounded-lg font-bold text-sm text-white shadow-md transition-all active:scale-95 ${isLoginTab ? 'bg-Black-600/80 hover:bg-Black-600' : 'bg-Grey-700/80 hover:bg-Grey-700'}`}
           >
             {isLoginTab ? 'Login' : 'Create'}
           </button>
