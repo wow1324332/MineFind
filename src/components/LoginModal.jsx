@@ -58,7 +58,7 @@ export default function LoginModal() {
           onClick={handleInstallClick}
           className="absolute top-4 right-4 z-20 bg-black/40 hover:bg-black/60 border border-white/20 text-white text-xs px-3 py-1.5 rounded-full font-bold shadow-lg backdrop-blur-sm transition-all active:scale-95 flex items-center gap-1.5"
         >
-          <span>📲</span> 앱 설치
+          <span>📲</span> Install
         </button>
       )}
 
@@ -95,7 +95,7 @@ export default function LoginModal() {
           <div>
             <input 
               type="email" 
-              placeholder="ID" 
+              placeholder="ID..." 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-3.5 py-2.5 bg-black/60 text-white text-sm rounded-lg border border-white/10 focus:outline-none focus:border-blue-500 placeholder-neutral-500"
@@ -105,7 +105,7 @@ export default function LoginModal() {
           <div>
             <input 
               type="password" 
-              placeholder="Password" 
+              placeholder="Password..." 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-3.5 py-2.5 bg-black/60 text-white text-sm rounded-lg border border-white/10 focus:outline-none focus:border-blue-500 placeholder-neutral-500"
@@ -120,7 +120,7 @@ export default function LoginModal() {
             type="submit" 
             className={`w-full py-2.5 rounded-lg font-bold text-sm text-white shadow-md transition-all active:scale-95 ${isLoginTab ? 'bg-Blue-600/80 hover:bg-Blue-600' : 'bg-Blue-700/80 hover:bg-Blue-700'}`}
           >
-            {isLoginTab ? 'Login' : 'Create'}
+            {isLoginTab ? 'LOGIN' : 'CREATE'}
           </button>
         </form>
       </div>
