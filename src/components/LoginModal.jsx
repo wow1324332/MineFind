@@ -77,13 +77,13 @@ export default function LoginModal() {
         {/* 탭 버튼 마진 축소 */}
         <div className="flex mb-4 border-b border-white/10 text-sm">
           <button 
-            className={`flex-1 pb-1.5 font-bold transition-colors ${isLoginTab ? 'text-blue-400 border-b-2 border-blue-500' : 'text-neutral-400 hover:text-neutral-200'}`}
+            className={`flex-1 pb-1.5 font-bold transition-colors ${isLoginTab ? 'text-white border-b-2 border-white' : 'text-neutral-400 hover:text-neutral-200'}`}
             onClick={() => setIsLoginTab(true)}
           >
             Login
           </button>
           <button 
-            className={`flex-1 pb-1.5 font-bold transition-colors ${!isLoginTab ? 'text-red-400 border-b-2 border-red-500' : 'text-neutral-400 hover:text-neutral-200'}`}
+            className={`flex-1 pb-1.5 font-bold transition-colors ${!isLoginTab ? 'text-white border-b-2 border-white' : 'text-neutral-400 hover:text-neutral-200'}`}
             onClick={() => setIsLoginTab(false)}
           >
             Create
@@ -118,7 +118,7 @@ export default function LoginModal() {
           {/* 버튼 높이 축소 (py-3 -> py-2.5) */}
           <button 
             type="submit" 
-            className={`w-full py-2.5 rounded-lg font-bold text-sm text-white shadow-md transition-all active:scale-95 ${isLoginTab ? 'bg-black-600/80 hover:bg-black-600' : 'bg-blue-700/80 hover:bg-blue-700'}`}
+            className={`w-full py-2.5 rounded-lg font-bold text-sm text-white shadow-md transition-all active:scale-95 ${isLoginTab ? 'bg-grey-600/80 hover:bg-grey-600' : 'bg-blue-700/80 hover:bg-blue-700'}`}
           >
             {isLoginTab ? 'LOGIN' : 'CREATE'}
           </button>
