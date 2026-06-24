@@ -48,7 +48,7 @@ export default function LoginModal() {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
       {/* 배경 이미지 선명도 확보를 위해 opacity를 70%로 살짝 상향 */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-70"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-bg-breath"
         style={{ backgroundImage: "url('/login-bg.jpg')" }}
       ></div>
       
