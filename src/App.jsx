@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'; // 💡 useState, useEffect가 추가되었습니다.
+import React, { useState, useEffect } from 'react';
 import { useMinesweeper } from './hooks/useMinesweeper';
 import Header from './components/Header';
 import Board from './components/Board';
 import Controls from './components/Controls';
 import LoginModal from './components/LoginModal';
+import SplashScreen from './components/SplashScreen'; // 💡 이 줄을 추가하세요!
 import { useAuth } from './hooks/useAuth';
 
 export default function App() {
@@ -13,10 +14,18 @@ export default function App() {
     setIsFlagMode, initGame, handleCellClick, toggleFlag 
   } = useMinesweeper();
 
-  // 💡 [핵심 추가] 앱 전체에서 사용할 PWA 설치 티켓 상태입니다.
   const [deferredPrompt, setDeferredPrompt] = useState(null);
 
-  // 💡 [핵심 추가] 앱이 켜지자마자 가장 먼저 이벤트를 낚아챕니다.
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    // 3초(3000ms) 뒤에 showSplash를 false로 바꿉니다.
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
   useEffect(() => {
     const handleBeforeInstallPrompt = (e) => {
       e.preventDefault();
@@ -37,8 +46,8 @@ export default function App() {
     }
   };
 
-  if (loading) {
-    return <div className="min-h-screen bg-neutral-900 flex items-center justify-center text-white text-2xl font-bold">포탈 연결 중...</div>;
+  if (loading || showSplash) {
+    return <SplashScreen />;
   }
 
   if (!user) {
