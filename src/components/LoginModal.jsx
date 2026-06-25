@@ -64,7 +64,7 @@ export default function LoginModal() {
       {deferredPrompt && (
       <button 
         onClick={handleInstallClick}
-        className="absolute top-4 right-4 z-20 bg-black/40 hover:bg-black/60 border border-white/20 text-white text-xs px-3 py-1.5 rounded-full font-bold shadow-lg backdrop-blur-sm transition-all active:scale-95 flex items-center gap-1.5"
+        className="fixed top-12 right-4 z-[9999] bg-black/60 hover:bg-black/80 border border-white/20 text-white text-sm px-4 py-2 rounded-full font-bold shadow-2xl backdrop-blur-md transition-all active:scale-95 flex items-center gap-1.5"
       >
         Install
       </button>
