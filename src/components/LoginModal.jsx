@@ -68,7 +68,7 @@ export default function LoginModal() {
         3. backdrop-blur-md -> backdrop-blur-sm으로 블러를 낮춰 뒷배경의 형체가 더 잘 인지되도록 변경
         4. 내부 패딩(p-6 -> p-5) 및 컴포넌트 간격(mb-6 -> mb-4, space-y-4 -> space-y-3) 축소로 컴팩트화
       */}
-      <div className="relative z-10 w-full max-w-xs mx-4 p-5 bg-neutral-900/40 rounded-2xl shadow-2xl border border-white/10 backdrop-blur-sm transition-all">
+      <div className="relative z-10 w-full max-w-xs mx-4 p-5 bg-neutral-900/40 rounded-2xl shadow-2xl backdrop-blur-sm transition-all">
         {/* 타이틀 크기 축소 (text-3xl -> text-xl) */}
         <div className="flex justify-center mb-4">
           <img 
@@ -102,7 +102,7 @@ export default function LoginModal() {
               placeholder="ID..." 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-black/60 text-white text-sm rounded-lg border border-white/10 focus:outline-none focus:border-blue-500 placeholder-neutral-500"
+              className="w-full px-3.5 py-2.5 bg-black/60 text-white text-sm rounded-lg border border-white/10 focus:outline-none focus:border-white placeholder-neutral-500"
               required
             />
           </div>
@@ -112,7 +112,7 @@ export default function LoginModal() {
               placeholder="Password..." 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-black/60 text-white text-sm rounded-lg border border-white/10 focus:outline-none focus:border-blue-500 placeholder-neutral-500"
+              className="w-full px-3.5 py-2.5 bg-black/60 text-white text-sm rounded-lg border border-white/10 focus:outline-none focus:border-white placeholder-neutral-500"
               required
             />
           </div>
