@@ -1,15 +1,24 @@
-import React, { useState } from 'react'; // 💡 useEffect가 삭제되었습니다.
+import React, { useState, useEffect } from 'react';
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
-// 💡 [핵심 수정] App.jsx로부터 deferredPrompt와 handleInstallClick을 받아옵니다.
 export default function LoginModal({ deferredPrompt, handleInstallClick }) {
   const [isLoginTab, setIsLoginTab] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  
+  // 💡 [추가] 아이디 저장 체크박스 상태
+  const [isRememberId, setIsRememberId] = useState(false);
 
-  // 🗑️ 여기에 있던 useEffect와 handleInstallClick 함수는 App.jsx로 이사 갔습니다!
+  // 💡 [추가] 모달이 켜질 때, 예전에 저장해둔 아이디가 있다면 불러옵니다.
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('mineLegends_savedEmail');
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setIsRememberId(true);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,8 +26,17 @@ export default function LoginModal({ deferredPrompt, handleInstallClick }) {
     try {
       if (isLoginTab) {
         await signInWithEmailAndPassword(auth, email, password);
+        // 💡 [추가] 로그인 성공 시, '아이디 저장' 체크 여부에 따라 로컬 스토리지 관리
+        if (isRememberId) {
+          localStorage.setItem('mineLegends_savedEmail', email);
+        } else {
+          localStorage.removeItem('mineLegends_savedEmail');
+        }
       } else {
         await createUserWithEmailAndPassword(auth, email, password);
+        if (isRememberId) {
+          localStorage.setItem('mineLegends_savedEmail', email);
+        }
       }
     } catch (err) {
       if (err.code === 'auth/email-already-in-use') setError('이미 사용 중인 이메일입니다.');
@@ -30,13 +48,11 @@ export default function LoginModal({ deferredPrompt, handleInstallClick }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
-      {/* 배경 이미지 */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-bg-breath opacity-70"
         style={{ backgroundImage: "url('/login-bg.jpg')" }}
       ></div>
       
-      {/* 💡 [핵심 수정] 전달받은 티켓(deferredPrompt)이 진짜로 있을 때만! 버튼을 노출합니다. */}
       {deferredPrompt && (
         <button 
           onClick={handleInstallClick}
@@ -46,7 +62,6 @@ export default function LoginModal({ deferredPrompt, handleInstallClick }) {
         </button>
       )}
 
-      {/* 로그인 폼 영역 */}
       <div className="relative z-10 w-full max-w-xs mx-4 p-5 bg-black/60 rounded-2xl shadow-2xl backdrop-blur-sm transition-all">
         <div className="flex justify-center mb-4">
           <img 
@@ -78,6 +93,8 @@ export default function LoginModal({ deferredPrompt, handleInstallClick }) {
               placeholder="ID..." 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              // 💡 [추가] 브라우저가 아이디 자동완성을 제안하도록 속성 추가
+              autoComplete="username"
               className="w-full px-3.5 py-2.5 bg-black/60 text-white text-sm rounded-lg border border-white/10 focus:outline-none focus:border-white placeholder-neutral-500"
               required
             />
@@ -88,9 +105,25 @@ export default function LoginModal({ deferredPrompt, handleInstallClick }) {
               placeholder="Password..." 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              // 💡 [추가] 브라우저가 비밀번호 저장/자동완성을 제안하도록 속성 추가
+              autoComplete={isLoginTab ? "current-password" : "new-password"}
               className="w-full px-3.5 py-2.5 bg-black/60 text-white text-sm rounded-lg border border-white/10 focus:outline-none focus:border-white placeholder-neutral-500"
               required
             />
+          </div>
+
+          {/* 💡 [추가] 다크 판타지 컨셉에 맞는 '아이디 저장' 체크박스 */}
+          <div className="flex items-center gap-2 px-1">
+            <input 
+              type="checkbox" 
+              id="rememberId"
+              checked={isRememberId}
+              onChange={(e) => setIsRememberId(e.target.checked)}
+              className="w-4 h-4 accent-red-600 bg-black/60 border-white/20 rounded cursor-pointer"
+            />
+            <label htmlFor="rememberId" className="text-xs text-neutral-400 cursor-pointer hover:text-neutral-200 transition-colors">
+              아이디의 흔적 남기기 (ID 저장)
+            </label>
           </div>
           
           {error && <p className="text-red-400 text-xs font-bold text-center bg-red-950/40 p-1.5 rounded border border-red-900/50">{error}</p>}
