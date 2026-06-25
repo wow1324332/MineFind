@@ -122,10 +122,10 @@ export default function LoginModal() {
           {/* 버튼 높이 축소 (py-3 -> py-2.5) */}
           <button 
             type="submit" 
-            aria-label={isLoginTab ? '로그인' : '계정 생성'}
+            aria-label={isLoginTab ? 'Login' : 'Create'}
             className="w-full h-10 rounded-lg shadow-md transition-all active:scale-95 border border-white/20 hover:brightness-110"
             style={{ 
-              backgroundImage: "url('/button-bg.png')", 
+              backgroundImage: "url('/login-button-bg.jpg')", 
               backgroundSize: 'cover', 
               backgroundPosition: 'center' 
             }}
