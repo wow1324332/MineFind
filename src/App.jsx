@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'; // 💡 useState, useEffect가 추가되었습니다.
 import { useMinesweeper } from './hooks/useMinesweeper';
 import Header from './components/Header';
 import Board from './components/Board';
@@ -8,26 +8,47 @@ import { useAuth } from './hooks/useAuth';
 
 export default function App() {
   const { user, loading, logout } = useAuth();
-  
   const { 
     board, gameStatus, minesLeft, timeElapsed, isFlagMode, 
     setIsFlagMode, initGame, handleCellClick, toggleFlag 
   } = useMinesweeper();
 
-  // 로그인 상태 확인 중
+  // 💡 [핵심 추가] 앱 전체에서 사용할 PWA 설치 티켓 상태입니다.
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+
+  // 💡 [핵심 추가] 앱이 켜지자마자 가장 먼저 이벤트를 낚아챕니다.
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      console.log('✅ App.jsx: PWA 설치 티켓 낚아챔!');
+    };
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+  }, []);
+
+  // 💡 [핵심 추가] 설치 버튼을 눌렀을 때 실행될 함수입니다.
+  const handleInstallClick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') console.log('PWA 설치 완료');
+      setDeferredPrompt(null);
+    }
+  };
+
   if (loading) {
     return <div className="min-h-screen bg-neutral-900 flex items-center justify-center text-white text-2xl font-bold">포탈 연결 중...</div>;
   }
 
-  // 로그인되지 않은 경우 로그인 모달 표시
   if (!user) {
-    return <LoginModal />;
+    // 💡 [핵심 수정] LoginModal에게 낚아챈 티켓과 설치 함수를 전달해 줍니다!
+    return <LoginModal deferredPrompt={deferredPrompt} handleInstallClick={handleInstallClick} />;
   }
 
-  // 로그인 완료된 경우 게임 화면 표시
+  // 로그인 완료된 경우 게임 화면 표시 (기존과 완전히 동일)
   return (
     <div className="min-h-screen bg-neutral-900 flex flex-col items-center justify-center p-4 select-none touch-manipulation">
-      {/* 유저 정보 및 로그아웃 버튼 */}
       <div className="w-full max-w-full sm:max-w-md flex justify-between items-center mb-3 px-2 text-neutral-400 font-semibold">
         <span className="text-sm truncate mr-4">정화자: {user.email}</span>
         <button 
