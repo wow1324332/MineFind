@@ -130,8 +130,6 @@ export default function LoginModal() {
               backgroundPosition: 'center' 
             }}
           />
-            {isLoginTab ? 'LOGIN' : 'CREATE'}
-          </button>
         </form>
       </div>
     </div>
