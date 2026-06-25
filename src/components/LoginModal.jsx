@@ -119,10 +119,10 @@ export default function LoginModal({ deferredPrompt, handleInstallClick }) {
               id="rememberId"
               checked={isRememberId}
               onChange={(e) => setIsRememberId(e.target.checked)}
-              className="w-4 h-4 accent-red-600 bg-black/60 border-white/20 rounded cursor-pointer"
+              className="w-4 h-4 accent-black bg-black/60 border-white/20 rounded cursor-pointer"
             />
             <label htmlFor="rememberId" className="text-xs text-neutral-400 cursor-pointer hover:text-neutral-200 transition-colors">
-              아이디의 흔적 남기기 (ID 저장)
+              Remember
             </label>
           </div>
           
