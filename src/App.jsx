@@ -19,7 +19,7 @@ const SPLASH_CONFIG = {
   },
   HUNT_LIST_LOADING: {
     message: "Opening Hunt List...",
-    logoSrc: "/Splash-logo.jpg",
+    logoSrc: "/huntlistloading-logo.jpg",
     bgSrc: "/huntlist-bg.jpg"
   },
   MODE_LOADING: {
