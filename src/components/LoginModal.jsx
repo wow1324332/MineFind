@@ -13,10 +13,16 @@ export default function LoginModal({ deferredPrompt, handleInstallClick }) {
 
   // 💡 [추가] 모달이 켜질 때, 예전에 저장해둔 아이디가 있다면 불러옵니다.
   useEffect(() => {
+    // 💡 키(Key) 이름을 mineLegends_ 용으로 통일해서 안전하게 가져옵니다.
     const savedEmail = localStorage.getItem('mineLegends_savedEmail');
+    const savedPassword = localStorage.getItem('mineLegends_savedPassword');
+
     if (savedEmail) {
       setEmail(savedEmail);
-      setIsRememberId(true);
+      setIsRememberId(true); // 💡 오타 수정: setRememberMe가 아니라 setIsRememberId 입니다!
+    }
+    if (savedPassword) {
+      setPassword(savedPassword);
     }
   }, []);
 
@@ -26,16 +32,18 @@ export default function LoginModal({ deferredPrompt, handleInstallClick }) {
     try {
       if (isLoginTab) {
         await signInWithEmailAndPassword(auth, email, password);
-        // 💡 [추가] 로그인 성공 시, '아이디 저장' 체크 여부에 따라 로컬 스토리지 관리
         if (isRememberId) {
           localStorage.setItem('mineLegends_savedEmail', email);
+          localStorage.setItem('mineLegends_savedPassword', password); // 💡 비밀번호 저장 추가!
         } else {
           localStorage.removeItem('mineLegends_savedEmail');
+          localStorage.removeItem('mineLegends_savedPassword'); // 💡 비밀번호 삭제 추가!
         }
       } else {
         await createUserWithEmailAndPassword(auth, email, password);
         if (isRememberId) {
           localStorage.setItem('mineLegends_savedEmail', email);
+          localStorage.setItem('mineLegends_savedPassword', password); // 💡 가입 시에도 비밀번호 저장!
         }
       }
     } catch (err) {
@@ -47,7 +55,7 @@ export default function LoginModal({ deferredPrompt, handleInstallClick }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black animate-[fadeIn_0.5s_ease-in-out]">y-center bg-black">
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-bg-breath opacity-70"
         style={{ backgroundImage: "url('/login-bg.jpg')" }}
