@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { useState, useEffect } from 'react';
 import { useMinesweeper } from './hooks/useMinesweeper';
 import Header from './components/Header';
