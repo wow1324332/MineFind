@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+// src/App.jsx
+import React, { useState, useEffect, useRef } from 'react'; // 💡 useRef 가 추가되었습니다.
 import { useMinesweeper } from './hooks/useMinesweeper';
 import Header from './components/Header';
 import Board from './components/Board';
@@ -6,7 +7,7 @@ import Controls from './components/Controls';
 import LoginModal from './components/LoginModal';
 import SplashScreen from './components/SplashScreen';
 import HuntList from './components/HuntList';
-import DevilMineMode from './components/DevilMineMode'; // 💡 [수정] 파일 이름 완벽히 매칭
+import DevilMineMode from './components/DevilMineMode'; 
 import { useAuth } from './hooks/useAuth';
 
 // 로딩 화면 설정 메뉴판
@@ -46,6 +47,18 @@ export default function App() {
   // 현재 화면 상태
   const [currentScreen, setCurrentScreen] = useState('HUNT_LIST_LOADING');
 
+  // 💡 [핵심 추가] 무한 루프를 방지하고 앱 기동 시 딱 한 번만 실행하기 위한 이정표
+  const startupLoggedOut = useRef(false);
+
+  // 💡 [핵심 추가] 앱이 완전히 새로 켜지면 무조건 기존 로그인 세션을 폭파(로그아웃)합니다.
+  useEffect(() => {
+    if (!startupLoggedOut.current) {
+      logout();
+      startupLoggedOut.current = true;
+      console.log("💥 앱 구동: 기존 세션 자동 해제 완료");
+    }
+  }, [logout]);
+
   useEffect(() => {
     const handleBeforeInstallPrompt = (e) => {
       e.preventDefault();
@@ -74,7 +87,7 @@ export default function App() {
     if (!user) setCurrentScreen('HUNT_LIST_LOADING');
   }, [user, currentScreen]);
 
-  // 💡 [수정 복구] PWA 설치 버튼 클릭 함수 부활
+  // PWA 설치 버튼 클릭 함수
   const handleInstallClick = async () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();
@@ -86,7 +99,6 @@ export default function App() {
 
   const handleSelectDevilMine = () => {
     setCurrentScreen('MODE_LOADING');
-    // 💡 [수정] 모드 상태 이름을 기획에 맞게 변경
     setTimeout(() => setCurrentScreen('DEVIL_MINE_MODE'), 2000); 
   };
 
@@ -99,12 +111,12 @@ export default function App() {
   // 🎬 화면 렌더링 (라우팅) 섹션
   // ==========================================
 
-  // 1. 앱 최초 켜질 때 스플래시
+  // 1. 앱 최초 켜질 때 스플래시 (3초 동안 무조건 노출되는 동안 로그아웃이 완료됨)
   if (loading || showSplash) {
     return <SplashScreen {...SPLASH_CONFIG.INITIAL} />;
   }
 
-  // 2. 로그인 미완료 시 로그인 모달
+  // 2. 로그인 미완료 시 로그인 모달 (세션이 풀렸으므로 3초 스플래시가 끝나면 무조건 여기로 옵니다)
   if (!user) {
     return <LoginModal deferredPrompt={deferredPrompt} handleInstallClick={handleInstallClick} />;
   }
@@ -120,7 +132,6 @@ export default function App() {
     case 'HUNT_LIST':
       return <HuntList onSelectDevilMine={handleSelectDevilMine} />;
     
-    // 💡 [수정] 변경된 컴포넌트 이름 반영
     case 'DEVIL_MINE_MODE':
       return <DevilMineMode onSelectPVE={handleSelectPVE} onBack={() => setCurrentScreen('HUNT_LIST')} />;
     
