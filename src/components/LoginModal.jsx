@@ -58,7 +58,7 @@ export default function LoginModal() {
           onClick={handleInstallClick}
           className="absolute top-10 right-4 z-[999] bg-black/40 hover:bg-black/60 border border-white/20 text-white text-xs px-3 py-1.5 rounded-full font-bold shadow-lg backdrop-blur-sm transition-all active:scale-95 flex items-center gap-1.5"
         >
-          <span>📲</span> 강제 테스트
+          Install
         </button>
       {/* )} */}
 
