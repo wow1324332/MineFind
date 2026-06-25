@@ -2,16 +2,17 @@ import React from 'react';
 
 export default function SplashScreen({ 
   message = "Transfer...", 
-  logoSrc = "/Splash-logo.jpg", // 기본 로고
-  bgSrc = null // 동적 배경 이미지 (없으면 기본 어둠 효과)
+  logoSrc = "/Splash-logo.jpg", 
+  bgSrc = null,
+  bgOpacity = "opacity-30" // 💡 [추가] 밖에서 밝기를 지정 안 하면 기본값 30으로 설정
 }) {
   return (
     <div className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-black overflow-hidden">
       
-      {/* 💡 [추가] 외부에서 전달받은 배경 이미지가 있다면 깔아줍니다. */}
       {bgSrc && (
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
+          // 💡 [수정] 고정된 opacity-30 대신 전달받은 bgOpacity 값을 사용합니다.
+          className={`absolute inset-0 bg-cover bg-center bg-no-repeat ${bgOpacity}`}
           style={{ backgroundImage: `url('${bgSrc}')` }}
         />
       )}
