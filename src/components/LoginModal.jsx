@@ -1,34 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react'; // 💡 useEffect가 삭제되었습니다.
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
-export default function LoginModal() {
+// 💡 [핵심 수정] App.jsx로부터 deferredPrompt와 handleInstallClick을 받아옵니다.
+export default function LoginModal({ deferredPrompt, handleInstallClick }) {
   const [isLoginTab, setIsLoginTab] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
 
-  useEffect(() => {
-    const handleBeforeInstallPrompt = (e) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-      console.log('PWA 설치 티켓 발급 완료');
-    };
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-  }, []);
-
-  const handleInstallClick = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') console.log('PWA 설치 완료');
-      setDeferredPrompt(null);
-    } else {
-      alert("이미 앱이 설치되어 있거나 자동 설치를 지원하지 않는 기기입니다.\n\n브라우저 메뉴에서 '홈 화면에 추가'를 눌러주세요.");
-    }
-  };
+  // 🗑️ 여기에 있던 useEffect와 handleInstallClick 함수는 App.jsx로 이사 갔습니다!
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,13 +36,15 @@ export default function LoginModal() {
         style={{ backgroundImage: "url('/login-bg.jpg')" }}
       ></div>
       
-      {/* 🚨 PWA 설치 버튼 (조건문 없이 무조건 노출, 상단바 안 가려지게 top-12 설정) 🚨 */}
-      <button 
-        onClick={handleInstallClick}
-        className="fixed top-12 right-4 z-[9999] bg-black/60 hover:bg-black/80 border border-white/20 text-white text-sm px-4 py-2 rounded-full font-bold shadow-2xl backdrop-blur-md transition-all active:scale-95 flex items-center gap-1.5"
-      >
-        <span>📲</span> Install
-      </button>
+      {/* 💡 [핵심 수정] 전달받은 티켓(deferredPrompt)이 진짜로 있을 때만! 버튼을 노출합니다. */}
+      {deferredPrompt && (
+        <button 
+          onClick={handleInstallClick}
+          className="fixed top-12 right-4 z-[9999] bg-black/60 hover:bg-black/80 border border-white/20 text-white text-sm px-4 py-2 rounded-full font-bold shadow-2xl backdrop-blur-md transition-all active:scale-95 flex items-center gap-1.5"
+        >
+          <span>📲</span> Install
+        </button>
+      )}
 
       {/* 로그인 폼 영역 */}
       <div className="relative z-10 w-full max-w-xs mx-4 p-5 bg-black/60 rounded-2xl shadow-2xl backdrop-blur-sm transition-all">
