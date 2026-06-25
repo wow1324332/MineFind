@@ -70,9 +70,13 @@ export default function LoginModal() {
       */}
       <div className="relative z-10 w-full max-w-xs mx-4 p-5 bg-neutral-900/40 rounded-2xl shadow-2xl border border-white/10 backdrop-blur-sm transition-all">
         {/* 타이틀 크기 축소 (text-3xl -> text-xl) */}
-        <h1 className="text-xl font-black text-center text-white mb-4 tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-          MINE LEGENDS
-        </h1>
+        <div className="flex justify-center mb-4">
+          <img 
+           src="/title-logo.png" 
+           alt="Mine Legend" 
+           className="w-48 h-auto object-contain drop-shadow-[0_4px_6px_rgba(0,0,0,0.9)]"
+          />
+        </div>
         
         {/* 탭 버튼 마진 축소 */}
         <div className="flex mb-4 border-b border-white/10 text-sm">
