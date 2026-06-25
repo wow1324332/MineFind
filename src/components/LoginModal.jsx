@@ -123,7 +123,7 @@ export default function LoginModal() {
           <button 
             type="submit" 
             aria-label={isLoginTab ? 'Login' : 'Create'}
-            className="w-full h-10 rounded-lg shadow-md transition-all active:scale-95 border border-white/20 hover:brightness-110"
+            className="w-full h-10 rounded-lg shadow-md transition-all active:scale-95 hover:brightness-110"
             style={{ 
               backgroundImage: "url('/login-button-bg.jpg')", 
               backgroundSize: 'cover', 
