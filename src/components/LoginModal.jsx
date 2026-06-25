@@ -13,6 +13,7 @@ export default function LoginModal() {
     const handleBeforeInstallPrompt = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
+      console.log('PWA 설치 티켓 발급 완료');
     };
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
@@ -20,19 +21,12 @@ export default function LoginModal() {
 
   const handleInstallClick = async () => {
     if (deferredPrompt) {
-      // 1. 브라우저가 설치를 허락한 경우 (정상 동작)
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
       if (outcome === 'accepted') console.log('PWA 설치 완료');
       setDeferredPrompt(null);
     } else {
-      // 2. 환경 문제로 자동 설치가 불가능한 경우 (수동 안내)
-      alert(
-        "이미 앱이 설치되어 있거나, 자동 설치를 지원하지 않는 환경(아이폰, 인앱 브라우저 등)입니다.\n\n" +
-        "💡 수동 설치 방법:\n" +
-        "브라우저의 메뉴(⋮) 또는 공유(↑) 버튼을 누르고\n" +
-        "'홈 화면에 추가'를 선택해 주세요!"
-      );
+      alert("이미 앱이 설치되어 있거나 자동 설치를 지원하지 않는 기기입니다.\n\n브라우저 메뉴에서 '홈 화면에 추가'를 눌러주세요.");
     }
   };
 
@@ -55,38 +49,30 @@ export default function LoginModal() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
-      {/* 배경 이미지 선명도 확보를 위해 opacity를 70%로 살짝 상향 */}
+      {/* 배경 이미지 */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-bg-breath"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-bg-breath opacity-70"
         style={{ backgroundImage: "url('/login-bg.jpg')" }}
       ></div>
       
-      {deferredPrompt && (
+      {/* 🚨 PWA 설치 버튼 (조건문 없이 무조건 노출, 상단바 안 가려지게 top-12 설정) 🚨 */}
       <button 
         onClick={handleInstallClick}
-        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[99999] bg-red-600 border-4 border-white text-white text-2xl px-8 py-4 rounded-full font-black shadow-[0_0_30px_rgba(255,0,0,0.8)] flex items-center gap-2"
+        className="fixed top-12 right-4 z-[9999] bg-black/60 hover:bg-black/80 border border-white/20 text-white text-sm px-4 py-2 rounded-full font-bold shadow-2xl backdrop-blur-md transition-all active:scale-95 flex items-center gap-1.5"
       >
-        <span>📲</span> 여기 있니?!
+        <span>📲</span> Install
       </button>
-      )}
 
-      {/* [주요 변경 포인트]
-        1. max-w-sm(384px) -> max-w-xs(320px)로 가로폭 대폭 축소
-        2. bg-neutral-900/80 -> bg-neutral-900/40으로 투명도 극대화 (배경이 훤히 보임)
-        3. backdrop-blur-md -> backdrop-blur-sm으로 블러를 낮춰 뒷배경의 형체가 더 잘 인지되도록 변경
-        4. 내부 패딩(p-6 -> p-5) 및 컴포넌트 간격(mb-6 -> mb-4, space-y-4 -> space-y-3) 축소로 컴팩트화
-      */}
+      {/* 로그인 폼 영역 */}
       <div className="relative z-10 w-full max-w-xs mx-4 p-5 bg-black/60 rounded-2xl shadow-2xl backdrop-blur-sm transition-all">
-        {/* 타이틀 크기 축소 (text-3xl -> text-xl) */}
         <div className="flex justify-center mb-4">
           <img 
-           src="/title-logo.png" 
-           alt="Mine Legend" 
-           className="w-48 h-auto object-contain drop-shadow-[0_4px_6px_rgba(0,0,0,0.9)]"
+            src="/title-logo.png" 
+            alt="Mine Legend" 
+            className="w-48 h-auto object-contain drop-shadow-[0_4px_6px_rgba(0,0,0,0.9)]"
           />
         </div>
         
-        {/* 탭 버튼 마진 축소 */}
         <div className="flex mb-4 border-b border-white/10 text-sm">
           <button 
             className={`flex-1 pb-1.5 font-bold transition-colors ${isLoginTab ? 'text-white border-b-2 border-white' : 'text-neutral-400 hover:text-neutral-200'}`}
@@ -102,7 +88,6 @@ export default function LoginModal() {
           </button>
         </div>
 
-        {/* 인풋창 간격 및 높이 축소 (py-3 -> py-2.5) */}
         <form onSubmit={handleSubmit} className="space-y-3">
           <div>
             <input 
@@ -127,7 +112,6 @@ export default function LoginModal() {
           
           {error && <p className="text-red-400 text-xs font-bold text-center bg-red-950/40 p-1.5 rounded border border-red-900/50">{error}</p>}
           
-          {/* 버튼 높이 축소 (py-3 -> py-2.5) */}
           <button 
             type="submit" 
             aria-label={isLoginTab ? 'Login' : 'Create'}
