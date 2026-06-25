@@ -20,7 +20,7 @@ const SPLASH_CONFIG = {
   HUNT_LIST_LOADING: {
     message: "Opening Hunt List...",
     logoSrc: "/Splash-logo.jpg",
-    bgSrc: null
+    bgSrc: "/huntlist-bg.jpg"
   },
   MODE_LOADING: {
     message: "Unsealing Devil Mine...",
