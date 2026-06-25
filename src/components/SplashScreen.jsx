@@ -11,7 +11,7 @@ export default function SplashScreen() {
         
         {/* 💡 [수정됨] 아이콘 기본 크기를 더 크게 키워서 압도적인 느낌을 줍니다. */}
         <img
-          src="/icon-512x512.png" 
+          src="/Splash-logo.jpg" 
           alt="Mine Legends"
           className="w-40 h-40 md:w-48 md:h-48 object-contain drop-shadow-[0_0_30px_rgba(220,38,38,0.6)]"
         />
