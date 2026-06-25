@@ -20,10 +20,19 @@ export default function LoginModal() {
 
   const handleInstallClick = async () => {
     if (deferredPrompt) {
+      // 1. 브라우저가 설치를 허락한 경우 (정상 동작)
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
       if (outcome === 'accepted') console.log('PWA 설치 완료');
       setDeferredPrompt(null);
+    } else {
+      // 2. 환경 문제로 자동 설치가 불가능한 경우 (수동 안내)
+      alert(
+        "이미 앱이 설치되어 있거나, 자동 설치를 지원하지 않는 환경(아이폰, 인앱 브라우저 등)입니다.\n\n" +
+        "💡 수동 설치 방법:\n" +
+        "브라우저의 메뉴(⋮) 또는 공유(↑) 버튼을 누르고\n" +
+        "'홈 화면에 추가'를 선택해 주세요!"
+      );
     }
   };
 
