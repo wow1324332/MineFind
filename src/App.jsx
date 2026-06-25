@@ -1,3 +1,4 @@
+// src/App.jsx
 import React, { useState, useEffect } from 'react';
 import { useMinesweeper } from './hooks/useMinesweeper';
 import Header from './components/Header';
@@ -6,10 +7,10 @@ import Controls from './components/Controls';
 import LoginModal from './components/LoginModal';
 import SplashScreen from './components/SplashScreen';
 import HuntList from './components/HuntList';
-import ModeSelection from './components/ModeSelection';
+import DevilMineMode from './components/DevilMineMode'; // 💡 [수정] 파일 이름 완벽히 매칭
 import { useAuth } from './hooks/useAuth';
 
-// 💡 [핵심 섹션화] 로딩 화면 설정 메뉴판 (여기만 수정하면 모든 로딩 화면이 통제됩니다)
+// 로딩 화면 설정 메뉴판
 const SPLASH_CONFIG = {
   INITIAL: {
     message: "Transfer...",
@@ -24,12 +25,12 @@ const SPLASH_CONFIG = {
   MODE_LOADING: {
     message: "Unsealing Devil Mine...",
     logoSrc: "/Splash-logo.jpg",
-    bgSrc: "/stone-tablet.jpg" // 석판 배경 스포일러
+    bgSrc: "/stone-tablet.jpg" 
   },
   GAME_LOADING: {
     message: "Generating Devil's Dungeon...",
     logoSrc: "/Splash-logo.jpg",
-    bgSrc: "/stone-tablet.jpg" // 석판 배경 유지
+    bgSrc: "/stone-tablet.jpg" 
   }
 };
 
@@ -43,7 +44,7 @@ export default function App() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showSplash, setShowSplash] = useState(true);
 
-  // 'HUNT_LIST_LOADING' | 'HUNT_LIST' | 'MODE_LOADING' | 'MODE_SELECTION' | 'GAME_LOADING' | 'GAME_PVE'
+  // 현재 화면 상태
   const [currentScreen, setCurrentScreen] = useState('HUNT_LIST_LOADING');
 
   useEffect(() => {
@@ -74,9 +75,20 @@ export default function App() {
     if (!user) setCurrentScreen('HUNT_LIST_LOADING');
   }, [user, currentScreen]);
 
+  // 💡 [수정 복구] PWA 설치 버튼 클릭 함수 부활
+  const handleInstallClick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') console.log('PWA 설치 완료');
+      setDeferredPrompt(null);
+    }
+  };
+
   const handleSelectDevilMine = () => {
     setCurrentScreen('MODE_LOADING');
-    setTimeout(() => setCurrentScreen('MODE_SELECTION'), 2000);
+    // 💡 [수정] 모드 상태 이름을 기획에 맞게 변경
+    setTimeout(() => setCurrentScreen('DEVIL_MINE_MODE'), 2000); 
   };
 
   const handleSelectPVE = () => {
@@ -88,34 +100,34 @@ export default function App() {
   // 🎬 화면 렌더링 (라우팅) 섹션
   // ==========================================
 
-  // 1. 앱 최초 켜질 때 스플래시 (INITIAL 메뉴 사용)
+  // 1. 앱 최초 켜질 때 스플래시
   if (loading || showSplash) {
     return <SplashScreen {...SPLASH_CONFIG.INITIAL} />;
   }
 
-  // 2. 로그인 미완료 시 로그인 모달 고정
+  // 2. 로그인 미완료 시 로그인 모달
   if (!user) {
     return <LoginModal deferredPrompt={deferredPrompt} handleInstallClick={handleInstallClick} />;
   }
 
-  // 💡 3. '현재 상태'가 로딩 상태(_LOADING)라면, 메뉴판에서 해당 설정을 찾아 띄워줍니다.
+  // 3. '현재 상태'가 로딩 상태라면 메뉴판에서 설정 띄우기
   if (currentScreen.endsWith('_LOADING')) {
     const config = SPLASH_CONFIG[currentScreen];
     return <SplashScreen {...config} />;
   }
 
-  // 4. 일반 화면 (로딩이 아닌 진짜 화면들)
+  // 4. 일반 화면
   switch (currentScreen) {
     case 'HUNT_LIST':
       return <HuntList onSelectDevilMine={handleSelectDevilMine} />;
     
-    case 'MODE_SELECTION':
-      return <ModeSelection onSelectPVE={handleSelectPVE} onBack={() => setCurrentScreen('HUNT_LIST')} />;
+    // 💡 [수정] 변경된 컴포넌트 이름 반영
+    case 'DEVIL_MINE_MODE':
+      return <DevilMineMode onSelectPVE={handleSelectPVE} onBack={() => setCurrentScreen('HUNT_LIST')} />;
     
     case 'GAME_PVE':
       return (
         <div className="min-h-screen bg-neutral-900 flex flex-col items-center justify-center p-4 select-none touch-manipulation">
-          {/* 유저 정보 및 로그아웃 버튼 */}
           <div className="w-full max-w-full sm:max-w-md flex justify-between items-center mb-3 px-2 text-neutral-400 font-semibold">
             <span className="text-sm truncate mr-4">정화자: {user.email}</span>
             <button 
