@@ -18,7 +18,7 @@ export default function SplashScreen() {
 
         {/* 타이틀 텍스트: 자간(tracking)을 넓혀 영화 오프닝 느낌을 줍니다 */}
         <h1 className="mt-8 text-xl md:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-red-300 to-red-600 tracking-[0.4em] drop-shadow-[0_0_10px_rgba(255,0,0,0.5)] animate-[pulse_2s_ease-in-out_infinite]">
-          포탈 이동 중...
+          Transferring Portal...
         </h1>
 
         {/* 시네마틱 로딩 바 */}
