@@ -62,12 +62,12 @@ export default function LoginModal() {
       ></div>
       
       {deferredPrompt && (
-        <button 
-          onClick={handleInstallClick}
-          className="absolute top-4 right-4 z-20 bg-black/40 hover:bg-black/60 border border-white/20 text-white text-xs px-3 py-1.5 rounded-full font-bold shadow-lg backdrop-blur-sm transition-all active:scale-95 flex items-center gap-1.5"
-        >
-          <span>📲</span> Install
-        </button>
+      <button 
+        onClick={handleInstallClick}
+        className="absolute top-4 right-4 z-20 bg-black/40 hover:bg-black/60 border border-white/20 text-white text-xs px-3 py-1.5 rounded-full font-bold shadow-lg backdrop-blur-sm transition-all active:scale-95 flex items-center gap-1.5"
+      >
+        Install
+      </button>
       )}
 
       {/* [주요 변경 포인트]
