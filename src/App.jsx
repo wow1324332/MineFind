@@ -109,7 +109,19 @@ export default function App() {
   }, []);
 
   const handleConfirmExit = () => {
-    window.close(); // PWA 종료 시도
+    // 💡 1. 현재 창(_self)에 빈 페이지(about:blank)를 강제로 열어서 '스크립트가 연 창'으로 둔갑시킵니다.
+    window.open('about:blank', '_self');
+    
+    // 💡 2. 이제 권한이 생겼으므로 창을 닫습니다! (안드로이드 PWA 환경에서 대부분 먹힙니다)
+    window.close();
+
+    // 💡 3. 만약 (아이폰 등에서) 애플의 지독한 보안 정책 때문에 위 꼼수마저 씹혔다면?
+    // 0.5초 뒤에 차선책으로 로그아웃을 시켜버립니다.
+    setTimeout(() => {
+      logout();
+      setShowExitPopup(false);
+      isPopupOpen.current = false;
+    }, 500);
   };
 
   const handleCancelExit = () => {
