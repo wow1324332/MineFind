@@ -147,15 +147,7 @@ export default function LoginModal({ deferredPrompt, handleInstallClick }) {
             }}
           />
         </form>
-      </div>
-
-      <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-      `}</style>
-      
+      </div>      
     </div>
   );
 }
