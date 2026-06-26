@@ -27,7 +27,7 @@ html, body {
   background-color: rgba(0, 0, 0, 0.75); /* 배경 딤 처리 */
   display: flex;
   align-items: center;
-  justify-center;
+  justify-content: center; /* 💡 정식 CSS 문법인 'justify-content: center;' 로 변경합니다! */
   z-index: 10000; /* 최상위 배치 */
   animation: fadeIn 0.3s ease-in-out;
 }
