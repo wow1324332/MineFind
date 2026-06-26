@@ -2,7 +2,23 @@ import React from 'react';
 
 export default function HuntList({ onSelectDevilMine }) {
   return (
-    <div className="min-h-screen bg-neutral-900 text-white flex flex-col items-center p-6 animate-[fadeIn_0.5s_ease-in-out]">
+    <div className="relative min-h-screen text-white flex flex-col items-center p-6 animate-[fadeIn_0.5s_ease-in-out] overflow-hidden">
+      
+      {/* 💡 2. [추가] 배경 이미지 레이어: 화면에 꽉 차게 이미지를 깔고, 글자가 잘 보이게 투명도를 40%로 낮춥니다. */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 z-0 pointer-events-none"
+        style={{ backgroundImage: "url('/huntlist-bg.jpg')" }}
+      ></div>
+
+      {/* 💡 3. [추가] 내용물 래퍼: 배경 이미지보다 위로 올라오도록 relative와 z-10을 줍니다. */}
+      <div className="relative z-10 w-full max-w-md flex flex-col items-center">
+        
+        {/* 👇 여기서부터는 원래 있던 헌트리스트 내용물 코드들을 그대로 두시면 됩니다! */}
+        {/* 예: <h1>Hunt List</h1> 등등... */}
+
+      </div> {/* 💡 내용물 래퍼 닫기 (맨 아래 최종 </div> 직전에 이 닫는 태그가 하나 더 필요할 수 있습니다) */}
+    </div>
+  );
       {/* 상단 타이틀 영역 */}
       <div className="mt-12 mb-10 text-center">
         <h1 className="text-3xl font-black tracking-[0.6em] text-transparent bg-clip-text bg-gradient-to-b from-yellow-500 to-amber-700 drop-shadow-[0_2px_10px_rgba(217,119,6,0.3)]">
