@@ -21,7 +21,8 @@ const SPLASH_CONFIG = {
     message: "Opening Hunt List...",
     logoSrc: "/huntlistloading-logo.png",
     bgSrc: "/huntlist-bg.jpg",
-    bgOpacity: "opacity-60" // 💡 [추가] 이 화면만 특별히 투명도를 60(더 밝게)으로 지정! (80까지 올리셔도 됩니다)
+    bgOpacity: "opacity-60",
+    disablePulse: true
   },
   MODE_LOADING: {
     message: "Unsealing Devil Mine...",
