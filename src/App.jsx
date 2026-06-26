@@ -18,7 +18,7 @@ const SPLASH_CONFIG = {
     bgSrc: null
   },
   HUNT_LIST_LOADING: {
-    message: "Opening Hunt List...",
+    message: "Loading...",
     logoSrc: "/huntlistloading-logo.png",
     bgSrc: "/huntlist-bg.jpg",
     bgOpacity: "opacity-80",
