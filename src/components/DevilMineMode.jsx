@@ -14,7 +14,7 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout }) {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_20%,_#000000_100%)] pointer-events-none"></div>
 
       {/* 💡 상단 타이틀 이미지와 돌담 헤더 묶음 */}
-      <div className="w-full flex flex-col items-center max-w-md relative z-10 -mt-2">
+      <div className="w-full flex flex-col items-center max-w-md relative z-10 -mt-4">
         
         {/* 1. 데빌마인 타이틀 이미지 */}
         <div className="w-full max-w-sm mt-0 mx-auto relative flex justify-center pointer-events-none">
@@ -34,7 +34,7 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout }) {
         </div>
 
         {/* 2. 돌담 헤더 */}
-        <div className="w-full max-w-sm h-12 -mt-4 mb-6 flex justify-between items-center relative z-10">
+        <div className="w-full max-w-sm h-12 -mt-2 mb-6 flex justify-between items-center relative z-10">
           <div 
             className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
             style={{ 
