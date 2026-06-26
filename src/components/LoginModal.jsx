@@ -55,9 +55,9 @@ export default function LoginModal({ deferredPrompt, handleInstallClick }) {
   };
 
   return (
-    <div className="fixed inset-0 w-full h-full z-50 flex items-center justify-center bg-black animate-[fadeIn_0.5s_ease-in-out]">
+    <div className="fixed inset-0 w-full h-full z-50 flex items-center justify-center bg-black">
       <div 
-        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat animate-bg-breath opacity-70 pointer-events-none"
+        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat animate-bg-breath opacity-70 pointer-events-none animate-[fadeIn_0.5s_ease-in-out]"
         style={{ backgroundImage: "url('/login-bg.jpg')" }}
       ></div>
       
@@ -70,7 +70,7 @@ export default function LoginModal({ deferredPrompt, handleInstallClick }) {
         </button>
       )}
 
-      <div className="relative z-10 w-full max-w-xs mx-4 p-5 bg-black/60 rounded-2xl shadow-2xl backdrop-blur-sm transition-all">
+      <div className="relative z-10 w-full max-w-xs mx-4 p-5 bg-black/60 rounded-2xl shadow-2xl backdrop-blur-sm transition-all animate-[fadeIn_0.5s_ease-in-out]">
         <div className="flex justify-center mb-4">
           <img 
             src="/title-logo.png" 
