@@ -70,11 +70,14 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout }) {
           />
         </button>
 
-        <div className="w-full bg-neutral-950/90 border border-neutral-800/40 rounded-xl p-5 text-center opacity-40 relative cursor-not-allowed">
-          <h2 className="text-2xl font-black tracking-widest text-neutral-500">
-            PVP DUEL
-          </h2>
-          <p className="text-xs text-red-500/80 font-bold mt-1 tracking-wider">결투장 준비 중...</p>
+        {/* 💡 [수정됨] PVP 버튼도 텍스트를 지우고 'Battle' 이미지로 교체했습니다. */}
+        <div className="w-full relative opacity-50 grayscale-[0.8] cursor-not-allowed select-none">
+          <img 
+            src="/battle-bt.png" // 🚨 누끼를 딴 Battle PNG 파일의 이름을 여기에 적어주세요!
+            alt="PVP Battle Mode (준비 중)" 
+            className="w-full h-auto object-contain pointer-events-none drop-shadow-md" 
+            draggable="false"
+          />
         </div>
 
       </div>
