@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function HuntList({ onSelectDevilMine }) {
+export default function HuntList({ onSelectDevilMine, onLogout }) {
   return (
     // 💡 1. 제일 바깥쪽 뼈대 (배경 설정 및 페이드인)
     <div className="relative min-h-screen text-white flex flex-col items-center px-6 pb-6 pt-0 animate-[fadeIn_0.5s_ease-in-out] overflow-hidden">
@@ -32,6 +32,30 @@ export default function HuntList({ onSelectDevilMine }) {
             />
           </div>
           
+        </div>
+
+        <div 
+          className="w-full max-w-sm h-14 mb-6 rounded-lg border border-neutral-800 shadow-xl flex justify-between items-center px-4 relative overflow-hidden bg-cover bg-center"
+          style={{ backgroundImage: "url('/header-bg.jpg')" }}
+        >
+          {/* 돌담 질감 위에 글자가 잘 보이도록 얇은 검은색 그림자(오버레이)를 깝니다 */}
+          <div className="absolute inset-0 bg-black/40 pointer-events-none"></div>
+          
+          {/* 1. 마이페이지 버튼 (왼쪽) */}
+          <button 
+            onClick={() => alert("아직 포탈의 이 구역은 개방되지 않았습니다.")}
+            className="relative z-10 text-xs font-bold text-neutral-300 hover:text-amber-500 transition-colors bg-neutral-900/60 px-3 py-1.5 rounded border border-neutral-700/50 backdrop-blur-sm"
+          >
+            마이페이지
+          </button>
+          
+          {/* 2. 로그아웃 버튼 (오른쪽) */}
+          <button 
+            onClick={onLogout}
+            className="relative z-10 text-xs font-bold text-red-500 hover:text-red-400 hover:bg-red-950/40 transition-colors bg-neutral-900/60 px-3 py-1.5 rounded border border-red-900/50 backdrop-blur-sm"
+          >
+            포탈 이탈
+          </button>
         </div>
 
         {/* 던전 카드 목록 리스트 */}
