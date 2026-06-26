@@ -13,19 +13,32 @@ export default function DevilMineMode({ onSelectPVE, onBack }) {
 
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_20%,_#000000_100%)] pointer-events-none"></div>
 
-      {/* 상단 네비게이션 헤더 */}
-      <div className="relative z-10 w-full max-w-sm flex items-center justify-between mt-12">
+      {/* 💡 상단 네비게이션 헤더 (Hunt List 스타일 + 뒤로 가기 통합) */}
+      <div className="relative z-10 w-full max-w-sm flex items-center justify-between mt-8 px-4 py-3 bg-neutral-900/60 border border-neutral-800/80 rounded-2xl backdrop-blur-sm shadow-[0_8px_20px_rgba(0,0,0,0.6)]">
+        
+        {/* 왼쪽: 뒤로 가기 버튼 (헌트리스트로 복귀) */}
         <button 
           onClick={onBack}
-          className="text-xs font-bold text-neutral-400 bg-neutral-900/80 border border-neutral-800 px-3 py-1.5 rounded-lg active:scale-95 transition-all"
+          className="flex items-center justify-center w-8 h-8 rounded-full bg-black/60 border border-neutral-700 text-neutral-400 hover:text-white hover:border-red-500 transition-all active:scale-90"
         >
-          ← Hunt List
+          <span className="text-sm font-bold leading-none mb-0.5">←</span>
         </button>
-        <div className="text-right">
-          <h1 className="text-xl font-black tracking-widest text-red-500 drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]">DEVIL MINE</h1>
-          <p className="text-[10px] text-neutral-400 tracking-wider">전투 유형 선택</p>
+
+        {/* 중앙: 게임 로고 / 타이틀 */}
+        <div className="text-center flex-1 mx-2">
+          <h1 className="text-lg font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-400 to-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.6)]">
+            MINE LEGENDS
+          </h1>
         </div>
+
+        {/* 오른쪽: 재화 표시 또는 프로필 (헌트리스트 느낌 유지) */}
+        <div className="flex items-center gap-1.5 bg-black/50 border border-neutral-800 px-3 py-1.5 rounded-full">
+          <span className="text-[10px] text-orange-400">💎</span>
+          <span className="text-xs text-white font-bold tracking-wider">0</span>
+        </div>
+
       </div>
+
 
       {/* 모드 선택 버튼 영역 */}
       <div className="relative z-10 w-full max-w-xs space-y-4 mb-20">
