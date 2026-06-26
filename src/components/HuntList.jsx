@@ -31,43 +31,41 @@ export default function HuntList({ onSelectDevilMine, onLogout }) {
           </div>
         </div>
 
-        {/* 💡 4. [수정] 두께와 정렬을 완벽하게 교정한 돌담 헤더 */}
-        <div className="w-screen relative left-1/2 -translate-x-1/2 h-16 -mt-2 mb-6 flex justify-center items-center z-10">
+        {/* 💡 4. [완전 교정] 두께를 줄이고 중앙 정렬을 완벽하게 맞춘 돌담 헤더 */}
+        <div className="w-full max-w-sm h-12 -mt-2 mb-6 flex justify-between items-center relative z-10">
           
-          {/* 헤더 배경 이미지 & 약해진 그라데이션 마스크 */}
+          {/* 💡 마법 1: 버튼들은 놔두고, '돌담 배경'만 화면 양끝으로 강제로 늘립니다! (-z-10으로 버튼 뒤에 깔아줍니다) */}
           <div 
-            className="absolute inset-0 bg-cover bg-center pointer-events-none"
+            className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
             style={{ 
               backgroundImage: "url('/header-bg.jpg')",
-              // 💡 30%였던 투명화 구간을 15%로 줄여서 돌담이 훨씬 넓고 선명하게 보이도록 했습니다.
               WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
               maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)'
             }}
           >
-            {/* 돌담 질감이 더 잘 보이도록 어두운 막을 60%에서 40%로 살짝 걷어냈습니다 */}
+            {/* 어두운 막 */}
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
 
-          {/* 텍스트 폰트 버튼 영역 (px-6으로 늘려서 왼쪽 끝에 안 붙고 예쁘게 정렬되게 맞췄습니다) */}
-          <div className="w-full max-w-sm px-6 flex justify-between items-center relative z-10">
-            {/* 1. My Page 텍스트 버튼 */}
-            <button 
-              onClick={() => alert("아직 포탈의 이 구역은 개방되지 않았습니다.")}
-              className="text-[11px] font-bold tracking-[0.2em] uppercase text-neutral-300 hover:text-amber-500 transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
-            >
-              My Page
-            </button>
-            
-            {/* 2. Logout 텍스트 버튼 */}
-            <button 
-              onClick={onLogout}
-              className="text-[11px] font-bold tracking-[0.2em] uppercase text-red-500 hover:text-red-400 transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
+          {/* 💡 마법 2: 버튼들은 max-w-sm 상자 안에서 좌우 예쁘게 정렬됩니다. */}
+          {/* 1. My Page 텍스트 버튼 */}
+          <button 
+            onClick={() => alert("아직 포탈의 이 구역은 개방되지 않았습니다.")}
+            className="text-[11px] font-bold tracking-[0.2em] uppercase text-neutral-300 hover:text-amber-500 transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] px-2"
+          >
+            My Page
+          </button>
+          
+          {/* 2. Logout 텍스트 버튼 */}
+          <button 
+            onClick={onLogout}
+            className="text-[11px] font-bold tracking-[0.2em] uppercase text-red-500 hover:text-red-400 transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] px-2"
+          >
+            Logout
+          </button>
 
+        </div>
+        
         {/* 던전 카드 목록 리스트 */}
         <div className="w-full max-w-sm space-y-4">
           
