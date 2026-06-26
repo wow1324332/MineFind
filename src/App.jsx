@@ -80,18 +80,27 @@ export default function App() {
   }, []);
 
   const [showExitPopup, setShowExitPopup] = useState(false);
+  const isPopupOpen = useRef(false); // 💡 이벤트 안에서 팝업이 켜졌는지 기억하는 장치
 
   useEffect(() => {
-    // 브라우저의 기본 뒤로가기 동작을 막기 위해 가짜 상태를 쑤셔 넣습니다.
-    window.history.pushState({ trap: true }, null, window.location.href);
+    // 1. 앱을 켜자마자 첫 번째 방어벽을 세웁니다.
+    window.history.pushState(null, null, window.location.href);
 
     const handlePopState = (e) => {
-      // 뒤로가기 시도가 감지되면, 커스텀 팝업을 띄웁니다.
-      setShowExitPopup(true);
-      
-      // 기기가 진동을 지원하면 200ms 동안 짧게 진동합니다.
-      if (navigator.vibrate) {
-        navigator.vibrate(200); 
+      // 🚨 2. [가장 핵심] 뒤로가기 버튼에 의해 방어벽이 하나 깨졌으므로, 즉시 튼튼한 방어벽을 다시 세웁니다!
+      window.history.pushState(null, null, window.location.href);
+
+      if (isPopupOpen.current) {
+        // 📱 3. 팝업이 떠 있는 상태에서 스마트폰의 뒤로가기를 또 누르면 -> 앱 종료가 아니라 팝업만 닫습니다! (안드로이드 정석 UX)
+        setShowExitPopup(false);
+        isPopupOpen.current = false;
+      } else {
+        // 📱 4. 평소에 뒤로가기를 누르면 -> 팝업을 켭니다!
+        setShowExitPopup(true);
+        isPopupOpen.current = true;
+        if (navigator.vibrate) {
+          navigator.vibrate(200); 
+        }
       }
     };
 
@@ -99,16 +108,13 @@ export default function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // 진짜 종료하는 함수 (확인창에서 'EXIT'를 눌렀을 때 실행)
   const handleConfirmExit = () => {
-    // 💡 참고: PWA 환경에서 window.close()는 무시될 확률이 매우 높습니다.
-    // 따라서, 종료 대신 로그인 화면으로 튕겨내거나, 앱을 종료하는 척하는 빈 화면으로 이동하는 것이 좋습니다.
-    // 여기서는 window.close()를 시도하지만, 작동하지 않을 수 있음을 명시합니다.
-    window.close();
+    window.close(); // PWA 종료 시도
   };
 
   const handleCancelExit = () => {
     setShowExitPopup(false);
+    isPopupOpen.current = false; // 💡 취소 버튼 누를 때도 닫힘 상태로 정확히 업데이트!
   };
 
   // 로그인 완료 상태에 따른 화면 이동
