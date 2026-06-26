@@ -29,7 +29,7 @@ const SPLASH_CONFIG = {
     message: "Loading...",
     logoSrc: "/huntlistloading-logo.png",
     bgSrc: "/devilmineloading-bg.jpg",
-    bgOpacity: "opacity-80",
+    bgOpacity: "opacity-100",
     disablePulse: true,
     useFadeIn: true
   },
