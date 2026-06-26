@@ -13,20 +13,60 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout }) {
 
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_20%,_#000000_100%)] pointer-events-none"></div>
 
-        {/* 💡 헌트리스트에서 그대로 가져온 돌담 헤더 */}
-        <div className="w-full max-w-sm h-12 mt-4 mb-6 flex justify-between items-center relative z-10">
+        {/* 💡 [추가&수정] 상단 타이틀 이미지와 돌담 헤더를 하나로 묶어서 상단에 고정합니다. */}
+        <div className="w-full flex flex-col items-center w-full max-w-md relative z-10 mt-2">
           
-          {/* 돌담 배경 (화면 양끝으로 쫙 늘어나는 마법 유지) */}
-          <div 
-            className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
-            style={{ 
-              backgroundImage: "url('/header-bg.jpg')",
-              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
-              maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)'
-            }}
-          >
-            <div className="absolute inset-0 bg-black/40"></div>
+          {/* 1. 데빌마인 타이틀 이미지 (헌트리스트 스타일 하단 페이드아웃 적용) */}
+          <div className="w-full max-w-sm mt-0 mx-auto relative flex justify-center pointer-events-none">
+            <div 
+              className="w-full"
+              style={{ 
+                WebkitMaskImage: 'linear-gradient(to bottom, black 65%, transparent 100%)',
+                maskImage: 'linear-gradient(to bottom, black 65%, transparent 100%)'
+              }}
+            >
+              <img 
+                src="/devilminemode-title.jpg" // 🚨 첨부해주신 이미지 파일명에 맞춰주세요! (.png로 누끼를 따셨다면 확장자 변경 필요)
+                alt="Devil Mine Title" 
+                className="w-full h-auto object-contain drop-shadow-[0_0_20px_rgba(220,38,38,0.2)]"
+              />
+            </div>
           </div>
+
+          {/* 2. 기존 돌담 헤더 (타이틀 이미지 바로 아래에 자연스럽게 겹치도록 -mt-4 적용) */}
+          <div className="w-full max-w-sm h-12 -mt-4 mb-6 flex justify-between items-center relative z-10">
+            
+            <div 
+              className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
+              style={{ 
+                backgroundImage: "url('/header-bg.jpg')",
+                WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
+                maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)'
+              }}
+            >
+              <div className="absolute inset-0 bg-black/40"></div>
+            </div>
+
+            {/* 왼쪽 뒤로 가기 버튼 */}
+            <button 
+              onClick={onBack}
+              className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2 select-none"
+              style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+            >
+              <img src="/My-icon.png" alt="Back" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
+            </button>
+            
+            {/* 오른쪽 로그아웃 버튼 */}
+            <button 
+              onClick={onLogout}
+              className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2 select-none"
+              style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+            >
+              <img src="/Logout-icon.png" alt="Logout" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
+            </button>
+
+          </div>
+        </div>
 
           {/* 1. 왼쪽 버튼 (여기에 onBack을 연결했습니다!) */}
           <button 
