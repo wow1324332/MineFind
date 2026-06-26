@@ -4,7 +4,8 @@ export default function SplashScreen({
   message = "Transfer...", 
   logoSrc = "/Splash-logo.jpg", 
   bgSrc = null,
-  bgOpacity = "opacity-30" // 💡 [추가] 밖에서 밝기를 지정 안 하면 기본값 30으로 설정
+  bgOpacity = "opacity-30",
+  disablePulse = false // 💡 [추가] 밖에서 밝기를 지정 안 하면 기본값 30으로 설정
 }) {
   return (
     <div className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-black overflow-hidden">
@@ -18,7 +19,7 @@ export default function SplashScreen({
       )}
 
       {/* 배경 연출: 배경 이미지가 있든 없든 칠흑 같은 어둠과 펄스 효과를 덮어 시네마틱하게 만듭니다. */}
-      <div className={`absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] ${bgSrc ? 'from-transparent' : 'from-neutral-900/60'} via-black to-black animate-pulse pointer-events-none`}></div>
+      <div className={`absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] ${bgSrc ? 'from-transparent' : 'from-neutral-900/60'} via-black to-black ${disablePulse ? '' : 'animate-pulse'} pointer-events-none`}></div>
 
       {/* 중앙 요소 컨테이너 */}
       <div className="relative z-10 flex flex-col items-center w-full px-6">
