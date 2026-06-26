@@ -15,11 +15,23 @@ export default function HuntList({ onSelectDevilMine }) {
       <div className="relative z-10 w-full max-w-md flex flex-col items-center">
         
         {/* 상단 타이틀 영역 */}
-        <div className="mt-12 mb-10 text-center">
-          <h1 className="text-3xl font-black tracking-[0.6em] text-transparent bg-clip-text bg-gradient-to-b from-yellow-500 to-amber-700 drop-shadow-[0_2px_10px_rgba(217,119,6,0.3)]">
-            HUNT LIST
-          </h1>
-          <p className="text-xs text-neutral-500 tracking-[0.2em] mt-2">정화할 던전을 선택하십시오</p>
+      <div className="w-full max-w-sm mt-8 mb-6 mx-auto relative flex justify-center pointer-events-none">
+          
+          {/* 💡 CSS 마스크 마법: 이미지의 아랫부분을 투명하게 그라데이션 처리해서 배경에 스르륵 녹아들게 만듭니다. */}
+          <div 
+            className="w-full"
+            style={{ 
+              WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+              maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)'
+            }}
+          >
+            <img 
+              src="/demonic-title.jpg" 
+              alt="Demonic Portals" 
+              className="w-full h-auto object-contain drop-shadow-[0_0_20px_rgba(220,38,38,0.2)]"
+            />
+          </div>
+          
         </div>
 
         {/* 던전 카드 목록 리스트 */}
