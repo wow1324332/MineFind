@@ -37,7 +37,7 @@ export default function SplashScreen({
 
         {/* 💡 시네마틱 로딩 바 (붉은 빛무리 제거 & 테두리 그라데이션 페더링 적용) */}
         {/* 기존의 붉은 shadow를 제거하고 어두운 톤으로 눌러주었습니다. */}
-        <div className="mt-10 w-64 h-4 relative bg-neutral-900/80 rounded-full border border-neutral-800 shadow-md shadow-black/50 overflow-hidden">
+        <div className="mt-10 w-64 h-4 relative bg-neutral-900/80 rounded-full shadow-md shadow-black/50 overflow-hidden">
           
           {/* 💡 핵심: mask-image를 사용해 게이지가 차오를 때 오른쪽 끝부분(75% ~ 100% 구간)이 부드럽게 흐려지도록 처리했습니다. */}
           <div className="absolute top-0 left-0 h-full animate-[loadingBar_3s_ease-in-out_forwards] [mask-image:linear-gradient(to_right,black_75%,transparent_100%)]">
