@@ -51,8 +51,8 @@ export default function HuntList({ onSelectDevilMine, onLogout }) {
           {/* 1. My Page 텍스트 버튼 */}
           <button 
             onClick={() => alert("아직 포탈의 이 구역은 개방되지 않았습니다.")}
-            // 💡 [수정] 평소에는 어둡고 투명하게, 마우스를 올렸을 때만 밝아지게 수정했습니다.
-            className="transition-all duration-300 opacity-60 brightness-75 saturate-75 hover:opacity-100 hover:brightness-125 hover:saturate-100 hover:scale-110 focus:outline-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] px-2"
+            // 💡 [수정] hover를 모두 지우고, 밝기를 90%로 적당히 유지합니다. 누를 때(active)만 살짝 작아집니다.
+            className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 focus:outline-none drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2"
           >
             <img src="/My-icon.png" alt="My Page" className="w-8 h-8 object-contain" />
           </button>
@@ -60,8 +60,8 @@ export default function HuntList({ onSelectDevilMine, onLogout }) {
           {/* 2. Logout 아이콘 버튼 */}
           <button 
             onClick={onLogout}
-            // 💡 [수정] 동일한 효과를 로그아웃 버튼에도 적용합니다.
-            className="transition-all duration-300 opacity-60 brightness-75 saturate-75 hover:opacity-100 hover:brightness-125 hover:saturate-100 hover:scale-110 focus:outline-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] px-2"
+            // 💡 [수정] 모바일 터치 환경에 완벽하게 맞춘 세팅입니다.
+            className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 focus:outline-none drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2"
           >
             <img src="/Logout-icon.png" alt="Logout" className="w-8 h-8 object-contain" />
           </button>
