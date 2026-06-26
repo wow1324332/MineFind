@@ -21,7 +21,7 @@ const SPLASH_CONFIG = {
     message: "Opening Hunt List...",
     logoSrc: "/huntlistloading-logo.png",
     bgSrc: "/huntlist-bg.jpg",
-    bgOpacity: "opacity-60",
+    bgOpacity: "opacity-80",
     disablePulse: true,
     useFadeIn: true
   },
