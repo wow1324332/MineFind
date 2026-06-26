@@ -34,20 +34,22 @@ export default function SplashScreen({
         <h1 className="mt-8 text-lg md:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-indigo-300 to-purple-600 tracking-[0.5em] animate-[pulse_2s_ease-in-out_infinite] drop-shadow-[0_0_8px_rgba(168,85,247,0.6)] text-center">
           {message}
         </h1>
-
+        
         {/* 시네마틱 로딩 바 (용암 이미지 적용) */}
-        <div className="mt-10 w-64 h-4 relative overflow-hidden bg-neutral-900/50 rounded-full shadow-[0_0_15px_rgba(255,50,0,0.3)]">
+        <div className="mt-10 w-64 h-4 relative overflow-hidden bg-neutral-900/50 rounded-full shadow-[0_0_15px_rgba(255,50,0,0.3)] border border-neutral-800">
           <div 
             className="absolute top-0 left-0 h-full rounded-full mix-blend-screen animate-[loadingBar_3s_ease-in-out_forwards]"
             style={{ 
-              backgroundImage: "url('/splashloadingbar.png')", // 🚨 파일명이 다르면 여기만 수정하세요
-              backgroundSize: '16rem 100%', 
+              backgroundImage: "url('/splashloadingbar.png')", 
+              // 💡 핵심 수정: 100% 였던 높이를 8rem(약 128px)으로 뻥튀기합니다.
+              // 이렇게 하면 위아래 쓸모없는 검은 배경은 잘려나가고, 가운데 용암만 h-4(16px) 틀 안에 굵직하게 보여집니다!
+              backgroundSize: '16rem 8rem', 
               backgroundPosition: 'left center',
               backgroundRepeat: 'no-repeat'
             }}
           ></div>
         </div>
-      </div>
+
 
       <style>{`
         @keyframes loadingBar {
