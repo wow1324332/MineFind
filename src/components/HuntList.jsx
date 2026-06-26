@@ -31,28 +31,29 @@ export default function HuntList({ onSelectDevilMine, onLogout }) {
           </div>
         </div>
 
-        {/* 💡 4. [완전 개편] 얇고, 꽉 차고, 녹아드는 텍스트 버튼 돌담 헤더 */}
-        <div className="w-screen relative left-1/2 -translate-x-1/2 h-10 -mt-6 mb-8 flex justify-center items-center z-10">
+        {/* 💡 4. [수정] 두께와 정렬을 완벽하게 교정한 돌담 헤더 */}
+        <div className="w-screen relative left-1/2 -translate-x-1/2 h-16 -mt-2 mb-6 flex justify-center items-center z-10">
           
-          {/* 헤더 배경 이미지 & 위아래 그라데이션 마스크 (테두리 없음) */}
+          {/* 헤더 배경 이미지 & 약해진 그라데이션 마스크 */}
           <div 
             className="absolute inset-0 bg-cover bg-center pointer-events-none"
             style={{ 
               backgroundImage: "url('/header-bg.jpg')",
-              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%)',
-              maskImage: 'linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%)'
+              // 💡 30%였던 투명화 구간을 15%로 줄여서 돌담이 훨씬 넓고 선명하게 보이도록 했습니다.
+              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
+              maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)'
             }}
           >
-            {/* 글자가 잘 보이도록 돌담 위에 어두운 막 씌우기 */}
-            <div className="absolute inset-0 bg-black/60"></div>
+            {/* 돌담 질감이 더 잘 보이도록 어두운 막을 60%에서 40%로 살짝 걷어냈습니다 */}
+            <div className="absolute inset-0 bg-black/40"></div>
           </div>
 
-          {/* 텍스트 폰트 버튼 영역 (가운데 정렬된 리스트와 좌우 폭을 맞춥니다) */}
-          <div className="w-full max-w-sm px-4 flex justify-between items-center relative z-10">
+          {/* 텍스트 폰트 버튼 영역 (px-6으로 늘려서 왼쪽 끝에 안 붙고 예쁘게 정렬되게 맞췄습니다) */}
+          <div className="w-full max-w-sm px-6 flex justify-between items-center relative z-10">
             {/* 1. My Page 텍스트 버튼 */}
             <button 
               onClick={() => alert("아직 포탈의 이 구역은 개방되지 않았습니다.")}
-              className="text-[11px] font-bold tracking-[0.2em] uppercase text-neutral-400 hover:text-amber-500 transition-colors drop-shadow-md"
+              className="text-[11px] font-bold tracking-[0.2em] uppercase text-neutral-300 hover:text-amber-500 transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
             >
               My Page
             </button>
@@ -60,7 +61,7 @@ export default function HuntList({ onSelectDevilMine, onLogout }) {
             {/* 2. Logout 텍스트 버튼 */}
             <button 
               onClick={onLogout}
-              className="text-[11px] font-bold tracking-[0.2em] uppercase text-red-600 hover:text-red-400 transition-colors drop-shadow-[0_0_8px_rgba(220,38,38,0.5)]"
+              className="text-[11px] font-bold tracking-[0.2em] uppercase text-red-500 hover:text-red-400 transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]"
             >
               Logout
             </button>
