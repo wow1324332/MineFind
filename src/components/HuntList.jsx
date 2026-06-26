@@ -51,19 +51,22 @@ export default function HuntList({ onSelectDevilMine, onLogout }) {
           {/* 1. My Page 텍스트 버튼 */}
           <button 
             onClick={() => alert("아직 포탈의 이 구역은 개방되지 않았습니다.")}
-            // 💡 끝부분에 하이라이트 제거 및 선택 방지 클래스 추가
-            className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 focus:outline-none drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2 [-webkit-tap-highlight-color:transparent] select-none"
+            className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2 select-none"
+            // 💡 [핵심 해결책] 인라인 스타일로 터치 하이라이트와 아웃라인을 강제로 없앱니다.
+            style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
           >
-            <img src="/My-icon.png" alt="My Page" className="w-8 h-8 object-contain pointer-events-none" />
+            {/* 💡 draggable="false"를 추가해 꾹 눌렀을 때 이미지가 선택되는 현상도 원천 차단합니다. */}
+            <img src="/My-icon.png" alt="My Page" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
           </button>
           
           {/* 2. Logout 아이콘 버튼 */}
           <button 
             onClick={onLogout}
-            // 💡 끝부분에 하이라이트 제거 및 선택 방지 클래스 추가
-            className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 focus:outline-none drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2 [-webkit-tap-highlight-color:transparent] select-none"
+            className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2 select-none"
+            // 💡 [핵심 해결책] 
+            style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
           >
-            <img src="/Logout-icon.png" alt="Logout" className="w-8 h-8 object-contain pointer-events-none" />
+            <img src="/Logout-icon.png" alt="Logout" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
           </button>
 
         </div>
@@ -74,13 +77,15 @@ export default function HuntList({ onSelectDevilMine, onLogout }) {
           {/* 활성화된 지뢰찾기 던전 (Devil Mine) 특제 이미지 버튼 */}
           <button
             onClick={onSelectDevilMine}
-            // 💡 끝부분에 하이라이트 제거 및 선택 방지 클래스 추가
-            className="w-full transition-all duration-200 hover:brightness-110 active:scale-[0.96] focus:outline-none drop-shadow-[0_4px_15px_rgba(200,50,0,0.3)] [-webkit-tap-highlight-color:transparent] select-none"
+            className="w-full transition-all duration-200 hover:brightness-110 active:scale-[0.96] drop-shadow-[0_4px_15px_rgba(200,50,0,0.3)] select-none"
+            // 💡 [핵심 해결책]
+            style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
           >
             <img 
               src="/devil-mine-btn.png" 
               alt="Devil Mine" 
-              className="w-full h-auto object-contain pointer-events-none"
+              className="w-full h-auto object-contain pointer-events-none" 
+              draggable="false"
             />
           </button>
 
