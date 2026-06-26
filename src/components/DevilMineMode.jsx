@@ -53,7 +53,7 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout }) {
 
 
       {/* 모드 선택 버튼 영역 */}
-      <div className="relative z-10 w-full max-w-xs space-y-4 mb-20">
+      <div className="relative z-10 w-full max-w-xs space-y-2 mb-20">
         
         {/* 💡 [수정됨] 텍스트를 모두 지우고 'Hunting' 이미지 버튼으로 대체했습니다. */}
         <button
