@@ -55,14 +55,19 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout }) {
       {/* 모드 선택 버튼 영역 */}
       <div className="relative z-10 w-full max-w-xs space-y-4 mb-20">
         
+        {/* 💡 [수정됨] 텍스트를 모두 지우고 'Hunting' 이미지 버튼으로 대체했습니다. */}
         <button
           onClick={onSelectPVE}
-          className="w-full bg-black/80 border-2 border-red-900/60 hover:border-red-600 rounded-xl p-5 text-center transition-all shadow-[0_0_20px_rgba(0,0,0,0.8)] active:scale-95 group"
+          // 💡 배경과 테두리를 없애고, 누를 때 살짝 작아지며 밝아지는 헌트리스트 특유의 고급 애니메이션을 적용했습니다.
+          className="w-full transition-all duration-200 hover:brightness-110 active:scale-[0.96] drop-shadow-[0_4px_15px_rgba(200,50,0,0.3)] select-none"
+          style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
         >
-          <h2 className="text-2xl font-black tracking-widest text-neutral-200 group-hover:text-red-400 transition-colors">
-            PVE MODE
-          </h2>
-          <p className="text-xs text-neutral-400 mt-1 font-medium">1인 던전 정화 작전 수행</p>
+          <img 
+            src="/hunting-bt.png" // 🚨 누끼를 딴 PNG 파일의 이름을 여기에 적어주세요!
+            alt="PVE Hunting Mode" 
+            className="w-full h-auto object-contain pointer-events-none" 
+            draggable="false"
+          />
         </button>
 
         <div className="w-full bg-neutral-950/90 border border-neutral-800/40 rounded-xl p-5 text-center opacity-40 relative cursor-not-allowed">
