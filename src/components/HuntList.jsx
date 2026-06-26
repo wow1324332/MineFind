@@ -7,7 +7,7 @@ export default function HuntList({ onSelectDevilMine }) {
       {/* 💡 2. [추가] 배경 이미지 레이어: 화면에 꽉 차게 이미지를 깔고, 글자가 잘 보이게 투명도를 40%로 낮춥니다. */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 z-0 pointer-events-none"
-        style={{ backgroundImage: "url('/huntlist-bg.jpg')" }}
+        style={{ backgroundImage: "url('/Portallist-bg.jpg')" }}
       ></div>
 
       {/* 💡 3. [추가] 내용물 래퍼: 배경 이미지보다 위로 올라오도록 relative와 z-10을 줍니다. */}
