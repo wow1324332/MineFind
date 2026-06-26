@@ -21,79 +21,27 @@ html, body {
   to { opacity: 1; }
 }
 
-.portal-exit-popup-overlay {
+@keyframes slideUpFade {
+  0% { transform: translateY(20px) translateX(-50%); opacity: 0; }
+  100% { transform: translateY(0) translateX(-50%); opacity: 1; }
+}
+
+.portal-exit-toast {
   position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.75); /* 배경 딤 처리 */
-  display: flex;
-  align-items: center;
-  justify-content: center; /* 💡 정식 CSS 문법인 'justify-content: center;' 로 변경합니다! */
-  z-index: 10000; /* 최상위 배치 */
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-.portal-exit-popup {
-  background-color: #1a1a1a; /* 어두운 돌/금속 색상 */
-  border: 3px solid #333333; /* 낡은 금속 테두리 */
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-  border-radius: 12px;
-  padding: 24px;
-  width: 90%;
-  max-width: 320px; /* 작게 설정 */
-  text-align: center;
-  font-family: 'Times New Roman', Times, serif; /* 고전적인 느낌의 폰트 */
-}
-
-.portal-exit-popup-title {
-  color: #c9ac5d; /* 희미하게 빛나는 골드 색상 */
-  font-size: 1.25rem;
-  font-weight: bold;
-  margin-bottom: 16px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.portal-exit-popup-message {
-  color: #cccccc; /* 밝은 회색 */
-  font-size: 1rem;
-  margin-bottom: 24px;
-  line-height: 1.5;
-}
-
-.portal-exit-popup-buttons {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-}
-
-.portal-exit-popup-button {
-  flex: 1;
-  padding: 10px;
-  border-radius: 6px;
-  font-weight: bold;
-  text-transform: uppercase;
+  bottom: 60px; /* 화면 하단에서 살짝 띄움 */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(20, 20, 20, 0.95);
+  border: 1px solid #444;
+  color: #ddd;
+  padding: 12px 24px;
+  border-radius: 30px;
   font-size: 0.9rem;
-  transition: all 0.2s;
-}
-
-.portal-exit-popup-button-cancel {
-  background-color: #2a2a2a; /* 어두운 버튼 */
-  border: 1px solid #444444;
-  color: #aaaaaa;
-}
-
-.portal-exit-popup-button-cancel:hover {
-  background-color: #333333;
-}
-
-.portal-exit-popup-button-exit {
-  background-color: #5a0000; /* 짙은 핏빛 Red */
-  border: 1px solid #900;
-  color: #ffffff;
-  box-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
-}
-
-.portal-exit-popup-button-exit:hover {
-  background-color: #7a0000;
-  box-shadow: 0 0 15px rgba(139, 0, 0, 0.8);
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+  z-index: 10000;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none; /* 터치 방해 금지 */
+  animation: slideUpFade 0.3s ease-out forwards;
 }
