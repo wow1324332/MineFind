@@ -36,7 +36,7 @@ export default function SplashScreen({
         </h1>
 
         {/* 💡 시네마틱 로딩 바 (모서리 라운딩 & 길이 부족 완벽 해결) */}
-        <div className="mt-10 w-64 h-4 relative bg-neutral-900/50 rounded-full shadow-[0_0_15px_rgba(255,50,0,0.3)] border border-neutral-800 overflow-hidden">
+        <div className="mt-10 w-64 h-4 relative bg-neutral-900/50 rounded-full shadow-[0_0_15px_rgba(255,50,0,0.3)] overflow-hidden">
           
           {/* 1. 애니메이션 마스크: 이 녀석이 커지면서, 넘치는 부분을 잘라내(overflow-hidden) 항상 오른쪽 끝을 둥글게(pill-shape) 만들어 줍니다. */}
           <div className="absolute top-0 left-0 h-full rounded-full overflow-hidden animate-[loadingBar_3s_ease-in-out_forwards]">
