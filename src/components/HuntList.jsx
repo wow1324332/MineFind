@@ -51,17 +51,17 @@ export default function HuntList({ onSelectDevilMine, onLogout }) {
           {/* 1. My Page 텍스트 버튼 */}
           <button 
             onClick={() => alert("아직 포탈의 이 구역은 개방되지 않았습니다.")}
-            className="text-[11px] font-bold tracking-[0.2em] uppercase text-neutral-300 hover:text-amber-500 transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] px-2"
+            className="transition-all duration-200 hover:scale-110 hover:brightness-125 focus:outline-none drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2"
           >
-            My Page
+            <img src="/My-icon.png" alt="My Page" className="w-8 h-8 object-contain" />
           </button>
           
-          {/* 2. Logout 텍스트 버튼 */}
+          {/* 2. Logout 아이콘 버튼 */}
           <button 
             onClick={onLogout}
-            className="text-[11px] font-bold tracking-[0.2em] uppercase text-red-500 hover:text-red-400 transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] px-2"
+            className="transition-all duration-200 hover:scale-110 hover:brightness-125 focus:outline-none drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2"
           >
-            Logout
+            <img src="/Logout-icon.png" alt="Logout" className="w-8 h-8 object-contain" />
           </button>
 
         </div>
