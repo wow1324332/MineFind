@@ -82,28 +82,34 @@ export default function App() {
   const lastBackPressTime = useRef(0);
 
   useEffect(() => {
-    // 1. 확실한 방어벽 생성을 위해 주소 끝에 '#app' 이라는 가짜 꼬리표(Hash)를 달아줍니다.
-    window.history.pushState(null, null, window.location.pathname + '#app');
+    // 💡 브라우저가 "아, 새로운 페이지구나!" 하고 속도록, 눈에 안 보이는 고유 시간표(Date.now)를 섞어서 방어벽을 칩니다.
+    const pushFakeState = () => {
+      window.history.pushState({ trapId: Date.now() }, null, window.location.href);
+    };
 
-    const handlePopState = (e) => {
+    // 1. 앱 최초 기동 시 방어벽 1회 설치
+    pushFakeState();
+
+    const handlePopState = () => {
       const currentTime = new Date().getTime();
 
-      // 2. 더블 탭 계산: 2초(2000ms) 안에 다시 눌렀는가?
+      // 2. 더블 탭: 2초(2000ms) 안에 또 눌렀을 때
       if (currentTime - lastBackPressTime.current < 2000) {
-        // 💥 두 번 연속 누름: 종료 의사 묻기
         if (window.confirm("포탈을 닫고 앱을 종료하시겠습니까?")) {
-          // '확인'을 누르면 방어막(이벤트)을 해제하고 진짜로 뒤로가기(종료)를 실행합니다.
+          // '확인'을 누르면 방어막을 거두고 진짜로 종료시킵니다.
           window.removeEventListener('popstate', handlePopState);
           window.history.back(); 
         } else {
-          // '취소'를 누르면 뚫렸던 방어벽을 다시 칩니다.
-          window.history.pushState(null, null, window.location.pathname + '#app');
+          // '취소'를 누르면 다시 든든하게 방어벽을 칩니다.
+          pushFakeState();
         }
       } else {
-        // 📱 한 번 누름: 방어벽을 즉시 다시 치고 진동만 울립니다.
-        window.history.pushState(null, null, window.location.pathname + '#app');
+        // 3. 싱글 탭: 1번만 눌렀을 때
         lastBackPressTime.current = currentTime;
         
+        // 💡 중요: 유저가 1회 눌러서 소모된 방어벽을 즉시 다시 채워 넣습니다!
+        pushFakeState(); 
+
         if (navigator.vibrate) {
           navigator.vibrate(200); 
         }
