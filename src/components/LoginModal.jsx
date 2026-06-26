@@ -55,7 +55,7 @@ export default function LoginModal({ deferredPrompt, handleInstallClick }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black animate-[fadeIn_0.5s_ease-in-out]">y-center bg-black">
+    <div className="fixed inset-0 w-full h-full z-50 flex items-center justify-center bg-black animate-[fadeIn_0.5s_ease-in-out]">y-center bg-black">
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-bg-breath opacity-70"
         style={{ backgroundImage: "url('/login-bg.jpg')" }}
