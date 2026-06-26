@@ -21,7 +21,7 @@ const SPLASH_CONFIG = {
     message: "Loading...",
     logoSrc: "/huntlistloading-logo.png",
     bgSrc: "/huntlist-bg.jpg",
-    bgOpacity: "opacity-80",
+    bgOpacity: "opacity-70",
     disablePulse: true,
     useFadeIn: true
   },
@@ -29,7 +29,7 @@ const SPLASH_CONFIG = {
     message: "Loading...",
     logoSrc: "/huntlistloading-logo.png",
     bgSrc: "/devilmineloading-bg.jpg",
-    bgOpacity: "opacity-100",
+    bgOpacity: "opacity-90",
     disablePulse: true,
     useFadeIn: true
   },
@@ -37,7 +37,7 @@ const SPLASH_CONFIG = {
     message: "Loading...",
     logoSrc: "/huntlistloading-logo.png",
     bgSrc: "/devilmineloading-bg.jpg",
-    bgOpacity: "opacity-80",
+    bgOpacity: "opacity-70",
     disablePulse: true,
     useFadeIn: true
   },
