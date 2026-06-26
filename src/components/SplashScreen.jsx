@@ -36,7 +36,7 @@ export default function SplashScreen({
         </h1>
 
         {/* 시네마틱 로딩 바 (용암 이미지 적용) */}
-        <div className="mt-10 w-64 h-2 relative overflow-hidden bg-neutral-900/50 rounded-full shadow-[0_0_15px_rgba(255,50,0,0.3)]">
+        <div className="mt-10 w-64 h-4 relative overflow-hidden bg-neutral-900/50 rounded-full shadow-[0_0_15px_rgba(255,50,0,0.3)]">
           <div 
             className="absolute top-0 left-0 h-full rounded-full mix-blend-screen animate-[loadingBar_3s_ease-in-out_forwards]"
             style={{ 
