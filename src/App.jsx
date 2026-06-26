@@ -26,9 +26,12 @@ const SPLASH_CONFIG = {
     useFadeIn: true
   },
   MODE_LOADING: {
-    message: "Unsealing Devil Mine...",
-    logoSrc: "/Splash-logo.jpg",
-    bgSrc: "/stone-tablet.jpg" 
+    message: "Loading...",
+    logoSrc: "/huntlistloading-logo.png",
+    bgSrc: "/devilmineloading-bg.jpg",
+    bgOpacity: "opacity-80",
+    disablePulse: true,
+    useFadeIn: true
   },
   GAME_LOADING: {
     message: "Loading...",
