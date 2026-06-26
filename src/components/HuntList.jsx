@@ -3,7 +3,7 @@ import React from 'react';
 export default function HuntList({ onSelectDevilMine }) {
   return (
     // 💡 1. 제일 바깥쪽 뼈대 (배경 설정 및 페이드인)
-    <div className="relative min-h-screen text-white flex flex-col items-center p-6 animate-[fadeIn_0.5s_ease-in-out] overflow-hidden">
+    <div className="relative min-h-screen text-white flex flex-col items-center px-6 pb-6 pt-0 animate-[fadeIn_0.5s_ease-in-out] overflow-hidden">
       
       {/* 💡 2. 배경 이미지 레이어 */}
       <div 
@@ -15,7 +15,7 @@ export default function HuntList({ onSelectDevilMine }) {
       <div className="relative z-10 w-full max-w-md flex flex-col items-center">
         
         {/* 상단 타이틀 영역 */}
-      <div className="w-full max-w-sm mt-8 mb-6 mx-auto relative flex justify-center pointer-events-none">
+      <div className="w-full max-w-sm mt-0 mb-6 mx-auto relative flex justify-center pointer-events-none">
           
           {/* 💡 CSS 마스크 마법: 이미지의 아랫부분을 투명하게 그라데이션 처리해서 배경에 스르륵 녹아들게 만듭니다. */}
           <div 
