@@ -44,7 +44,7 @@ export default function SplashScreen({
             // 💡 mix-blend-screen은 이미지의 검은 배경을 투명하게 날려주는 마법의 클래스입니다.
             className="absolute top-0 left-0 h-full rounded-full mix-blend-screen animate-[loadingBar_3s_ease-in-out_forwards]"
             style={{ 
-              backgroundImage: "url('/51409.png')", // 🚨 public 폴더에 넣은 이미지 파일명
+              backgroundImage: "url('/splashloadingbar.png')", // 🚨 public 폴더에 넣은 이미지 파일명
               backgroundSize: '16rem 100%', // 🚨 핵심: 부모 넓이(w-64 = 16rem)와 똑같이 고정해서 이미지가 고무줄처럼 늘어나지 않게 합니다.
               backgroundPosition: 'left center',
               backgroundRepeat: 'no-repeat'
