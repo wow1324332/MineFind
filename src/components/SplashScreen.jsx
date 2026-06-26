@@ -37,11 +37,21 @@ export default function SplashScreen({
           {message}
         </h1>
 
-        {/* 시네마틱 로딩 바 */}
-        <div className="mt-10 w-64 h-1.5 bg-neutral-900 rounded-full border border-neutral-800 relative">
-          <div className="absolute top-0 left-0 h-full bg-gradient-to-r from-orange-600 via-cyan-400 to-purple-500 rounded-full animate-[loadingBar_3s_ease-in-out_forwards] shadow-[0_0_20px_3px_rgba(168,85,247,0.8)]"></div>
+        {/* 시네마틱 로딩 바 (용암 이미지 적용) */}
+        <div className="mt-10 w-64 h-2 relative overflow-hidden bg-neutral-900/50 rounded-full shadow-[0_0_15px_rgba(255,50,0,0.3)]">
+          <div 
+            // 💡 유저님이 만든 animate-[loadingBar_3s...] 애니메이션을 그대로 사용합니다.
+            // 💡 mix-blend-screen은 이미지의 검은 배경을 투명하게 날려주는 마법의 클래스입니다.
+            className="absolute top-0 left-0 h-full rounded-full mix-blend-screen animate-[loadingBar_3s_ease-in-out_forwards]"
+            style={{ 
+              backgroundImage: "url('/51409.png')", // 🚨 public 폴더에 넣은 이미지 파일명
+              backgroundSize: '16rem 100%', // 🚨 핵심: 부모 넓이(w-64 = 16rem)와 똑같이 고정해서 이미지가 고무줄처럼 늘어나지 않게 합니다.
+              backgroundPosition: 'left center',
+              backgroundRepeat: 'no-repeat'
+            }}
+          ></div>
         </div>
-      </div>
+
 
       <style>{`
         @keyframes loadingBar {
