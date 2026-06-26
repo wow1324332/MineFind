@@ -22,7 +22,8 @@ const SPLASH_CONFIG = {
     logoSrc: "/huntlistloading-logo.png",
     bgSrc: "/huntlist-bg.jpg",
     bgOpacity: "opacity-60",
-    disablePulse: true
+    disablePulse: true,
+    useFadeIn: true
   },
   MODE_LOADING: {
     message: "Unsealing Devil Mine...",
