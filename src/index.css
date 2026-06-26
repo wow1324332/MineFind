@@ -13,4 +13,5 @@ body {
 
 html, body {
   overscroll-behavior-y: none;
+  overscroll-behavior-x: none; /* 💡 [추가] 가로 스와이프 차단 */
 }
