@@ -79,50 +79,51 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  const [showExitPopup, setShowExitPopup] = useState(false);
-  const isPopupOpen = useRef(false); // 💡 이벤트 안에서 팝업이 켜졌는지 기억하는 장치
+  const [showToast, setShowToast] = useState(false);
+  const lastBackPressTime = useRef(0);
+  const toastTimer = useRef(null);
 
   useEffect(() => {
-    // 1. 앱을 켜자마자 첫 번째 방어벽을 세웁니다.
-    window.history.pushState(null, null, window.location.href);
+    // 1. 방어벽 설치 함수
+    const pushFakeState = () => {
+      window.history.pushState({ trap: true }, null, window.location.href);
+    };
+
+    // 앱 기동 시 최초 방어벽 설치
+    pushFakeState();
 
     const handlePopState = (e) => {
-      // 🚨 2. [가장 핵심] 뒤로가기 버튼에 의해 방어벽이 하나 깨졌으므로, 즉시 튼튼한 방어벽을 다시 세웁니다!
-      window.history.pushState(null, null, window.location.href);
+      const currentTime = new Date().getTime();
 
-      if (isPopupOpen.current) {
-        // 📱 3. 팝업이 떠 있는 상태에서 스마트폰의 뒤로가기를 또 누르면 -> 앱 종료가 아니라 팝업만 닫습니다! (안드로이드 정석 UX)
-        setShowExitPopup(false);
-        isPopupOpen.current = false;
+      // 2. 2초(2000ms) 안에 두 번 연타했을 경우!
+      if (currentTime - lastBackPressTime.current < 2000) {
+        // 방어벽을 아예 치워버리고 브라우저 본연의 뒤로가기(앱 종료)를 허락합니다.
+        window.removeEventListener('popstate', handlePopState);
+        window.history.back(); 
       } else {
-        // 📱 4. 평소에 뒤로가기를 누르면 -> 팝업을 켭니다!
-        setShowExitPopup(true);
-        isPopupOpen.current = true;
-        if (navigator.vibrate) {
-          navigator.vibrate(200); 
-        }
+        // 3. 한 번만 눌렀을 경우!
+        // 즉시 깨진 방어벽을 리필하고 시간을 기록합니다.
+        pushFakeState();
+        lastBackPressTime.current = currentTime;
+
+        // 토스트를 띄우고 진동을 줍니다.
+        setShowToast(true);
+        if (navigator.vibrate) navigator.vibrate(200);
+
+        // 💡 3초 뒤에 토스트를 자동으로 숨깁니다.
+        if (toastTimer.current) clearTimeout(toastTimer.current);
+        toastTimer.current = setTimeout(() => {
+          setShowToast(false);
+        }, 3000);
       }
     };
 
     window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      if (toastTimer.current) clearTimeout(toastTimer.current);
+    };
   }, []);
-
-  const handleConfirmExit = () => {
-    // 💡 1. 현재 창(_self)에 빈 페이지(about:blank)를 강제로 열어서 '스크립트가 연 창'으로 둔갑시킵니다.
-    window.open('about:blank', '_self');
-    
-    // 💡 2. 이제 권한이 생겼으므로 창을 닫습니다! (안드로이드 PWA 환경에서 대부분 먹힙니다)
-    window.close();
-
-    // 💡 3. 만약 (아이폰 등에서) 애플의 지독한 보안 정책 때문에 위 꼼수마저 씹혔다면?
-    // 0.5초 뒤에 차선책으로 로그아웃을 시켜버립니다.
-    setTimeout(() => {
-      logout();
-      setShowExitPopup(false);
-      isPopupOpen.current = false;
-    }, 500);
-  };
 
   const handleCancelExit = () => {
     setShowExitPopup(false);
@@ -247,32 +248,14 @@ export default function App() {
   }
 
   // 💡 5. [최종 반환] 준비된 화면(currentView)과 종료 팝업을 한 보따리(<>)로 묶어서 반환합니다!
-  return (
+return (
     <>
       {currentView}
 
-      {showExitPopup && (
-        <div className="portal-exit-popup-overlay">
-          <div className="portal-exit-popup">
-            <div className="portal-exit-popup-title">EXIT QUEST?</div>
-            <p className="portal-exit-popup-message">
-              Are you certain you wish to close the dungeon portal and end your quest?
-            </p>
-            <div className="portal-exit-popup-buttons">
-              <button 
-                className="portal-exit-popup-button portal-exit-popup-button-cancel"
-                onClick={handleCancelExit}
-              >
-                CANCEL
-              </button>
-              <button 
-                className="portal-exit-popup-button portal-exit-popup-button-exit"
-                onClick={handleConfirmExit}
-              >
-                EXIT
-              </button>
-            </div>
-          </div>
+      {/* 💡 [추가] 토스트 팝업 */}
+      {showToast && (
+        <div className="portal-exit-toast">
+          뒤로가기를 한 번 더 누르면 포탈이 닫힙니다.
         </div>
       )}
     </>
