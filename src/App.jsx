@@ -31,10 +31,13 @@ const SPLASH_CONFIG = {
     bgSrc: "/stone-tablet.jpg" 
   },
   GAME_LOADING: {
-    message: "Generating Devil's Dungeon...",
-    logoSrc: "/Splash-logo.jpg",
-    bgSrc: "/stone-tablet.jpg" 
-  }
+    message: "Loading...",
+    logoSrc: "/huntlistloading-logo.png",
+    bgSrc: "/devilmineloading-bg.jpg",
+    bgOpacity: "opacity-80",
+    disablePulse: true,
+    useFadeIn: true
+  },
 };
 
 export default function App() {
