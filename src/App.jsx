@@ -205,7 +205,8 @@ export default function App() {
   let currentView = null;
   switch (currentScreen) {
     case 'HUNT_LIST':
-      currentView = <HuntList onSelectDevilMine={handleSelectDevilMine} />;
+      // 💡 로그아웃(logout) 함수를 onLogout이라는 이름으로 헌트 리스트에 넘겨줍니다.
+      currentView = <HuntList onSelectDevilMine={handleSelectDevilMine} onLogout={logout} />;
       break;
     
     case 'DEVIL_MINE_MODE':
