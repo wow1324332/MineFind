@@ -41,7 +41,7 @@ export default function SplashScreen({
         />
 
         {/* 시네마틱 로딩 바 */}
-        <div className="mt-8 w-64 h-4 relative bg-neutral-900/80 rounded-full shadow-md shadow-black/50 overflow-hidden">
+        <div className="mt-2 w-64 h-4 relative bg-neutral-900/80 rounded-full shadow-md shadow-black/50 overflow-hidden">
           <div className="absolute top-0 left-0 h-full animate-[loadingBar_3s_ease-in-out_forwards] [mask-image:linear-gradient(to_right,black_75%,transparent_100%)]">
             <div className="w-64 h-full flex items-center justify-center mix-blend-screen">
               <div 
