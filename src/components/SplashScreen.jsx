@@ -5,10 +5,11 @@ export default function SplashScreen({
   logoSrc = "/Splash-logo.jpg", 
   bgSrc = null,
   bgOpacity = "opacity-30",
-  disablePulse = false // 💡 [추가] 밖에서 밝기를 지정 안 하면 기본값 30으로 설정
+  disablePulse = false,
+  useFadeIn = false
 }) {
   return (
-    <div className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-black overflow-hidden">
+    <div className={`fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-black overflow-hidden ${useFadeIn ? 'animate-[fadeIn_0.5s_ease-in-out]' : ''}`}>
       
       {bgSrc && (
         <div 
