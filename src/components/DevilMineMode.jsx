@@ -40,10 +40,11 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout }) {
           
           {/* 2. 오른쪽 버튼 (로그아웃 아이콘 유지 혹은 비워두기) */}
           <button 
-            onClick={onLogout} 필요하다면 여기에 우측 버튼 기능을 넣으세요. 기능이 없다면 태그만 남겨둬야 좌우 균형이 맞습니다.
+            onClick={onLogout}
             className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2 select-none"
             style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
-          >
+           >
+
             <img src="/Logout-icon.png" alt="Logout" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
           </button>
 
