@@ -216,7 +216,7 @@ export default function App() {
       break;
     
     case 'DEVIL_MINE_MODE':
-      currentView = <DevilMineMode onSelectPVE={handleSelectPVE} onBack={() => setCurrentScreen('HUNT_LIST')} onLogout={handleLogout} />;
+      currentView = <DevilMineMode onSelectPVE={handleSelectPVE} onBack={() => setCurrentScreen('HUNT_LIST')} onLogout={logout} />;
       break;
     
     case 'GAME_PVE':
