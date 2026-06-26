@@ -1,7 +1,7 @@
 import React from 'react';
 
 // 💡 컴포넌트 이름이 지뢰찾기 전용임을 명확히 합니다.
-export default function DevilMineMode({ onSelectPVE, onBack }) {
+export default function DevilMineMode({ onSelectPVE, onBack, onLogout }) {
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-between bg-black text-white p-6 select-none">
       
