@@ -79,44 +79,39 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  // 💡 [추가] 뒤로가기 방지 및 더블탭 종료 로직
   const lastBackPressTime = useRef(0);
 
   useEffect(() => {
-    // 1. 앱이 켜지자마자 현재 위치에 '가짜 방문 기록'을 하나 쑤셔 넣습니다.
-    window.history.pushState(null, null, window.location.href);
+    // 1. 확실한 방어벽 생성을 위해 주소 끝에 '#app' 이라는 가짜 꼬리표(Hash)를 달아줍니다.
+    window.history.pushState(null, null, window.location.pathname + '#app');
 
     const handlePopState = (e) => {
-      // 2. 사용자가 뒤로가기(백스와이프)를 시도하면, 진짜 뒤로 가지 못하게 즉시 가짜 기록을 다시 덮어씌웁니다.
-      window.history.pushState(null, null, window.location.href);
-
       const currentTime = new Date().getTime();
 
-      // 3. 더블 탭 계산: 방금 누른 시간과 지금 누른 시간의 차이가 2초(2000ms) 이내라면?
+      // 2. 더블 탭 계산: 2초(2000ms) 안에 다시 눌렀는가?
       if (currentTime - lastBackPressTime.current < 2000) {
-        // 💥 두 번 연속 누름: 종료 확인 창 띄우기
+        // 💥 두 번 연속 누름: 종료 의사 묻기
         if (window.confirm("포탈을 닫고 앱을 종료하시겠습니까?")) {
-          // 참고: 웹/PWA 환경에서는 보안상 window.close()가 완벽히 동작하지 않을 수 있습니다.
-          // 작동하지 않을 경우를 대비해 빈 페이지나 로그인 화면으로 튕겨내는 로직을 넣기도 합니다.
-          window.close(); 
+          // '확인'을 누르면 방어막(이벤트)을 해제하고 진짜로 뒤로가기(종료)를 실행합니다.
+          window.removeEventListener('popstate', handlePopState);
+          window.history.back(); 
+        } else {
+          // '취소'를 누르면 뚫렸던 방어벽을 다시 칩니다.
+          window.history.pushState(null, null, window.location.pathname + '#app');
         }
       } else {
-        // 📱 한 번 누름: 진동만 울리고 무반응 (현재 시간 기록)
+        // 📱 한 번 누름: 방어벽을 즉시 다시 치고 진동만 울립니다.
+        window.history.pushState(null, null, window.location.pathname + '#app');
         lastBackPressTime.current = currentTime;
         
-        // 기기가 진동을 지원하면 200ms(0.2초) 동안 짧게 진동합니다.
         if (navigator.vibrate) {
           navigator.vibrate(200); 
         }
       }
     };
 
-    // 브라우저의 '뒤로가기' 이벤트(popstate)가 발생할 때마다 위 함수를 실행하도록 연결합니다.
     window.addEventListener('popstate', handlePopState);
-
-    return () => {
-      window.removeEventListener('popstate', handlePopState);
-    };
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   // 로그인 완료 상태에 따른 화면 이동
