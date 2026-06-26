@@ -6,3 +6,7 @@ body {
   margin: 0;
   -webkit-tap-highlight-color: transparent; /* 모바일 터치 시 깜빡임 제거 */
 }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
