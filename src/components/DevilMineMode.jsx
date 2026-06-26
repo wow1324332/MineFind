@@ -13,31 +13,42 @@ export default function DevilMineMode({ onSelectPVE, onBack }) {
 
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_20%,_#000000_100%)] pointer-events-none"></div>
 
-      {/* 💡 상단 네비게이션 헤더 (Hunt List 스타일 + 뒤로 가기 통합) */}
-      <div className="relative z-10 w-full max-w-sm flex items-center justify-between mt-8 px-4 py-3 bg-neutral-900/60 border border-neutral-800/80 rounded-2xl backdrop-blur-sm shadow-[0_8px_20px_rgba(0,0,0,0.6)]">
-        
-        {/* 왼쪽: 뒤로 가기 버튼 (헌트리스트로 복귀) */}
-        <button 
-          onClick={onBack}
-          className="flex items-center justify-center w-8 h-8 rounded-full bg-black/60 border border-neutral-700 text-neutral-400 hover:text-white hover:border-red-500 transition-all active:scale-90"
-        >
-          <span className="text-sm font-bold leading-none mb-0.5">←</span>
-        </button>
+        {/* 💡 헌트리스트에서 그대로 가져온 돌담 헤더 */}
+        <div className="w-full max-w-sm h-12 mt-4 mb-6 flex justify-between items-center relative z-10">
+          
+          {/* 돌담 배경 (화면 양끝으로 쫙 늘어나는 마법 유지) */}
+          <div 
+            className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
+            style={{ 
+              backgroundImage: "url('/header-bg.jpg')",
+              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
+              maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)'
+            }}
+          >
+            <div className="absolute inset-0 bg-black/40"></div>
+          </div>
 
-        {/* 중앙: 게임 로고 / 타이틀 */}
-        <div className="text-center flex-1 mx-2">
-          <h1 className="text-lg font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-400 to-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.6)]">
-            MINE LEGENDS
-          </h1>
+          {/* 1. 왼쪽 버튼 (여기에 onBack을 연결했습니다!) */}
+          <button 
+            onClick={onBack}
+            className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2 select-none"
+            style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+          >
+            {/* 💡 뒤로 가기용 화살표 이미지가 따로 있다면 '/My-icon.png' 부분을 바꿔주세요 */}
+            <img src="/My-icon.png" alt="Back" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
+          </button>
+          
+          {/* 2. 오른쪽 버튼 (로그아웃 아이콘 유지 혹은 비워두기) */}
+          <button 
+            // onClick={...} 필요하다면 여기에 우측 버튼 기능을 넣으세요. 기능이 없다면 태그만 남겨둬야 좌우 균형이 맞습니다.
+            className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2 select-none"
+            style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+          >
+            <img src="/Logout-icon.png" alt="Logout" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
+          </button>
+
         </div>
 
-        {/* 오른쪽: 재화 표시 또는 프로필 (헌트리스트 느낌 유지) */}
-        <div className="flex items-center gap-1.5 bg-black/50 border border-neutral-800 px-3 py-1.5 rounded-full">
-          <span className="text-[10px] text-orange-400">💎</span>
-          <span className="text-xs text-white font-bold tracking-wider">0</span>
-        </div>
-
-      </div>
 
 
       {/* 모드 선택 버튼 영역 */}
