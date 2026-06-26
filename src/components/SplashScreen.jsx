@@ -13,7 +13,6 @@ export default function SplashScreen({
       
       {bgSrc && (
         <div 
-          // 💡 [수정] 고정된 opacity-30 대신 전달받은 bgOpacity 값을 사용합니다.
           className={`absolute inset-0 bg-cover bg-center bg-no-repeat ${bgOpacity}`}
           style={{ backgroundImage: `url('${bgSrc}')` }}
         />
@@ -25,7 +24,6 @@ export default function SplashScreen({
       {/* 중앙 요소 컨테이너 */}
       <div className="relative z-10 flex flex-col items-center w-full px-6">
         
-        {/* 💡 [수정] 고정된 이미지가 아닌, 외부에서 전달받은 로고(logoSrc)를 렌더링합니다. */}
         <img
           src={logoSrc} 
           alt="Loading Info"
@@ -40,18 +38,16 @@ export default function SplashScreen({
         {/* 시네마틱 로딩 바 (용암 이미지 적용) */}
         <div className="mt-10 w-64 h-2 relative overflow-hidden bg-neutral-900/50 rounded-full shadow-[0_0_15px_rgba(255,50,0,0.3)]">
           <div 
-            // 💡 유저님이 만든 animate-[loadingBar_3s...] 애니메이션을 그대로 사용합니다.
-            // 💡 mix-blend-screen은 이미지의 검은 배경을 투명하게 날려주는 마법의 클래스입니다.
             className="absolute top-0 left-0 h-full rounded-full mix-blend-screen animate-[loadingBar_3s_ease-in-out_forwards]"
             style={{ 
-              backgroundImage: "url('/splashloadingbar.png')", // 🚨 public 폴더에 넣은 이미지 파일명
-              backgroundSize: '16rem 100%', // 🚨 핵심: 부모 넓이(w-64 = 16rem)와 똑같이 고정해서 이미지가 고무줄처럼 늘어나지 않게 합니다.
+              backgroundImage: "url('/splashloadingbar.png')", // 🚨 파일명이 다르면 여기만 수정하세요
+              backgroundSize: '16rem 100%', 
               backgroundPosition: 'left center',
               backgroundRepeat: 'no-repeat'
             }}
           ></div>
         </div>
-
+      </div>
 
       <style>{`
         @keyframes loadingBar {
@@ -64,3 +60,4 @@ export default function SplashScreen({
     </div>
   );
 }
+
