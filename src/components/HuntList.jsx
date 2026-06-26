@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function HuntList({ onSelectDevilMine }) {
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center p-6 select-none">
+    <div className="min-h-screen bg-neutral-900 text-white flex flex-col items-center p-6 animate-[fadeIn_0.5s_ease-in-out]">
       {/* 상단 타이틀 영역 */}
       <div className="mt-12 mb-10 text-center">
         <h1 className="text-3xl font-black tracking-[0.6em] text-transparent bg-clip-text bg-gradient-to-b from-yellow-500 to-amber-700 drop-shadow-[0_2px_10px_rgba(217,119,6,0.3)]">
