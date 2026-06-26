@@ -79,46 +79,37 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  const lastBackPressTime = useRef(0);
+  const [showExitPopup, setShowExitPopup] = useState(false);
 
   useEffect(() => {
-    // 💡 브라우저가 "아, 새로운 페이지구나!" 하고 속도록, 눈에 안 보이는 고유 시간표(Date.now)를 섞어서 방어벽을 칩니다.
-    const pushFakeState = () => {
-      window.history.pushState({ trapId: Date.now() }, null, window.location.href);
-    };
+    // 브라우저의 기본 뒤로가기 동작을 막기 위해 가짜 상태를 쑤셔 넣습니다.
+    window.history.pushState({ trap: true }, null, window.location.href);
 
-    // 1. 앱 최초 기동 시 방어벽 1회 설치
-    pushFakeState();
-
-    const handlePopState = () => {
-      const currentTime = new Date().getTime();
-
-      // 2. 더블 탭: 2초(2000ms) 안에 또 눌렀을 때
-      if (currentTime - lastBackPressTime.current < 2000) {
-        if (window.confirm("포탈을 닫고 앱을 종료하시겠습니까?")) {
-          // '확인'을 누르면 방어막을 거두고 진짜로 종료시킵니다.
-          window.removeEventListener('popstate', handlePopState);
-          window.history.back(); 
-        } else {
-          // '취소'를 누르면 다시 든든하게 방어벽을 칩니다.
-          pushFakeState();
-        }
-      } else {
-        // 3. 싱글 탭: 1번만 눌렀을 때
-        lastBackPressTime.current = currentTime;
-        
-        // 💡 중요: 유저가 1회 눌러서 소모된 방어벽을 즉시 다시 채워 넣습니다!
-        pushFakeState(); 
-
-        if (navigator.vibrate) {
-          navigator.vibrate(200); 
-        }
+    const handlePopState = (e) => {
+      // 뒤로가기 시도가 감지되면, 커스텀 팝업을 띄웁니다.
+      setShowExitPopup(true);
+      
+      // 기기가 진동을 지원하면 200ms 동안 짧게 진동합니다.
+      if (navigator.vibrate) {
+        navigator.vibrate(200); 
       }
     };
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
+
+  // 진짜 종료하는 함수 (확인창에서 'EXIT'를 눌렀을 때 실행)
+  const handleConfirmExit = () => {
+    // 💡 참고: PWA 환경에서 window.close()는 무시될 확률이 매우 높습니다.
+    // 따라서, 종료 대신 로그인 화면으로 튕겨내거나, 앱을 종료하는 척하는 빈 화면으로 이동하는 것이 좋습니다.
+    // 여기서는 window.close()를 시도하지만, 작동하지 않을 수 있음을 명시합니다.
+    window.close();
+  };
+
+  const handleCancelExit = () => {
+    setShowExitPopup(false);
+  };
 
   // 로그인 완료 상태에 따른 화면 이동
   useEffect(() => {
@@ -171,16 +162,39 @@ export default function App() {
     return <SplashScreen {...config} />;
   }
 
-  // 4. 일반 화면
+// ==========================================
+  // 🎬 화면 렌더링 (라우팅) 섹션
+  // ==========================================
+
+  // 1. 앱 최초 켜질 때 스플래시 (3초 동안 무조건 노출되는 동안 로그아웃이 완료됨)
+  if (loading || showSplash) {
+    return <SplashScreen {...SPLASH_CONFIG.INITIAL} />;
+  }
+
+  // 2. 로그인 미완료 시 로그인 모달 (세션이 풀렸으므로 3초 스플래시가 끝나면 무조건 여기로 옵니다)
+  if (!user) {
+    return <LoginModal deferredPrompt={deferredPrompt} handleInstallClick={handleInstallClick} />;
+  }
+
+  // 3. '현재 상태'가 로딩 상태라면 메뉴판에서 설정 띄우기
+  if (currentScreen.endsWith('_LOADING')) {
+    const config = SPLASH_CONFIG[currentScreen];
+    return <SplashScreen {...config} />;
+  }
+
+// 4. 일반 화면 내용물 준비 (바로 return 하지 않고 상자에 담습니다)
+  let currentView = null;
   switch (currentScreen) {
     case 'HUNT_LIST':
-      return <HuntList onSelectDevilMine={handleSelectDevilMine} />;
+      currentView = <HuntList onSelectDevilMine={handleSelectDevilMine} />;
+      break;
     
     case 'DEVIL_MINE_MODE':
-      return <DevilMineMode onSelectPVE={handleSelectPVE} onBack={() => setCurrentScreen('HUNT_LIST')} />;
+      currentView = <DevilMineMode onSelectPVE={handleSelectPVE} onBack={() => setCurrentScreen('HUNT_LIST')} />;
+      break;
     
     case 'GAME_PVE':
-      return (
+      currentView = (
         <div className="min-h-screen bg-neutral-900 flex flex-col items-center justify-center p-4 select-none touch-manipulation">
           <div className="w-full max-w-full sm:max-w-md flex justify-between items-center mb-3 px-2 text-neutral-400 font-semibold">
             <span className="text-sm truncate mr-4">정화자: {user.email}</span>
@@ -208,8 +222,41 @@ export default function App() {
           </div>
         </div>
       );
+      break;
     
     default:
-      return null;
+      currentView = null;
   }
+
+  // 💡 5. [최종 반환] 준비된 화면(currentView)과 종료 팝업을 한 보따리(<>)로 묶어서 반환합니다!
+  return (
+    <>
+      {currentView}
+
+      {showExitPopup && (
+        <div className="portal-exit-popup-overlay">
+          <div className="portal-exit-popup">
+            <div className="portal-exit-popup-title">EXIT QUEST?</div>
+            <p className="portal-exit-popup-message">
+              Are you certain you wish to close the dungeon portal and end your quest?
+            </p>
+            <div className="portal-exit-popup-buttons">
+              <button 
+                className="portal-exit-popup-button portal-exit-popup-button-cancel"
+                onClick={handleCancelExit}
+              >
+                CANCEL
+              </button>
+              <button 
+                className="portal-exit-popup-button portal-exit-popup-button-exit"
+                onClick={handleConfirmExit}
+              >
+                EXIT
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
