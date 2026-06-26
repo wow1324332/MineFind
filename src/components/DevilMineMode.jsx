@@ -8,7 +8,7 @@ export default function DevilMineMode({ onSelectPVE, onBack }) {
       {/* 배경: 고대 석판 이미지 */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
-        style={{ backgroundImage: "url('/stone-tablet.jpg')" }}
+        style={{ backgroundImage: "url('/devilmineloading-bg.jpg')" }}
       ></div>
 
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_20%,_#000000_100%)] pointer-events-none"></div>
