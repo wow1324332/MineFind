@@ -31,13 +31,13 @@ export default function SplashScreen({
           className="w-full max-w-xs md:max-w-md lg:max-w-lg h-auto object-contain drop-shadow-2xl"
         />
 
-        {/* 💡 [수정] 원본 폰트 이미지를 누끼 없이 그대로 사용 (불꽃 보존) */}
+        {/* 💡 [수정] 누끼 딴 투명 폰트 이미지 적용 */}
         <img
-          src="/1782477769683.jpg" // 🚨 원본 파일명과 확장자(.jpg 또는 .png)를 꼭 확인해주세요!
+          src="/loading-font.png" // 🚨 누끼 딴 투명 PNG 파일명
           alt="Loading..."
-          // 💡 핵심: mix-blend-screen으로 검은 배경을 날리고, 크기를 살짝 키웠습니다(w-64).
-          // 원본 이미지 자체의 불꽃이 화려하므로 촌스러운 인위적 그림자(drop-shadow)는 뺐습니다.
-          className="mt-8 w-64 md:w-72 h-auto object-contain animate-[pulse_2s_ease-in-out_infinite] mix-blend-screen"
+          // 💡 mix-blend-screen을 제거하여 사각형 번쩍임을 없앴습니다.
+          // 대신 drop-shadow를 옅게 깔아주어 폰트 자체만 배경에 자연스럽게 묻어가며 깜빡이게(pulse) 만듭니다.
+          className="mt-8 w-56 md:w-64 h-auto object-contain animate-[pulse_2s_ease-in-out_infinite] drop-shadow-[0_0_12px_rgba(255,80,0,0.5)]"
         />
 
         {/* 시네마틱 로딩 바 */}
