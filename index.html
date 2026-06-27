@@ -5,32 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Mine Legends</title>
     <link rel="manifest" href="/manifest.json" />
+    
+    <!-- 💡 배경이 까만 게임이므로 테마 컬러를 완전 블랙으로 맞췄습니다 -->
+    <meta name="theme-color" content="#000000" />
 
-    <style>
-      html, body {
-        background-color: #000000 !important;
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-      }
-    </style>
+    <!-- ======================================================= -->
+    <!-- 🚀 이미지 미리 불러오기 (Preload) - 버벅임(뚜두둑) 방지 -->
+    <!-- ======================================================= -->
+    
+    <!-- 1. 앱 기동 시 즉시 보이는 스플래시 & 로딩 화면 요소 -->
+    <link rel="preload" as="image" href="/Splash-logo.jpg" />
+    <link rel="preload" as="image" href="/huntlistloading-logo.png" />
+    <link rel="preload" as="image" href="/loading-font.png" />
+    <link rel="preload" as="image" href="/splashloadingbar.png" /> <!-- 용암 로딩바 텍스처 -->
+    
+    <!-- 2. 주요 배경 화면들 -->
+    <link rel="preload" as="image" href="/huntlist-bg.jpg" />
+    <link rel="preload" as="image" href="/Portallist-bg.jpg" />
+    <link rel="preload" as="image" href="/devilmineloading-bg.jpg" />
+    
+    <!-- 3. 공통 UI (돌담 헤더, 타이틀, 버튼) -->
+    <link rel="preload" as="image" href="/header-bg.jpg" />
+    <link rel="preload" as="image" href="/devilminemode-title.jpg" /> <!-- 데빌마인 상단 타이틀 (확장자 주의) -->
+    <link rel="preload" as="image" href="/hunting-bt.png" /> <!-- PVE 버튼 -->
+    <link rel="preload" as="image" href="/battle-bt.png" /> <!-- PVP 버튼 -->
+
   </head>
-  <body>
-    <div id="root" style="background-color: #000000; min-height: 100vh;"></div>
-    
+  
+  <!-- 💡 overscroll-behavior: none; 을 추가해 모바일에서 화면을 아래로 당겼을 때 새로고침이나 흰 여백이 보이는 것을 막습니다 -->
+  <body style="background-color: #000000; margin: 0; overflow: hidden; overscroll-behavior: none;">
+    <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js').then((registration) => {
-            console.log('ServiceWorker registration successful');
-          }).catch((err) => {
-            console.log('ServiceWorker registration failed: ', err);
-          });
-        });
-      }
-    </script>
   </body>
 </html>
