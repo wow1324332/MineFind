@@ -65,7 +65,7 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout }) 
       </div>
 
       {/* 💡 던전 선택 버튼 영역 */}
-      <div className="relative z-10 w-full max-w-xs space-y-6 mb-20">
+      <div className="relative z-10 w-full max-w-xs -space-y-3 mt-6 mb-auto">
         
         {/* 1. 불의 던전 버튼 */}
         <button
