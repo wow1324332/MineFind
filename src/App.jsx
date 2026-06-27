@@ -44,7 +44,7 @@ const SPLASH_CONFIG = {
   },
   DUNGEON_SELECT_LOADING: {
     message: "던전 탐색 중...",
-    logoSrc: "/huntlistloading-logo.png",
+    logoSrc: "/hunting-bt.png",
     bgSrc: "/devilmineloading-bg.jpg",
     bgOpacity: "opacity-80",
     disablePulse: true,
