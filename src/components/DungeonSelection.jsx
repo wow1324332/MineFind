@@ -84,13 +84,16 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout }) 
         {/* 2. 물의 던전 버튼 */}
         <button
           onClick={() => onSelectDungeon('water')}
-          className="w-full bg-neutral-950/80 border border-blue-900/60 hover:border-blue-500 rounded-xl p-6 text-center transition-all shadow-[0_0_15px_rgba(37,99,235,0.2)] active:scale-95 group"
+          // 💡 물의 던전 느낌에 맞춰 푸른색(rgba(37,99,235,0.3)) 그림자를 넣었습니다.
+          className="w-full transition-all duration-200 hover:brightness-110 active:scale-[0.96] drop-shadow-[0_4px_15px_rgba(37,99,235,0.3)] select-none"
           style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
         >
-          <h2 className="text-2xl font-black tracking-widest text-blue-500 group-hover:text-blue-400">
-            물의 던전
-          </h2>
-          <p className="text-xs text-neutral-400 mt-2 font-medium">심연의 차가운 늪지대 정화</p>
+          <img 
+            src="/hellofaqua-bt.png" 
+            alt="Hell of Aqua" 
+            className="w-full h-auto object-contain pointer-events-none" 
+            draggable="false"
+          />
         </button>
 
       </div>
