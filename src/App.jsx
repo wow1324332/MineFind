@@ -248,7 +248,7 @@ export default function App() {
       break;
 
     case 'DUNGEON_SELECTION':
-      currentView = <DungeonSelection onSelectDungeon={handleSelectDungeon} onBack={() => setCurrentScreen('DEVIL_MINE_MODE')} />;
+      currentView = <DungeonSelection onSelectDungeon={handleSelectDungeon} onBack={() => setCurrentScreen('DEVIL_MINE_MODE')} onLogout={logout} />;
       break;
       
     case 'GAME_PVE':
