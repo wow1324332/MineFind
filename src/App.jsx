@@ -7,7 +7,8 @@ import Controls from './components/Controls';
 import LoginModal from './components/LoginModal';
 import SplashScreen from './components/SplashScreen';
 import HuntList from './components/HuntList';
-import DevilMineMode from './components/DevilMineMode'; 
+import DevilMineMode from './components/DevilMineMode';
+import DungeonSelection from './components/DungeonSelection';
 import { useAuth } from './hooks/useAuth';
 
 // 로딩 화면 설정 메뉴판
@@ -163,6 +164,13 @@ export default function App() {
   };
 
   const handleSelectPVE = () => {
+    setCurrentScreen('MODE_LOADING');
+    setTimeout(() => setCurrentScreen('DUNGEON_SELECTION'), 2000);
+  };
+
+  // 💡 2. 그 다음, 던전을 선택하면: 로딩 화면을 거쳐 -> '진짜 게임 화면'으로 갑니다!
+  const handleSelectDungeon = (dungeonId) => {
+    // 나중에 dungeonId('fire' 또는 'water')를 활용해서 게임 배경을 바꿀 수 있습니다!
     setCurrentScreen('GAME_LOADING');
     setTimeout(() => setCurrentScreen('GAME_PVE'), 2000);
   };
@@ -218,7 +226,11 @@ export default function App() {
     case 'DEVIL_MINE_MODE':
       currentView = <DevilMineMode onSelectPVE={handleSelectPVE} onBack={() => setCurrentScreen('HUNT_LIST')} onLogout={logout} />;
       break;
-    
+
+    case 'DUNGEON_SELECTION':
+      currentView = <DungeonSelection onSelectDungeon={handleSelectDungeon} onBack={() => setCurrentScreen('DEVIL_MINE_MODE')} />;
+      break;
+      
     case 'GAME_PVE':
       currentView = (
         <div className="min-h-screen bg-neutral-900 flex flex-col items-center justify-center p-4 select-none touch-manipulation">
