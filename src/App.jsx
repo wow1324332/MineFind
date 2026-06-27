@@ -42,6 +42,23 @@ const SPLASH_CONFIG = {
     disablePulse: true,
     useFadeIn: true
   },
+  DUNGEON_SELECT_LOADING: {
+    message: "던전 탐색 중...",
+    logoSrc: "/huntlistloading-logo.png",
+    bgSrc: "/devilmineloading-bg.jpg",
+    bgOpacity: "opacity-80",
+    disablePulse: true,
+    useFadeIn: true
+  },
+  // 💡 2. 던전 선택 화면 -> 불의 던전 진입 로딩
+  FIRE_DUNGEON_LOADING: {
+    message: "불의 던전으로 강습 중...",
+    logoSrc: "/huntlistloading-logo.png", 
+    bgSrc: "/devilmineloading-bg.jpg", 
+    bgOpacity: "opacity-90",
+    disablePulse: true,
+    useFadeIn: true
+  },
 };
 
 export default function App() {
@@ -164,14 +181,17 @@ export default function App() {
   };
 
   const handleSelectPVE = () => {
-    setCurrentScreen('MODE_LOADING');
+    setCurrentScreen('DUNGEON_SELECT_LOADING'); // 전용 로딩으로 교체
     setTimeout(() => setCurrentScreen('DUNGEON_SELECTION'), 2000);
   };
 
   // 💡 2. 그 다음, 던전을 선택하면: 로딩 화면을 거쳐 -> '진짜 게임 화면'으로 갑니다!
   const handleSelectDungeon = (dungeonId) => {
-    // 나중에 dungeonId('fire' 또는 'water')를 활용해서 게임 배경을 바꿀 수 있습니다!
-    setCurrentScreen('GAME_LOADING');
+    if (dungeonId === 'fire') {
+      setCurrentScreen('FIRE_DUNGEON_LOADING'); // 불의 던전 전용 로딩
+    } else {
+      setCurrentScreen('GAME_LOADING'); // 그 외 기본 로딩
+    }
     setTimeout(() => setCurrentScreen('GAME_PVE'), 2000);
   };
 
