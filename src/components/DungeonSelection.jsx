@@ -11,9 +11,28 @@ export default function DungeonSelection({ onSelectDungeon, onBack }) {
       ></div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_20%,_#000000_100%)] pointer-events-none"></div>
 
-      {/* 💡 상단 돌담 헤더 (뒤로 가기 버튼 포함) */}
-      <div className="w-full flex flex-col items-center max-w-md relative z-10 mt-4">
-        <div className="w-full max-w-sm h-12 flex justify-between items-center relative z-10">
+      {/* 💡 상단 타이틀 이미지와 돌담 헤더 묶음 */}
+      <div className="w-full flex flex-col items-center max-w-md relative z-10 -mt-6">
+        
+        {/* 1. 던전셀렉트 타이틀 이미지 */}
+        <div className="w-full max-w-sm mt-0 mx-auto relative flex justify-center pointer-events-none">
+          <div 
+            className="w-full"
+            style={{ 
+              WebkitMaskImage: 'linear-gradient(to bottom, black 65%, transparent 100%)',
+              maskImage: 'linear-gradient(to bottom, black 65%, transparent 100%)'
+            }}
+          >
+            <img 
+              src="/dungeonselection-title.jpg" // 🚨 첨부해주신 확장자에 맞게(.jpg 또는 .png) 수정해주세요.
+              alt="Dungeon Selection Title" 
+              className="w-full h-auto object-contain drop-shadow-[0_0_20px_rgba(220,38,38,0.2)]"
+            />
+          </div>
+        </div>
+
+        {/* 2. 돌담 헤더 */}
+        <div className="w-full max-w-sm h-12 -mt-2 mb-6 flex justify-between items-center relative z-10">
           <div 
             className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
             style={{ 
@@ -34,11 +53,14 @@ export default function DungeonSelection({ onSelectDungeon, onBack }) {
             <img src="/My-icon.png" alt="Back" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
           </button>
           
-          <div className="text-xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500 drop-shadow-md">
-            DUNGEONS
-          </div>
-
-          <div className="w-8 px-2"></div> {/* 우측 여백 맞추기용 빈 공간 */}
+          {/* 오른쪽 로그아웃 버튼 */}
+          <button 
+            onClick={onLogout}
+            className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2 select-none"
+            style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+          >
+            <img src="/Logout-icon.png" alt="Logout" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
+          </button>
         </div>
       </div>
 
