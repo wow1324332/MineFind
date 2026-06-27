@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function DungeonSelection({ onSelectDungeon, onBack }) {
+export default function DungeonSelection({ onSelectDungeon, onBack, onLogout }) {
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-between bg-black text-white p-6 select-none">
       
