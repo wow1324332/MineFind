@@ -74,7 +74,7 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout }) 
           style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
         >
           <img 
-            src="/hellofflame.png" 
+            src="/hellofflame-bt.png" 
             alt="Hell of Flame" 
             className="w-full h-auto object-contain pointer-events-none" 
             draggable="false"
