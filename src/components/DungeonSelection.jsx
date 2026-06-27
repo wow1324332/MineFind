@@ -70,13 +70,15 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout }) 
         {/* 1. 불의 던전 버튼 */}
         <button
           onClick={() => onSelectDungeon('fire')}
-          className="w-full bg-neutral-950/80 border border-red-900/60 hover:border-red-500 rounded-xl p-6 text-center transition-all shadow-[0_0_15px_rgba(220,38,38,0.2)] active:scale-95 group"
+          className="w-full transition-all duration-200 hover:brightness-110 active:scale-[0.96] drop-shadow-[0_4px_15px_rgba(220,38,38,0.3)] select-none"
           style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
         >
-          <h2 className="text-2xl font-black tracking-widest text-red-500 group-hover:text-red-400">
-            불의 던전
-          </h2>
-          <p className="text-xs text-neutral-400 mt-2 font-medium">타오르는 지옥의 불길 정화</p>
+          <img 
+            src="/hellofflame.png" 
+            alt="Hell of Flame" 
+            className="w-full h-auto object-contain pointer-events-none" 
+            draggable="false"
+          />
         </button>
 
         {/* 2. 물의 던전 버튼 */}
