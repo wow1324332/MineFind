@@ -51,7 +51,7 @@ const SPLASH_CONFIG = {
   FIRE_DUNGEON_LOADING: {
     message: "불의 던전으로 강습 중...",
     logoSrc: "/huntlistloading-logo.png", 
-    bgSrc: "/hellofflameloading.jpg", 
+    bgSrc: "/hellofflameloading-bg.jpg", 
     bgOpacity: "opacity-90",
     disablePulse: true,
     useFadeIn: true
