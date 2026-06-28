@@ -41,8 +41,10 @@ export default function Board({ board, onCellClick, onCellRightClick, dungeon })
   };
 
   return (
+    // 💡 1. 굵은 테두리와 붉은/푸른 배경색을 모두 삭제했습니다.
+    // 💡 2. 'w-fit mx-auto'를 추가하여 지뢰판이 중앙에 완벽히 정렬되도록 수정했습니다.
     <div 
-      className={`grid gap-1 p-3 rounded-xl border-4 shadow-[inset_0_0_20px_rgba(0,0,0,1)] ${isFire ? 'bg-red-950 border-red-900/50' : 'bg-blue-950 border-blue-900/50'}`}
+      className="grid gap-1 w-fit mx-auto"
       style={{ gridTemplateColumns: `repeat(${GAME_CONFIG.COLS}, minmax(0, 1fr))` }}
     >
       {board.map((row, r) => (
