@@ -52,7 +52,7 @@ const SPLASH_CONFIG = {
     message: "불의 던전으로 강습 중...",
     logoSrc: "/huntlistloading-logo.png", 
     bgSrc: "/hellofflameloading-bg.jpg", 
-    bgOpacity: "opacity-90",
+    bgOpacity: "opacity-70",
     disablePulse: true,
     useFadeIn: true
   },
