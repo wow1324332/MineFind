@@ -10,9 +10,13 @@ export default function Board({ board, onCellClick, onCellRightClick, dungeon })
     // 뒤집힌 상태일 때 내용물 결정
     if (cell.isRevealed) {
       if (cell.isMine) {
-        // 🔥 불 지뢰 / 💧 물 지뢰 임시 분리
+        // 🔥 불 지뢰 / 💧 물 지뢰 분리
         return isFire 
-          ? <span className="drop-shadow-[0_0_8px_rgba(220,38,38,0.8)]">👿</span> 
+          ? <img 
+              src="/hellofflame-mine.png" 
+              alt="Devil Eye Mine" 
+              className="w-[85%] h-[85%] object-contain drop-shadow-[0_0_15px_rgba(220,38,38,1)] animate-pulse" 
+            />
           : <span className="drop-shadow-[0_0_8px_rgba(37,99,235,0.8)]">🦑</span>;
       }
       // 💡 숫자가 있던 자리는 배경 이미지(style)로 대체되므로, 내용물은 비워둡니다.
