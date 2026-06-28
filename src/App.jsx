@@ -210,14 +210,14 @@ export default function App() {
       
     case 'GAME_PVE':
       currentView = (
-        <div className="min-h-screen bg-neutral-950 flex flex-col items-center justify-center p-4 select-none touch-manipulation">
+        <div className="min-h-screen bg-neutral-950 flex flex-col items-center justify-start pt-0 px-4 pb-4 select-none touch-manipulation">
           
           {/* 💡 [추가] 게임 화면 최상단 타이틀 이미지 (벽돌 헤더 위쪽) */}
-          <div className="w-full max-w-sm flex justify-center mb-4 relative z-10 drop-shadow-[0_10px_15px_rgba(0,0,0,0.8)]">
+          <div className="w-full max-w-sm flex justify-center relative z-10 drop-shadow-[0_10px_15px_rgba(0,0,0,0.8)]">
             <img 
               src={currentDungeon === 'fire' ? "/hellofflame-title.jpg" : "/hellofaqua-title.jpg"} 
               alt="Dungeon Title" 
-              className="w-full object-contain"
+              className="w-full object-contain block"
               draggable="false"
             />
           </div>
@@ -245,17 +245,6 @@ export default function App() {
             >
               <img src="/My-icon.png" alt="Exit Portal" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
             </button>
-            
-            <div 
-              className="text-lg sm:text-xl font-black tracking-widest text-transparent bg-clip-text drop-shadow-md"
-              style={{ 
-                backgroundImage: currentDungeon === 'fire' 
-                  ? 'linear-gradient(to right, #ef4444, #f97316)' 
-                  : 'linear-gradient(to right, #3b82f6, #06b6d4)' 
-              }}
-            >
-              {currentDungeon === 'fire' ? 'HELL OF FLAME' : 'HELL OF AQUA'}
-            </div>
 
             <div className="w-8 px-2"></div>
           </div>
