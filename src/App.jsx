@@ -226,18 +226,49 @@ export default function App() {
     case 'GAME_PVE':
       currentView = (
         <div className="min-h-screen bg-neutral-950 flex flex-col items-center justify-center p-4 select-none touch-manipulation">
-          <div className="w-full max-w-full sm:max-w-md flex justify-between items-center mb-3 px-2 text-neutral-400 font-semibold relative z-10">
-            <span className="text-sm truncate mr-4">정화자: {user.email}</span>
-            <button 
-              onClick={() => setCurrentScreen('DUNGEON_SELECTION')} // 💡 포탈 이탈 시 로그아웃 대신 던전 선택 창으로 돌아가도록 수정
-              className="text-xs bg-neutral-900 border border-neutral-700 px-3 py-1.5 rounded-lg hover:bg-neutral-800 active:scale-95 transition-all text-neutral-300"
+          
+          {/* 💡 새롭게 적용된 벽돌 헤더 (아이디 삭제, 던전 선택으로 돌아가는 버튼 적용) */}
+          <div className="w-full max-w-sm h-12 flex justify-between items-center relative z-10 mb-4 mt-2">
+            
+            {/* 좌우로 꽉 차는 벽돌 배경 */}
+            <div 
+              className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
+              style={{ 
+                backgroundImage: "url('/header-bg.jpg')",
+                WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
+                maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)'
+              }}
             >
-              포탈 이탈
+              <div className="absolute inset-0 bg-black/40"></div>
+            </div>
+
+            {/* 왼쪽: 포탈 이탈 (던전 선택으로 돌아가기) 버튼 */}
+            <button 
+              onClick={() => setCurrentScreen('DUNGEON_SELECTION')}
+              className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2 select-none"
+              style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+            >
+              <img src="/My-icon.png" alt="Exit Portal" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
             </button>
+            
+            {/* 중앙 타이틀 (현재 플레이 중인 던전 이름 출력) */}
+            <div 
+              className="text-lg sm:text-xl font-black tracking-widest text-transparent bg-clip-text drop-shadow-md"
+              style={{ 
+                backgroundImage: currentDungeon === 'fire' 
+                  ? 'linear-gradient(to right, #ef4444, #f97316)' // 불의 던전은 붉은빛
+                  : 'linear-gradient(to right, #3b82f6, #06b6d4)' // 물의 던전은 푸른빛
+              }}
+            >
+              {currentDungeon === 'fire' ? 'HELL OF FLAME' : 'HELL OF AQUA'}
+            </div>
+
+            {/* 오른쪽: 가운데 정렬을 맞추기 위한 빈 공간 (원하시면 여기에 로그아웃 아이콘을 넣으셔도 됩니다) */}
+            <div className="w-8 px-2"></div>
           </div>
 
           <div className="bg-neutral-900/90 p-4 sm:p-6 rounded-2xl shadow-2xl max-w-full border border-neutral-800 relative z-10">
-            {/* 💡 하위 컴포넌트들에게 현재 던전(dungeon) 상태를 전달합니다! */}
+            {/* 하위 컴포넌트들에게 현재 던전(dungeon) 상태 전달 */}
             <Header minesLeft={minesLeft} gameStatus={gameStatus} timeElapsed={timeElapsed} onReset={initGame} dungeon={currentDungeon} />
             <Board board={board} onCellClick={handleCellClick} onCellRightClick={toggleFlag} dungeon={currentDungeon} />
             <Controls isFlagMode={isFlagMode} setIsFlagMode={setIsFlagMode} dungeon={currentDungeon} />
