@@ -169,6 +169,7 @@ export default function App() {
   };
 
   const handleSelectDungeon = (dungeonId) => {
+    initGame();
     setCurrentDungeon(dungeonId); 
     if (dungeonId === 'fire') {
       setCurrentScreen('FIRE_DUNGEON_LOADING');
