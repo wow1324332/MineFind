@@ -8,7 +8,7 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
 
   return (
     // 💡 1. 백틱과 따옴표 오류를 수정했습니다.
-    <div className={`relative flex justify-between items-center p-4 rounded-xl mb-6 border-2 shadow-[0_10px_20px_rgba(0,0,0,0.6)] overflow-hidden`}>
+    <div className={`relative flex justify-between items-center p-4 rounded-xl mb-6 shadow-[0_10px_20px_rgba(0,0,0,0.6)] overflow-hidden`}>
       
       {/* 돌담 배경 이미지 추가 */}
       <div 
