@@ -282,7 +282,8 @@ export default function App() {
                   <div className="flex w-full gap-3">
                     <button 
                       onClick={() => { 
-                        setShowExitPopup(false); 
+                        setShowExitPopup(false);
+                        initGame();
                         setCurrentScreen('DUNGEON_SELECTION'); 
                       }}
                       className="flex-1 bg-red-900/80 hover:bg-red-800 text-red-100 py-3 rounded-lg font-bold transition-all border border-red-700/50 active:scale-95"
