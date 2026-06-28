@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useMinesweeper } from './hooks/useMinesweeper';
 import Header from './components/Header';
 import Board from './components/Board';
-import Controls from './components/Controls';
 import LoginModal from './components/LoginModal';
 import SplashScreen from './components/SplashScreen';
 import HuntList from './components/HuntList';
@@ -254,7 +253,6 @@ export default function App() {
           <div className="bg-neutral-900/90 p-4 sm:p-6 rounded-2xl shadow-2xl max-w-full border border-neutral-800 relative z-10">
             <Header minesLeft={minesLeft} gameStatus={gameStatus} timeElapsed={timeElapsed} onReset={initGame} dungeon={currentDungeon} />
             <Board board={board} onCellClick={handleCellClick} onCellRightClick={toggleFlag} dungeon={currentDungeon} />
-            <Controls isFlagMode={isFlagMode} setIsFlagMode={setIsFlagMode} dungeon={currentDungeon} />
             
             {(gameStatus === 'won' || gameStatus === 'lost') && (
               <div className="mt-6 text-center font-black text-xl animate-bounce">
