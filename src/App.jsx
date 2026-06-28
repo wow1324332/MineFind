@@ -220,6 +220,7 @@ export default function App() {
               className="w-full object-contain block"
               draggable="false"
             />
+            <div className="absolute bottom-0 w-full h-8 bg-gradient-to-t from-black to-transparent"></div>
           </div>
 
           {/* 벽돌 헤더 영역 */}
