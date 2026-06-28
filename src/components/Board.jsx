@@ -42,7 +42,7 @@ export default function Board({ board, onCellClick, onCellRightClick, dungeon })
 
   return (
     <div 
-      className="grid gap-1 w-fit mx-auto"
+      className="grid gap-[2px] w-fit mx-auto"
       style={{ gridTemplateColumns: `repeat(${GAME_CONFIG.COLS}, minmax(0, 1fr))` }}
     >
       {board.map((row, r) => (
