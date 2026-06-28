@@ -4,7 +4,6 @@ import { GAME_CONFIG } from '../utils/gameLogic';
 
 export default function Board({ board, onCellClick, onCellRightClick, dungeon }) {
   
-  // 💡 던전 종류 확인용 스위치
   const isFire = dungeon === 'fire';
 
   const renderCellContent = (cell) => {
@@ -32,17 +31,21 @@ export default function Board({ board, onCellClick, onCellRightClick, dungeon })
       return '';
     }
     if (cell.isFlagged) {
-      // 🔥 불 봉인석 / 💧 물 봉인석 임시 분리
-      return isFire 
-        ? <span className="drop-shadow-[0_0_5px_rgba(220,38,38,0.8)] text-xl">♦️</span>
-        : <span className="drop-shadow-[0_0_5px_rgba(56,189,248,0.8)] text-xl">💠</span>;
+      // 💡 깃발(이모지) 대신 성스러운 방패(holyshield.png) 이미지 출력
+      return (
+        <img 
+          src="/holyshield-icon.png" 
+          alt="Holy Shield Flag" 
+          className="w-4/5 h-4/5 object-contain drop-shadow-[0_0_10px_rgba(250,204,21,0.8)] animate-pulse" 
+        />
+      );
     }
     return '';
   };
 
   return (
     <div 
-      className="grid gap-[1px] w-fit mx-auto"
+      className="grid gap-0 w-fit mx-auto"
       style={{ gridTemplateColumns: `repeat(${GAME_CONFIG.COLS}, minmax(0, 1fr))` }}
     >
       {board.map((row, r) => (
@@ -55,12 +58,11 @@ export default function Board({ board, onCellClick, onCellRightClick, dungeon })
               w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-xl sm:text-2xl cursor-pointer rounded-sm transition-all duration-150 select-none bg-cover bg-center
               ${cell.isRevealed 
                 ? `bg-neutral-900 border-t border-l border-neutral-950 border-b border-r border-neutral-700 shadow-[inset_0_0_15px_rgba(0,0,0,0.9)]` 
-                : `hover:brightness-125 hover:scale-105 shadow-[0_4px_6px_rgba(0,0,0,0.6)]` // 💡 오픈 전 블럭: 기존 테두리/색상 지우고 클릭 유도 효과만 남김
+                : `hover:brightness-125 hover:scale-105 shadow-[0_4px_6px_rgba(0,0,0,0.6)]`
               }
               ${cell.isRevealed && cell.isMine ? (isFire ? 'bg-red-950/80 shadow-[inset_0_0_20px_rgba(220,38,38,0.8)]' : 'bg-blue-950/80 shadow-[inset_0_0_20px_rgba(37,99,235,0.8)]') : ''}
             `}
             style={{
-              // 💡 오픈되지 않은 블럭에만 커스텀 타일 이미지를 배경으로 삽입
               backgroundImage: !cell.isRevealed 
                 ? (isFire ? "url('/hellofflame-tile.png')" : "url('/hellofaqua-tile.png')") 
                 : 'none'
