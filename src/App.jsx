@@ -289,6 +289,71 @@ export default function App() {
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
                 <div className="bg-neutral-950 border border-neutral-700 p-6 rounded-2xl shadow-[0_0_30px_rgba(0,0,0,1)] max-w-xs w-full text-center flex flex-col items-center">
                   <h3 className="text-xl font-bold text-red-500 mb-4 drop-shadow-md">포탈 이탈</h3>
+    case 'GAME_PVE':
+      currentView = (
+        <div className="min-h-screen bg-neutral-950 flex flex-col items-center justify-center p-4 select-none touch-manipulation">
+          
+          <div className="w-full max-w-sm h-12 flex justify-between items-center relative z-10 mb-4 mt-2">
+            <div 
+              className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
+              style={{ 
+                backgroundImage: "url('/header-bg.jpg')",
+                WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
+                maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)'
+              }}
+            >
+              <div className="absolute inset-0 bg-black/40"></div>
+            </div>
+
+            <button 
+              onClick={() => {
+                setShowExitPopup(true);
+                pauseTimer();
+              }}
+              className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2 select-none"
+              style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+            >
+              <img src="/My-icon.png" alt="Exit Portal" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
+            </button>
+            
+            <div 
+              className="text-lg sm:text-xl font-black tracking-widest text-transparent bg-clip-text drop-shadow-md"
+              style={{ 
+                backgroundImage: currentDungeon === 'fire' 
+                  ? 'linear-gradient(to right, #ef4444, #f97316)' 
+                  : 'linear-gradient(to right, #3b82f6, #06b6d4)' 
+              }}
+            >
+              {currentDungeon === 'fire' ? 'HELL OF FLAME' : 'HELL OF AQUA'}
+            </div>
+
+            <div className="w-8 px-2"></div>
+          </div>
+
+          <div className="bg-neutral-900/90 p-4 sm:p-6 rounded-2xl shadow-2xl max-w-full border border-neutral-800 relative z-10">
+            <Header minesLeft={minesLeft} gameStatus={gameStatus} timeElapsed={timeElapsed} onReset={initGame} dungeon={currentDungeon} />
+            <Board board={board} onCellClick={handleCellClick} onCellRightClick={toggleFlag} dungeon={currentDungeon} />
+            <Controls isFlagMode={isFlagMode} setIsFlagMode={setIsFlagMode} dungeon={currentDungeon} />
+            
+            {(gameStatus === 'won' || gameStatus === 'lost') && (
+              <div className="mt-6 text-center font-black text-xl animate-bounce">
+                {gameStatus === 'won' ? (
+                  <span className={currentDungeon === 'fire' ? "text-red-400 drop-shadow-[0_0_10px_rgba(239,68,68,0.8)]" : "text-blue-400 drop-shadow-[0_0_10px_rgba(56,189,248,0.8)]"}>
+                    🎉 던전을 완벽히 정화했습니다! 🎉
+                  </span>
+                ) : (
+                  <span className="text-red-600 drop-shadow-[0_0_10px_rgba(220,38,38,1)]">
+                    💥 악마의 정수와 접촉했습니다! 💥
+                  </span>
+                )}
+              </div>
+            )}
+
+            {/* 포탈 이탈 경고 팝업 (주석 제거로 에러 방지) */}
+            {showExitPopup && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+                <div className="bg-neutral-950 border border-neutral-700 p-6 rounded-2xl shadow-[0_0_30px_rgba(0,0,0,1)] max-w-xs w-full text-center flex flex-col items-center">
+                  <h3 className="text-xl font-bold text-red-500 mb-4 drop-shadow-md">포탈 이탈</h3>
                   <p className="text-neutral-300 text-sm mb-8 leading-relaxed">
                     정말 나가시겠습니까?<br/>
                     게임 플레이 기록이 <span className="text-red-400 font-bold">저장되지 않습니다</span>.
@@ -304,7 +369,10 @@ export default function App() {
                       확인
                     </button>
                     <button 
-                      onClick={() => setShowExitPopup(false)}
+                      onClick={() => {
+                        setShowExitPopup(false);
+                        resumeTimer();
+                      }}
                       className="flex-1 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 py-3 rounded-lg font-bold transition-all border border-neutral-600 active:scale-95"
                     >
                       취소
@@ -315,14 +383,10 @@ export default function App() {
             )}
             
           </div>
-
-                
-              </div>
-            )}
-          </div>
         </div>
       );
       break;
+
     
     default:
       currentView = null;
