@@ -7,7 +7,7 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
   const panelColor = isFire ? "text-red-600 shadow-[inset_0_0_12px_rgba(220,38,38,0.25)]" : "text-blue-500 shadow-[inset_0_0_12px_rgba(56,189,248,0.25)]";
 
   return (
-    <div className={`relative flex justify-between items-center p-4 rounded-xl mb-6 border-2 shadow-[0_10px_20px_rgba(0,0,0,0.6)] overflow-hidden ${isFire ? 'border-red-900/60' : 'border-blue-900/60'}`}>
+    <div className={`relative flex justify-between items-center p-4 rounded-xl mb-6 border-2 shadow-[0_10px_20px_rgba(0,0,0,0.6)] overflow-hidden >
       
       {/* 💡 돌담 배경 이미지 추가 (Header 영역에 꽉 차게) */}
       <div 
