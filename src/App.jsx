@@ -210,7 +210,7 @@ export default function App() {
       
     case 'GAME_PVE':
       currentView = (
-        <div className="min-h-screen bg-neutral-950 flex flex-col items-center justify-start pt-0 px-4 pb-4 select-none touch-manipulation">
+        <div className="min-h-screen bg-black flex flex-col items-center justify-start pt-0 px-4 pb-4 select-none touch-manipulation">
           
           {/* 💡 [추가] 게임 화면 최상단 타이틀 이미지 (벽돌 헤더 위쪽) */}
           <div className="w-full max-w-sm flex justify-center relative z-10 drop-shadow-[0_10px_15px_rgba(0,0,0,0.8)]">
