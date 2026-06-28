@@ -48,7 +48,15 @@ export default function Board({ board, onCellClick, onCellRightClick, dungeon })
               ${cell.isRevealed 
                 ? (cell.isMine 
                     ? `bg-neutral-900 border-t border-l border-neutral-950 border-b border-r border-neutral-700 shadow-[inset_0_0_15px_rgba(0,0,0,0.9)] ${isFire ? 'bg-red-950/80 shadow-[inset_0_0_20px_rgba(220,38,38,0.8)]' : 'bg-blue-950/80 shadow-[inset_0_0_20px_rgba(37,99,235,0.8)]'}` 
-                    : '') 
+                    // ✨ 추가된 부분: 지뢰가 아닌 보석 칸일 경우 숫자에 맞춰 내부(inset) 발광 효과 부여
+                    : (cell.neighborMines === 1 ? 'shadow-[inset_0_0_25px_rgba(220,38,38,0.5)]' :
+                       cell.neighborMines === 2 ? 'shadow-[inset_0_0_25px_rgba(59,130,246,0.5)]' :
+                       cell.neighborMines === 3 ? 'shadow-[inset_0_0_25px_rgba(234,179,8,0.5)]' :
+                       cell.neighborMines === 4 ? 'shadow-[inset_0_0_25px_rgba(34,197,94,0.5)]' :
+                       cell.neighborMines === 5 ? 'shadow-[inset_0_0_25px_rgba(168,85,247,0.5)]' :
+                       // 0번 타일(빈 칸)은 빛나지 않고 은은하게 어두운 그림자만 남김
+                       'shadow-[inset_0_0_10px_rgba(0,0,0,0.5)]')
+                  ) 
                 : 'hover:brightness-125 hover:scale-105 shadow-[0_4px_6px_rgba(0,0,0,0.6)]'
               }
             `}
