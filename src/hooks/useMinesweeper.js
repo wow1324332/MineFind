@@ -32,6 +32,19 @@ export const useMinesweeper = () => {
     }
   };
 
+  // 💡 [추가] 팝업이 떴을 때 타이머를 잠시 멈추는 함수
+  const pauseTimer = useCallback(() => {
+    clearInterval(timerRef.current);
+    timerRef.current = null;
+  }, []);
+
+  // 💡 [추가] 팝업을 취소하고 다시 게임으로 돌아갈 때 타이머를 살리는 함수
+  const resumeTimer = useCallback(() => {
+    if (gameStatus === 'playing' && !timerRef.current) {
+      timerRef.current = setInterval(() => setTimeElapsed(prev => prev + 1), 1000);
+    }
+  }, [gameStatus]);
+
   const handleGameOver = (currentBoard) => {
     setGameStatus('lost');
     clearInterval(timerRef.current);
@@ -88,6 +101,7 @@ export const useMinesweeper = () => {
 
   return {
     board, gameStatus, minesLeft, timeElapsed, isFlagMode,
-    setIsFlagMode, initGame, handleCellClick, toggleFlag
+    setIsFlagMode, initGame, handleCellClick, toggleFlag,
+    pauseTimer, resumeTimer // 💡 [추가] 새로 만든 두 함수를 밖으로 꺼내줍니다.
   };
 };
