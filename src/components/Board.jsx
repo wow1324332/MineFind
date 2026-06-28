@@ -55,7 +55,7 @@ export default function Board({ board, onCellClick, onCellRightClick, dungeon })
             style={{
               backgroundImage: !cell.isRevealed 
                 ? (isFire ? "url('/hellofflame-tile.png')" : "url('/hellofaqua-tile.png')") 
-                : (cell.isMine ? 'none' : `url('/tile${cell.neighborMines}.jpg')`)
+                : (cell.isMine ? 'none' : `url('/tile${cell.neighborMines}.png')`)
             }}
           >
             {renderCellContent(cell)}
