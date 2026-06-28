@@ -250,7 +250,10 @@ export default function App() {
           </div>
 
           {/* 게임 보드 영역 */}
-          <div className="bg-neutral-900/90 p-4 sm:p-6 rounded-2xl shadow-2xl max-w-full border border-neutral-800 relative z-10">
+          <div 
+            className="p-4 sm:p-6 rounded-2xl shadow-2xl max-w-full border border-neutral-800 relative z-10 bg-cover bg-center"
+            style={{ backgroundImage: "url('/hellofflameloading-bg.jpg')" }}
+          >
             <Header minesLeft={minesLeft} gameStatus={gameStatus} timeElapsed={timeElapsed} onReset={initGame} dungeon={currentDungeon} />
             <Board board={board} onCellClick={handleCellClick} onCellRightClick={toggleFlag} dungeon={currentDungeon} />
             
