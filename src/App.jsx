@@ -212,8 +212,18 @@ export default function App() {
       currentView = (
         <div className="min-h-screen bg-neutral-950 flex flex-col items-center justify-center p-4 select-none touch-manipulation">
           
+          {/* 💡 [추가] 게임 화면 최상단 타이틀 이미지 (벽돌 헤더 위쪽) */}
+          <div className="w-full max-w-sm flex justify-center mb-4 relative z-10 drop-shadow-[0_10px_15px_rgba(0,0,0,0.8)]">
+            <img 
+              src={currentDungeon === 'fire' ? "/hellofflame-title.jpg" : "/hellofaqua-title.jpg"} 
+              alt="Dungeon Title" 
+              className="w-full object-contain"
+              draggable="false"
+            />
+          </div>
+
           {/* 벽돌 헤더 영역 */}
-          <div className="w-full max-w-sm h-12 flex justify-between items-center relative z-10 mb-4 mt-2">
+          <div className="w-full max-w-sm h-12 flex justify-between items-center relative z-10 mb-4">
             <div 
               className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
               style={{ 
@@ -282,7 +292,7 @@ export default function App() {
                   <div className="flex w-full gap-3">
                     <button 
                       onClick={() => { 
-                        setShowExitPopup(false);
+                        setShowExitPopup(false); 
                         initGame();
                         setCurrentScreen('DUNGEON_SELECTION'); 
                       }}
@@ -307,7 +317,7 @@ export default function App() {
           </div>
         </div>
       );
-      break;
+      break; 
     
     default:
       currentView = null;
