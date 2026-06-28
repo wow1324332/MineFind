@@ -10,7 +10,7 @@ export default function Board({ board, onCellClick, onCellRightClick, dungeon })
   const renderCellContent = (cell) => {
     if (cell.isRevealed) {
       if (cell.isMine) {
-        // 🔥 불 지뢰 / 💧 물 지뢰 임시 분리 (나중에 이미지 태그로 변경 예정)
+        // 🔥 불 지뢰 / 💧 물 지뢰 임시 분리
         return isFire 
           ? <span className="drop-shadow-[0_0_8px_rgba(220,38,38,0.8)]">👿</span> 
           : <span className="drop-shadow-[0_0_8px_rgba(37,99,235,0.8)]">🦑</span>;
@@ -41,8 +41,6 @@ export default function Board({ board, onCellClick, onCellRightClick, dungeon })
   };
 
   return (
-    // 💡 1. 굵은 테두리와 붉은/푸른 배경색을 모두 삭제했습니다.
-    // 💡 2. 'w-fit mx-auto'를 추가하여 지뢰판이 중앙에 완벽히 정렬되도록 수정했습니다.
     <div 
       className="grid gap-1 w-fit mx-auto"
       style={{ gridTemplateColumns: `repeat(${GAME_CONFIG.COLS}, minmax(0, 1fr))` }}
@@ -54,13 +52,19 @@ export default function Board({ board, onCellClick, onCellRightClick, dungeon })
             onClick={() => onCellClick(r, c)}
             onContextMenu={(e) => { e.preventDefault(); onCellRightClick(r, c); }}
             className={`
-              w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-xl sm:text-2xl cursor-pointer rounded-sm transition-colors duration-150 select-none
+              w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-xl sm:text-2xl cursor-pointer rounded-sm transition-all duration-150 select-none bg-cover bg-center
               ${cell.isRevealed 
                 ? `bg-neutral-900 border-t border-l border-neutral-950 border-b border-r border-neutral-700 shadow-[inset_0_0_15px_rgba(0,0,0,0.9)]` 
-                : `${isFire ? 'bg-red-900/30 border-red-800/40' : 'bg-blue-900/30 border-blue-800/40'} border-t-2 border-l-2 border-b-2 border-r-2 hover:brightness-125 shadow-[0_2px_4px_rgba(0,0,0,0.8)]`
+                : `hover:brightness-125 hover:scale-105 shadow-[0_4px_6px_rgba(0,0,0,0.6)]` // 💡 오픈 전 블럭: 기존 테두리/색상 지우고 클릭 유도 효과만 남김
               }
               ${cell.isRevealed && cell.isMine ? (isFire ? 'bg-red-950/80 shadow-[inset_0_0_20px_rgba(220,38,38,0.8)]' : 'bg-blue-950/80 shadow-[inset_0_0_20px_rgba(37,99,235,0.8)]') : ''}
             `}
+            style={{
+              // 💡 오픈되지 않은 블럭에만 커스텀 타일 이미지를 배경으로 삽입
+              backgroundImage: !cell.isRevealed 
+                ? (isFire ? "url('/hellofflame-tile.png')" : "url('/hellofaqua-tile.png')") 
+                : 'none'
+            }}
           >
             {renderCellContent(cell)}
           </div>
