@@ -23,7 +23,7 @@ export default function Board({ board, onCellClick, onCellRightClick, dungeon })
       // 💡 깃발 대신 성스러운 방패(holyshield.png) 이미지 출력
       return (
         <img 
-          src="/holyshield.png" 
+          src="/holyshield-icon.png" 
           alt="Holy Shield Flag" 
           className="w-4/5 h-4/5 object-contain drop-shadow-[0_0_10px_rgba(250,204,21,0.8)] animate-pulse" 
         />
