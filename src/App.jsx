@@ -82,7 +82,8 @@ export default function App() {
   const [currentScreen, setCurrentScreen] = useState('HUNT_LIST_LOADING');
   
   // 💡 [추가] 현재 진입한 던전이 무엇인지 기억하는 상태!
-  const [currentDungeon, setCurrentDungeon] = useState('fire'); 
+  const [currentDungeon, setCurrentDungeon] = useState('fire');
+  const [showExitPopup, setShowExitPopup] = useState(false);
 
   const startupLoggedOut = useRef(false);
 
@@ -244,7 +245,7 @@ export default function App() {
 
             {/* 왼쪽: 포탈 이탈 (던전 선택으로 돌아가기) 버튼 */}
             <button 
-              onClick={() => setCurrentScreen('DUNGEON_SELECTION')}
+              onClick={() => setShowExitPopup(true)} // 💡 바로 이동하지 않고 팝업 스위치를 켭니다!
               className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2 select-none"
               style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
             >
@@ -284,6 +285,38 @@ export default function App() {
                     💥 악마의 정수와 접촉했습니다! 💥
                   </span>
                 )}
+            {showExitPopup && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+                <div className="bg-neutral-950 border border-neutral-700 p-6 rounded-2xl shadow-[0_0_30px_rgba(0,0,0,1)] max-w-xs w-full text-center flex flex-col items-center">
+                  <h3 className="text-xl font-bold text-red-500 mb-4 drop-shadow-md">포탈 이탈</h3>
+                  <p className="text-neutral-300 text-sm mb-8 leading-relaxed">
+                    정말 나가시겠습니까?<br/>
+                    게임 플레이 기록이 <span className="text-red-400 font-bold">저장되지 않습니다</span>.
+                  </p>
+                  <div className="flex w-full gap-3">
+                    <button 
+                      onClick={() => { 
+                        setShowExitPopup(false); 
+                        setCurrentScreen('DUNGEON_SELECTION'); 
+                      }}
+                      className="flex-1 bg-red-900/80 hover:bg-red-800 text-red-100 py-3 rounded-lg font-bold transition-all border border-red-700/50 active:scale-95"
+                    >
+                      확인
+                    </button>
+                    <button 
+                      onClick={() => setShowExitPopup(false)}
+                      className="flex-1 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 py-3 rounded-lg font-bold transition-all border border-neutral-600 active:scale-95"
+                    >
+                      취소
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+          </div>
+
+                
               </div>
             )}
           </div>
