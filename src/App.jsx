@@ -261,17 +261,62 @@ export default function App() {
             <Header minesLeft={minesLeft} gameStatus={gameStatus} timeElapsed={timeElapsed} onReset={() => initGame()} dungeon={currentDungeon} />
             <Board board={board} onCellClick={handleCellClick} onCellRightClick={toggleFlag} dungeon={currentDungeon} />
             
-            {(gameStatus === 'won' || gameStatus === 'lost') && (
-              <div className="mt-6 text-center font-black text-xl animate-bounce">
-                {gameStatus === 'won' ? (
-                  <span className={currentDungeon === 'fire' ? "text-red-400 drop-shadow-[0_0_10px_rgba(239,68,68,0.8)]" : "text-blue-400 drop-shadow-[0_0_10px_rgba(56,189,248,0.8)]"}>
-                    🎉 던전을 완벽히 정화했습니다! 🎉
-                  </span>
-                ) : (
-                  <span className="text-red-600 drop-shadow-[0_0_10px_rgba(220,38,38,1)]">
-                    💥 악마의 정수와 접촉했습니다! 💥
-                  </span>
-                )}
+            {/* 💡 기존 승리/패배 텍스트 부분을 아래 코드로 완전히 교체합니다! */}
+            
+            {/* 1. 승리했을 때의 화면 (기존 텍스트 유지) */}
+            {gameStatus === 'won' && (
+              <div className="mt-6 text-center font-black text-xl animate-bounce relative z-10">
+                <span className={currentDungeon === 'fire' ? "text-red-400 drop-shadow-[0_0_10px_rgba(239,68,68,0.8)]" : "text-blue-400 drop-shadow-[0_0_10px_rgba(56,189,248,0.8)]"}>
+                  🎉 던전을 완벽히 정화했습니다! 🎉
+                </span>
+              </div>
+            )}
+
+            {/* 2. 패배(Lose)했을 때 스르륵 나타나는 풀스크린 오버레이 */}
+            {gameStatus === 'lost' && (
+              <div 
+                className="fixed inset-0 z-[100] flex flex-col justify-end pb-8"
+                style={{ 
+                  // 💡 던전에 따라 패배 배경 이미지를 다르게 불러옵니다. (물의 던전용 이미지는 나중에 'hellofaqualose-bg.jpg'로 넣으시면 됩니다)
+                  backgroundImage: `url(${currentDungeon === 'fire' ? '/hellofflamelose-bg.jpg' : '/hellofaqualose-bg.jpg'})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  animation: 'fadeInOverlay 1.5s ease-in-out forwards' // 1.5초 동안 스르륵 나타남
+                }}
+              >
+                {/* 페이드인 애니메이션용 CSS */}
+                <style>{`
+                  @keyframes fadeInOverlay {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                  }
+                `}</style>
+                
+                {/* 하단 버튼 영역 (버튼이 잘 눌리도록 z-index 부여) */}
+                <div className="flex justify-center gap-4 px-6 mb-4 w-full max-w-md mx-auto relative z-10">
+                  
+                  {/* Back 버튼: 던전 선택 화면으로 이동 */}
+                  <button 
+                    onClick={() => {
+                      initGame(); // 보드 초기화
+                      setCurrentScreen('DUNGEON_SELECTION');
+                    }}
+                    className="flex-1 bg-neutral-900/80 hover:bg-neutral-800 border border-neutral-700 text-neutral-300 py-4 rounded-xl font-bold text-lg tracking-wider backdrop-blur-sm active:scale-95 transition-all shadow-[0_4px_15px_rgba(0,0,0,0.8)]"
+                  >
+                    Back
+                  </button>
+                  
+                  {/* Replay 버튼: 동일 난이도로 즉시 재시작 */}
+                  <button 
+                    onClick={() => initGame()} // 💡 이전 단계에서 initGame이 난이도를 기억하도록 수정했으므로, 이것만 호출해도 같은 난이도로 재시작됩니다!
+                    className="flex-1 bg-red-950/80 hover:bg-red-900 border border-red-800 text-red-200 py-4 rounded-xl font-bold text-lg tracking-wider backdrop-blur-sm active:scale-95 transition-all shadow-[0_4px_15px_rgba(220,38,38,0.5)]"
+                  >
+                    Replay
+                  </button>
+                </div>
+                
+                {/* 하단 어두운 그라데이션 (버튼 가독성을 위해 추가) */}
+                <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent pointer-events-none"></div>
               </div>
             )}
 
