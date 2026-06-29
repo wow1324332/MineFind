@@ -264,11 +264,69 @@ export default function App() {
             {/* 💡 기존 승리/패배 텍스트 부분을 아래 코드로 완전히 교체합니다! */}
             
             {/* 1. 승리했을 때의 화면 (기존 텍스트 유지) */}
+            {/* 1. 승리(Won)했을 때 스르륵 나타나는 풀스크린 오버레이 */}
             {gameStatus === 'won' && (
-              <div className="mt-6 text-center font-black text-xl animate-bounce relative z-10">
-                <span className={currentDungeon === 'fire' ? "text-red-400 drop-shadow-[0_0_10px_rgba(239,68,68,0.8)]" : "text-blue-400 drop-shadow-[0_0_10px_rgba(56,189,248,0.8)]"}>
-                  🎉 던전을 완벽히 정화했습니다! 🎉
-                </span>
+              <div 
+                className="fixed inset-0 z-[100] flex flex-col justify-end pb-8"
+                style={{ 
+                  // 💡 불의 던전 승리 배경 / 물의 던전 승리 배경 분기
+                  backgroundImage: `url(${currentDungeon === 'fire' ? '/hellofflamewin.jpeg' : '/hellofaquawin.jpeg'})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  animation: 'fadeInOverlay 1.0s cubic-bezier(0.25, 1, 0.5, 1) forwards'
+                }}
+              >
+                {/* 페이드인 애니메이션용 CSS (패배 화면과 동일) */}
+                <style>{`
+                  @keyframes fadeInOverlay {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                  }
+                `}</style>
+                
+                {/* 💡 화면을 어둡게 가려주는 암전 레이어 */}
+                {/* 패배 화면(75)보다 배경의 황금빛이 잘 보이도록 40~50 정도로 옅게 설정했습니다. 원하시면 수정 가능합니다! */}
+                <div className="absolute inset-0 bg-black/50 pointer-events-none z-0"></div>
+                
+                {/* 하단 버튼 영역 (이미지 버튼) */}
+                <div className="flex justify-center items-center gap-4 px-6 mb-8 w-full max-w-md mx-auto relative z-10">
+                  
+                  {/* Back 버튼 */}
+                  <button 
+                    onClick={() => {
+                      initGame();
+                      setCurrentScreen('DUNGEON_SELECTION');
+                    }}
+                    className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)] select-none"
+                    style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+                  >
+                    <img 
+                      src="/back.png" 
+                      alt="Back to Dungeon Selection" 
+                      className="w-full h-auto object-contain pointer-events-none"
+                      draggable="false"
+                    />
+                  </button>
+                  
+                  {/* Replay 버튼 */}
+                  <button 
+                    onClick={() => initGame()}
+                    // 💡 디테일: 승리 화면의 성스러운 분위기에 맞춰 그림자를 붉은색 대신 황금빛(rgba(234,179,8,0.4))으로 변경했습니다!
+                    className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(234,179,8,0.4)] select-none"
+                    style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+                  >
+                    <img 
+                      src="/replay.png" 
+                      alt="Replay Game" 
+                      className="w-full h-auto object-contain pointer-events-none"
+                      draggable="false"
+                    />
+                  </button>
+                  
+                </div>
+                
+                {/* 하단 어두운 그라데이션 */}
+                <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent pointer-events-none z-0"></div>
               </div>
             )}
 
