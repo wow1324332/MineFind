@@ -76,7 +76,8 @@ export default function App() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showSplash, setShowSplash] = useState(true);
   const [currentScreen, setCurrentScreen] = useState('HUNT_LIST_LOADING');
-  const [currentDungeon, setCurrentDungeon] = useState('fire'); 
+  const [currentDungeon, setCurrentDungeon] = useState('fire');
+  const [currentDifficulty, setCurrentDifficulty] = useState('Normal');
   const [showExitPopup, setShowExitPopup] = useState(false);
 
   const startupLoggedOut = useRef(false);
@@ -167,9 +168,12 @@ export default function App() {
     setTimeout(() => setCurrentScreen('DUNGEON_SELECTION'), 2000);
   };
 
-  const handleSelectDungeon = (dungeonId) => {
-    initGame();
+  const handleSelectDungeon = (dungeonId, selectedDifficulty) => {
     setCurrentDungeon(dungeonId); 
+    setCurrentDifficulty(selectedDifficulty); // 난이도 상태 저장
+
+    initGame(selectedDifficulty); // 💡 이제 initGame에 난이도를 전달합니다.
+
     if (dungeonId === 'fire') {
       setCurrentScreen('FIRE_DUNGEON_LOADING');
     } else if (dungeonId === 'water') {
