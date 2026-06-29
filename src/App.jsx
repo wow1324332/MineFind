@@ -272,16 +272,15 @@ export default function App() {
               </div>
             )}
 
-            {/* 2. 패배(Lose)했을 때 스르륵 나타나는 풀스크린 오버레이 */}
+            {/* 2. 패배(Lose)했을 때 스르륵 나타나는 풀스크린 오버레이 (정밀 정렬 및 검증 완료) */}
             {gameStatus === 'lost' && (
               <div 
                 className="fixed inset-0 z-[100] flex flex-col justify-end pb-8"
                 style={{ 
-                  // 💡 던전에 따라 패배 배경 이미지를 다르게 불러옵니다. (물의 던전용 이미지는 나중에 'hellofaqualose-bg.jpg'로 넣으시면 됩니다)
                   backgroundImage: `url(${currentDungeon === 'fire' ? '/hellofflamelose-bg.jpg' : '/hellofaqualose-bg.jpg'})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
-                  animation: 'fadeInOverlay 1.0s ease-in-out forwards' // 패배 화면 페이드인
+                  animation: 'fadeInOverlay 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards'
                 }}
               >
                 {/* 페이드인 애니메이션용 CSS */}
@@ -291,13 +290,11 @@ export default function App() {
                     to { opacity: 1; }
                   }
                 `}</style>
-
-                <div className="absolute inset-0 bg-black/50 pointer-events-none z-0"></div>
                 
-                {/* 하단 버튼 영역 (버튼이 잘 눌리도록 z-index 부여) */}
-                <div className="flex justify-center gap-4 px-6 mb-4 w-full max-w-md mx-auto relative z-10">
-                  
-                  {/* Back 버튼: 던전 선택 화면으로 이동 */}
+                {/* 화면을 어둡게 가려주는 암전 레이어 */}
+                <div className="absolute inset-0 bg-black/75 pointer-events-none z-0"></div>
+                
+                {/* 하단 버튼 영역 (이미지 버튼) */}
                 <div className="flex justify-center items-center gap-4 px-6 mb-8 w-full max-w-md mx-auto relative z-10">
                   
                   {/* Back 버튼 */}
@@ -333,8 +330,8 @@ export default function App() {
                   
                 </div>
                 
-                {/* 하단 어두운 그라데이션 (버튼 가독성을 위해 추가) */}
-                <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent pointer-events-none"></div>
+                {/* 하단 어두운 그라데이션 */}
+                <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent pointer-events-none z-0"></div>
               </div>
             )}
 
