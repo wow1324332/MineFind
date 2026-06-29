@@ -298,23 +298,39 @@ export default function App() {
                 <div className="flex justify-center gap-4 px-6 mb-4 w-full max-w-md mx-auto relative z-10">
                   
                   {/* Back 버튼: 던전 선택 화면으로 이동 */}
+                <div className="flex justify-center items-center gap-4 px-6 mb-8 w-full max-w-md mx-auto relative z-10">
+                  
+                  {/* Back 버튼 */}
                   <button 
                     onClick={() => {
-                      initGame(); // 보드 초기화
+                      initGame();
                       setCurrentScreen('DUNGEON_SELECTION');
                     }}
-                    className="flex-1 bg-neutral-900/80 hover:bg-neutral-800 border border-neutral-700 text-neutral-300 py-4 rounded-xl font-bold text-lg tracking-wider backdrop-blur-sm active:scale-95 transition-all shadow-[0_4px_15px_rgba(0,0,0,0.8)]"
+                    className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)] select-none"
+                    style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
                   >
-                    Back
+                    <img 
+                      src="/back.png" 
+                      alt="Back to Dungeon Selection" 
+                      className="w-full h-auto object-contain pointer-events-none"
+                      draggable="false"
+                    />
                   </button>
                   
-                  {/* Replay 버튼: 동일 난이도로 즉시 재시작 */}
+                  {/* Replay 버튼 */}
                   <button 
-                    onClick={() => initGame()} // 💡 이전 단계에서 initGame이 난이도를 기억하도록 수정했으므로, 이것만 호출해도 같은 난이도로 재시작됩니다!
-                    className="flex-1 bg-red-950/80 hover:bg-red-900 border border-red-800 text-red-200 py-4 rounded-xl font-bold text-lg tracking-wider backdrop-blur-sm active:scale-95 transition-all shadow-[0_4px_15px_rgba(220,38,38,0.5)]"
+                    onClick={() => initGame()}
+                    className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(220,38,38,0.3)] select-none"
+                    style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
                   >
-                    Replay
+                    <img 
+                      src="/replay.png" 
+                      alt="Replay Game" 
+                      className="w-full h-auto object-contain pointer-events-none"
+                      draggable="false"
+                    />
                   </button>
+                  
                 </div>
                 
                 {/* 하단 어두운 그라데이션 (버튼 가독성을 위해 추가) */}
