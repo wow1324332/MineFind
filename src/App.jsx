@@ -281,7 +281,7 @@ export default function App() {
                   backgroundImage: `url(${currentDungeon === 'fire' ? '/hellofflamelose-bg.jpg' : '/hellofaqualose-bg.jpg'})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
-                  animation: 'fadeInOverlay 0.4s ease-in-out forwards' // 패배 화면 페이드인
+                  animation: 'fadeInOverlay 0.8s ease-in-out forwards' // 패배 화면 페이드인
                 }}
               >
                 {/* 페이드인 애니메이션용 CSS */}
@@ -292,7 +292,7 @@ export default function App() {
                   }
                 `}</style>
 
-                <div className="absolute inset-0 bg-black/75 pointer-events-none z-0"></div>
+                <div className="absolute inset-0 bg-black/50 pointer-events-none z-0"></div>
                 
                 {/* 하단 버튼 영역 (버튼이 잘 눌리도록 z-index 부여) */}
                 <div className="flex justify-center gap-4 px-6 mb-4 w-full max-w-md mx-auto relative z-10">
