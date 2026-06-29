@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { GAME_CONFIG, createEmptyBoard, cloneBoard, placeMinesAndCalculate, revealEmptyCells, checkWinCondition } from '../utils/gameLogic';
+import { GAME_CONFIG, createEmptyBoard, cloneBoard, placeMinesAndCalculate, revealEmptyCells, checkWinCondition, getMineCount } from '../utils/gameLogic';
 
 export const useMinesweeper = () => {
   const [board, setBoard] = useState([]);
@@ -8,18 +8,27 @@ export const useMinesweeper = () => {
   const [minesLeft, setMinesLeft] = useState(GAME_CONFIG.MINES);
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [isFlagMode, setIsFlagMode] = useState(false);
-
   const timerRef = useRef(null);
+  
+  // 💡 훅 내부에서도 난이도를 기억해야 하므로 상태를 하나 만듭니다.
+  const [difficultyLevel, setDifficultyLevel] = useState('Normal');
 
-  const initGame = useCallback(() => {
+  // 💡 initGame이 난이도를 받아서 처리하도록 수정합니다.
+  const initGame = useCallback((newDifficulty) => {
+    const targetDifficulty = newDifficulty || difficultyLevel;
+    if (newDifficulty) setDifficultyLevel(newDifficulty);
+
     setBoard(createEmptyBoard());
-    setIsFirstClick(true);
     setGameStatus('idle');
-    setMinesLeft(GAME_CONFIG.MINES);
+    setIsFirstClick(true);
+    
+    // 💡 고정된 숫자가 아니라, 난이도에 맞는 지뢰 개수(임시)를 화면에 띄웁니다.
+    setMinesLeft(getMineCount(targetDifficulty)); 
+    
     setTimeElapsed(0);
     clearInterval(timerRef.current);
     timerRef.current = null;
-  }, []);
+  }, [difficultyLevel]);
 
   useEffect(() => {
     initGame();
@@ -82,7 +91,9 @@ export const useMinesweeper = () => {
       setIsFirstClick(false);
       setGameStatus('playing');
       startTimer();
-      placeMinesAndCalculate(newBoard, r, c);
+      // 💡 선택한 난이도(difficultyLevel)에 맞춰 지뢰 개수를 구해서 넘겨줍니다!
+      const totalMinesToPlace = getMineCount(difficultyLevel);
+      placeMinesAndCalculate(newBoard, r, c, totalMinesToPlace);
     }
 
     cell.isRevealed = true;
