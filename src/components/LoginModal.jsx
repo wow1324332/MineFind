@@ -98,7 +98,7 @@ export default function LoginModal({ deferredPrompt, handleInstallClick }) {
           <div>
             <input 
               type="email" 
-              placeholder="ID..." 
+              placeholder="ID(E-mail)..." 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               // 💡 [추가] 브라우저가 아이디 자동완성을 제안하도록 속성 추가
