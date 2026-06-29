@@ -291,6 +291,8 @@ export default function App() {
                     to { opacity: 1; }
                   }
                 `}</style>
+
+                <div className="absolute inset-0 bg-black/75 pointer-events-none z-0"></div>
                 
                 {/* 하단 버튼 영역 (버튼이 잘 눌리도록 z-index 부여) */}
                 <div className="flex justify-center gap-4 px-6 mb-4 w-full max-w-md mx-auto relative z-10">
