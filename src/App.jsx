@@ -280,7 +280,7 @@ export default function App() {
                   backgroundImage: `url(${currentDungeon === 'fire' ? '/hellofflamelose-bg.jpg' : '/hellofaqualose-bg.jpg'})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
-                  animation: 'fadeInOverlay 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards'
+                  animation: 'fadeInOverlay 1.0s cubic-bezier(0.25, 1, 0.5, 1) forwards'
                 }}
               >
                 {/* 페이드인 애니메이션용 CSS */}
@@ -292,7 +292,7 @@ export default function App() {
                 `}</style>
                 
                 {/* 화면을 어둡게 가려주는 암전 레이어 */}
-                <div className="absolute inset-0 bg-black/75 pointer-events-none z-0"></div>
+                <div className="absolute inset-0 bg-black/50 pointer-events-none z-0"></div>
                 
                 {/* 하단 버튼 영역 (이미지 버튼) */}
                 <div className="flex justify-center items-center gap-4 px-6 mb-8 w-full max-w-md mx-auto relative z-10">
