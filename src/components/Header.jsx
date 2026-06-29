@@ -32,7 +32,11 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
           style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
         >
           {gameStatus === 'lost' ? (
-            <span className="text-4xl">💀</span> // 해골 유지
+            <img 
+              src="/hellofflame-mine.png" 
+              alt="Game Over - Devil Eye" 
+              className="w-10 h-10 object-contain drop-shadow-[0_0_10px_rgba(220,38,38,0.8)] animate-pulse" 
+            />
           ) : gameStatus === 'won' ? (
             <span className="text-4xl">👑</span> // 왕관 유지
           ) : (
