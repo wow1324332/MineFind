@@ -5,7 +5,7 @@ export const useMinesweeper = () => {
   const [board, setBoard] = useState([]);
   const [isFirstClick, setIsFirstClick] = useState(true);
   const [gameStatus, setGameStatus] = useState('idle');
-  const [minesLeft, setMinesLeft] = useState(GAME_CONFIG.MINES);
+  const [minesLeft, setMinesLeft] = useState(0);
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [isFlagMode, setIsFlagMode] = useState(false);
   const timerRef = useRef(null);
