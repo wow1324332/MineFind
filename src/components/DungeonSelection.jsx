@@ -64,21 +64,30 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout }) 
       </div>
 
       {/* 💡 최하단: 난이도 선택 버튼 UI (5개 나란히) */}
-      <div className="absolute bottom-6 w-full px-6 z-20">
-        <div className="flex justify-between items-center max-w-md mx-auto gap-1">
+<div className="absolute bottom-6 w-full px-6 z-20">
+        <div className="flex justify-between items-center max-w-md mx-auto gap-2">
           {difficulties.map((diff) => (
             <button
               key={diff}
               onClick={() => setDifficulty(diff)}
               className={`
-                flex-1 py-3 px-1 text-center font-black tracking-tighter sm:tracking-normal text-[11px] sm:text-xs transition-all duration-200 border
+                flex-1 transition-all duration-300 relative select-none
                 ${difficulty === diff 
-                  ? 'bg-neutral-800 border-yellow-500/50 text-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.4)] scale-105 rounded-md' 
-                  : 'bg-neutral-950/80 border-neutral-800 text-neutral-500 hover:bg-neutral-900 rounded-sm'
+                  // 선택된 난이도: 크기가 커지고, 원래 색상을 유지하며, 주황빛 후광이 비침
+                  ? 'scale-110 brightness-110 drop-shadow-[0_0_15px_rgba(234,179,8,0.8)] z-10' 
+                  // 선택 안 된 난이도: 크기가 살짝 작아지고, 어둡고 탁하게 가라앉음
+                  : 'scale-95 brightness-50 opacity-60 hover:brightness-75 hover:opacity-100'
                 }
               `}
+              style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
             >
-              {diff}
+              <img 
+                // 배열의 이름(Easy, Normal 등)을 소문자로 변환하여 이미지 경로 자동 매칭
+                src={`/${diff.toLowerCase()}.png`} 
+                alt={`${diff} Difficulty`} 
+                className="w-full h-auto object-contain pointer-events-none"
+                draggable="false"
+              />
             </button>
           ))}
         </div>
