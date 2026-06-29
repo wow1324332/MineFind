@@ -281,7 +281,7 @@ export default function App() {
                   backgroundImage: `url(${currentDungeon === 'fire' ? '/hellofflamelose-bg.jpg' : '/hellofaqualose-bg.jpg'})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
-                  animation: 'fadeInOverlay 1.5s ease-in-out forwards' // 1.5초 동안 스르륵 나타남
+                  animation: 'fadeInOverlay 0.4s ease-in-out forwards' // 패배 화면 페이드인
                 }}
               >
                 {/* 페이드인 애니메이션용 CSS */}
