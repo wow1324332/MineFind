@@ -1,3 +1,7 @@
+export const GAME_CONFIG = {
+  ROWS: 10,
+  COLS: 8,
+};
 // 💡 새롭게 추가할 난이도별 지뢰 계산 함수 (파일 상단 쪽에 추가)
 export const getMineCount = (difficulty) => {
   switch(difficulty) {
