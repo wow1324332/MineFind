@@ -280,7 +280,7 @@ export default function App() {
                   backgroundImage: `url(${currentDungeon === 'fire' ? '/hellofflamelose-bg.jpg' : '/hellofaqualose-bg.jpg'})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
-                  animation: 'fadeInOverlay 1.0s cubic-bezier(0.25, 1, 0.5, 1) forwards'
+                  animation: 'fadeInOverlay 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards'
                 }}
               >
                 {/* 페이드인 애니메이션용 CSS */}
