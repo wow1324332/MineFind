@@ -3,7 +3,8 @@ import React from 'react';
 // 💡 컴포넌트 이름이 지뢰찾기 전용임을 명확히 합니다.
 export default function DevilMineMode({ onSelectPVE, onBack, onLogout }) {
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-between bg-black text-white p-6 select-none">
+    // 💡 justify-between을 지우고 justify-start로 변경하여 컨텐츠들을 상단부터 배치합니다.
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-start bg-black text-white pt-10 px-6 select-none">
       
       {/* 배경: 고대 석판 이미지 */}
       <div 
@@ -13,11 +14,12 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout }) {
 
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_20%,_#000000_100%)] pointer-events-none"></div>
 
-      {/* 💡 상단 타이틀 이미지와 돌담 헤더 묶음 */}
-      <div className="w-full flex flex-col items-center max-w-md relative z-10 -mt-6">
+      {/* 상단 타이틀 이미지와 돌담 헤더 묶음 */}
+      <div className="w-full flex flex-col items-center max-w-md relative z-10">
         
         {/* 1. 데빌마인 타이틀 이미지 */}
-        <div className="w-full max-w-sm mt-0 mx-auto relative flex justify-center pointer-events-none">
+        {/* 💡 mb-2를 주어 타이틀과 헤더 사이의 간격을 조금 벌려줍니다. */}
+        <div className="w-full max-w-[16rem] mx-auto relative flex justify-center pointer-events-none mb-2">
           <div 
             className="w-full"
             style={{ 
@@ -26,7 +28,7 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout }) {
             }}
           >
             <img 
-              src="/devilminemode-title.jpg" // 🚨 첨부해주신 확장자에 맞게(.jpg 또는 .png) 수정해주세요.
+              src="/devilminemode-title.jpg" 
               alt="Devil Mine Title" 
               className="w-full h-auto object-contain drop-shadow-[0_0_20px_rgba(220,38,38,0.2)]"
             />
@@ -34,7 +36,8 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout }) {
         </div>
 
         {/* 2. 돌담 헤더 */}
-        <div className="w-full max-w-sm h-12 -mt-2 mb-6 flex justify-between items-center relative z-10">
+        {/* 💡 헤더 아래 여백을 mb-6에서 mb-12로 늘려서 버튼 영역과 띄워줍니다. */}
+        <div className="w-full max-w-sm h-12 mb-12 flex justify-between items-center relative z-10">
           <div 
             className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
             style={{ 
@@ -66,8 +69,10 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout }) {
         </div>
       </div>
 
-      {/* 모드 선택 버튼 영역 */}
-      <div className="relative z-10 w-full max-w-xs -space-y-2 mb-20">
+      {/* 💡 모드 선택 버튼 영역 */}
+      {/* 💡 너비를 기존 max-w-xs에서 max-w-[14rem](약 224px)으로 확 줄여서 날렵하게 만들었습니다. */}
+      {/* 💡 mb-20을 지워서 굳이 공간을 차지하지 않도록 정리했습니다. */}
+      <div className="relative z-10 w-full max-w-[14rem] -space-y-4">
         
         {/* PVE 모드 (Hunting) */}
         <button
@@ -76,7 +81,7 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout }) {
           style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
         >
           <img 
-            src="/hunting-bt.png" // 🚨 PVE 버튼 이미지 파일명
+            src="/hunting-bt.png"
             alt="PVE Hunting Mode" 
             className="w-full h-auto object-contain pointer-events-none" 
             draggable="false"
@@ -86,7 +91,7 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout }) {
         {/* PVP 모드 (Battle - 준비중) */}
         <div className="w-full relative opacity-50 grayscale-[0.8] cursor-not-allowed select-none">
           <img 
-            src="/battle-bt.png" // 🚨 PVP 버튼 이미지 파일명
+            src="/battle-bt.png"
             alt="PVP Battle Mode (준비 중)" 
             className="w-full h-auto object-contain pointer-events-none drop-shadow-md" 
             draggable="false"
@@ -95,7 +100,6 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout }) {
 
       </div>
 
-      <div></div>
     </div>
   );
 }
