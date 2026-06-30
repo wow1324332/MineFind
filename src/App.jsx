@@ -179,20 +179,18 @@ export default function App() {
     setTimeout(() => setCurrentScreen('GAME_PVE'), 2000);
   };
 
-  // 💡 수정된 부분 3: 게임 오프닝 화면 (Game Start 버튼 포함)
+// 💡 수정된 부분 3: 게임 오프닝 화면 (Game Start 버튼 포함)
   if (showOpening) {
     return (
       <div 
-        // 💡 justify-end pb-32를 justify-center로 변경하여 완벽한 상하 정중앙 배치
         className="fixed inset-0 z-[200] flex flex-col items-center justify-center select-none bg-black"
         style={{
           backgroundImage: "url('/gameopening-bg.jpeg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          animation: 'fadeInOpening 2s ease-in-out forwards' // 💡 2초 동안 스르륵 나타나는 효과
+          animation: 'fadeInOpening 2s ease-in-out forwards'
         }}
       >
-        {/* 오프닝 화면 페이드인 애니메이션 CSS */}
         <style>{`
           @keyframes fadeInOpening {
             from { opacity: 0; }
@@ -200,11 +198,10 @@ export default function App() {
           }
         `}</style>
 
+        <button
           onClick={() => {
             setShowOpening(false); 
-            // 💡 setShowSplash(true)를 지웠습니다. 이제 누르면 즉시 넘어갑니다!
           }}
-          // 💡 배경/테두리 제거, font-serif로 중세풍 적용, text-xl로 크기 축소, 자간(tracking) 넓힘
           className="animate-pulse transition-all duration-300 active:scale-90 text-yellow-600/90 font-serif text-xl tracking-[0.4em] drop-shadow-[0_0_10px_rgba(202,138,4,0.6)]"
           style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
         >
@@ -214,7 +211,6 @@ export default function App() {
     );
   }
 
-  // 💡 showSplash 관련 조건 삭제 (앱이 유저 정보를 불러오는 찰나의 순간에만 표시)
   if (loading) {
     return <SplashScreen {...SPLASH_CONFIG.INITIAL} />;
   }
@@ -223,17 +219,14 @@ export default function App() {
     return <LoginModal deferredPrompt={deferredPrompt} handleInstallClick={handleInstallClick} />;
   }
 
-  // 💡 중복 작성되어 있던 오타(if문 두 번 연속)를 하나로 수정 완료했습니다.
   if (currentScreen.endsWith('_LOADING')) {
-      const config = SPLASH_CONFIG[currentScreen] || SPLASH_CONFIG.GAME_LOADING;
-      
-      // 💡 데빌마인 로딩(MODE_LOADING)일 때만 기존 로딩바 위에 글씨를 겹쳐서 띄웁니다.
-      if (currentScreen === 'MODE_LOADING') {
+    const config = SPLASH_CONFIG[currentScreen] || SPLASH_CONFIG.GAME_LOADING;
+    
+    // 💡 데빌마인 로딩(MODE_LOADING)일 때만 양피지 텍스트 띄우기
+    if (currentScreen === 'MODE_LOADING') {
       return (
         <div className="relative w-full h-full">
           <SplashScreen {...config} />
-          
-          {/* 💡 z-index를 999로 대폭 올리고, mix-blend-multiply를 제거했습니다. */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-[999] text-center p-8 pb-20">
             <p className="text-[#2a1a11] font-serif font-black text-lg md:text-xl leading-loose tracking-widest drop-shadow-[0_1px_1px_rgba(255,255,255,0.2)]">
               고대 악마의 신전에서<br/>
@@ -245,6 +238,7 @@ export default function App() {
       );
     }
     
+    // 다른 로딩 화면들은 기존 로고 방식을 그대로 사용
     return <SplashScreen {...config} />;
   }
 
