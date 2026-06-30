@@ -221,24 +221,26 @@ export default function App() {
   }
 
   // 💡 중복된 if 문을 하나로 깔끔하게 정리했습니다!
-  if (currentScreen.endsWith('_LOADING')) {
+if (currentScreen.endsWith('_LOADING')) {
     const config = SPLASH_CONFIG[currentScreen] || SPLASH_CONFIG.GAME_LOADING;
     
+    // 💡 데빌마인 로딩(MODE_LOADING)일 때만 양피지 위에 글씨 강제 고정
     if (currentScreen === 'MODE_LOADING') {
       return (
-        <div className="relative w-full h-full">
+        <>
           <SplashScreen {...config} />
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-[999] text-center p-8 pb-20">
+          {/* 💡 absolute를 fixedinset-0 z-[999]로 변경하여 로딩 화면 맨 위에 무조건 정중앙 배치합니다. */}
+          <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-[999] text-center p-8 pb-20">
             <p className="text-[#2a1a11] font-serif font-black text-lg md:text-xl leading-loose tracking-widest drop-shadow-[0_1px_1px_rgba(255,255,255,0.2)]">
               고대 악마의 신전에서<br/>
               악마를 봉인하고<br/>
               던전을 정화하세요..
             </p>
           </div>
-        </div>
+        </>
       );
     }
-    
+  
     return <SplashScreen {...config} />;
   }
 
