@@ -77,8 +77,6 @@ export default function App() {
   
   // 💡 수정된 부분 1: 오프닝 화면은 켜고(true), 로딩 화면은 꺼둔(false) 상태로 시작합니다.
   const [showOpening, setShowOpening] = useState(true);
-  const [showSplash, setShowSplash] = useState(false); 
-  
   const [currentScreen, setCurrentScreen] = useState('HUNT_LIST_LOADING');
   const [currentDungeon, setCurrentDungeon] = useState('fire');
   const [currentDifficulty, setCurrentDifficulty] = useState('Normal');
@@ -101,16 +99,6 @@ export default function App() {
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
   }, []);
-
-  // 💡 수정된 부분 2: Game Start 버튼을 눌러 showSplash가 true가 되었을 때만 3초 타이머가 돕니다.
-  useEffect(() => {
-    if (showSplash) {
-      const timer = setTimeout(() => {
-        setShowSplash(false);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [showSplash]);
 
   const [showToast, setShowToast] = useState(false);
   const lastBackPressTime = useRef(0);
@@ -212,10 +200,9 @@ export default function App() {
           }
         `}</style>
 
-        <button
           onClick={() => {
             setShowOpening(false); 
-            setShowSplash(true);   
+            // 💡 setShowSplash(true)를 지웠습니다. 이제 누르면 즉시 넘어갑니다!
           }}
           // 💡 배경/테두리 제거, font-serif로 중세풍 적용, text-xl로 크기 축소, 자간(tracking) 넓힘
           className="animate-pulse transition-all duration-300 active:scale-90 text-yellow-600/90 font-serif text-xl tracking-[0.4em] drop-shadow-[0_0_10px_rgba(202,138,4,0.6)]"
@@ -227,7 +214,8 @@ export default function App() {
     );
   }
 
-  if (loading || showSplash) {
+  // 💡 showSplash 관련 조건 삭제 (앱이 유저 정보를 불러오는 찰나의 순간에만 표시)
+  if (loading) {
     return <SplashScreen {...SPLASH_CONFIG.INITIAL} />;
   }
 
@@ -235,12 +223,12 @@ export default function App() {
     return <LoginModal deferredPrompt={deferredPrompt} handleInstallClick={handleInstallClick} />;
   }
 
-  if (currentScreen.endsWith('_LOADING')) {
+  // 💡 중복 작성되어 있던 오타(if문 두 번 연속)를 하나로 수정 완료했습니다.
   if (currentScreen.endsWith('_LOADING')) {
       const config = SPLASH_CONFIG[currentScreen] || SPLASH_CONFIG.GAME_LOADING;
-    
+      
       // 💡 데빌마인 로딩(MODE_LOADING)일 때만 기존 로딩바 위에 글씨를 겹쳐서 띄웁니다.
-  if (currentScreen === 'MODE_LOADING') {
+      if (currentScreen === 'MODE_LOADING') {
       return (
         <div className="relative w-full h-full">
           <SplashScreen {...config} />
