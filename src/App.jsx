@@ -75,7 +75,7 @@ export default function App() {
 
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   
-  // 💡 수정된 부분 1: 오프닝 화면은 켜고(true), 로딩 화면은 꺼둔(false) 상태로 시작합니다.
+  // 💡 불필요해진 showSplash 삭제 완료
   const [showOpening, setShowOpening] = useState(true);
   const [currentScreen, setCurrentScreen] = useState('HUNT_LIST_LOADING');
   const [currentDungeon, setCurrentDungeon] = useState('fire');
@@ -179,7 +179,7 @@ export default function App() {
     setTimeout(() => setCurrentScreen('GAME_PVE'), 2000);
   };
 
-// 💡 수정된 부분 3: 게임 오프닝 화면 (Game Start 버튼 포함)
+  // 💡 게임 오프닝 화면 (강제 로딩 딜레이 제거 완료)
   if (showOpening) {
     return (
       <div 
@@ -211,6 +211,7 @@ export default function App() {
     );
   }
 
+  // 💡 유저 정보 불러오는 중에만 잠시 보여줌
   if (loading) {
     return <SplashScreen {...SPLASH_CONFIG.INITIAL} />;
   }
@@ -219,10 +220,10 @@ export default function App() {
     return <LoginModal deferredPrompt={deferredPrompt} handleInstallClick={handleInstallClick} />;
   }
 
+  // 💡 중복된 if 문을 하나로 깔끔하게 정리했습니다!
   if (currentScreen.endsWith('_LOADING')) {
     const config = SPLASH_CONFIG[currentScreen] || SPLASH_CONFIG.GAME_LOADING;
     
-    // 💡 데빌마인 로딩(MODE_LOADING)일 때만 양피지 텍스트 띄우기
     if (currentScreen === 'MODE_LOADING') {
       return (
         <div className="relative w-full h-full">
@@ -238,12 +239,6 @@ export default function App() {
       );
     }
     
-    // 다른 로딩 화면들은 기존 로고 방식을 그대로 사용
-    return <SplashScreen {...config} />;
-  }
-
-    // 💡 다른 로딩 화면들은 기존 로고 방식을 그대로 사용합니다.
-    const config = SPLASH_CONFIG[currentScreen] || SPLASH_CONFIG.GAME_LOADING;
     return <SplashScreen {...config} />;
   }
 
@@ -432,7 +427,6 @@ export default function App() {
                     backgroundRepeat: 'no-repeat'
                   }}
                 >
-                  {/* 텍스트가 바위의 복잡한 무늬에 묻히지 않도록, 중앙 부분에만 살짝 어두운 원형 그라데이션을 줍니다. */}
                   <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black/50 via-black/10 to-transparent pointer-events-none z-0 rounded-3xl"></div>
 
                   <h3 className="text-xl font-black text-red-500 mb-2 drop-shadow-[0_2px_5px_rgba(0,0,0,1)] relative z-10">포탈 이탈</h3>
@@ -443,7 +437,6 @@ export default function App() {
                   
                   <div className="flex justify-center items-center gap-1 w-full px-2 relative z-10">
                     
-                    {/* 확인(나가기) 버튼 - Back 이미지 */}
                     <button 
                       onClick={() => { 
                         setShowExitPopup(false); 
@@ -461,7 +454,6 @@ export default function App() {
                       />
                     </button>
                     
-                    {/* 취소(계속하기) 버튼 - Replay 이미지 */}
                     <button 
                       onClick={() => {
                         setShowExitPopup(false);
