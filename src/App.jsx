@@ -461,7 +461,6 @@ export default function App() {
                         setShowExitPopup(false);
                         resumeTimer();
                       }}
-                      {/* 2. 붉은 후광 정중앙 배치: drop-shadow의 Y축 5px을 0으로 변경 (0_0_15px) */}
                       className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_0_15px_rgba(220,38,38,0.5)] select-none"
                       style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
                     >
