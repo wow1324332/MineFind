@@ -154,8 +154,7 @@ export default function App() {
   };
 
   const handleSelectDevilMine = () => {
-    setCurrentScreen('MODE_LOADING');
-    setTimeout(() => setCurrentScreen('DEVIL_MINE_MODE'), 2000); 
+    setCurrentScreen('DEVIL_MINE_MODE'); // 💡 로딩창 없이 즉시 데빌마인 화면으로 전환
   };
 
   const handleSelectPVE = () => {
@@ -220,27 +219,9 @@ export default function App() {
     return <LoginModal deferredPrompt={deferredPrompt} handleInstallClick={handleInstallClick} />;
   }
 
-  // 💡 중복된 if 문을 하나로 깔끔하게 정리했습니다!
-if (currentScreen.endsWith('_LOADING')) {
+  // 💡 이제 복잡한 예외 처리 없이 공통 로딩 화면만 출력하면 끝입니다.
+  if (currentScreen.endsWith('_LOADING')) {
     const config = SPLASH_CONFIG[currentScreen] || SPLASH_CONFIG.GAME_LOADING;
-    
-    // 💡 데빌마인 로딩(MODE_LOADING)일 때만 양피지 위에 글씨 강제 고정
-    if (currentScreen === 'MODE_LOADING') {
-      return (
-        <>
-          <SplashScreen {...config} />
-          {/* 💡 absolute를 fixedinset-0 z-[999]로 변경하여 로딩 화면 맨 위에 무조건 정중앙 배치합니다. */}
-          <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-[999] text-center p-8 pb-20">
-            <p className="text-[#2a1a11] font-serif font-black text-lg md:text-xl leading-loose tracking-widest drop-shadow-[0_1px_1px_rgba(255,255,255,0.2)]">
-              고대 악마의 신전에서<br/>
-              악마를 봉인하고<br/>
-              던전을 정화하세요..
-            </p>
-          </div>
-        </>
-      );
-    }
-  
     return <SplashScreen {...config} />;
   }
 
@@ -251,7 +232,17 @@ if (currentScreen.endsWith('_LOADING')) {
       break;
     
     case 'DEVIL_MINE_MODE':
-      currentView = <DevilMineMode onSelectPVE={handleSelectPVE} onBack={() => setCurrentScreen('HUNT_LIST')} onLogout={logout} />;
+      currentView = (
+        <div style={{ animation: 'fadeInMode 0.4s ease-in-out forwards' }}>
+          <style>{`
+            @keyframes fadeInMode {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+          `}</style>
+          <DevilMineMode onSelectPVE={handleSelectPVE} onBack={() => setCurrentScreen('HUNT_LIST')} onLogout={logout} />
+        </div>
+      );
       break;
 
     case 'DUNGEON_SELECTION':
