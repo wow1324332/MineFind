@@ -1,18 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function MyPage({ onBack }) {
+  // 💡 프로필 모달을 열고 닫기 위한 상태(State)를 추가했습니다.
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
   return (
-    // 💡 최상단 부모에 bg-black을 추가하여 배경이 내려가서 생긴 윗부분의 빈 공간을 완벽한 어둠으로 채워줍니다.
     <div className="relative min-h-screen bg-black text-white flex flex-col items-center px-6 pb-6 pt-0 animate-[fadeIn_0.5s_ease-in-out] overflow-hidden">
       
-      {/* 💡 배경 이미지 수정 완료! 
-          1. inset-0 대신 inset-x-0 top-[15%] bottom-0 을 사용해 아예 헤더 아래쪽으로 위치를 내렸습니다.
-          2. bg-bottom을 추가해 카펫 끝부분이 화면 맨 아래에 딱 붙도록 고정했습니다.
-          3. maskImage 그라데이션을 주어 어둠 속에서 자연스럽게 나타나도록 했습니다. */}
+      {/* 배경 이미지 */}
       <div 
         className="absolute inset-x-0 top-[15%] bottom-0 bg-cover bg-bottom bg-no-repeat opacity-60 z-0 pointer-events-none"
         style={{ 
-          backgroundImage: "url('/mypage-bg.jpeg')", // 🚨 새로 생성하신 로비 이미지 파일명으로 꼭 수정해주세요!
+          backgroundImage: "url('/mypage-bg.jpeg')", // 🚨 배경 이미지 파일명 확인
           WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 25%, black 100%)',
           maskImage: 'linear-gradient(to bottom, transparent 0%, black 25%, black 100%)'
         }}
@@ -20,7 +19,7 @@ export default function MyPage({ onBack }) {
 
       <div className="relative z-10 w-full max-w-md flex flex-col items-center">
         
-        {/* 💡 타이틀 영역: mt-4, mb-4를 mt-2, mb-0으로 줄여서 타이틀을 위로 살짝 끌어올렸습니다. */}
+        {/* 타이틀 영역 */}
         <div className="w-full max-w-sm mt-2 mb-0 mx-auto relative flex justify-center pointer-events-none z-20">
           <div 
             className="w-full"
@@ -37,9 +36,8 @@ export default function MyPage({ onBack }) {
           </div>
         </div>
 
-        {/* 💡 돌담 헤더: 타이틀과 너무 멀어지지 않게 -mt-1을 주어 자연스럽게 따라 올라가도록 했습니다. */}
+        {/* 돌담 헤더 */}
         <div className="w-full max-w-sm h-12 -mt-1 mb-6 flex justify-between items-center relative z-10">
-          
           <div 
             className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
             style={{ 
@@ -60,15 +58,63 @@ export default function MyPage({ onBack }) {
           </button>
           
           <div className="w-12 px-2"></div>
-
         </div>
         
-        {/* 마이페이지 컨텐츠 영역 */}
-        <div className="w-full max-w-sm flex flex-col items-center mt-2 space-y-4">
+        {/* 💡 마이페이지 컨텐츠 영역 */}
+        <div className="w-full max-w-sm flex flex-col items-center mt-0 space-y-4 relative z-20">
           
-        </div>
+          {/* 1. 마이 프로필 휘장 버튼 */}
+          <button 
+            onClick={() => setIsProfileOpen(true)}
+            className="w-full max-w-[18rem] transition-all duration-200 hover:brightness-110 active:scale-95 drop-shadow-[0_10px_20px_rgba(0,0,0,0.7)] select-none"
+            style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+          >
+            <img 
+              src="/myprofile-bt.png" 
+              alt="My Profile" 
+              className="w-full h-auto object-contain pointer-events-none" 
+              draggable="false"
+            />
+          </button>
 
+          {/* 추후 다른 버튼들이 이 아래에 space-y-4 간격으로 자연스럽게 추가됩니다. */}
+
+        </div>
       </div>
+
+      {/* 💡 마이 프로필 모달창 (버튼 클릭 시 등장) */}
+      {isProfileOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-6 animate-[fadeIn_0.2s_ease-in-out]">
+          
+          {/* 어두운 배경 막 (클릭 시 모달 닫힘) */}
+          <div 
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            onClick={() => setIsProfileOpen(false)}
+          ></div>
+          
+          {/* 모달 컨텐츠 박스 */}
+          <div className="relative z-10 w-full max-w-sm bg-neutral-900 border-2 border-yellow-700/50 rounded-xl p-6 shadow-2xl flex flex-col items-center">
+            
+            <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-600 to-yellow-400 mb-4 font-serif">
+              My Profile
+            </h2>
+            
+            {/* 프로필 정보가 들어갈 임시 공간 */}
+            <div className="w-full bg-black/50 border border-neutral-700 rounded-lg p-4 mb-6 min-h-[150px] flex items-center justify-center">
+              <p className="text-neutral-500 text-sm">유저 정보가 표시될 공간입니다.</p>
+            </div>
+
+            <button 
+              onClick={() => setIsProfileOpen(false)}
+              className="px-8 py-2 bg-red-900/80 hover:bg-red-800 border border-red-700 rounded text-white font-bold transition-all active:scale-95"
+            >
+              닫기
+            </button>
+
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
