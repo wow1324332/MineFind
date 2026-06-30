@@ -25,7 +25,7 @@ const SPLASH_CONFIG = {
   },
   MODE_LOADING: {
     message: "Loading...",
-    logoSrc: "/huntlistloading-logo.png",
+    logoSrc: "/yangpiji.png",
     bgSrc: "/devilmineloading-bg.jpg",
     bgOpacity: "opacity-90",
     disablePulse: true,
@@ -235,62 +235,31 @@ export default function App() {
     return <LoginModal deferredPrompt={deferredPrompt} handleInstallClick={handleInstallClick} />;
   }
 
-if (currentScreen.endsWith('_LOADING')) {
+  if (currentScreen.endsWith('_LOADING')) {
+  if (currentScreen.endsWith('_LOADING')) {
+      const config = SPLASH_CONFIG[currentScreen] || SPLASH_CONFIG.GAME_LOADING;
     
-    // 💡 데빌 마인으로 넘어갈 때(MODE_LOADING)만 전용 양피지 로딩 화면을 보여줍니다.
+      // 💡 데빌마인 로딩(MODE_LOADING)일 때만 기존 로딩바 위에 글씨를 겹쳐서 띄웁니다.
     if (currentScreen === 'MODE_LOADING') {
       return (
-        <div className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-black select-none">
-          {/* 1. 배경 이미지 (기존 배경을 매우 어둡게 깔아줍니다) */}
-          <div 
-            className="absolute inset-0 bg-cover bg-center opacity-30"
-            style={{ backgroundImage: "url('/devilmineloading-bg.jpg')" }}
-          ></div>
+        <div className="relative w-full h-full">
+          {/* 원래 쓰시던 로딩바와 폰트 이미지가 담긴 오리지널 SplashScreen을 그대로 렌더링합니다. */}
+          <SplashScreen {...config} />
           
-          <div className="relative z-10 flex flex-col items-center justify-center w-full px-6">
-            
-            {/* 2. 📜 양피지 & 텍스트 영역 */}
-            <div 
-              className="relative w-full max-w-sm flex items-center justify-center drop-shadow-[0_0_30px_rgba(0,0,0,0.9)]"
-              style={{ animation: 'fadeIn 1s ease-in-out forwards' }}
-            >
-              <style>{`
-                @keyframes fadeIn {
-                  from { opacity: 0; transform: translateY(10px); }
-                  to { opacity: 1; transform: translateY(0); }
-                }
-              `}</style>
-
-              {/* 양피지 누끼 이미지 */}
-              <img 
-                src="/yangpiji.png" 
-                alt="Parchment" 
-                className="w-full h-auto object-contain pointer-events-none" 
-                draggable="false" 
-              />
-              
-              {/* 💡 양피지 위에 올라가는 텍스트 (고풍스러운 잉크 느낌) */}
-              <div className="absolute inset-0 flex items-center justify-center text-center p-8 mt-2">
-                <p 
-                  // font-serif로 명조/바탕체 계열 적용, mix-blend-multiply로 종이에 잉크가 스며든 효과
-                  className="text-[#2c1c16] font-serif font-black text-lg md:text-xl leading-loose tracking-widest opacity-90 mix-blend-multiply drop-shadow-sm"
-                >
-                  고대 악마의 신전에서<br/>
-                  악마를 봉인하고<br/>
-                  던전을 정화하세요..
-                </p>
-              </div>
-            </div>
-
-            {/* 3. 하단 로딩 텍스트 */}
-            <div className="mt-12 text-yellow-700/60 font-serif font-bold text-sm tracking-[0.4em] animate-pulse">
-              Loading...
-            </div>
-
+          {/* 📜 그 위에 양피지 로고 위치에 맞춰서 잉크 글씨만 싹 얹어줍니다. */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-50 text-center p-8 pb-20">
+            <p className="text-[#2c1c16] font-serif font-black text-lg md:text-xl leading-loose tracking-widest opacity-90 mix-blend-multiply">
+              고대 악마의 신전에서<br/>
+              악마를 봉인하고<br/>
+              던전을 정화하세요..
+            </p>
           </div>
         </div>
       );
     }
+    
+    return <SplashScreen {...config} />;
+  }
 
     // 💡 다른 로딩 화면들은 기존 로고 방식을 그대로 사용합니다.
     const config = SPLASH_CONFIG[currentScreen] || SPLASH_CONFIG.GAME_LOADING;
