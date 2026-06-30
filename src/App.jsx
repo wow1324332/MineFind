@@ -23,14 +23,6 @@ const SPLASH_CONFIG = {
     disablePulse: true,
     useFadeIn: true
   },
-  MODE_LOADING: {
-    message: "Loading...",
-    logoSrc: "/yangpiji.png",
-    bgSrc: "/devilmineloading-bg.jpg",
-    bgOpacity: "opacity-90",
-    disablePulse: true,
-    useFadeIn: true
-  },
   GAME_LOADING: {
     message: "Loading...",
     logoSrc: "/huntlistloading-logo.png",
