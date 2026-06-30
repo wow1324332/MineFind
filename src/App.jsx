@@ -415,32 +415,62 @@ export default function App() {
 
             {showExitPopup && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-                <div className="bg-neutral-950 border border-neutral-700 p-6 rounded-2xl shadow-[0_0_30px_rgba(0,0,0,1)] max-w-xs w-full text-center flex flex-col items-center">
-                  <h3 className="text-xl font-bold text-red-500 mb-4 drop-shadow-md">포탈 이탈</h3>
-                  <p className="text-neutral-300 text-sm mb-8 leading-relaxed">
+                
+                {/* 💡 배경을 header-bg.jpg로 변경하고 돌판 느낌의 테두리를 주었습니다. */}
+                <div 
+                  className="relative p-6 rounded-2xl shadow-[0_0_40px_rgba(0,0,0,1)] max-w-xs w-full text-center flex flex-col items-center border border-neutral-800 overflow-hidden"
+                  style={{ 
+                    backgroundImage: "url('/header-bg.jpg')",
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  }}
+                >
+                  {/* 💡 벽돌 무늬 때문에 글씨가 안 보이지 않도록 검은색 반투명 막(오버레이)을 한 겹 깔아줍니다. */}
+                  <div className="absolute inset-0 bg-black/65 pointer-events-none z-0"></div>
+
+                  <h3 className="text-xl font-black text-red-500 mb-4 drop-shadow-[0_2px_4px_rgba(0,0,0,1)] relative z-10">포탈 이탈</h3>
+                  <p className="text-neutral-200 text-sm mb-8 leading-relaxed font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,1)] relative z-10">
                     정말 나가시겠습니까?<br/>
-                    게임 플레이 기록이 <span className="text-red-400 font-bold">저장되지 않습니다</span>.
+                    게임 플레이 기록이 <span className="text-red-400 font-black">저장되지 않습니다</span>.
                   </p>
-                  <div className="flex w-full gap-3">
+                  
+                  <div className="flex justify-center items-center gap-4 w-full relative z-10">
+                    
+                    {/* 💡 확인 버튼 (던전 밖으로 나가기) -> back.png 사용 */}
                     <button 
                       onClick={() => { 
                         setShowExitPopup(false); 
                         initGame();
                         setCurrentScreen('DUNGEON_SELECTION'); 
                       }}
-                      className="flex-1 bg-red-900/80 hover:bg-red-800 text-red-100 py-3 rounded-lg font-bold transition-all border border-red-700/50 active:scale-95"
+                      className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)] select-none"
+                      style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
                     >
-                      확인
+                      <img 
+                        src="/back.png" 
+                        alt="Confirm Exit" 
+                        className="w-full h-auto object-contain pointer-events-none"
+                        draggable="false"
+                      />
                     </button>
+                    
+                    {/* 💡 취소 버튼 (게임 계속하기) -> replay.png 사용 */}
                     <button 
                       onClick={() => {
                         setShowExitPopup(false);
                         resumeTimer();
                       }}
-                      className="flex-1 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 py-3 rounded-lg font-bold transition-all border border-neutral-600 active:scale-95"
+                      className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(220,38,38,0.3)] select-none"
+                      style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
                     >
-                      취소
+                      <img 
+                        src="/replay.png" 
+                        alt="Cancel Exit" 
+                        className="w-full h-auto object-contain pointer-events-none"
+                        draggable="false"
+                      />
                     </button>
+                    
                   </div>
                 </div>
               </div>
