@@ -2,39 +2,38 @@ import React from 'react';
 
 export default function MyPage({ onBack }) {
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-start bg-black text-white pt-10 px-6 select-none">
+    // 💡 1. 헌트리스트와 100% 동일한 바깥쪽 뼈대 (배경 설정 및 페이드인)
+    <div className="relative min-h-screen text-white flex flex-col items-center px-6 pb-6 pt-0 animate-[fadeIn_0.5s_ease-in-out] overflow-hidden">
       
-      {/* 💡 배경: 헌트리스트와 동일한 배경 (파일명이 다르면 수정해주세요) */}
+      {/* 💡 2. 헌트리스트와 100% 동일한 배경 이미지 */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
-        style={{ backgroundImage: "url('/huntlist-bg.jpg')" }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 z-0 pointer-events-none"
+        style={{ backgroundImage: "url('/Portallist-bg.jpg')" }}
       ></div>
 
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_20%,_#000000_100%)] pointer-events-none"></div>
-
-      {/* 상단 타이틀 이미지와 돌담 헤더 묶음 */}
-      <div className="w-full flex flex-col items-center max-w-md relative z-10">
+      {/* 💡 3. 내용물 래퍼 */}
+      <div className="relative z-10 w-full max-w-md flex flex-col items-center">
         
-        {/* 1. 타이틀 이미지 */}
-        <div className="w-full max-w-[16rem] mx-auto relative flex justify-center pointer-events-none mb-2">
+        {/* 상단 타이틀 영역 (헌트리스트 타이틀 그대로 사용) */}
+        <div className="w-full max-w-sm mt-0 mb-0 mx-auto relative flex justify-center pointer-events-none z-20">
           <div 
             className="w-full"
             style={{ 
-              WebkitMaskImage: 'linear-gradient(to bottom, black 65%, transparent 100%)',
-              maskImage: 'linear-gradient(to bottom, black 65%, transparent 100%)'
+              WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+              maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)'
             }}
           >
-            {/* 💡 임시로 헌트리스트 타이틀을 넣었습니다. 나중에 마이페이지용 이미지로 교체하세요! */}
             <img 
-              src="/minelegend-title.png" 
+              src="/demonic-title.jpg" 
               alt="My Page Title" 
               className="w-full h-auto object-contain drop-shadow-[0_0_20px_rgba(220,38,38,0.2)]"
             />
           </div>
         </div>
 
-        {/* 2. 돌담 헤더 */}
-        <div className="w-full max-w-sm h-12 mb-12 flex justify-between items-center relative z-10">
+        {/* 4. 돌담 헤더 (헌트리스트와 완벽히 동일한 구조) */}
+        <div className="w-full max-w-sm h-12 -mt-2 mb-6 flex justify-between items-center relative z-10">
+          
           <div 
             className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
             style={{ 
@@ -46,26 +45,29 @@ export default function MyPage({ onBack }) {
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
 
-          {/* 왼쪽 뒤로 가기 버튼 (헌트리스트로 복귀) */}
+          {/* 왼쪽 뒤로 가기 버튼 (엑스박스 안 뜨게 기존에 쓰시던 My-icon.png로 적용) */}
           <button 
             onClick={onBack}
             className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2 select-none"
             style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
           >
-            <img src="/back.png" alt="Back" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
+            <img src="/My-icon.png" alt="Back" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
           </button>
           
-          {/* 오른쪽 빈 공간 (가운데 정렬 균형 맞추기 용도) */}
-          <div className="w-12"></div>
+          {/* 오른쪽 빈 공간 (가운데 정렬 균형을 맞추기 위한 투명 박스) */}
+          <div className="w-12 px-2"></div>
+
         </div>
-      </div>
+        
+        {/* 마이페이지 실제 기능이 들어갈 컨텐츠 영역 */}
+        <div className="w-full max-w-sm bg-black/60 border border-neutral-700/50 rounded-xl p-6 min-h-[300px] flex flex-col items-center justify-center backdrop-blur-sm shadow-2xl mt-2">
+          <p className="text-neutral-300 font-bold mb-3 text-lg">계정 정보 로딩 중...</p>
+          <p className="text-sm text-neutral-500 text-center leading-relaxed">
+            여기에 마이페이지 기능이<br/>추가될 예정입니다.
+          </p>
+        </div>
 
-      {/* 💡 차후 기능이 하나씩 들어갈 중앙 컨텐츠 영역 */}
-      <div className="relative z-10 w-full max-w-sm bg-black/50 border border-neutral-700/50 rounded-xl p-6 min-h-[300px] flex flex-col items-center justify-center backdrop-blur-sm shadow-2xl">
-        <p className="text-neutral-400 font-bold mb-2">계정 정보 로딩 중...</p>
-        <p className="text-xs text-neutral-500">여기에 마이페이지 기능이 추가될 예정입니다.</p>
       </div>
-
     </div>
   );
 }
