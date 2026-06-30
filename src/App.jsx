@@ -191,23 +191,34 @@ export default function App() {
     setTimeout(() => setCurrentScreen('GAME_PVE'), 2000);
   };
 
-  // 💡 수정된 부분 3: 게임 오프닝 화면(Game Start 버튼 포함)을 가장 먼저 렌더링합니다.
+  // 💡 수정된 부분 3: 게임 오프닝 화면 (Game Start 버튼 포함)
   if (showOpening) {
     return (
       <div 
-        className="fixed inset-0 z-[200] flex flex-col items-center justify-end pb-32 select-none bg-black"
+        // 💡 justify-end pb-32를 justify-center로 변경하여 완벽한 상하 정중앙 배치
+        className="fixed inset-0 z-[200] flex flex-col items-center justify-center select-none bg-black"
         style={{
           backgroundImage: "url('/gameopening-bg.jpeg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
+          animation: 'fadeInOpening 2s ease-in-out forwards' // 💡 2초 동안 스르륵 나타나는 효과
         }}
       >
+        {/* 오프닝 화면 페이드인 애니메이션 CSS */}
+        <style>{`
+          @keyframes fadeInOpening {
+            from { opacity: 0; }
+            to { opacity: 1; }
+          }
+        `}</style>
+
         <button
           onClick={() => {
             setShowOpening(false); 
             setShowSplash(true);   
           }}
-          className="animate-pulse transition-all duration-200 active:scale-95 px-10 py-4 rounded-2xl border border-yellow-500/50 bg-black/60 backdrop-blur-sm text-yellow-500 font-black text-3xl tracking-widest drop-shadow-[0_0_15px_rgba(234,179,8,1)]"
+          // 💡 배경/테두리 제거, font-serif로 중세풍 적용, text-xl로 크기 축소, 자간(tracking) 넓힘
+          className="animate-pulse transition-all duration-300 active:scale-90 text-yellow-600/90 font-serif text-xl tracking-[0.4em] drop-shadow-[0_0_10px_rgba(202,138,4,0.6)]"
           style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
         >
           GAME START
