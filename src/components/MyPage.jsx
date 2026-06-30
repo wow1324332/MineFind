@@ -12,7 +12,7 @@ export default function MyPage({ onBack }) {
       <div 
         className="absolute inset-x-0 top-[15%] bottom-0 bg-cover bg-bottom bg-no-repeat opacity-60 z-0 pointer-events-none"
         style={{ 
-          backgroundImage: "url(/mypage-bg.jpeg')", // 🚨 새로 생성하신 로비 이미지 파일명으로 꼭 수정해주세요!
+          backgroundImage: "url('/mypage-bg.jpeg')", // 🚨 새로 생성하신 로비 이미지 파일명으로 꼭 수정해주세요!
           WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 25%, black 100%)',
           maskImage: 'linear-gradient(to bottom, transparent 0%, black 25%, black 100%)'
         }}
