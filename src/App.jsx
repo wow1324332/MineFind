@@ -434,7 +434,7 @@ export default function App() {
                     게임 플레이 기록이 <span className="text-red-400 font-black">저장되지 않습니다</span>.
                   </p>
                   
-                  <div className="flex justify-center items-center gap-4 w-full px-2 relative z-10">
+                  <div className="flex justify-center items-center gap-2 w-full px-2 relative z-10">
                     
                     {/* 확인(나가기) 버튼 - Back 이미지 */}
                     <button 
