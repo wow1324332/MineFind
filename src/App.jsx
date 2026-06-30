@@ -8,6 +8,7 @@ import HuntList from './components/HuntList';
 import DevilMineMode from './components/DevilMineMode';
 import DungeonSelection from './components/DungeonSelection';
 import { useAuth } from './hooks/useAuth';
+import MyPage from './components/MyPage';
 
 const SPLASH_CONFIG = {
   INITIAL: {
@@ -219,8 +220,20 @@ export default function App() {
 
   let currentView = null;
   switch (currentScreen) {
+    // 💡 헌트리스트에게 "마이페이지 버튼 누르면 MY_PAGE 화면으로 가줘"라고 신호를 전달합니다.
     case 'HUNT_LIST':
-      currentView = <HuntList onSelectDevilMine={handleSelectDevilMine} onLogout={logout} />;
+      currentView = (
+        <HuntList 
+          onSelectDevilMine={handleSelectDevilMine} 
+          onLogout={logout} 
+          onMyPage={() => setCurrentScreen('MY_PAGE')} 
+        />
+      );
+      break;
+
+    // 💡 마이페이지 화면을 그리는 규칙을 새로 추가했습니다. (뒤로가기 누르면 다시 헌트리스트로!)
+    case 'MY_PAGE':
+      currentView = <MyPage onBack={() => setCurrentScreen('HUNT_LIST')} />;
       break;
     
     case 'DEVIL_MINE_MODE':
