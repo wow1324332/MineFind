@@ -7,7 +7,7 @@ export default function MyPage({ onBack }) {
       {/* 배경 이미지 */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 z-0 pointer-events-none"
-        style={{ backgroundImage: "url('/Portallist-bg.jpg')" }}
+        style={{ backgroundImage: "url('/mypage-bg.jpeg')" }}
       ></div>
 
       <div className="relative z-10 w-full max-w-md flex flex-col items-center">
