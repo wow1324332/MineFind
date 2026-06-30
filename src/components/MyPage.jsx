@@ -35,7 +35,7 @@ export default function MyPage({ onBack }) {
           </div>
         </div>
 
-        {/* 💡 돌담 헤더: mb-6 였던 여백을 mb-0 으로 줄여서 아래쪽 공간을 싹 없앴습니다. */}
+        {/* 돌담 헤더 */}
         <div className="w-full max-w-sm h-12 -mt-1 mb-0 flex justify-between items-center relative z-10">
           <div 
             className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
@@ -59,8 +59,9 @@ export default function MyPage({ onBack }) {
           <div className="w-12 px-2"></div>
         </div>
         
-        {/* 💡 마이페이지 컨텐츠 영역: mt-0 였던 것을 -mt-4 로 변경하여 상자를 위로 강제로 확 끌어올렸습니다. */}
-        <div className="w-full max-w-sm flex flex-col items-center -mt-4 space-y-4 relative z-20">
+        {/* 💡 [수정됨] 간격을 없애기 위해 -mt-4를 -mt-16 으로 대폭 늘려 위로 확 끌어올렸습니다. 
+            만약 이보다 더 붙이고 싶으시다면 -mt-20 이나 -mt-[5rem] 등으로 숫자를 더 키워주시면 됩니다. */}
+        <div className="w-full max-w-sm flex flex-col items-center -mt-16 space-y-4 relative z-20">
           
           {/* 마이 프로필 휘장 버튼 */}
           <button 
