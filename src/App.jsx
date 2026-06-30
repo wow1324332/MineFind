@@ -443,7 +443,7 @@ export default function App() {
                         initGame();
                         setCurrentScreen('DUNGEON_SELECTION'); 
                       }}
-                      className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_0_10px_rgba(0,0,0,0.8)] select-none"
+                      className="w-24 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_0_10px_rgba(0,0,0,0.8)] select-none"
                       style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
                     >
                       <img 
@@ -460,7 +460,7 @@ export default function App() {
                         setShowExitPopup(false);
                         resumeTimer();
                       }}
-                      className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_0_15px_rgba(220,38,38,0.5)] select-none"
+                      className="w-24 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_0_15px_rgba(220,38,38,0.5)] select-none"
                       style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
                     >
                       <img 
