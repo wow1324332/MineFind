@@ -413,29 +413,28 @@ export default function App() {
               </div>
             )}
 
-            {/* 포탈 이탈 경고 팝업 (디테일 수정 완료) */}
             {showExitPopup && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
                 
-                {/* 1 & 3. 테두리(border) 제거, 쓸데없는 위아래 여백(p-6 -> py-5 px-4)을 줄여서 벽돌 배경이 꽉 차게 만듦 */}
                 <div 
-                  className="relative py-5 px-4 rounded-xl shadow-[0_0_40px_rgba(0,0,0,1)] max-w-xs w-full text-center flex flex-col items-center overflow-hidden"
+                  className="relative px-6 w-full max-w-[22rem] aspect-[1.3/1] flex flex-col items-center justify-center drop-shadow-[0_0_30px_rgba(0,0,0,1)]"
                   style={{ 
-                    backgroundImage: "url('/header-bg.jpg')",
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center'
+                    backgroundImage: "url('/popup-bg.png')",
+                    backgroundSize: '100% 100%', 
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat'
                   }}
                 >
-                  <div className="absolute inset-0 bg-black/60 pointer-events-none z-0"></div>
+                  {/* 텍스트가 바위의 복잡한 무늬에 묻히지 않도록, 중앙 부분에만 살짝 어두운 원형 그라데이션을 줍니다. */}
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black/50 via-black/10 to-transparent pointer-events-none z-0 rounded-3xl"></div>
 
-                  {/* 텍스트 아래쪽 여백(mb-4, mb-8)을 mb-2, mb-5로 대폭 축소하여 팝업 높이 다이어트 */}
-                  <h3 className="text-lg font-black text-red-500 mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,1)] relative z-10">포탈 이탈</h3>
-                  <p className="text-neutral-200 text-xs mb-5 leading-relaxed font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,1)] relative z-10">
+                  <h3 className="text-xl font-black text-red-500 mb-2 drop-shadow-[0_2px_5px_rgba(0,0,0,1)] relative z-10">포탈 이탈</h3>
+                  <p className="text-neutral-200 text-sm mb-5 leading-relaxed font-bold drop-shadow-[0_2px_5px_rgba(0,0,0,1)] relative z-10 text-center">
                     정말 나가시겠습니까?<br/>
                     게임 플레이 기록이 <span className="text-red-400 font-black">저장되지 않습니다</span>.
                   </p>
                   
-                  <div className="flex justify-center items-center gap-3 w-full relative z-10">
+                  <div className="flex justify-center items-center gap-4 w-full px-2 relative z-10">
                     
                     {/* 확인(나가기) 버튼 - Back 이미지 */}
                     <button 
