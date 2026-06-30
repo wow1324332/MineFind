@@ -74,7 +74,11 @@ export default function App() {
   } = useMinesweeper();
 
   const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const [showSplash, setShowSplash] = useState(true);
+  
+  // 💡 수정된 부분 1: 오프닝 화면은 켜고(true), 로딩 화면은 꺼둔(false) 상태로 시작합니다.
+  const [showOpening, setShowOpening] = useState(true);
+  const [showSplash, setShowSplash] = useState(false); 
+  
   const [currentScreen, setCurrentScreen] = useState('HUNT_LIST_LOADING');
   const [currentDungeon, setCurrentDungeon] = useState('fire');
   const [currentDifficulty, setCurrentDifficulty] = useState('Normal');
@@ -98,12 +102,15 @@ export default function App() {
     return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
   }, []);
 
+  // 💡 수정된 부분 2: Game Start 버튼을 눌러 showSplash가 true가 되었을 때만 3초 타이머가 돕니다.
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSplash(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
+    if (showSplash) {
+      const timer = setTimeout(() => {
+        setShowSplash(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showSplash]);
 
   const [showToast, setShowToast] = useState(false);
   const lastBackPressTime = useRef(0);
@@ -170,9 +177,9 @@ export default function App() {
 
   const handleSelectDungeon = (dungeonId, selectedDifficulty) => {
     setCurrentDungeon(dungeonId); 
-    setCurrentDifficulty(selectedDifficulty); // 난이도 상태 저장
+    setCurrentDifficulty(selectedDifficulty); 
 
-    initGame(selectedDifficulty); // 💡 이제 initGame에 난이도를 전달합니다.
+    initGame(selectedDifficulty); 
 
     if (dungeonId === 'fire') {
       setCurrentScreen('FIRE_DUNGEON_LOADING');
@@ -183,6 +190,31 @@ export default function App() {
     }
     setTimeout(() => setCurrentScreen('GAME_PVE'), 2000);
   };
+
+  // 💡 수정된 부분 3: 게임 오프닝 화면(Game Start 버튼 포함)을 가장 먼저 렌더링합니다.
+  if (showOpening) {
+    return (
+      <div 
+        className="fixed inset-0 z-[200] flex flex-col items-center justify-end pb-32 select-none bg-black"
+        style={{
+          backgroundImage: "url('/gameopening-bg.jpeg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <button
+          onClick={() => {
+            setShowOpening(false); 
+            setShowSplash(true);   
+          }}
+          className="animate-pulse transition-all duration-200 active:scale-95 px-10 py-4 rounded-2xl border border-yellow-500/50 bg-black/60 backdrop-blur-sm text-yellow-500 font-black text-3xl tracking-widest drop-shadow-[0_0_15px_rgba(234,179,8,1)]"
+          style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+        >
+          GAME START
+        </button>
+      </div>
+    );
+  }
 
   if (loading || showSplash) {
     return <SplashScreen {...SPLASH_CONFIG.INITIAL} />;
@@ -215,7 +247,6 @@ export default function App() {
       currentView = (
         <div className="min-h-screen bg-black flex flex-col items-center justify-start pt-0 px-4 pb-4 select-none touch-manipulation">
           
-          {/* 💡 [추가] 게임 화면 최상단 타이틀 이미지 (벽돌 헤더 위쪽) */}
           <div className="w-full max-w-sm flex justify-center relative z-10 drop-shadow-[0_10px_15px_rgba(0,0,0,0.8)]">
             <img 
               src={currentDungeon === 'fire' ? "/hellofflame-title.jpg" : "/hellofaqua-title.jpg"} 
@@ -226,7 +257,6 @@ export default function App() {
             <div className="absolute bottom-0 w-full h-8 bg-gradient-to-t from-black to-transparent"></div>
           </div>
 
-          {/* 벽돌 헤더 영역 */}
           <div className="w-full max-w-sm h-12 flex justify-between items-center relative z-10 mb-4">
             <div 
               className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
@@ -253,7 +283,6 @@ export default function App() {
             <div className="w-8 px-2"></div>
           </div>
 
-          {/* 게임 보드 영역 */}
           <div 
             className="p-4 sm:p-6 rounded-2xl shadow-2xl max-w-full relative z-10 bg-cover bg-center"
             style={{ backgroundImage: "url('/dungeoninsite-bg.jpg')" }}
@@ -261,22 +290,16 @@ export default function App() {
             <Header minesLeft={minesLeft} gameStatus={gameStatus} timeElapsed={timeElapsed} onReset={() => initGame()} dungeon={currentDungeon} />
             <Board board={board} onCellClick={handleCellClick} onCellRightClick={toggleFlag} dungeon={currentDungeon} />
             
-            {/* 💡 기존 승리/패배 텍스트 부분을 아래 코드로 완전히 교체합니다! */}
-            
-            {/* 1. 승리했을 때의 화면 (기존 텍스트 유지) */}
-            {/* 1. 승리(Won)했을 때 스르륵 나타나는 풀스크린 오버레이 */}
             {gameStatus === 'won' && (
               <div 
                 className="fixed inset-0 z-[100] flex flex-col justify-end pb-8"
                 style={{ 
-                  // 💡 불의 던전 승리 배경 / 물의 던전 승리 배경 분기
                   backgroundImage: `url(${currentDungeon === 'fire' ? '/hellofflamewin.jpeg' : '/hellofaquawin.jpeg'})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   animation: 'fadeInOverlay 1.0s cubic-bezier(0.25, 1, 0.5, 1) forwards'
                 }}
               >
-                {/* 페이드인 애니메이션용 CSS (패배 화면과 동일) */}
                 <style>{`
                   @keyframes fadeInOverlay {
                     from { opacity: 0; }
@@ -284,14 +307,10 @@ export default function App() {
                   }
                 `}</style>
                 
-                {/* 💡 화면을 어둡게 가려주는 암전 레이어 */}
-                {/* 패배 화면(75)보다 배경의 황금빛이 잘 보이도록 40~50 정도로 옅게 설정했습니다. 원하시면 수정 가능합니다! */}
                 <div className="absolute inset-0 bg-black/50 pointer-events-none z-0"></div>
                 
-                {/* 하단 버튼 영역 (이미지 버튼) */}
                 <div className="flex justify-center items-center gap-4 px-6 mb-8 w-full max-w-md mx-auto relative z-10">
                   
-                  {/* Back 버튼 */}
                   <button 
                     onClick={() => {
                       initGame();
@@ -308,10 +327,8 @@ export default function App() {
                     />
                   </button>
                   
-                  {/* Replay 버튼 */}
                   <button 
                     onClick={() => initGame()}
-                    // 💡 디테일: 승리 화면의 성스러운 분위기에 맞춰 그림자를 붉은색 대신 황금빛(rgba(234,179,8,0.4))으로 변경했습니다!
                     className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(234,179,8,0.4)] select-none"
                     style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
                   >
@@ -325,12 +342,10 @@ export default function App() {
                   
                 </div>
                 
-                {/* 하단 어두운 그라데이션 */}
                 <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent pointer-events-none z-0"></div>
               </div>
             )}
 
-            {/* 2. 패배(Lose)했을 때 스르륵 나타나는 풀스크린 오버레이 (정밀 정렬 및 검증 완료) */}
             {gameStatus === 'lost' && (
               <div 
                 className="fixed inset-0 z-[100] flex flex-col justify-end pb-8"
@@ -341,7 +356,6 @@ export default function App() {
                   animation: 'fadeInOverlay 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards'
                 }}
               >
-                {/* 페이드인 애니메이션용 CSS */}
                 <style>{`
                   @keyframes fadeInOverlay {
                     from { opacity: 0; }
@@ -349,13 +363,10 @@ export default function App() {
                   }
                 `}</style>
                 
-                {/* 화면을 어둡게 가려주는 암전 레이어 */}
                 <div className="absolute inset-0 bg-black/50 pointer-events-none z-0"></div>
                 
-                {/* 하단 버튼 영역 (이미지 버튼) */}
                 <div className="flex justify-center items-center gap-4 px-6 mb-8 w-full max-w-md mx-auto relative z-10">
                   
-                  {/* Back 버튼 */}
                   <button 
                     onClick={() => {
                       initGame();
@@ -372,7 +383,6 @@ export default function App() {
                     />
                   </button>
                   
-                  {/* Replay 버튼 */}
                   <button 
                     onClick={() => initGame()}
                     className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(220,38,38,0.3)] select-none"
@@ -388,12 +398,10 @@ export default function App() {
                   
                 </div>
                 
-                {/* 하단 어두운 그라데이션 */}
                 <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent pointer-events-none z-0"></div>
               </div>
             )}
 
-            {/* 포탈 이탈 경고 팝업 */}
             {showExitPopup && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
                 <div className="bg-neutral-950 border border-neutral-700 p-6 rounded-2xl shadow-[0_0_30px_rgba(0,0,0,1)] max-w-xs w-full text-center flex flex-col items-center">
