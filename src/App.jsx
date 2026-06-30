@@ -240,15 +240,14 @@ export default function App() {
       const config = SPLASH_CONFIG[currentScreen] || SPLASH_CONFIG.GAME_LOADING;
     
       // 💡 데빌마인 로딩(MODE_LOADING)일 때만 기존 로딩바 위에 글씨를 겹쳐서 띄웁니다.
-    if (currentScreen === 'MODE_LOADING') {
+  if (currentScreen === 'MODE_LOADING') {
       return (
         <div className="relative w-full h-full">
-          {/* 원래 쓰시던 로딩바와 폰트 이미지가 담긴 오리지널 SplashScreen을 그대로 렌더링합니다. */}
           <SplashScreen {...config} />
           
-          {/* 📜 그 위에 양피지 로고 위치에 맞춰서 잉크 글씨만 싹 얹어줍니다. */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-50 text-center p-8 pb-20">
-            <p className="text-[#2c1c16] font-serif font-black text-lg md:text-xl leading-loose tracking-widest opacity-90 mix-blend-multiply">
+          {/* 💡 z-index를 999로 대폭 올리고, mix-blend-multiply를 제거했습니다. */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-[999] text-center p-8 pb-20">
+            <p className="text-[#2a1a11] font-serif font-black text-lg md:text-xl leading-loose tracking-widest drop-shadow-[0_1px_1px_rgba(255,255,255,0.2)]">
               고대 악마의 신전에서<br/>
               악마를 봉인하고<br/>
               던전을 정화하세요..
