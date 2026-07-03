@@ -53,18 +53,14 @@ export const placeMinesAndCalculate = (board, firstR, firstC, totalMines) => {
 
     let canPlace = true;
     
-    // 💡 [핵심 1] 룰 유연화: 시도 횟수가 절반을 넘어가면 공간이 없다는 뜻이므로 Max 5 룰을 무시합니다.
-    const isStrictRule = attempts < (maxAttempts / 2);
-
-    if (isStrictRule) {
-      for (let [dr, dc] of DIRECTIONS) {
-        const nr = r + dr;
-        const nc = c + dc;
-        if (nr >= 0 && nr < GAME_CONFIG.ROWS && nc >= 0 && nc < GAME_CONFIG.COLS) {
-          if (board[nr][nc].neighborMines >= 5) {
-            canPlace = false;
-            break;
-          }
+    // 💡 [핵심 복구] 5개 초과 불가 룰을 절대 타협하지 않고 무조건 적용합니다!
+    for (let [dr, dc] of DIRECTIONS) {
+      const nr = r + dr;
+      const nc = c + dc;
+      if (nr >= 0 && nr < GAME_CONFIG.ROWS && nc >= 0 && nc < GAME_CONFIG.COLS) {
+        if (board[nr][nc].neighborMines >= 5) {
+          canPlace = false;
+          break;
         }
       }
     }
@@ -82,7 +78,8 @@ export const placeMinesAndCalculate = (board, firstR, firstC, totalMines) => {
     }
   }
 
-  // 💡 [핵심 2] 실제로 보드에 깔린 진짜 지뢰 갯수를 반환하여 UI 카운터와 동기화합니다!
+  // 💡 룰이 너무 빡세서 목표치보다 덜 깔렸더라도, 
+  // 여기서 반환된 숫자가 useMinesweeper.js를 통해 화면 카운터를 완벽하게 맞춰줍니다!
   return minesPlaced;
 };
 
