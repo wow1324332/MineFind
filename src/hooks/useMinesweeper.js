@@ -10,10 +10,8 @@ export const useMinesweeper = () => {
   const [isFlagMode, setIsFlagMode] = useState(false);
   const timerRef = useRef(null);
   
-  // 💡 훅 내부에서도 난이도를 기억해야 하므로 상태를 하나 만듭니다.
   const [difficultyLevel, setDifficultyLevel] = useState('Normal');
 
-  // 💡 initGame이 난이도를 받아서 처리하도록 수정합니다.
   const initGame = useCallback((newDifficulty) => {
     const targetDifficulty = newDifficulty || difficultyLevel;
     if (newDifficulty) setDifficultyLevel(newDifficulty);
@@ -22,7 +20,6 @@ export const useMinesweeper = () => {
     setGameStatus('idle');
     setIsFirstClick(true);
     
-    // 💡 고정된 숫자가 아니라, 난이도에 맞는 지뢰 개수(임시)를 화면에 띄웁니다.
     setMinesLeft(getMineCount(targetDifficulty)); 
     
     setTimeElapsed(0);
@@ -41,13 +38,11 @@ export const useMinesweeper = () => {
     }
   };
 
-  // 💡 [추가] 팝업이 떴을 때 타이머를 잠시 멈추는 함수
   const pauseTimer = useCallback(() => {
     clearInterval(timerRef.current);
     timerRef.current = null;
   }, []);
 
-  // 💡 [추가] 팝업을 취소하고 다시 게임으로 돌아갈 때 타이머를 살리는 함수
   const resumeTimer = useCallback(() => {
     if (gameStatus === 'playing' && !timerRef.current) {
       timerRef.current = setInterval(() => setTimeElapsed(prev => prev + 1), 1000);
@@ -91,9 +86,13 @@ export const useMinesweeper = () => {
       setIsFirstClick(false);
       setGameStatus('playing');
       startTimer();
-      // 💡 선택한 난이도(difficultyLevel)에 맞춰 지뢰 개수를 구해서 넘겨줍니다!
+      
       const totalMinesToPlace = getMineCount(difficultyLevel);
-      placeMinesAndCalculate(newBoard, r, c, totalMinesToPlace);
+      // 💡 [핵심 해결] gameLogic.js에서 반환된 '실제 땅에 심어진 지뢰 개수'를 받아옵니다.
+      const actualPlacedMines = placeMinesAndCalculate(newBoard, r, c, totalMinesToPlace);
+      
+      // 💡 [핵심 해결] 초기 화면용 카운터 숫자를 실제 심어진 정확한 숫자로 완전히 덮어씌웁니다.
+      setMinesLeft(actualPlacedMines);
     }
 
     cell.isRevealed = true;
@@ -113,6 +112,6 @@ export const useMinesweeper = () => {
   return {
     board, gameStatus, minesLeft, timeElapsed, isFlagMode,
     setIsFlagMode, initGame, handleCellClick, toggleFlag,
-    pauseTimer, resumeTimer // 💡 [추가] 새로 만든 두 함수를 밖으로 꺼내줍니다.
+    pauseTimer, resumeTimer
   };
 };
