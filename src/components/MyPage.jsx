@@ -98,7 +98,8 @@ export default function MyPage({ onBack }) {
         </div>
 
         {/* 돌담 헤더 */}
-        <div className="w-full max-w-sm h-12 -mt-1 mb-0 flex justify-between items-center relative z-10">
+        {/* 💡 [핵심 수정] z-10 이었던 값을 z-30으로 대폭 올려서 무조건 최상단에 오도록 덮어씌웠습니다. */}
+        <div className="w-full max-w-sm h-12 -mt-1 mb-0 flex justify-between items-center relative z-30">
           <div 
             className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
             style={{ 
@@ -112,7 +113,7 @@ export default function MyPage({ onBack }) {
 
           <button 
             onClick={onBack}
-            className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2 select-none z-30"
+            className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2 select-none"
             style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
           >
             <img src="/My-icon.png" alt="Back" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
@@ -130,7 +131,8 @@ export default function MyPage({ onBack }) {
         </div>
         
         {/* 컨텐츠 영역 */}
-        <div className="w-full max-w-sm flex flex-col items-center -mt-16 space-y-4 relative z-20">
+        {/* 💡 [핵심 수정] z-20 이었던 값을 z-10으로 내려서 헤더 버튼을 덮어버리지 못하게 낮췄습니다. */}
+        <div className="w-full max-w-sm flex flex-col items-center -mt-16 space-y-4 relative z-10">
           
           {/* 마이 프로필 휘장 버튼 */}
           <button 
@@ -158,14 +160,12 @@ export default function MyPage({ onBack }) {
             onClick={() => setIsProfileOpen(false)}
           ></div>
           
-          {/* 💡 [수정] 모달 테두리(border-2)를 완벽하게 제거했습니다. */}
           <div className="relative z-10 w-full max-w-sm bg-neutral-900 rounded-xl p-6 shadow-2xl flex flex-col items-center">
             
             <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-amber-300 mb-6 font-serif tracking-wider">
               My Profile
             </h2>
 
-            {/* 계정 정보 구역 */}
             <div className="w-full bg-black/40 border border-neutral-800 rounded-lg p-5 mb-4 flex flex-col items-start space-y-3">
               <label className="text-xs font-bold text-amber-500/80 tracking-wider uppercase border-b border-neutral-700 pb-2 w-full text-left">
                 Account Info
@@ -185,17 +185,14 @@ export default function MyPage({ onBack }) {
                       : '-'}
                   </span>
                 </div>
-                {/* 💡 고유 ID 줄이 흔적 없이 제거되었습니다. */}
               </div>
             </div>
             
-            {/* 💡 [수정] 내부 여백을 p-5에서 p-4로 줄여 인풋창 영역 확보 */}
             <div className="w-full bg-black/40 border border-neutral-800 rounded-lg p-4 mb-6 flex flex-col items-start space-y-2">
               <label className="text-xs font-bold text-amber-500/80 tracking-wider uppercase">
                 Change Nickname
               </label>
               
-              {/* 💡 [수정] 인풋 필드가 유연하게 줄어들고 버튼이 찌그러지거나 튀어나가지 않도록 반응형 플렉스 적용 */}
               <div className="w-full flex space-x-2 items-center">
                 <input 
                   type="text"
