@@ -8,7 +8,6 @@ export default function MyPage({ onBack }) {
   const [nickname, setNickname] = useState(''); 
   const [tempNickname, setTempNickname] = useState('');
   
-  // 💡 파이어베이스 Auth에서 로그인한 유저의 정보(이메일, uid 등)를 담고 있는 객체입니다.
   const { user } = useAuth(); 
 
   useEffect(() => {
@@ -159,13 +158,14 @@ export default function MyPage({ onBack }) {
             onClick={() => setIsProfileOpen(false)}
           ></div>
           
-          <div className="relative z-10 w-full max-w-sm bg-neutral-900 border-2 border-amber-700/60 rounded-xl p-6 shadow-2xl flex flex-col items-center">
+          {/* 💡 [수정] 모달 테두리(border-2)를 완벽하게 제거했습니다. */}
+          <div className="relative z-10 w-full max-w-sm bg-neutral-900 rounded-xl p-6 shadow-2xl flex flex-col items-center">
             
             <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-amber-300 mb-6 font-serif tracking-wider">
               My Profile
             </h2>
 
-            {/* 💡 새로 추가된 계정 정보 구역 */}
+            {/* 계정 정보 구역 */}
             <div className="w-full bg-black/40 border border-neutral-800 rounded-lg p-5 mb-4 flex flex-col items-start space-y-3">
               <label className="text-xs font-bold text-amber-500/80 tracking-wider uppercase border-b border-neutral-700 pb-2 w-full text-left">
                 Account Info
@@ -180,40 +180,34 @@ export default function MyPage({ onBack }) {
                 <div className="flex justify-between items-center">
                   <span className="text-neutral-500">가입일</span>
                   <span className="text-neutral-200">
-                    {/* 파이어베이스 메타데이터에서 가입일을 한국 시간 포맷으로 변환하여 보여줍니다. */}
                     {user?.metadata?.creationTime 
                       ? new Date(user.metadata.creationTime).toLocaleDateString('ko-KR') 
                       : '-'}
                   </span>
                 </div>
-
-                <div className="flex justify-between items-center">
-                  <span className="text-neutral-500">고유 ID</span>
-                  {/* UID는 길기 때문에 잘라서(truncate) 표시합니다. */}
-                  <span className="text-neutral-600 text-xs truncate max-w-[120px]">
-                    {user?.uid || '-'}
-                  </span>
-                </div>
+                {/* 💡 고유 ID 줄이 흔적 없이 제거되었습니다. */}
               </div>
             </div>
             
-            {/* 기존 닉네임 설정 메뉴 구역 */}
-            <div className="w-full bg-black/40 border border-neutral-800 rounded-lg p-5 mb-6 flex flex-col items-start space-y-2">
+            {/* 💡 [수정] 내부 여백을 p-5에서 p-4로 줄여 인풋창 영역 확보 */}
+            <div className="w-full bg-black/40 border border-neutral-800 rounded-lg p-4 mb-6 flex flex-col items-start space-y-2">
               <label className="text-xs font-bold text-amber-500/80 tracking-wider uppercase">
                 Change Nickname
               </label>
-              <div className="w-full flex space-x-2">
+              
+              {/* 💡 [수정] 인풋 필드가 유연하게 줄어들고 버튼이 찌그러지거나 튀어나가지 않도록 반응형 플렉스 적용 */}
+              <div className="w-full flex space-x-2 items-center">
                 <input 
                   type="text"
                   value={tempNickname}
                   onChange={(e) => setTempNickname(e.target.value)}
                   maxLength={10}
-                  className="flex-1 bg-neutral-950 border border-neutral-700 rounded px-3 py-2 text-sm text-neutral-200 focus:outline-none focus:border-amber-600 transition-colors"
+                  className="flex-1 min-w-0 bg-neutral-950 border border-neutral-700 rounded px-2.5 py-2 text-sm text-neutral-200 focus:outline-none focus:border-amber-600 transition-colors"
                   placeholder="닉네임 입력 (최대 10자)"
                 />
                 <button
                   onClick={handleSaveNickname}
-                  className="px-4 py-2 bg-gradient-to-b from-amber-600 to-amber-800 hover:from-amber-500 hover:to-amber-700 border border-amber-900/50 rounded text-xs font-bold text-white transition-all active:scale-95 shadow-md"
+                  className="shrink-0 px-3.5 py-2 bg-gradient-to-b from-amber-600 to-amber-800 hover:from-amber-500 hover:to-amber-700 border border-amber-900/50 rounded text-xs font-bold text-white transition-all active:scale-95 shadow-md"
                 >
                   변경
                 </button>
