@@ -97,7 +97,7 @@ export default function MyPage({ onBack }) {
           </div>
         </div>
 
-        {/* 돌담 헤더 (z-30 유지) */}
+        {/* 돌담 헤더 */}
         <div className="w-full max-w-sm h-12 -mt-1 mb-0 flex justify-between items-center relative z-30">
           <div 
             className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
@@ -129,7 +129,7 @@ export default function MyPage({ onBack }) {
           <div className="w-12 px-2 pointer-events-none"></div>
         </div>
         
-        {/* 컨텐츠 영역 (z-10 유지) */}
+        {/* 컨텐츠 영역 */}
         <div className="w-full max-w-sm flex flex-col items-center -mt-16 space-y-4 relative z-10">
           
           {/* 마이 프로필 휘장 버튼 */}
@@ -153,24 +153,20 @@ export default function MyPage({ onBack }) {
       {isProfileOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-6 animate-[fadeIn_0.2s_ease-in-out]">
           
-          {/* 어두운 오버레이 배경 */}
           <div 
             className="absolute inset-0 bg-black/80 backdrop-blur-sm"
             onClick={() => setIsProfileOpen(false)}
           ></div>
           
-          {/* 💡 [핵심 수정] 양피지 이미지를 배경으로 설정하고 글자색을 진갈색(amber-950)으로 반전시켰습니다. */}
           <div 
             className="relative z-10 w-full max-w-sm rounded-xl p-6 shadow-[0_0_30px_rgba(0,0,0,0.8)] flex flex-col items-center bg-cover bg-center"
             style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}
           >
             
-            {/* 타이틀: 잉크로 쓴 듯한 폰트와 밑줄 */}
             <h2 className="text-2xl font-bold text-amber-950 mb-6 font-serif tracking-wider drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)] border-b-2 border-amber-900/30 pb-2 w-full text-center">
               My Profile
             </h2>
 
-            {/* 계정 정보 구역: 종이 질감에 맞게 배경 투명도와 테두리를 갈색으로 조정 */}
             <div className="w-full bg-amber-950/10 border border-amber-900/30 rounded-lg p-5 mb-4 flex flex-col items-start space-y-3 shadow-inner">
               <label className="text-xs font-bold text-amber-900 tracking-wider uppercase border-b border-amber-900/20 pb-2 w-full text-left">
                 Account Info
@@ -193,17 +189,40 @@ export default function MyPage({ onBack }) {
               </div>
             </div>
             
-            {/* 닉네임 변경 구역 */}
             <div className="w-full bg-amber-950/10 border border-amber-900/30 rounded-lg p-4 mb-6 flex flex-col items-start space-y-2 shadow-inner">
               <label className="text-xs font-bold text-amber-900 tracking-wider uppercase">
                 Change Nickname
               </label>
               
               <div className="w-full flex space-x-2 items-center mt-1">
-                {/* 인풋 필드: 투명하게 만들고 테두리만 잉크색으로 부여 */}
                 <input 
                   type="text"
                   value={tempNickname}
                   onChange={(e) => setTempNickname(e.target.value)}
                   maxLength={10}
-                  className="flex-1 min-w-0 bg-transparent border border-amber-900/50 rounded px-
+                  className="flex-1 min-w-0 bg-transparent border border-amber-900/50 rounded px-2.5 py-2 text-sm text-amber-950 font-bold focus:outline-none focus:border-amber-700 focus:bg-white/30 transition-colors placeholder-amber-900/40"
+                  placeholder="닉네임 입력 (최대 10자)"
+                />
+                <button
+                  onClick={handleSaveNickname}
+                  className="shrink-0 px-3.5 py-2 bg-gradient-to-b from-amber-700 to-amber-900 hover:from-amber-600 hover:to-amber-800 border border-amber-950/50 rounded text-xs font-bold text-amber-50 transition-all active:scale-95 shadow-md"
+                >
+                  변경
+                </button>
+              </div>
+            </div>
+
+            <button 
+              onClick={() => setIsProfileOpen(false)}
+              className="px-8 py-2 bg-amber-900/10 hover:bg-amber-900/20 border border-amber-900/50 rounded text-xs font-bold text-amber-950 transition-all active:scale-95"
+            >
+              닫기
+            </button>
+
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
+}
