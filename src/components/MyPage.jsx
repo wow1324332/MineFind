@@ -5,10 +5,10 @@ import { useAuth } from '../hooks/useAuth';
 
 export default function MyPage({ onBack }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  // 💡 초기값을 빈 문자열('')로 설정하여 로딩 중이거나 설정하지 않았을 때 안 보이게 합니다.
   const [nickname, setNickname] = useState(''); 
   const [tempNickname, setTempNickname] = useState('');
   
+  // 💡 파이어베이스 Auth에서 로그인한 유저의 정보(이메일, uid 등)를 담고 있는 객체입니다.
   const { user } = useAuth(); 
 
   useEffect(() => {
@@ -19,11 +19,10 @@ export default function MyPage({ onBack }) {
         const userDocRef = doc(db, 'users', user.uid);
         const userDoc = await getDoc(userDocRef);
         
-        // 💡 파이어베이스에 닉네임이 존재할 때만 상태를 업데이트합니다. 
         if (userDoc.exists() && userDoc.data().nickname) {
           setNickname(userDoc.data().nickname);
         } else {
-          setNickname(''); // 닉네임이 없으면 빈 값 유지 ("용사" 삭제)
+          setNickname(''); 
         }
       } catch (error) {
         console.error("파이어베이스 데이터 로딩 실패:", error);
@@ -112,7 +111,6 @@ export default function MyPage({ onBack }) {
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
 
-          {/* 왼쪽 뒤로 가기 버튼 */}
           <button 
             onClick={onBack}
             className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2 select-none z-30"
@@ -121,7 +119,6 @@ export default function MyPage({ onBack }) {
             <img src="/My-icon.png" alt="Back" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
           </button>
           
-          {/* 💡 조건부 렌더링: 닉네임이 있을 때만 화면에 표시하고, 폰트 사이즈를 text-base로 줄였습니다. */}
           {nickname && (
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
               <span className="text-base font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-b from-yellow-100 via-amber-200 to-yellow-500 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] font-serif">
@@ -167,8 +164,40 @@ export default function MyPage({ onBack }) {
             <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-amber-300 mb-6 font-serif tracking-wider">
               My Profile
             </h2>
+
+            {/* 💡 새로 추가된 계정 정보 구역 */}
+            <div className="w-full bg-black/40 border border-neutral-800 rounded-lg p-5 mb-4 flex flex-col items-start space-y-3">
+              <label className="text-xs font-bold text-amber-500/80 tracking-wider uppercase border-b border-neutral-700 pb-2 w-full text-left">
+                Account Info
+              </label>
+              
+              <div className="w-full flex flex-col space-y-2 text-sm">
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-500">이메일</span>
+                  <span className="text-neutral-200">{user?.email || '알 수 없음'}</span>
+                </div>
+                
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-500">가입일</span>
+                  <span className="text-neutral-200">
+                    {/* 파이어베이스 메타데이터에서 가입일을 한국 시간 포맷으로 변환하여 보여줍니다. */}
+                    {user?.metadata?.creationTime 
+                      ? new Date(user.metadata.creationTime).toLocaleDateString('ko-KR') 
+                      : '-'}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-500">고유 ID</span>
+                  {/* UID는 길기 때문에 잘라서(truncate) 표시합니다. */}
+                  <span className="text-neutral-600 text-xs truncate max-w-[120px]">
+                    {user?.uid || '-'}
+                  </span>
+                </div>
+              </div>
+            </div>
             
-            {/* 닉네임 설정 메뉴 구역 */}
+            {/* 기존 닉네임 설정 메뉴 구역 */}
             <div className="w-full bg-black/40 border border-neutral-800 rounded-lg p-5 mb-6 flex flex-col items-start space-y-2">
               <label className="text-xs font-bold text-amber-500/80 tracking-wider uppercase">
                 Change Nickname
