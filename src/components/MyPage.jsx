@@ -1,50 +1,45 @@
 import React, { useState, useEffect } from 'react';
-// 💡 파이어베이스 핵심 기능들을 불러옵니다.
 import { doc, getDoc, setDoc } from 'firebase/firestore'; 
-// 🚨 본인의 프로젝트 구조에 맞게 firebase 설정(db) 파일과 로그인(useAuth) 훅의 경로를 꼭 확인해주세요!
 import { db } from '../firebase'; 
 import { useAuth } from '../hooks/useAuth'; 
 
 export default function MyPage({ onBack }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [nickname, setNickname] = useState('로딩 중...'); // 초기 로딩 상태 표시
+  // 💡 초기값을 빈 문자열('')로 설정하여 로딩 중이거나 설정하지 않았을 때 안 보이게 합니다.
+  const [nickname, setNickname] = useState(''); 
   const [tempNickname, setTempNickname] = useState('');
   
-  // 💡 현재 로그인된 유저의 고유 ID(uid)를 가져옵니다.
   const { user } = useAuth(); 
 
-  // 💡 1. 화면이 켜지면 파이어베이스 구름 데이터베이스에서 유저의 진짜 닉네임을 불러옵니다.
   useEffect(() => {
     if (!user) return;
 
     const fetchUserData = async () => {
       try {
-        // users 콜렉션에서 현재 로그인한 유저의 UID를 이름으로 가진 문서를 찾습니다.
         const userDocRef = doc(db, 'users', user.uid);
         const userDoc = await getDoc(userDocRef);
         
+        // 💡 파이어베이스에 닉네임이 존재할 때만 상태를 업데이트합니다. 
         if (userDoc.exists() && userDoc.data().nickname) {
           setNickname(userDoc.data().nickname);
         } else {
-          setNickname('용사'); // 파이어베이스에 저장된 게 없다면 기본값 세팅
+          setNickname(''); // 닉네임이 없으면 빈 값 유지 ("용사" 삭제)
         }
       } catch (error) {
         console.error("파이어베이스 데이터 로딩 실패:", error);
-        setNickname('용사');
+        setNickname('');
       }
     };
 
     fetchUserData();
   }, [user]);
 
-  // 모달이 열릴 때 현재 닉네임을 인풋창에 미리 넣어줍니다.
   useEffect(() => {
     if (isProfileOpen) {
-      setTempNickname(nickname === '로딩 중...' ? '' : nickname);
+      setTempNickname(nickname);
     }
   }, [isProfileOpen, nickname]);
 
-  // 💡 2. [변경] 버튼을 누르면 파이어베이스에 영구 저장합니다. (절대 날아가지 않음)
   const handleSaveNickname = async () => {
     if (!tempNickname.trim()) {
       alert('닉네임을 입력해주세요!');
@@ -62,11 +57,10 @@ export default function MyPage({ onBack }) {
     try {
       const userDocRef = doc(db, 'users', user.uid);
       
-      // { merge: true } 를 주어야 기존 유저 문서에 레벨, 골드 등 다른 정보가 있어도 날아가지 않고 닉네임만 쏙 바뀝니다.
       await setDoc(userDocRef, { nickname: tempNickname }, { merge: true });
       
-      setNickname(tempNickname); // 화면에 실시간 반영
-      setIsProfileOpen(false); // 모달 닫기
+      setNickname(tempNickname); 
+      setIsProfileOpen(false); 
     } catch (error) {
       console.error("파이어베이스 저장 에러:", error);
       alert('데이터베이스 저장에 실패했습니다. 다시 시도해주세요.');
@@ -127,17 +121,19 @@ export default function MyPage({ onBack }) {
             <img src="/My-icon.png" alt="Back" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
           </button>
           
-          {/* 헤더 중앙 닉네임 표시 (파이어베이스에서 받아온 값 연동) */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-            <span className="text-lg font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-b from-yellow-100 via-amber-200 to-yellow-500 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] font-serif">
-              {nickname}
-            </span>
-          </div>
+          {/* 💡 조건부 렌더링: 닉네임이 있을 때만 화면에 표시하고, 폰트 사이즈를 text-base로 줄였습니다. */}
+          {nickname && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+              <span className="text-base font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-b from-yellow-100 via-amber-200 to-yellow-500 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] font-serif">
+                {nickname}
+              </span>
+            </div>
+          )}
           
           <div className="w-12 px-2 pointer-events-none"></div>
         </div>
         
-        {/* 간격 긴밀하게 유지 완료 (-mt-16) */}
+        {/* 컨텐츠 영역 */}
         <div className="w-full max-w-sm flex flex-col items-center -mt-16 space-y-4 relative z-20">
           
           {/* 마이 프로필 휘장 버튼 */}
