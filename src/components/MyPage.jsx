@@ -97,8 +97,7 @@ export default function MyPage({ onBack }) {
           </div>
         </div>
 
-        {/* 돌담 헤더 */}
-        {/* 💡 [핵심 수정] z-10 이었던 값을 z-30으로 대폭 올려서 무조건 최상단에 오도록 덮어씌웠습니다. */}
+        {/* 돌담 헤더 (z-30 유지) */}
         <div className="w-full max-w-sm h-12 -mt-1 mb-0 flex justify-between items-center relative z-30">
           <div 
             className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
@@ -130,8 +129,7 @@ export default function MyPage({ onBack }) {
           <div className="w-12 px-2 pointer-events-none"></div>
         </div>
         
-        {/* 컨텐츠 영역 */}
-        {/* 💡 [핵심 수정] z-20 이었던 값을 z-10으로 내려서 헤더 버튼을 덮어버리지 못하게 낮췄습니다. */}
+        {/* 컨텐츠 영역 (z-10 유지) */}
         <div className="w-full max-w-sm flex flex-col items-center -mt-16 space-y-4 relative z-10">
           
           {/* 마이 프로필 휘장 버튼 */}
@@ -155,31 +153,38 @@ export default function MyPage({ onBack }) {
       {isProfileOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-6 animate-[fadeIn_0.2s_ease-in-out]">
           
+          {/* 어두운 오버레이 배경 */}
           <div 
             className="absolute inset-0 bg-black/80 backdrop-blur-sm"
             onClick={() => setIsProfileOpen(false)}
           ></div>
           
-          <div className="relative z-10 w-full max-w-sm bg-neutral-900 rounded-xl p-6 shadow-2xl flex flex-col items-center">
+          {/* 💡 [핵심 수정] 양피지 이미지를 배경으로 설정하고 글자색을 진갈색(amber-950)으로 반전시켰습니다. */}
+          <div 
+            className="relative z-10 w-full max-w-sm rounded-xl p-6 shadow-[0_0_30px_rgba(0,0,0,0.8)] flex flex-col items-center bg-cover bg-center"
+            style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}
+          >
             
-            <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-amber-300 mb-6 font-serif tracking-wider">
+            {/* 타이틀: 잉크로 쓴 듯한 폰트와 밑줄 */}
+            <h2 className="text-2xl font-bold text-amber-950 mb-6 font-serif tracking-wider drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)] border-b-2 border-amber-900/30 pb-2 w-full text-center">
               My Profile
             </h2>
 
-            <div className="w-full bg-black/40 border border-neutral-800 rounded-lg p-5 mb-4 flex flex-col items-start space-y-3">
-              <label className="text-xs font-bold text-amber-500/80 tracking-wider uppercase border-b border-neutral-700 pb-2 w-full text-left">
+            {/* 계정 정보 구역: 종이 질감에 맞게 배경 투명도와 테두리를 갈색으로 조정 */}
+            <div className="w-full bg-amber-950/10 border border-amber-900/30 rounded-lg p-5 mb-4 flex flex-col items-start space-y-3 shadow-inner">
+              <label className="text-xs font-bold text-amber-900 tracking-wider uppercase border-b border-amber-900/20 pb-2 w-full text-left">
                 Account Info
               </label>
               
-              <div className="w-full flex flex-col space-y-2 text-sm">
+              <div className="w-full flex flex-col space-y-2 text-sm font-medium">
                 <div className="flex justify-between items-center">
-                  <span className="text-neutral-500">이메일</span>
-                  <span className="text-neutral-200">{user?.email || '알 수 없음'}</span>
+                  <span className="text-amber-900/80">이메일</span>
+                  <span className="text-amber-950">{user?.email || '알 수 없음'}</span>
                 </div>
                 
                 <div className="flex justify-between items-center">
-                  <span className="text-neutral-500">가입일</span>
-                  <span className="text-neutral-200">
+                  <span className="text-amber-900/80">가입일</span>
+                  <span className="text-amber-950">
                     {user?.metadata?.creationTime 
                       ? new Date(user.metadata.creationTime).toLocaleDateString('ko-KR') 
                       : '-'}
@@ -188,40 +193,17 @@ export default function MyPage({ onBack }) {
               </div>
             </div>
             
-            <div className="w-full bg-black/40 border border-neutral-800 rounded-lg p-4 mb-6 flex flex-col items-start space-y-2">
-              <label className="text-xs font-bold text-amber-500/80 tracking-wider uppercase">
+            {/* 닉네임 변경 구역 */}
+            <div className="w-full bg-amber-950/10 border border-amber-900/30 rounded-lg p-4 mb-6 flex flex-col items-start space-y-2 shadow-inner">
+              <label className="text-xs font-bold text-amber-900 tracking-wider uppercase">
                 Change Nickname
               </label>
               
-              <div className="w-full flex space-x-2 items-center">
+              <div className="w-full flex space-x-2 items-center mt-1">
+                {/* 인풋 필드: 투명하게 만들고 테두리만 잉크색으로 부여 */}
                 <input 
                   type="text"
                   value={tempNickname}
                   onChange={(e) => setTempNickname(e.target.value)}
                   maxLength={10}
-                  className="flex-1 min-w-0 bg-neutral-950 border border-neutral-700 rounded px-2.5 py-2 text-sm text-neutral-200 focus:outline-none focus:border-amber-600 transition-colors"
-                  placeholder="닉네임 입력 (최대 10자)"
-                />
-                <button
-                  onClick={handleSaveNickname}
-                  className="shrink-0 px-3.5 py-2 bg-gradient-to-b from-amber-600 to-amber-800 hover:from-amber-500 hover:to-amber-700 border border-amber-900/50 rounded text-xs font-bold text-white transition-all active:scale-95 shadow-md"
-                >
-                  변경
-                </button>
-              </div>
-            </div>
-
-            <button 
-              onClick={() => setIsProfileOpen(false)}
-              className="px-8 py-2 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 rounded text-xs font-bold text-neutral-400 hover:text-neutral-200 transition-all active:scale-95"
-            >
-              닫기
-            </button>
-
-          </div>
-        </div>
-      )}
-
-    </div>
-  );
-}
+                  className="flex-1 min-w-0 bg-transparent border border-amber-900/50 rounded px-
