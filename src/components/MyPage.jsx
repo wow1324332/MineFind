@@ -3,10 +3,11 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../firebase'; 
 import { useAuth } from '../hooks/useAuth'; 
 
+// 💡 [핵심] 엑스박스 방지용 인라인 SVG 기본 아바타
+const DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%231e140d'/%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z' fill='%238c6543'/%3E%3C/svg%3E";
+
 export default function MyPage({ onBack }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  
-  // 💡 하단 탭 상태 관리 ('profile' 또는 'account')
   const [activeTab, setActiveTab] = useState('profile'); 
   
   const [isEditingNickname, setIsEditingNickname] = useState(false);
@@ -34,8 +35,9 @@ export default function MyPage({ onBack }) {
           if (data.photoURL) setAvatarUrl(data.photoURL);
         }
         
+        // 💡 파이어베이스에 이미지 URL이 없으면 구글 프로필 또는 생성한 기본 아바타로 세팅
         if (!avatarUrl) {
-          setAvatarUrl(user.photoURL || "/default-avatar.png");
+          setAvatarUrl(user.photoURL || DEFAULT_AVATAR);
         }
       } catch (error) {
         console.error("데이터 로딩 실패:", error);
@@ -135,13 +137,7 @@ export default function MyPage({ onBack }) {
               <div className="absolute left-3 w-1.5 h-1.5 rotate-45 bg-[#7c5432]"></div>
               <h2 className="text-[#d8b486] font-bold text-[15px] tracking-widest font-serif">유저 정보</h2>
               <div className="absolute right-3 w-1.5 h-1.5 rotate-45 bg-[#7c5432]"></div>
-              
-              <button 
-                onClick={() => setIsProfileOpen(false)}
-                className="absolute right-0 top-0 bottom-0 px-4 text-[#8c6543] hover:text-[#d8b486] transition-colors"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
-              </button>
+              {/* 💡 [수정] 우측 상단 X 닫기 버튼 완벽 제거됨 */}
             </div>
 
             {/* 메인 컨텐츠 영역 */}
@@ -153,7 +149,7 @@ export default function MyPage({ onBack }) {
 
               <div className="relative z-10 h-full flex flex-col">
                 
-                {/* 💡 탭 1: 프로필 영역 */}
+                {/* 탭 1: 프로필 영역 */}
                 {activeTab === 'profile' && (
                   <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col">
                     {/* 상단 아바타 및 정보 영역 */}
@@ -163,7 +159,13 @@ export default function MyPage({ onBack }) {
                         className="relative w-[76px] h-[76px] shrink-0 cursor-pointer group bg-black rounded-sm border-2 border-[#4a3522] shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
                         onClick={() => fileInputRef.current?.click()}
                       >
-                        <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover p-[2px]" />
+                        {/* 💡 [수정] onError 속성을 추가하여 구글 프로필 URL이 만료되어 깨질 경우에도 기본 아바타로 복구되도록 2중 방어 */}
+                        <img 
+                          src={avatarUrl || DEFAULT_AVATAR} 
+                          alt="Avatar" 
+                          onError={(e) => { e.target.src = DEFAULT_AVATAR; }}
+                          className="w-full h-full object-cover p-[2px]" 
+                        />
                         <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                           <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                         </div>
@@ -226,7 +228,7 @@ export default function MyPage({ onBack }) {
                   </div>
                 )}
 
-                {/* 💡 탭 2: 계정 정보 영역 */}
+                {/* 탭 2: 계정 정보 영역 */}
                 {activeTab === 'account' && (
                   <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col justify-center px-2">
                     <div className="bg-[#633f20]/10 border border-[#a6845c]/50 p-5 rounded-sm flex flex-col space-y-4 shadow-inner">
@@ -250,7 +252,7 @@ export default function MyPage({ onBack }) {
               </div>
             </div>
 
-            {/* 💡 3. 하단 메뉴 버튼 묶음 (실제 탭 기능 수행) */}
+            {/* 💡 [수정] 하단 메뉴: '설정' 탭을 완전히 제거하고 3등분으로 넓고 쾌적하게 맞췄습니다. */}
             <div className="flex w-full bg-[#2a1a10] border-t-[3px] border-[#1a1008] text-[12px] font-bold">
               {/* 프로필 탭 */}
               <button 
@@ -266,11 +268,6 @@ export default function MyPage({ onBack }) {
                 className={`flex-1 py-3.5 border-r border-[#1a1008] transition-colors ${activeTab === 'account' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}
               >
                 계정 정보
-              </button>
-              
-              {/* 스크린샷 비율을 맞추기 위한 장식용 탭 */}
-              <button className="flex-1 py-3.5 border-r border-[#1a1008] text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486] transition-colors">
-                설정
               </button>
               
               {/* 닫기 버튼 */}
