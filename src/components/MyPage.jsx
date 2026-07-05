@@ -5,15 +5,15 @@ import { useAuth } from '../hooks/useAuth';
 
 export default function MyPage({ onBack }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  
+  // 💡 하단 탭 상태 관리 ('profile' 또는 'account')
   const [activeTab, setActiveTab] = useState('profile'); 
   
   const [isEditingNickname, setIsEditingNickname] = useState(false);
-  
   const [nickname, setNickname] = useState(''); 
   const [userTitle, setUserTitle] = useState('무명의 용사'); 
   const [tempNickname, setTempNickname] = useState('');
   
-  // 💡 프로필 이미지 업로드를 위한 상태와 Ref
   const [avatarUrl, setAvatarUrl] = useState('');
   const fileInputRef = useRef(null);
   
@@ -31,11 +31,9 @@ export default function MyPage({ onBack }) {
           const data = userDoc.data();
           if (data.nickname) setNickname(data.nickname);
           if (data.title) setUserTitle(data.title);
-          // 실제 서비스 시 파이어베이스에서 저장된 이미지 URL을 불러옵니다.
           if (data.photoURL) setAvatarUrl(data.photoURL);
         }
         
-        // 파이어베이스에 이미지가 없을 경우 구글 기본 이미지 또는 기본 아바타 세팅
         if (!avatarUrl) {
           setAvatarUrl(user.photoURL || "/default-avatar.png");
         }
@@ -76,14 +74,12 @@ export default function MyPage({ onBack }) {
     }
   };
 
-  // 💡 갤러리 이미지 선택 핸들러 (미리보기)
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setAvatarUrl(reader.result);
-        // 🚨 참고: 영구 저장을 위해서는 Firebase Storage 연동 코드가 이곳에 추가되어야 합니다.
       };
       reader.readAsDataURL(file);
     }
@@ -117,13 +113,6 @@ export default function MyPage({ onBack }) {
           <button onClick={onBack} className="transition-all duration-150 active:scale-90 px-2 outline-none">
             <img src="/My-icon.png" alt="Back" className="w-8 h-8 object-contain" />
           </button>
-          {nickname && (
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-              <span className="text-base font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-b from-yellow-100 via-amber-200 to-yellow-500 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] font-serif">
-                {nickname}
-              </span>
-            </div>
-          )}
           <div className="w-12 px-2"></div>
         </div>
         
@@ -134,162 +123,165 @@ export default function MyPage({ onBack }) {
         </div>
       </div>
 
-      {/* 마이 프로필 모달 */}
+      {/* 💡 정통 RPG 스타일 마이 프로필 모달 */}
       {isProfileOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center px-6 animate-[fadeIn_0.2s_ease-in-out]">
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsProfileOpen(false)}></div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4 animate-[fadeIn_0.2s_ease-in-out]">
+          <div className="absolute inset-0 bg-black/85 backdrop-blur-sm" onClick={() => setIsProfileOpen(false)}></div>
           
-          <div className="relative z-10 w-full max-w-sm rounded-xl overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.9)] flex flex-col items-center min-h-[400px]">
+          <div className="relative z-10 w-full max-w-sm flex flex-col rounded-md border-[3px] border-[#3c2a1a] shadow-[0_0_30px_rgba(0,0,0,1)] bg-[#1e140d]">
             
-            {/* 💡 배경 원상복구 (흐림 효과 제거) */}
-            <div 
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}
-            ></div>
-
-            {/* 💡 시네마틱 우측 상단 X 닫기 버튼 */}
-            <button 
-              onClick={() => setIsProfileOpen(false)}
-              className="absolute top-3 right-3 p-2 text-amber-900/60 hover:text-amber-950 transition-transform hover:scale-110 z-30"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-            </button>
-
-            {/* 실제 내용 */}
-            <div className="relative z-10 w-full h-full flex flex-col">
+            {/* 최상단 헤더 바 */}
+            <div className="w-full bg-[#2a1a10] border-b-[3px] border-[#1a1008] relative py-2.5 flex justify-center items-center">
+              <div className="absolute left-3 w-1.5 h-1.5 rotate-45 bg-[#7c5432]"></div>
+              <h2 className="text-[#d8b486] font-bold text-[15px] tracking-widest font-serif">유저 정보</h2>
+              <div className="absolute right-3 w-1.5 h-1.5 rotate-45 bg-[#7c5432]"></div>
               
-              {/* 상단 탭 메뉴 */}
-              <div className="w-full flex border-b border-amber-900/30 bg-amber-950/10 pt-2 pr-10">
-                <button 
-                  onClick={() => setActiveTab('profile')}
-                  className={`flex-1 py-3 text-sm font-bold transition-all ${activeTab === 'profile' ? 'text-amber-950 bg-amber-50/40 border-b-2 border-amber-900 rounded-t-lg mx-1' : 'text-amber-900/60 hover:text-amber-900 mx-1'}`}
-                >
-                  캐릭터 프로필
-                </button>
-                <button 
-                  onClick={() => setActiveTab('account')}
-                  className={`flex-1 py-3 text-sm font-bold transition-all ${activeTab === 'account' ? 'text-amber-950 bg-amber-50/40 border-b-2 border-amber-900 rounded-t-lg mx-1' : 'text-amber-900/60 hover:text-amber-900 mx-1'}`}
-                >
-                  계정 정보
-                </button>
-              </div>
+              <button 
+                onClick={() => setIsProfileOpen(false)}
+                className="absolute right-0 top-0 bottom-0 px-4 text-[#8c6543] hover:text-[#d8b486] transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+              </button>
+            </div>
 
-              <div className="w-full p-6 flex-1 flex flex-col mt-2">
+            {/* 메인 컨텐츠 영역 */}
+            <div 
+              className="flex-1 w-full bg-cover bg-center flex flex-col relative p-4 min-h-[350px]"
+              style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}
+            >
+              <div className="absolute inset-0 bg-amber-50/40 pointer-events-none"></div>
+
+              <div className="relative z-10 h-full flex flex-col">
                 
-                {/* 1. 프로필 탭 내용 */}
+                {/* 💡 탭 1: 프로필 영역 */}
                 {activeTab === 'profile' && (
-                  <div className="w-full animate-[fadeIn_0.3s_ease-in-out]">
-                    
-                    {/* 💡 좌측 사각 프레임 + 우측 텍스트 정보 레이아웃 */}
-                    <div className="flex flex-row items-center bg-amber-50/60 border border-amber-900/20 p-4 rounded-xl shadow-sm backdrop-blur-sm">
+                  <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col">
+                    {/* 상단 아바타 및 정보 영역 */}
+                    <div className="flex flex-row items-start mb-4">
                       
-                      {/* 💡 좌측 사진 영역 (클릭하여 갤러리 열기) */}
                       <div 
-                        className="relative w-20 h-20 shrink-0 cursor-pointer group"
+                        className="relative w-[76px] h-[76px] shrink-0 cursor-pointer group bg-black rounded-sm border-2 border-[#4a3522] shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
                         onClick={() => fileInputRef.current?.click()}
                       >
-                        {/* 낡은 사각 프레임 테두리 */}
-                        <div className="absolute inset-0 border-2 border-amber-900/40 rounded-lg group-hover:border-amber-700 transition-colors z-10"></div>
-                        <img 
-                          src={avatarUrl} 
-                          alt="Avatar" 
-                          className="w-full h-full rounded-lg object-cover"
-                        />
-                        {/* 사진 변경 오버레이 아이콘 (마우스 올렸을 때) */}
-                        <div className="absolute inset-0 bg-black/40 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                        <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover p-[2px]" />
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                           <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                         </div>
-                        {/* 숨겨진 갤러리 파일 업로드 input */}
-                        <input 
-                          type="file" 
-                          ref={fileInputRef} 
-                          className="hidden" 
-                          accept="image/*" 
-                          onChange={handleImageChange} 
-                        />
+                        <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleImageChange} />
                         
-                        {/* 💡 우측 하단 레벨 뱃지 */}
-                        <div className="absolute -bottom-2 -right-2 bg-gradient-to-b from-amber-700 to-amber-900 text-amber-50 text-[10px] px-2 py-0.5 rounded border border-amber-950 shadow-md z-20 font-bold">
-                          LV.1
+                        <div className="absolute -bottom-1.5 -right-1.5 bg-black w-5 h-5 rounded-full border-[1.5px] border-[#a6845c] flex items-center justify-center shadow-md">
+                          <span className="text-white text-[9px] font-black leading-none">1</span>
                         </div>
                       </div>
 
-                      {/* 💡 우측 텍스트 (칭호 & 닉네임) */}
-                      <div className="ml-5 flex flex-col items-start flex-1 w-full overflow-hidden">
+                      <div className="ml-4 flex flex-col flex-1 mt-0.5">
                         
-                        {/* 칭호 */}
-                        <span className="text-xs font-bold text-amber-900/80 mb-1">
-                          {userTitle}
-                        </span>
-                        
-                        {/* 닉네임 및 편집 버튼 */}
-                        {!isEditingNickname ? (
-                          <div className="flex items-center w-full">
-                            <span className="text-base font-black text-amber-950 tracking-wide truncate max-w-[120px]">
-                              {nickname}
-                            </span>
-                            <button 
-                              onClick={() => {
-                                setTempNickname(nickname);
-                                setIsEditingNickname(true);
-                              }}
-                              className="ml-2 p-1 rounded-full hover:bg-amber-900/10 transition-colors group"
-                            >
-                              <svg className="w-4 h-4 text-amber-900/60 group-hover:text-amber-950 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
-                              </svg>
-                            </button>
+                        <div className="flex items-center flex-wrap gap-y-1 mb-2">
+                          <div className="bg-[#633f20] border border-[#a6845c] px-2 py-0.5 rounded-sm shadow-sm flex items-center justify-center">
+                            <span className="text-[#f5d5a9] text-[10px] font-black tracking-wider">{userTitle}</span>
                           </div>
-                        ) : (
-                          <div className="flex flex-col space-y-2 w-full mt-1 animate-[fadeIn_0.2s_ease-in-out]">
-                            <input 
-                              type="text"
-                              value={tempNickname}
-                              onChange={(e) => setTempNickname(e.target.value)}
-                              maxLength={10}
-                              className="w-full bg-white/70 border border-amber-900/40 rounded px-2 py-1 text-sm text-amber-950 font-bold focus:outline-none focus:border-amber-700 shadow-inner"
-                              placeholder="최대 10자"
-                            />
-                            <div className="flex space-x-1">
-                              <button onClick={handleSaveNickname} className="flex-1 py-1 bg-amber-900 text-amber-50 text-[10px] font-bold rounded shadow-sm hover:bg-amber-800">
-                                저장
-                              </button>
-                              <button onClick={() => setIsEditingNickname(false)} className="flex-1 py-1 bg-transparent border border-amber-900/40 text-amber-900 text-[10px] font-bold rounded hover:bg-amber-900/10">
-                                취소
+                          
+                          {!isEditingNickname ? (
+                            <div className="flex items-center ml-2">
+                              <span className="text-[15px] font-black text-[#2e2016] tracking-tight">{nickname}</span>
+                              <button 
+                                onClick={() => { setTempNickname(nickname); setIsEditingNickname(true); }}
+                                className="ml-1 text-[#6b4c33] hover:text-black transition-colors p-1"
+                              >
+                                <svg className="w-[14px] h-[14px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                               </button>
                             </div>
-                          </div>
-                        )}
+                          ) : (
+                            <div className="flex w-full mt-1.5 space-x-1">
+                              <input 
+                                type="text" value={tempNickname} onChange={(e) => setTempNickname(e.target.value)} maxLength={10}
+                                className="flex-1 bg-white/70 border border-[#8c6543] px-1.5 py-0.5 text-[12px] text-black font-bold focus:outline-none"
+                              />
+                              <button onClick={handleSaveNickname} className="bg-[#4a3522] text-white px-2 py-0.5 text-[10px] font-bold">저장</button>
+                              <button onClick={() => setIsEditingNickname(false)} className="bg-transparent border border-[#4a3522] text-[#4a3522] px-2 py-0.5 text-[10px] font-bold">취소</button>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
 
+                    {/* 중앙 구분선 */}
+                    <div className="flex justify-between items-center bg-[#5c3e23]/10 border-y border-[#7c5432]/30 px-3 py-1.5 mb-3">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-2 h-2 bg-green-600 rotate-45"></div>
+                        <span className="text-[#4a3522] text-[12px] font-black tracking-wide">상세 통계</span>
+                      </div>
+                      <span className="text-[#7c5432] text-[11px] font-black">최고 기록: -</span>
+                    </div>
+
+                    {/* 하단 장식용 빈 공간 */}
+                    <div className="w-full flex-1 min-h-[180px] bg-[#3a2618]/5 border-[2px] border-[#a6845c] rounded-sm p-2 flex items-center justify-center shadow-inner relative overflow-hidden">
+                       <span className="text-[#7c5432]/50 text-sm font-bold tracking-widest bg-white/30 px-4 py-1 rounded">기록이 없습니다</span>
+                       
+                       <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[#633f20]"></div>
+                       <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-[#633f20]"></div>
+                       <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-[#633f20]"></div>
+                       <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[#633f20]"></div>
+                    </div>
                   </div>
                 )}
 
-                {/* 2. 계정 탭 내용 */}
+                {/* 💡 탭 2: 계정 정보 영역 */}
                 {activeTab === 'account' && (
-                  <div className="w-full animate-[fadeIn_0.3s_ease-in-out] space-y-4">
-                    <div className="bg-amber-50/60 backdrop-blur-sm border border-amber-900/20 rounded-xl p-5 shadow-sm">
-                      <div className="space-y-4">
-                        <div>
-                          <label className="text-[10px] font-bold text-amber-900/70 uppercase block mb-1">연동 이메일</label>
-                          <p className="text-sm font-bold text-amber-950 break-all bg-white/40 px-3 py-2 rounded border border-amber-900/10">{user?.email || '알 수 없음'}</p>
-                        </div>
-                        <div className="pt-2">
-                          <label className="text-[10px] font-bold text-amber-900/70 uppercase block mb-1">최초 가입일</label>
-                          <p className="text-sm font-bold text-amber-950 bg-white/40 px-3 py-2 rounded border border-amber-900/10">
-                            {user?.metadata?.creationTime ? new Date(user.metadata.creationTime).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' }) : '-'}
-                          </p>
-                        </div>
+                  <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col justify-center px-2">
+                    <div className="bg-[#633f20]/10 border border-[#a6845c]/50 p-5 rounded-sm flex flex-col space-y-4 shadow-inner">
+                      
+                      <div className="flex justify-between items-center border-b border-[#a6845c]/30 pb-3">
+                         <span className="text-[#a36b33] font-bold text-[13px] tracking-wide">연동 이메일</span>
+                         <span className="text-[#2e2016] font-black text-[14px]">{user?.email || '알 수 없음'}</span>
                       </div>
+                      
+                      <div className="flex justify-between items-center pt-1">
+                         <span className="text-[#a36b33] font-bold text-[13px] tracking-wide">최초 가입일</span>
+                         <span className="text-[#2e2016] font-black text-[14px]">
+                           {user?.metadata?.creationTime ? new Date(user.metadata.creationTime).toLocaleDateString('ko-KR') : '-'}
+                         </span>
+                      </div>
+
                     </div>
                   </div>
                 )}
 
               </div>
             </div>
+
+            {/* 💡 3. 하단 메뉴 버튼 묶음 (실제 탭 기능 수행) */}
+            <div className="flex w-full bg-[#2a1a10] border-t-[3px] border-[#1a1008] text-[12px] font-bold">
+              {/* 프로필 탭 */}
+              <button 
+                onClick={() => setActiveTab('profile')}
+                className={`flex-1 py-3.5 border-r border-[#1a1008] transition-colors ${activeTab === 'profile' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}
+              >
+                프로필
+              </button>
+              
+              {/* 계정 정보 탭 */}
+              <button 
+                onClick={() => setActiveTab('account')}
+                className={`flex-1 py-3.5 border-r border-[#1a1008] transition-colors ${activeTab === 'account' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}
+              >
+                계정 정보
+              </button>
+              
+              {/* 스크린샷 비율을 맞추기 위한 장식용 탭 */}
+              <button className="flex-1 py-3.5 border-r border-[#1a1008] text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486] transition-colors">
+                설정
+              </button>
+              
+              {/* 닫기 버튼 */}
+              <button 
+                onClick={() => setIsProfileOpen(false)} 
+                className="flex-1 py-3.5 hover:bg-[#3a2618] text-[#a84444] hover:text-[#d65a5a] transition-colors"
+              >
+                닫기
+              </button>
+            </div>
+
           </div>
         </div>
       )}
