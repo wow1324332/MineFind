@@ -224,7 +224,7 @@ export default function MyPage({ onBack }) {
               <div className="absolute right-3 w-1.5 h-1.5 rotate-45 bg-[#7c5432]"></div>
             </div>
 
-            <div className="flex-1 w-full bg-cover bg-center flex flex-col relative p-4 min-h-[350px]" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}>
+            <div className="flex-1 w-full bg-cover bg-center flex flex-col relative p-4 h-[350px]" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}>
               <div className="absolute inset-0 bg-amber-50/40 pointer-events-none"></div>
 
               <div className="relative z-10 h-full flex flex-col">
@@ -345,39 +345,35 @@ export default function MyPage({ onBack }) {
 
                     <div className="w-full flex-1 bg-[#3a2618]/5 border-[2px] border-[#a6845c] rounded-sm p-2 flex flex-col shadow-inner relative overflow-y-auto">
                       
-                      {recordMode === 'PVE' ? (
+{recordMode === 'PVE' ? (
                         dungeonStatsList.length === 0 ? (
                           <div className="m-auto flex flex-col items-center">
                             <span className="text-[#7c5432]/50 text-xs font-bold tracking-widest bg-white/30 px-3 py-1 rounded">No records</span>
                           </div>
                         ) : (
                           <div className="w-full flex flex-col space-y-4 pb-2">
-                            {/* 💡 던전 단위의 컨테이너 렌더링 반복문 */}
                             {dungeonStatsList.map((dungeon, idx) => {
                               const isExpanded = expandedDungeons[dungeon.name] || false;
 
                               return (
+                              {/* 💡 연갈색 테두리(border) 속성 완전히 삭제됨 */}
                               <div key={idx} className="flex flex-col bg-[#633f20]/10 rounded-sm shadow-sm overflow-hidden">
                                 
+                                {/* 던전 헤더 영역 */}
                                 <div 
                                   onClick={() => toggleDungeon(dungeon.name)}
                                   className={`w-full bg-[#3a2618]/80 px-3 py-2 flex justify-between items-center shadow-inner cursor-pointer hover:bg-[#4a301c] transition-colors duration-200 ${isExpanded ? 'border-b border-[#a6845c]/40' : ''}`}
                                 >
-                                  <span className="text-[12px] font-black text-[#f5d5a9] tracking-wider">{dungeon.name}</span>
-                                  {/* 화살표 아이콘 */}
-                                  <svg 
-                                    className={`w-4 h-4 text-[#f5d5a9] transform transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} 
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                  >
+                                  <span className="text-[12px] font-black text-[#f5d5a9] tracking-wider leading-none">{dungeon.name}</span>
+                                  <svg className={`w-4 h-4 text-[#f5d5a9] transform transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
                                   </svg>
                                 </div>
                                 
-                                {/* 💡 리스트 영역: CSS Grid를 활용하여 뚝 끊김 없이 완벽하게 "스르륵" 열리는 애니메이션 적용 */}
+                                {/* 스르륵 애니메이션이 적용된 리스트 영역 */}
                                 <div className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
                                   <div className="overflow-hidden">
                                     <div className="flex flex-col p-1.5">
-                                      {/* 표 컬럼 이름 */}
                                       <div className="flex border-b border-[#a6845c]/20 pb-1 mb-1 px-1">
                                          <div className="w-[30%] text-[9px] text-[#4a3522] font-bold">난이도</div>
                                          <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-center">승리 <span className="text-[8px]">(도전)</span></div>
@@ -385,14 +381,13 @@ export default function MyPage({ onBack }) {
                                          <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-right">최고기록</div>
                                       </div>
                                       
-                                      {/* 각 난이도 출력 */}
                                       {dungeon.diffs.map((diff, dIdx) => (
                                          <div key={dIdx} className="flex items-center px-1 py-1 hover:bg-[#633f20]/20 rounded-sm transition-colors border-b border-[#8c6543]/10 last:border-0">
                                             <div className="w-[30%] text-[10px] text-[#4a3522] font-black">{diff.diffName}</div>
                                             <div className="w-[25%] text-[10px] text-[#4a3522] font-bold text-center">
                                               {diff.wins} <span className="text-[8px] text-[#4a3522]">({diff.plays})</span>
                                             </div>
-                                            {/* 💡 승률 조건부 색상(초록/오렌지) 완전 제거 및 짙은 갈색 고정 */}
+                                            {/* 💡 승률 텍스트 갈색(text-[#4a3522]) 고정 */}
                                             <div className="w-[20%] text-[10px] font-black text-center text-[#4a3522]">
                                               {diff.plays > 0 ? `${diff.winRate}%` : '-'}
                                             </div>
@@ -404,12 +399,11 @@ export default function MyPage({ onBack }) {
                                     </div>
                                   </div>
                                 </div>
-
                               </div>
                             )})}
                           </div>
                         )
-                      ) : (
+                      ): (
                          <div className="m-auto flex flex-col items-center opacity-70">
                             <svg className="w-8 h-8 text-[#4a3522] mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                             <span className="text-[#4a3522] text-xs font-black tracking-widest">업데이트 예정</span>
