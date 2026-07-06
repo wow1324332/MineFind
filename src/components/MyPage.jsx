@@ -206,19 +206,21 @@ export default function MyPage({ onBack }) {
           <div className="w-12 px-2"></div>
         </div>
         
-         <div className="w-full max-w-sm flex flex-col items-center -mt-12 space-y-1 relative z-10">
+        <div className="w-full max-w-sm flex flex-col items-center -mt-6 space-y-3 relative z-10">
           
           {/* 1. 마이 프로필 버튼 */}
           <button 
             onClick={() => setIsProfileOpen(true)} 
-            className="w-full max-w-[18rem] overflow-hidden transition-all duration-200 hover:brightness-110 active:scale-95 drop-shadow-[0_10px_20px_rgba(0,0,0,0.7)]"
+            // 💡 실제 클릭되는 "보이지 않는 투명한 네모 상자" 크기를 딱 휘장 두께만큼(h-[55px]) 잡아줍니다.
+            className="group relative flex justify-center items-center w-full max-w-[17rem] h-[55px] z-10"
             style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
           >
-            {/* 💡 이미지 자체에 음수 마진(-mt, -mb)을 주어 위아래 투명 유령 영역만 찝어 올립니다. */}
+            {/* 이미지는 상자 밖으로 자유롭게 삐져나가지만, pointer-events-none으로 허공 클릭을 무시합니다. */}
             <img 
               src="/myprofile-bt.png" 
               alt="My Profile" 
-              className="w-full h-auto -mt-14 -mb-14 pointer-events-none" 
+              // group-hover, group-active를 써서 버튼을 누를 때 삐져나간 이미지도 같이 애니메이션 되게 합니다!
+              className="absolute w-full h-auto pointer-events-none transition-all duration-200 group-hover:brightness-110 group-active:scale-95 drop-shadow-[0_10px_20px_rgba(0,0,0,0.7)]" 
               draggable="false" 
             />
           </button>
@@ -226,13 +228,14 @@ export default function MyPage({ onBack }) {
           {/* 2. 인벤토리 버튼 */}
           <button 
             onClick={() => setIsInventoryOpen(true)} 
-            className="w-full max-w-[18rem] overflow-hidden transition-all duration-200 hover:brightness-110 active:scale-95 drop-shadow-[0_10px_20px_rgba(0,0,0,0.7)]"
+            // 💡 실제 클릭 영역 (Hitbox)
+            className="group relative flex justify-center items-center w-full max-w-[17rem] h-[55px] z-10"
             style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
           >
             <img 
               src="/inventory-bt.png" 
               alt="Inventory" 
-              className="w-full h-auto -mt-14 -mb-14 pointer-events-none" 
+              className="absolute w-full h-auto pointer-events-none transition-all duration-200 group-hover:brightness-110 group-active:scale-95 drop-shadow-[0_10px_20px_rgba(0,0,0,0.7)]" 
               draggable="false" 
             />
           </button>
