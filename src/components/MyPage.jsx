@@ -206,22 +206,38 @@ export default function MyPage({ onBack }) {
           <div className="w-12 px-2"></div>
         </div>
         
-        <div className="w-full max-w-sm flex flex-col items-center -mt-16 -space-y-8 relative z-10">
+        <div className="w-full max-w-sm flex flex-col items-center -mt-12 space-y-1 relative z-10">
           
-          <button onClick={() => setIsProfileOpen(true)} className="w-full max-w-[18rem] transition-all duration-200 hover:brightness-110 active:scale-95 drop-shadow-[0_10px_20px_rgba(0,0,0,0.7)]">
-            <img src="/myprofile-bt.png" alt="My Profile" className="w-full h-auto object-contain" />
-          </button>
-
+          {/* 1. 마이 프로필 버튼 */}
           <button 
-            onClick={() => setIsInventoryOpen(true)} 
-            className="w-full max-w-[18rem] transition-all duration-200 hover:brightness-110 active:scale-95 drop-shadow-[0_10px_20px_rgba(0,0,0,0.7)]"
+            onClick={() => setIsProfileOpen(true)} 
+            className="w-full max-w-[18rem] h-[55px] flex items-center justify-center overflow-hidden transition-all duration-200 hover:brightness-110 active:scale-95 drop-shadow-[0_10px_20px_rgba(0,0,0,0.7)]"
             style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
           >
-            <img src="/inventory-bt.png" alt="Inventory" className="w-full h-auto object-contain pointer-events-none" draggable="false" />
+            {/* shrink-0과 큰 min-h를 주어 투명 여백은 버튼 상자 밖으로 밀어내고 짤라버립니다 */}
+            <img 
+              src="/myprofile-bt.png" 
+              alt="My Profile" 
+              className="w-full h-auto min-h-[130px] object-contain shrink-0 pointer-events-none" 
+              draggable="false" 
+            />
+          </button>
+
+          {/* 2. 인벤토리 버튼 */}
+          <button 
+            onClick={() => setIsInventoryOpen(true)} 
+            className="w-full max-w-[18rem] h-[55px] flex items-center justify-center overflow-hidden transition-all duration-200 hover:brightness-110 active:scale-95 drop-shadow-[0_10px_20px_rgba(0,0,0,0.7)]"
+            style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+          >
+            <img 
+              src="/inventory-bt.png" 
+              alt="Inventory" 
+              className="w-full h-auto min-h-[130px] object-contain shrink-0 pointer-events-none" 
+              draggable="false" 
+            />
           </button>
 
         </div>
-      </div>
 
       {isProfileOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4 animate-[fadeIn_0.2s_ease-in-out]">
