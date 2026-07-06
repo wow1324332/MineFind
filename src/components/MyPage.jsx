@@ -360,47 +360,49 @@ export default function MyPage({ onBack }) {
                               return (
                               <div key={idx} className="flex flex-col bg-[#633f20]/10 border border-[#a6845c]/40 rounded-sm shadow-sm overflow-hidden">
                                 
-                                {/* 💡 컨테이너 상단: 열려있을 때만 하단 테두리가 생기도록 수정하여 닫혔을 때 정렬 붕괴 방지 */}
+                                {/* 💡 컨테이너 상단: 고정 높이(h-9)를 지우고 py-2 패딩을 주어 글자와 아이콘이 무조건 정중앙에 오도록 수정 */}
                                 <div 
                                   onClick={() => toggleDungeon(dungeon.name)}
-                                  className={`w-full h-9 bg-[#3a2618]/80 px-3 flex justify-between items-center shadow-inner cursor-pointer hover:bg-[#4a301c] transition-all duration-200 ${isExpanded ? 'border-b border-[#a6845c]/40' : ''}`}
+                                  className={`w-full bg-[#3a2618]/80 px-3 py-2 flex justify-between items-center shadow-inner cursor-pointer hover:bg-[#4a301c] transition-colors duration-200 ${isExpanded ? 'border-b border-[#a6845c]/40' : ''}`}
                                 >
-                                  <span className="text-[12px] font-black text-[#f5d5a9] tracking-wider leading-none">{dungeon.name}</span>
+                                  <span className="text-[12px] font-black text-[#f5d5a9] tracking-wider">{dungeon.name}</span>
                                   {/* 화살표 아이콘 */}
                                   <svg 
-                                    className={`w-3.5 h-3.5 text-[#f5d5a9] transform transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} 
+                                    className={`w-4 h-4 text-[#f5d5a9] transform transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} 
                                     fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                   >
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
                                   </svg>
                                 </div>
                                 
-                                {/* 💡 주의: {isExpanded && ...} 조건문을 완전히 제거했습니다! CSS로만 높이를 조절해야 스르륵 애니메이션이 작동합니다. */}
-                                <div className={`transition-all duration-300 ease-in-out overflow-hidden ${isExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                                  <div className="flex flex-col p-1.5">
-                                    {/* 표 컬럼 이름 */}
-                                    <div className="flex border-b border-[#a6845c]/20 pb-1 mb-1 px-1">
-                                       <div className="w-[30%] text-[9px] text-[#4a3522] font-bold">난이도</div>
-                                       <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-center">승리 <span className="text-[8px]">(도전)</span></div>
-                                       <div className="w-[20%] text-[9px] text-[#4a3522] font-bold text-center">승률</div>
-                                       <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-right">최고기록</div>
+                                {/* 💡 리스트 영역: CSS Grid를 활용하여 뚝 끊김 없이 완벽하게 "스르륵" 열리는 애니메이션 적용 */}
+                                <div className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
+                                  <div className="overflow-hidden">
+                                    <div className="flex flex-col p-1.5">
+                                      {/* 표 컬럼 이름 */}
+                                      <div className="flex border-b border-[#a6845c]/20 pb-1 mb-1 px-1">
+                                         <div className="w-[30%] text-[9px] text-[#4a3522] font-bold">난이도</div>
+                                         <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-center">승리 <span className="text-[8px]">(도전)</span></div>
+                                         <div className="w-[20%] text-[9px] text-[#4a3522] font-bold text-center">승률</div>
+                                         <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-right">최고기록</div>
+                                      </div>
+                                      
+                                      {/* 각 난이도 출력 */}
+                                      {dungeon.diffs.map((diff, dIdx) => (
+                                         <div key={dIdx} className="flex items-center px-1 py-1 hover:bg-[#633f20]/20 rounded-sm transition-colors border-b border-[#8c6543]/10 last:border-0">
+                                            <div className="w-[30%] text-[10px] text-[#4a3522] font-black">{diff.diffName}</div>
+                                            <div className="w-[25%] text-[10px] text-[#4a3522] font-bold text-center">
+                                              {diff.wins} <span className="text-[8px] text-[#4a3522]">({diff.plays})</span>
+                                            </div>
+                                            <div className={`w-[20%] text-[10px] font-black text-center ${diff.plays > 0 ? (diff.winRate >= 50 ? 'text-green-500' : 'text-amber-500') : 'text-[#4a3522]'}`}>
+                                              {diff.plays > 0 ? `${diff.winRate}%` : '-'}
+                                            </div>
+                                            <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-right">
+                                              {diff.bestTime}
+                                            </div>
+                                         </div>
+                                      ))}
                                     </div>
-                                    
-                                    {/* 각 난이도 출력 */}
-                                    {dungeon.diffs.map((diff, dIdx) => (
-                                       <div key={dIdx} className="flex items-center px-1 py-1 hover:bg-[#633f20]/20 rounded-sm transition-colors border-b border-[#8c6543]/10 last:border-0">
-                                          <div className="w-[30%] text-[10px] text-[#4a3522] font-black">{diff.diffName}</div>
-                                          <div className="w-[25%] text-[10px] text-[#4a3522] font-bold text-center">
-                                            {diff.wins} <span className="text-[8px] text-[#4a3522]">({diff.plays})</span>
-                                          </div>
-                                          <div className={`w-[20%] text-[10px] font-black text-center ${diff.plays > 0 ? (diff.winRate >= 50 ? 'text-green-500' : 'text-amber-500') : 'text-[#4a3522]'}`}>
-                                            {diff.plays > 0 ? `${diff.winRate}%` : '-'}
-                                          </div>
-                                          <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-right">
-                                            {diff.bestTime}
-                                          </div>
-                                       </div>
-                                    ))}
                                   </div>
                                 </div>
 
