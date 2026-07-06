@@ -354,13 +354,11 @@ export default function MyPage({ onBack }) {
                           <div className="w-full flex flex-col space-y-4 pb-2">
                             {/* 💡 던전 단위의 컨테이너 렌더링 반복문 */}
                             {dungeonStatsList.map((dungeon, idx) => {
-                              // 이 던전이 열려있는지 상태 확인 (기본값: 닫힘)
                               const isExpanded = expandedDungeons[dungeon.name] || false;
 
                               return (
-                              <div key={idx} className="flex flex-col bg-[#633f20]/10 border border-[#a6845c]/40 rounded-sm shadow-sm overflow-hidden">
+                              <div key={idx} className="flex flex-col bg-[#633f20]/10 rounded-sm shadow-sm overflow-hidden">
                                 
-                                {/* 💡 컨테이너 상단: 고정 높이(h-9)를 지우고 py-2 패딩을 주어 글자와 아이콘이 무조건 정중앙에 오도록 수정 */}
                                 <div 
                                   onClick={() => toggleDungeon(dungeon.name)}
                                   className={`w-full bg-[#3a2618]/80 px-3 py-2 flex justify-between items-center shadow-inner cursor-pointer hover:bg-[#4a301c] transition-colors duration-200 ${isExpanded ? 'border-b border-[#a6845c]/40' : ''}`}
