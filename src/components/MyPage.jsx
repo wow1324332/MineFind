@@ -363,9 +363,9 @@ export default function MyPage({ onBack }) {
                                 {/* 💡 컨테이너 상단: 클릭 가능하도록 토글 이벤트 및 호버 효과 추가 */}
                                 <div 
                                   onClick={() => toggleDungeon(dungeon.name)}
-                                  className="w-full bg-[#3a2618]/80 border-b border-[#a6845c]/40 py-1.5 px-3 flex justify-between items-center shadow-inner cursor-pointer hover:brightness-110 hover:bg-[#4a301c] active:bg-[#2a1a10] transition-colors"
+                                  className="w-full h-9 bg-[#3a2618]/80 border-b border-[#a6845c]/40 px-3 flex justify-between items-center shadow-inner cursor-pointer hover:bg-[#4a301c] transition-all duration-200"
                                 >
-                                  <span className="text-[12px] font-black text-[#f5d5a9] tracking-wider">{dungeon.name}</span>
+                                  <span className="text-[12px] font-black text-[#f5d5a9] tracking-wider leading-none">{dungeon.name}</span>
                                   {/* 화살표 아이콘 (열림 상태에 따라 180도 회전) */}
                                   <svg 
                                     className={`w-3.5 h-3.5 text-[#f5d5a9] transform transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} 
@@ -377,7 +377,8 @@ export default function MyPage({ onBack }) {
                                 
                                 {/* 💡 5가지 난이도를 나열하는 리스트 영역 (isExpanded가 true일 때만 화면에 나옴) */}
                                 {isExpanded && (
-                                  <div className="flex flex-col p-1.5 animate-[fadeIn_0.2s_ease-in-out]">
+                                  <div className={`transition-all duration-300 ease-in-out overflow-hidden ${isExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                                  <div className="flex flex-col p-1.5">
                                     {/* 표 컬럼 이름 */}
                                     <div className="flex border-b border-[#a6845c]/20 pb-1 mb-1 px-1">
                                        <div className="w-[30%] text-[9px] text-[#4a3522] font-bold">난이도</div>
@@ -393,7 +394,7 @@ export default function MyPage({ onBack }) {
                                           <div className="w-[25%] text-[10px] text-[#4a3522] font-bold text-center">
                                             {diff.wins} <span className="text-[8px] text-[#4a3522]">({diff.plays})</span>
                                           </div>
-                                          <div className={`w-[20%] text-[10px] font-black text-center ${diff.plays > 0 ? (diff.winRate >= 50 ? 'text-green-500' : 'text-amber-500') : 'text-[#4a3522]'}`}>
+                                          <div className="w-[20%] text-[10px] font-black text-center text-[#4a3522]">
                                             {diff.plays > 0 ? `${diff.winRate}%` : '-'}
                                           </div>
                                           <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-right">
@@ -402,6 +403,7 @@ export default function MyPage({ onBack }) {
                                        </div>
                                     ))}
                                   </div>
+                                </div>
                                 )}
 
                               </div>
