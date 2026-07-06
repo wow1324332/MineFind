@@ -13,6 +13,7 @@ export const DUNGEON_INFO = {
     loadingOpacity: "opacity-70",
     winBg: '/hellofflamewin.jpeg',
     loseBg: '/hellofflamelose-bg.jpg',
+    boardBg: '/dungeoninsite-bg.jpg',
     rewards: {
       Easy: { gold: 10, exp: 5, materials: { '작은 불씨': 1 } },
       Normal: { gold: 30, exp: 15, materials: { '작은 불씨': 3, '꺼지지 않는 불꽃': 1 } },
@@ -33,6 +34,7 @@ export const DUNGEON_INFO = {
     loadingOpacity: "opacity-70",
     winBg: '/hellofaquawin.jpeg',
     loseBg: '/hellofaqualose-bg.jpg',
+    boardBg: '/hellofaqua-board-bg.jpg',
     rewards: {
       Easy: { gold: 10, exp: 5, materials: { '맑은 물방울': 1 } },
       Normal: { gold: 30, exp: 15, materials: { '맑은 물방울': 3, '심해의 결정': 1 } },
