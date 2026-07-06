@@ -14,8 +14,8 @@ export const DUNGEON_INFO = {
     loseBg: '/dungeons/fire/hellofflamelose-bg.jpg',
     boardBg: '/dungeons/fire/dungeoninsite-bg.jpg',
     // 💡 추가된 인게임 보드용 에셋 데이터
-    tileImg: '/hellofflame-tile.png', // (public 폴더 경로에 맞게 수정 필요시 변경)
-    mineImg: '/hellofflame-mine.png',
+    tileImg: '/dungeons/fire/hellofflame-tile.png', // (public 폴더 경로에 맞게 수정 필요시 변경)
+    mineImg: '/dungeons/fire/hellofflame-mine.png',
     mineShadow: 'drop-shadow-[0_0_15px_rgba(220,38,38,1)]',
     revealedMineBg: 'bg-red-950/80 shadow-[inset_0_0_20px_rgba(220,38,38,0.8)]',
     rewards: {
@@ -40,8 +40,8 @@ export const DUNGEON_INFO = {
     loseBg: '/dungeons/water/hellofaqualose-bg.jpg',
     boardBg: '/dungeons/water/hellofaqua-board-bg.jpg',
     // 💡 추가된 인게임 보드용 에셋 데이터
-    tileImg: '/hellofaqua-tile.png', // (public 폴더 경로에 맞게 수정 필요시 변경)
-    mineImg: '/hellofaqua-mine.png', // 🦑 오징어 이모지 대신 들어갈 전용 이미지!
+    tileImg: '/dungeons/water/hellofaqua-tile.png', // (public 폴더 경로에 맞게 수정 필요시 변경)
+    mineImg: '/dungeons/water/hellofaqua-mine.png', // 🦑 오징어 이모지 대신 들어갈 전용 이미지!
     mineShadow: 'drop-shadow-[0_0_15px_rgba(37,99,235,1)]',
     revealedMineBg: 'bg-blue-950/80 shadow-[inset_0_0_20px_rgba(37,99,235,0.8)]',
     rewards: {
