@@ -392,7 +392,8 @@ export default function MyPage({ onBack }) {
                                             <div className="w-[25%] text-[10px] text-[#4a3522] font-bold text-center">
                                               {diff.wins} <span className="text-[8px] text-[#4a3522]">({diff.plays})</span>
                                             </div>
-                                            <div className={`w-[20%] text-[10px] font-black text-center ${diff.plays > 0 ? (diff.winRate >= 50 ? 'text-green-500' : 'text-amber-500') : 'text-[#4a3522]'}`}>
+                                            {/* 💡 승률 조건부 색상(초록/오렌지) 완전 제거 및 짙은 갈색 고정 */}
+                                            <div className="w-[20%] text-[10px] font-black text-center text-[#4a3522]">
                                               {diff.plays > 0 ? `${diff.winRate}%` : '-'}
                                             </div>
                                             <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-right">
