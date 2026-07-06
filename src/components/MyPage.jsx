@@ -349,7 +349,7 @@ export default function MyPage({ onBack }) {
                                 
                                 {/* 컨테이너 상단: 던전 이름 */}
                                 <div className="w-full bg-[#3a2618]/80 border-b border-[#a6845c]/40 py-1.5 flex justify-center items-center shadow-inner">
-                                  <span className="text-[12px] font-black text-[#4a3522] tracking-wider">{dungeon.name}</span>
+                                  <span className="text-[12px] font-black text-[#f5d5a9] tracking-wider">{dungeon.name}</span>
                                 </div>
                                 
                                 {/* 5가지 난이도를 나열하는 리스트 영역 */}
@@ -369,7 +369,7 @@ export default function MyPage({ onBack }) {
                                         <div className="w-[25%] text-[10px] text-[#4a3522] font-bold text-center">
                                           {diff.wins} <span className="text-[8px] text-[#4a3522]">({diff.plays})</span>
                                         </div>
-                                        <div className={`w-[20%] text-[10px] font-black text-center ${diff.plays > 0 ? (diff.winRate >= 50 ? 'text-green-500' : 'text-amber-500') : 'text-[#4a3522]'}`}>
+                                        <div className="w-[20%] text-[10px] font-black text-center text-[#4a3522]">
                                           {diff.plays > 0 ? `${diff.winRate}%` : '-'}
                                         </div>
                                         <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-right">
