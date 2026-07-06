@@ -142,7 +142,7 @@ export default function MyPage({ onBack }) {
             
             <div className="w-full bg-[#2a1a10] border-b-[3px] border-[#1a1008] relative py-2.5 flex justify-center items-center">
               <div className="absolute left-3 w-1.5 h-1.5 rotate-45 bg-[#7c5432]"></div>
-              <h2 className="text-[#d8b486] font-bold text-[15px] tracking-widest font-serif">유저 정보</h2>
+              <h2 className="text-[#d8b486] font-bold text-[15px] tracking-widest font-serif">Profile</h2>
               <div className="absolute right-3 w-1.5 h-1.5 rotate-45 bg-[#7c5432]"></div>
             </div>
 
@@ -220,7 +220,7 @@ export default function MyPage({ onBack }) {
                         </div>
 
                         <div className="w-full flex-1 min-h-[180px] bg-[#3a2618]/5 border-[2px] border-[#a6845c] rounded-sm p-2 flex items-center justify-center shadow-inner relative overflow-hidden">
-                           <span className="text-[#7c5432]/50 text-sm font-bold tracking-widest bg-white/30 px-4 py-1 rounded">기록이 없습니다</span>
+                           <span className="text-[#7c5432]/50 text-sm font-bold tracking-widest bg-white/30 px-4 py-1 rounded">No Record</span>
                            
                            <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[#633f20]"></div>
                            <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-[#633f20]"></div>
@@ -231,7 +231,7 @@ export default function MyPage({ onBack }) {
                     ) : (
                       <div className="w-full flex-1 min-h-[224px] bg-[#2a1a10]/5 border-[2px] border-[#a6845c] rounded-sm p-3 flex flex-col shadow-inner animate-[fadeIn_0.2s_ease-in-out]">
                         <div className="flex justify-between items-center border-b border-[#a6845c]/30 pb-1.5 mb-2.5">
-                          <span className="text-[#633f20] text-[12px] font-black tracking-wide">아바타 인벤토리</span>
+                          <span className="text-[#633f20] text-[12px] font-black tracking-wide">Avatars</span>
                           <button 
                             onClick={() => setIsSelectAvatarOpen(false)}
                             className="text-[#a36b33] text-[10px] font-black hover:text-black border border-[#a6845c]/30 px-1.5 py-0.5 rounded-sm bg-white/20 shadow-sm"
@@ -294,21 +294,21 @@ export default function MyPage({ onBack }) {
                 onClick={() => setActiveTab('profile')}
                 className={`flex-1 py-3.5 border-r border-[#1a1008] transition-colors ${activeTab === 'profile' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}
               >
-                프로필
+                Profile
               </button>
               
               <button 
                 onClick={() => setActiveTab('account')}
                 className={`flex-1 py-3.5 border-r border-[#1a1008] transition-colors ${activeTab === 'account' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}
               >
-                계정 정보
+                Account
               </button>
               
               <button 
                 onClick={() => setIsProfileOpen(false)} 
                 className="flex-1 py-3.5 hover:bg-[#3a2618] text-[#a84444] hover:text-[#d65a5a] transition-colors"
               >
-                닫기
+                Close
               </button>
             </div>
 
