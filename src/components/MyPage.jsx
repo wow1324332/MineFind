@@ -359,7 +359,6 @@ export default function MyPage({ onBack }) {
                               const isExpanded = expandedDungeons[dungeon.name] || false;
 
                               return (
-                              {/* 💡 던전을 감싸는 연갈색 테두리(border) 속성 완전히 파괴 */}
                               <div key={idx} className="flex flex-col bg-[#633f20]/10 rounded-sm shadow-sm overflow-hidden">
                                 
                                 <div 
