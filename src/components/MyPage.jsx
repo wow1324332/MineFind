@@ -238,6 +238,7 @@ export default function MyPage({ onBack }) {
           </button>
 
         </div>
+      </div>
 
       {isProfileOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4 animate-[fadeIn_0.2s_ease-in-out]">
