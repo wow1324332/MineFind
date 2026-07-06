@@ -206,7 +206,7 @@ export default function MyPage({ onBack }) {
           <div className="w-12 px-2"></div>
         </div>
         
-        <div className="w-full max-w-sm flex flex-col items-center -mt-6 space-y-3 relative z-10">
+        <div className="w-full max-w-sm flex flex-col items-center mt-4 space-y-3 relative z-10">
           
           {/* 1. 마이 프로필 버튼 */}
           <button 
