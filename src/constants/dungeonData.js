@@ -7,9 +7,12 @@ export const DUNGEON_INFO = {
     buttonImg: '/hellofflame-bt.png',
     titleImg: '/hellofflame-title.jpg',
     loadingBg: '/hellofflameloading-bg.jpg',
+    // 💡 로딩 화면 정보 전역 데이터화
+    loadingMsg: "불의 던전으로 강습 중...",
+    loadingLogo: "/hellofflame-bt.png",
+    loadingOpacity: "opacity-70",
     winBg: '/hellofflamewin.jpeg',
     loseBg: '/hellofflamelose-bg.jpg',
-    // 💡 불 던전 난이도별 자원 보상 (골드, 경험치, 드랍 아이템)
     rewards: {
       Easy: { gold: 10, exp: 5, materials: { '작은 불씨': 1 } },
       Normal: { gold: 30, exp: 15, materials: { '작은 불씨': 3, '꺼지지 않는 불꽃': 1 } },
@@ -23,10 +26,13 @@ export const DUNGEON_INFO = {
     name: 'Hell of aqua',
     buttonImg: '/hellofaqua-bt.png',
     titleImg: '/hellofaqua-title.jpg',
-    loadingBg: '/devilmineloading-bg.jpg', // 물 던전 전용 로딩이 없다면 기본 로딩 사용
+    loadingBg: '/devilmineloading-bg.jpg',
+    // 💡 로딩 화면 정보 전역 데이터화
+    loadingMsg: "물의 던전으로 잠수 중...",
+    loadingLogo: "/huntlistloading-logo.png",
+    loadingOpacity: "opacity-90",
     winBg: '/hellofaquawin.jpeg',
     loseBg: '/hellofaqualose-bg.jpg',
-    // 💡 물 던전 난이도별 자원 보상
     rewards: {
       Easy: { gold: 10, exp: 5, materials: { '맑은 물방울': 1 } },
       Normal: { gold: 30, exp: 15, materials: { '맑은 물방울': 3, '심해의 결정': 1 } },
