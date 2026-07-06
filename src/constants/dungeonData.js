@@ -26,7 +26,7 @@ export const DUNGEON_INFO = {
     name: 'Hell of aqua',
     buttonImg: '/hellofaqua-bt.png',
     titleImg: '/hellofaqua-title.jpg',
-    loadingBg: '/devilmineloading-bg.jpg',
+    loadingBg: '/hellofaqualoading-bg.jpg',
     // 💡 로딩 화면 정보 전역 데이터화
     loadingMsg: "물의 던전으로 잠수 중...",
     loadingLogo: "/hellofaqua-bt.png",
