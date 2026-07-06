@@ -349,30 +349,30 @@ export default function MyPage({ onBack }) {
                                 
                                 {/* 컨테이너 상단: 던전 이름 */}
                                 <div className="w-full bg-[#3a2618]/80 border-b border-[#a6845c]/40 py-1.5 flex justify-center items-center shadow-inner">
-                                  <span className="text-[12px] font-black text-[#f5d5a9] tracking-wider">{dungeon.name}</span>
+                                  <span className="text-[12px] font-black text-[#4a3522] tracking-wider">{dungeon.name}</span>
                                 </div>
                                 
                                 {/* 5가지 난이도를 나열하는 리스트 영역 */}
                                 <div className="flex flex-col p-1.5">
                                   {/* 표 컬럼 이름 */}
                                   <div className="flex border-b border-[#a6845c]/20 pb-1 mb-1 px-1">
-                                     <div className="w-[30%] text-[9px] text-[#a36b33] font-bold">난이도</div>
-                                     <div className="w-[25%] text-[9px] text-[#a36b33] font-bold text-center">승리 <span className="text-[8px]">(도전)</span></div>
-                                     <div className="w-[20%] text-[9px] text-[#a36b33] font-bold text-center">승률</div>
-                                     <div className="w-[25%] text-[9px] text-[#a36b33] font-bold text-right">최고기록</div>
+                                     <div className="w-[30%] text-[9px] text-[#4a3522] font-bold">난이도</div>
+                                     <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-center">승리 <span className="text-[8px]">(도전)</span></div>
+                                     <div className="w-[20%] text-[9px] text-[#4a3522] font-bold text-center">승률</div>
+                                     <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-right">최고기록</div>
                                   </div>
                                   
                                   {/* 각 난이도 출력 */}
                                   {dungeon.diffs.map((diff, dIdx) => (
                                      <div key={dIdx} className="flex items-center px-1 py-1 hover:bg-[#633f20]/20 rounded-sm transition-colors border-b border-[#8c6543]/10 last:border-0">
-                                        <div className="w-[30%] text-[10px] text-[#d8b486] font-black">{diff.diffName}</div>
-                                        <div className="w-[25%] text-[10px] text-[#e5e5e5] font-bold text-center">
-                                          {diff.wins} <span className="text-[8px] text-[#7c5432]">({diff.plays})</span>
+                                        <div className="w-[30%] text-[10px] text-[#4a3522] font-black">{diff.diffName}</div>
+                                        <div className="w-[25%] text-[10px] text-[#4a3522] font-bold text-center">
+                                          {diff.wins} <span className="text-[8px] text-[#4a3522]">({diff.plays})</span>
                                         </div>
-                                        <div className={`w-[20%] text-[10px] font-black text-center ${diff.plays > 0 ? (diff.winRate >= 50 ? 'text-green-500' : 'text-amber-500') : 'text-[#7c5432]'}`}>
+                                        <div className={`w-[20%] text-[10px] font-black text-center ${diff.plays > 0 ? (diff.winRate >= 50 ? 'text-green-500' : 'text-amber-500') : 'text-[#4a3522]'}`}>
                                           {diff.plays > 0 ? `${diff.winRate}%` : '-'}
                                         </div>
-                                        <div className="w-[25%] text-[9px] text-amber-700 font-bold text-right">
+                                        <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-right">
                                           {diff.bestTime}
                                         </div>
                                      </div>
@@ -385,8 +385,8 @@ export default function MyPage({ onBack }) {
                         )
                       ) : (
                          <div className="m-auto flex flex-col items-center opacity-70">
-                            <svg className="w-8 h-8 text-[#8c6543] mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                            <span className="text-[#633f20] text-xs font-black tracking-widest">업데이트 예정</span>
+                            <svg className="w-8 h-8 text-[#4a3522] mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                            <span className="text-[#4a3522] text-xs font-black tracking-widest">업데이트 예정</span>
                          </div>
                       )}
                       
