@@ -14,11 +14,9 @@ const AVAILABLE_AVATARS = [
 export default function MyPage({ onBack }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('profile'); // profile, record, account
-  
   const [isEditingNickname, setIsEditingNickname] = useState(false);
   const [isSelectAvatarOpen, setIsSelectAvatarOpen] = useState(false);
   
-  // 💡 기록 탭 내부의 PVE / PVP 전환 상태
   const [recordMode, setRecordMode] = useState('PVE'); 
 
   const [nickname, setNickname] = useState(''); 
@@ -69,23 +67,19 @@ export default function MyPage({ onBack }) {
 
   const handleSaveNickname = async () => {
     if (!tempNickname.trim()) {
-      alert('닉네임을 입력해주세요!');
-      return;
+      alert('닉네임을 입력해주세요!'); return;
     }
     if (tempNickname.length > 10) {
-      alert('닉네임은 최대 10자까지 설정 가능합니다.');
-      return;
+      alert('닉네임은 최대 10자까지 설정 가능합니다.'); return;
     }
     if (!user) return;
-
     try {
       const userDocRef = doc(db, 'users', user.uid);
       await setDoc(userDocRef, { nickname: tempNickname }, { merge: true });
       setNickname(tempNickname); 
       setIsEditingNickname(false); 
     } catch (error) {
-      console.error("저장 에러:", error);
-      alert('저장에 실패했습니다.');
+      console.error("저장 에러:", error); alert('저장에 실패했습니다.');
     }
   };
 
@@ -97,14 +91,12 @@ export default function MyPage({ onBack }) {
       setAvatarUrl(src);
     } catch (error) {
       console.error("아바타 저장 실패:", error);
-      alert("아바타 저장에 실패했습니다.");
     }
   };
 
   const handleResetStats = async () => {
-    if (!window.confirm("정말 승패 기록을 초기화하시겠습니까?")) return;
+    if (!window.confirm("정말 승패 기록을 초기화하시겠습니까? (PVE 전체 통계만 초기화되며 상세 기록은 유지됩니다)")) return;
     if (!user) return;
-    
     try {
       const userDocRef = doc(db, 'users', user.uid);
       const resetStats = { wins: 0, losses: 0 };
@@ -112,39 +104,69 @@ export default function MyPage({ onBack }) {
       setStats(resetStats);
     } catch (error) {
       console.error("통계 초기화 실패:", error);
-      alert("초기화에 실패했습니다.");
     }
   };
 
   const totalGames = stats.wins + stats.losses;
   const winRate = totalGames > 0 ? Math.round((stats.wins / totalGames) * 100) : 0;
 
-  // 💡 파이어베이스의 단일 기록 배열을 분석하여 던전별 통계를 만들어내는 핵심 로직
+  // 💡 던전별, 난이도별 데이터 재구성 로직
   const getDungeonStats = () => {
     const dungeonData = {};
+    // 게임에 존재하는 5가지 난이도 (이름은 추후 게임 설정에 맞게 변경 가능합니다)
+    const STANDARD_DIFFICULTIES = ['Easy', 'Normal', 'Hard', 'Expert', 'Hell'];
 
     records.forEach(rec => {
-      if (!dungeonData[rec.dungeon]) {
-        dungeonData[rec.dungeon] = { plays: 0, wins: 0, bestTime: null };
+      // 정규식으로 "던전명 (난이도)" 추출 -> 던전명과 난이도 분리
+      const match = rec.dungeon.match(/(.+?)\s*\((.+?)\)$/);
+      const dName = match ? match[1] : rec.dungeon;
+      const diff = match ? match[2] : 'Normal';
+
+      if (!dungeonData[dName]) {
+        dungeonData[dName] = {};
+        // 해당 던전에 처음 데이터가 들어올 때 5가지 난이도 슬롯을 미리 생성
+        STANDARD_DIFFICULTIES.forEach(d => {
+           dungeonData[dName][d] = { plays: 0, wins: 0, bestTime: null };
+        });
       }
       
-      dungeonData[rec.dungeon].plays += 1;
+      // 만약 고정된 5개 난이도 외의 이름이 파싱되었을 경우를 대비해 슬롯 생성
+      if (!dungeonData[dName][diff]) {
+        dungeonData[dName][diff] = { plays: 0, wins: 0, bestTime: null };
+      }
+
+      dungeonData[dName][diff].plays += 1;
       
       if (rec.result === '승리') {
-        dungeonData[rec.dungeon].wins += 1;
-        // 문자열 비교로 최고기록(최단시간) 갱신 (예: "01:23" < "02:45")
-        if (!dungeonData[rec.dungeon].bestTime || rec.time < dungeonData[rec.dungeon].bestTime) {
-          dungeonData[rec.dungeon].bestTime = rec.time;
+        dungeonData[dName][diff].wins += 1;
+        if (!dungeonData[dName][diff].bestTime || rec.time < dungeonData[dName][diff].bestTime) {
+          dungeonData[dName][diff].bestTime = rec.time;
         }
       }
     });
 
-    return Object.entries(dungeonData).map(([name, data]) => ({
-      name,
-      winRate: Math.round((data.wins / data.plays) * 100),
-      bestTime: data.bestTime || '-',
-      plays: data.plays
-    })).sort((a, b) => b.plays - a.plays); // 많이 플레이한 순서대로 정렬
+    return Object.entries(dungeonData).map(([name, diffs]) => {
+      // 난이도별 배열로 변환 및 정렬 (미리 정의된 5가지 난이도 순서대로)
+      const sortedDiffs = Object.keys(diffs).sort((a, b) => {
+        const idxA = STANDARD_DIFFICULTIES.indexOf(a);
+        const idxB = STANDARD_DIFFICULTIES.indexOf(b);
+        if (idxA === -1 && idxB === -1) return 0;
+        if (idxA === -1) return 1;
+        if (idxB === -1) return -1;
+        return idxA - idxB;
+      }).map(diffName => {
+        const data = diffs[diffName];
+        return {
+          diffName,
+          plays: data.plays,
+          wins: data.wins,
+          winRate: data.plays > 0 ? Math.round((data.wins / data.plays) * 100) : 0,
+          bestTime: data.bestTime || '-'
+        };
+      });
+
+      return { name, diffs: sortedDiffs };
+    });
   };
 
   const dungeonStatsList = getDungeonStats();
@@ -154,15 +176,10 @@ export default function MyPage({ onBack }) {
       
       <div 
         className="absolute inset-x-0 top-[15%] bottom-0 bg-cover bg-bottom bg-no-repeat opacity-60 z-0 pointer-events-none"
-        style={{ 
-          backgroundImage: "url('/mypage-bg.jpeg')", 
-          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 25%, black 100%)',
-          maskImage: 'linear-gradient(to bottom, transparent 0%, black 25%, black 100%)'
-        }}
+        style={{ backgroundImage: "url('/mypage-bg.jpeg')", WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 25%, black 100%)', maskImage: 'linear-gradient(to bottom, transparent 0%, black 25%, black 100%)' }}
       ></div>
 
       <div className="relative z-10 w-full max-w-md flex flex-col items-center">
-        
         <div className="w-full max-w-sm mt-2 mb-0 mx-auto relative flex justify-center pointer-events-none z-20">
           <div className="w-full" style={{ WebkitMaskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)', maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)' }}>
             <img src="/mypage-title.jpeg" alt="Title" className="w-full h-auto object-contain drop-shadow-[0_0_20px_rgba(220,38,38,0.2)]" />
@@ -198,15 +215,12 @@ export default function MyPage({ onBack }) {
               <div className="absolute right-3 w-1.5 h-1.5 rotate-45 bg-[#7c5432]"></div>
             </div>
 
-            <div 
-              className="flex-1 w-full bg-cover bg-center flex flex-col relative p-4 min-h-[350px]"
-              style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}
-            >
+            <div className="flex-1 w-full bg-cover bg-center flex flex-col relative p-4 min-h-[350px]" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}>
               <div className="absolute inset-0 bg-amber-50/40 pointer-events-none"></div>
 
               <div className="relative z-10 h-full flex flex-col">
                 
-                {/* 탭 1: 프로필 (요약 정보) */}
+                {/* 탭 1: 프로필 */}
                 {activeTab === 'profile' && (
                   <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col">
                     <div className="flex flex-row items-start mb-3">
@@ -217,9 +231,6 @@ export default function MyPage({ onBack }) {
                         <img src={avatarUrl} alt="Avatar" onError={(e) => { e.target.src = DEFAULT_AVATAR; }} className="w-full h-full object-cover p-[2px]" />
                         <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                           <svg className="w-5 h-5 text-white animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18"></path></svg>
-                        </div>
-                        <div className="absolute -bottom-1.5 -right-1.5 bg-black w-5 h-5 rounded-full border-[1.5px] border-[#a6845c] flex items-center justify-center shadow-md z-20">
-                          <span className="text-white text-[9px] font-black leading-none">1</span>
                         </div>
                       </div>
 
@@ -281,7 +292,6 @@ export default function MyPage({ onBack }) {
                             <div className="m-auto text-[#7c5432]/50 text-xs font-bold tracking-widest bg-white/30 px-3 py-1 rounded">최근 전적이 없습니다</div>
                           ) : (
                             <div className="w-full flex flex-col space-y-1">
-                              {/* 최근 5게임 표시 */}
                               {[...records].reverse().slice(0, 5).map((rec, idx) => (
                                 <div key={idx} className="flex justify-between items-center bg-[#633f20]/10 border border-[#a6845c]/30 px-2 py-1.5 rounded-sm">
                                   <span className="text-[10px] font-bold text-[#4a3522] w-[45%] truncate">{rec.dungeon}</span>
@@ -291,10 +301,6 @@ export default function MyPage({ onBack }) {
                               ))}
                             </div>
                           )}
-                          <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-[#633f20]"></div>
-                          <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-[#633f20]"></div>
-                          <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-[#633f20]"></div>
-                          <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-[#633f20]"></div>
                         </div>
                       </>
                     ) : (
@@ -319,67 +325,71 @@ export default function MyPage({ onBack }) {
                   </div>
                 )}
 
-                {/* 💡 탭 2: 상세 기록 (새로 추가된 모험 일지 탭) */}
+                {/* 💡 탭 2: 모험 일지 (던전별/난이도별 컨테이너 구조) */}
                 {activeTab === 'record' && (
                   <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col">
                     
-                    {/* 상단 PVE / PVP 토글 스위치 */}
-                    <div className="flex w-full bg-[#1a1008] rounded-sm p-1 mb-3 border border-[#3c2a1a]">
-                      <button 
-                        onClick={() => setRecordMode('PVE')}
-                        className={`flex-1 py-1.5 text-[11px] font-bold rounded-sm transition-all duration-200 ${recordMode === 'PVE' ? 'bg-[#4a301c] text-[#f5d5a9] shadow-inner' : 'text-[#8c6543] hover:text-[#d8b486]'}`}
-                      >
-                        PVE 던전
-                      </button>
-                      <button 
-                        onClick={() => setRecordMode('PVP')}
-                        className={`flex-1 py-1.5 text-[11px] font-bold rounded-sm transition-all duration-200 ${recordMode === 'PVP' ? 'bg-[#4a301c] text-[#f5d5a9] shadow-inner' : 'text-[#8c6543] hover:text-[#d8b486]'}`}
-                      >
-                        PVP 전장
-                      </button>
+                    <div className="flex w-full bg-[#1a1008] rounded-sm p-1 mb-2 border border-[#3c2a1a]">
+                      <button onClick={() => setRecordMode('PVE')} className={`flex-1 py-1 text-[11px] font-bold rounded-sm transition-all duration-200 ${recordMode === 'PVE' ? 'bg-[#4a301c] text-[#f5d5a9] shadow-inner' : 'text-[#8c6543] hover:text-[#d8b486]'}`}>PVE 던전</button>
+                      <button onClick={() => setRecordMode('PVP')} className={`flex-1 py-1 text-[11px] font-bold rounded-sm transition-all duration-200 ${recordMode === 'PVP' ? 'bg-[#4a301c] text-[#f5d5a9] shadow-inner' : 'text-[#8c6543] hover:text-[#d8b486]'}`}>PVP 전장</button>
                     </div>
 
-                    <div className="w-full flex-1 bg-[#3a2618]/5 border-[2px] border-[#a6845c] rounded-sm p-1.5 flex flex-col shadow-inner relative overflow-y-auto">
+                    <div className="w-full flex-1 bg-[#3a2618]/5 border-[2px] border-[#a6845c] rounded-sm p-2 flex flex-col shadow-inner relative overflow-y-auto">
+                      
                       {recordMode === 'PVE' ? (
                         dungeonStatsList.length === 0 ? (
                           <div className="m-auto flex flex-col items-center">
                             <span className="text-[#7c5432]/50 text-xs font-bold tracking-widest bg-white/30 px-3 py-1 rounded">모험 기록이 없습니다</span>
                           </div>
                         ) : (
-                          <div className="w-full flex flex-col space-y-2">
-                            {/* 표 헤더 */}
-                            <div className="flex justify-between items-center border-b border-[#a6845c]/30 pb-1 px-1">
-                              <span className="text-[10px] font-black text-[#a36b33] w-[45%]">던전 (난이도)</span>
-                              <span className="text-[10px] font-black text-[#a36b33] w-[20%] text-center">승률</span>
-                              <span className="text-[10px] font-black text-[#a36b33] w-[30%] text-right">최고 기록</span>
-                            </div>
-                            
-                            {/* 던전별 통계 리스트 */}
-                            {dungeonStatsList.map((stat, idx) => (
-                              <div key={idx} className="flex justify-between items-center bg-[#633f20]/20 border border-[#8c6543]/20 px-2 py-2 rounded-sm hover:bg-[#633f20]/40 transition-colors">
-                                <div className="flex flex-col w-[45%] overflow-hidden">
-                                  <span className="text-[11px] font-black text-[#2e2016] truncate">{stat.name}</span>
-                                  <span className="text-[9px] font-bold text-[#7c5432]">총 {stat.plays}전</span>
+                          <div className="w-full flex flex-col space-y-4 pb-2">
+                            {/* 💡 던전 단위의 컨테이너 렌더링 반복문 */}
+                            {dungeonStatsList.map((dungeon, idx) => (
+                              <div key={idx} className="flex flex-col bg-[#633f20]/10 border border-[#a6845c]/40 rounded-sm shadow-sm overflow-hidden">
+                                
+                                {/* 컨테이너 상단: 던전 이름 */}
+                                <div className="w-full bg-[#3a2618]/80 border-b border-[#a6845c]/40 py-1.5 flex justify-center items-center shadow-inner">
+                                  <span className="text-[12px] font-black text-[#f5d5a9] tracking-wider">{dungeon.name}</span>
                                 </div>
-                                <span className="text-[12px] font-black text-[#1d3d23] w-[20%] text-center">{stat.winRate}%</span>
-                                <span className="text-[12px] font-black text-amber-700 w-[30%] text-right">{stat.bestTime}</span>
+                                
+                                {/* 5가지 난이도를 나열하는 리스트 영역 */}
+                                <div className="flex flex-col p-1.5">
+                                  {/* 표 컬럼 이름 */}
+                                  <div className="flex border-b border-[#a6845c]/20 pb-1 mb-1 px-1">
+                                     <div className="w-[30%] text-[9px] text-[#a36b33] font-bold">난이도</div>
+                                     <div className="w-[25%] text-[9px] text-[#a36b33] font-bold text-center">승리 <span className="text-[8px]">(도전)</span></div>
+                                     <div className="w-[20%] text-[9px] text-[#a36b33] font-bold text-center">승률</div>
+                                     <div className="w-[25%] text-[9px] text-[#a36b33] font-bold text-right">최고기록</div>
+                                  </div>
+                                  
+                                  {/* 각 난이도 출력 */}
+                                  {dungeon.diffs.map((diff, dIdx) => (
+                                     <div key={dIdx} className="flex items-center px-1 py-1 hover:bg-[#633f20]/20 rounded-sm transition-colors border-b border-[#8c6543]/10 last:border-0">
+                                        <div className="w-[30%] text-[10px] text-[#d8b486] font-black">{diff.diffName}</div>
+                                        <div className="w-[25%] text-[10px] text-[#e5e5e5] font-bold text-center">
+                                          {diff.wins} <span className="text-[8px] text-[#7c5432]">({diff.plays})</span>
+                                        </div>
+                                        <div className={`w-[20%] text-[10px] font-black text-center ${diff.plays > 0 ? (diff.winRate >= 50 ? 'text-green-500' : 'text-amber-500') : 'text-[#7c5432]'}`}>
+                                          {diff.plays > 0 ? `${diff.winRate}%` : '-'}
+                                        </div>
+                                        <div className="w-[25%] text-[9px] text-amber-700 font-bold text-right">
+                                          {diff.bestTime}
+                                        </div>
+                                     </div>
+                                  ))}
+                                </div>
+
                               </div>
                             ))}
                           </div>
                         )
                       ) : (
-                         /* PVP 안내 화면 */
                          <div className="m-auto flex flex-col items-center opacity-70">
-                            <svg className="w-10 h-10 text-[#8c6543] mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                            <svg className="w-8 h-8 text-[#8c6543] mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                             <span className="text-[#633f20] text-xs font-black tracking-widest">업데이트 예정</span>
-                            <span className="text-[#8c6543] text-[10px] font-bold mt-1">곧 랭킹전이 오픈됩니다.</span>
                          </div>
                       )}
-
-                      <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-[#633f20]"></div>
-                      <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-[#633f20]"></div>
-                      <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-[#633f20]"></div>
-                      <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-[#633f20]"></div>
+                      
                     </div>
                   </div>
                 )}
@@ -401,45 +411,19 @@ export default function MyPage({ onBack }) {
                     </div>
                   </div>
                 )}
-
               </div>
             </div>
 
-            {/* 💡 하단 탭 메뉴: 4등분으로 맞추어 '기록' 탭 버튼을 추가했습니다. */}
             <div className="flex w-full bg-[#2a1a10] border-t-[3px] border-[#1a1008] text-[11px] font-bold">
-              <button 
-                onClick={() => setActiveTab('profile')}
-                className={`flex-1 py-3 border-r border-[#1a1008] transition-colors ${activeTab === 'profile' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}
-              >
-                프로필
-              </button>
-              
-              <button 
-                onClick={() => setActiveTab('record')}
-                className={`flex-1 py-3 border-r border-[#1a1008] transition-colors ${activeTab === 'record' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}
-              >
-                기록
-              </button>
-              
-              <button 
-                onClick={() => setActiveTab('account')}
-                className={`flex-1 py-3 border-r border-[#1a1008] transition-colors ${activeTab === 'account' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}
-              >
-                계정 정보
-              </button>
-              
-              <button 
-                onClick={() => setIsProfileOpen(false)} 
-                className="flex-1 py-3 hover:bg-[#3a2618] text-[#a84444] hover:text-[#d65a5a] transition-colors"
-              >
-                닫기
-              </button>
+              <button onClick={() => setActiveTab('profile')} className={`flex-1 py-3 border-r border-[#1a1008] transition-colors ${activeTab === 'profile' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}>프로필</button>
+              <button onClick={() => setActiveTab('record')} className={`flex-1 py-3 border-r border-[#1a1008] transition-colors ${activeTab === 'record' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}>기록</button>
+              <button onClick={() => setActiveTab('account')} className={`flex-1 py-3 border-r border-[#1a1008] transition-colors ${activeTab === 'account' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}>계정 정보</button>
+              <button onClick={() => setIsProfileOpen(false)} className="flex-1 py-3 hover:bg-[#3a2618] text-[#a84444] hover:text-[#d65a5a] transition-colors">닫기</button>
             </div>
 
           </div>
         </div>
       )}
-
     </div>
   );
 }
