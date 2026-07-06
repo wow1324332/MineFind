@@ -224,7 +224,7 @@ export default function MyPage({ onBack }) {
               <div className="absolute right-3 w-1.5 h-1.5 rotate-45 bg-[#7c5432]"></div>
             </div>
 
-            <div className="flex-1 w-full bg-cover bg-center flex flex-col relative p-4 h-[400px]" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}>
+              <div className="w-full bg-cover bg-center flex flex-col relative p-4 h-[380px] overflow-hidden" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}>
               <div className="absolute inset-0 bg-amber-50/40 pointer-events-none"></div>
 
               <div className="relative z-10 h-full flex flex-col">
@@ -336,30 +336,32 @@ export default function MyPage({ onBack }) {
 
                 {/* 💡 탭 2: 모험 일지 (던전별/난이도별 컨테이너 구조) */}
                 {activeTab === 'record' && (
-                  <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col">
+                  <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col overflow-hidden">
                     
-                    <div className="flex w-full bg-[#1a1008] rounded-sm p-1 mb-2 border border-[#3c2a1a]">
+                    {/* 상단 PVE/PVP 토글 (shrink-0으로 안 찌그러지게 고정) */}
+                    <div className="flex w-full bg-[#1a1008] rounded-sm p-1 mb-2 border border-[#3c2a1a] shrink-0">
                       <button onClick={() => setRecordMode('PVE')} className={`flex-1 py-1 text-[11px] font-bold rounded-sm transition-all duration-200 ${recordMode === 'PVE' ? 'bg-[#4a301c] text-[#f5d5a9] shadow-inner' : 'text-[#8c6543] hover:text-[#d8b486]'}`}>PVE</button>
                       <button onClick={() => setRecordMode('PVP')} className={`flex-1 py-1 text-[11px] font-bold rounded-sm transition-all duration-200 ${recordMode === 'PVP' ? 'bg-[#4a301c] text-[#f5d5a9] shadow-inner' : 'text-[#8c6543] hover:text-[#d8b486]'}`}>PVP</button>
                     </div>
 
-                    {/* 💡 border-[2px] border-[#a6845c] 속성이 제거된 코드 */}
+                    {/* 💡 외부 연갈색 테두리 제거 + 내부 스크롤(overflow-y-auto) 완벽 적용 */}
                     <div className="w-full flex-1 bg-[#3a2618]/5 rounded-sm p-2 flex flex-col shadow-inner relative overflow-y-auto">
                       
-                {recordMode === 'PVE' ? (
+                      {recordMode === 'PVE' ? (
                         dungeonStatsList.length === 0 ? (
                           <div className="m-auto flex flex-col items-center">
                             <span className="text-[#7c5432]/50 text-xs font-bold tracking-widest bg-white/30 px-3 py-1 rounded">No records</span>
                           </div>
                         ) : (
                           <div className="w-full flex flex-col space-y-4 pb-2">
+                            
                             {dungeonStatsList.map((dungeon, idx) => {
                               const isExpanded = expandedDungeons[dungeon.name] || false;
 
                               return (
+                              {/* 💡 던전을 감싸는 연갈색 테두리(border) 속성 완전히 파괴 */}
                               <div key={idx} className="flex flex-col bg-[#633f20]/10 rounded-sm shadow-sm overflow-hidden">
                                 
-                                {/* 던전 헤더 영역 */}
                                 <div 
                                   onClick={() => toggleDungeon(dungeon.name)}
                                   className={`w-full bg-[#3a2618]/80 px-3 py-2 flex justify-between items-center shadow-inner cursor-pointer hover:bg-[#4a301c] transition-colors duration-200 ${isExpanded ? 'border-b border-[#a6845c]/40' : ''}`}
@@ -370,7 +372,6 @@ export default function MyPage({ onBack }) {
                                   </svg>
                                 </div>
                                 
-                                {/* 스르륵 애니메이션이 적용된 리스트 영역 */}
                                 <div className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
                                   <div className="overflow-hidden">
                                     <div className="flex flex-col p-1.5">
@@ -387,7 +388,6 @@ export default function MyPage({ onBack }) {
                                             <div className="w-[25%] text-[10px] text-[#4a3522] font-bold text-center">
                                               {diff.wins} <span className="text-[8px] text-[#4a3522]">({diff.plays})</span>
                                             </div>
-                                            {/* 💡 승률 텍스트 갈색(text-[#4a3522]) 고정 */}
                                             <div className="w-[20%] text-[10px] font-black text-center text-[#4a3522]">
                                               {diff.plays > 0 ? `${diff.winRate}%` : '-'}
                                             </div>
@@ -399,11 +399,12 @@ export default function MyPage({ onBack }) {
                                     </div>
                                   </div>
                                 </div>
+
                               </div>
                             )})}
                           </div>
                         )
-                      ): (
+                      ) : (
                          <div className="m-auto flex flex-col items-center opacity-70">
                             <svg className="w-8 h-8 text-[#4a3522] mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                             <span className="text-[#4a3522] text-xs font-black tracking-widest">업데이트 예정</span>
