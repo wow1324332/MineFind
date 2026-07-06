@@ -29,8 +29,8 @@ export const DUNGEON_INFO = {
     loadingBg: '/devilmineloading-bg.jpg',
     // 💡 로딩 화면 정보 전역 데이터화
     loadingMsg: "물의 던전으로 잠수 중...",
-    loadingLogo: "/huntlistloading-logo.png",
-    loadingOpacity: "opacity-90",
+    loadingLogo: "/hellofaqua-bt.png",
+    loadingOpacity: "opacity-70",
     winBg: '/hellofaquawin.jpeg',
     loseBg: '/hellofaqualose-bg.jpg',
     rewards: {
