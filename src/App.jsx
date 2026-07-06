@@ -9,6 +9,8 @@ import DevilMineMode from './components/DevilMineMode';
 import DungeonSelection from './components/DungeonSelection';
 import { useAuth } from './hooks/useAuth';
 import MyPage from './components/MyPage';
+// 💡 던전 데이터 파일 임포트
+import { DUNGEON_INFO } from './constants/dungeonData';
 
 const SPLASH_CONFIG = {
   INITIAL: {
@@ -67,8 +69,6 @@ export default function App() {
   } = useMinesweeper();
 
   const [deferredPrompt, setDeferredPrompt] = useState(null);
-  
-  // 💡 불필요해진 showSplash 삭제 완료
   const [showOpening, setShowOpening] = useState(true);
   const [currentScreen, setCurrentScreen] = useState('HUNT_LIST_LOADING');
   const [currentDungeon, setCurrentDungeon] = useState('fire');
@@ -147,7 +147,7 @@ export default function App() {
   };
 
   const handleSelectDevilMine = () => {
-    setCurrentScreen('DEVIL_MINE_MODE'); // 💡 로딩창 없이 즉시 데빌마인 화면으로 전환
+    setCurrentScreen('DEVIL_MINE_MODE');
   };
 
   const handleSelectPVE = () => {
@@ -159,15 +159,8 @@ export default function App() {
     setCurrentDungeon(dungeonId); 
     setCurrentDifficulty(selectedDifficulty); 
 
-    // 💡 1. dungeonId('fire' 또는 'water')를 파이어베이스에 기록할 예쁜 이름으로 번역
-    let fullDungeonName = "알 수 없는 던전";
-    if (dungeonId === 'fire') {
-      fullDungeonName = "Hell of flame";
-    } else if (dungeonId === 'water') {
-      fullDungeonName = "Hell of aqua";
-    }
-
-    // 💡 2. 번역된 전체 던전 이름을 initGame의 두 번째 인자로 확실하게 넘겨줌!
+    // 💡 1. 삼항 연산자 대신 DUNGEON_INFO 객체에서 깔끔하게 이름을 가져옵니다.
+    const fullDungeonName = DUNGEON_INFO[dungeonId]?.name || '알 수 없는 던전';
     initGame(selectedDifficulty, fullDungeonName); 
 
     if (dungeonId === 'fire') {
@@ -177,10 +170,9 @@ export default function App() {
     } else {
       setCurrentScreen('GAME_LOADING');
     }
-      setTimeout(() => setCurrentScreen('GAME_PVE'), 2000);
-    };
+    setTimeout(() => setCurrentScreen('GAME_PVE'), 2000);
+  };
 
-  // 💡 게임 오프닝 화면 (강제 로딩 딜레이 제거 완료)
   if (showOpening) {
     return (
       <div 
@@ -212,7 +204,6 @@ export default function App() {
     );
   }
 
-  // 💡 유저 정보 불러오는 중에만 잠시 보여줌
   if (loading) {
     return <SplashScreen {...SPLASH_CONFIG.INITIAL} />;
   }
@@ -221,7 +212,6 @@ export default function App() {
     return <LoginModal deferredPrompt={deferredPrompt} handleInstallClick={handleInstallClick} />;
   }
 
-  // 💡 이제 복잡한 예외 처리 없이 공통 로딩 화면만 출력하면 끝입니다.
   if (currentScreen.endsWith('_LOADING')) {
     const config = SPLASH_CONFIG[currentScreen] || SPLASH_CONFIG.GAME_LOADING;
     return <SplashScreen {...config} />;
@@ -229,7 +219,6 @@ export default function App() {
 
   let currentView = null;
   switch (currentScreen) {
-    // 💡 헌트리스트에게 "마이페이지 버튼 누르면 MY_PAGE 화면으로 가줘"라고 신호를 전달합니다.
     case 'HUNT_LIST':
       currentView = (
         <HuntList 
@@ -240,7 +229,6 @@ export default function App() {
       );
       break;
 
-    // 💡 마이페이지 화면을 그리는 규칙을 새로 추가했습니다. (뒤로가기 누르면 다시 헌트리스트로!)
     case 'MY_PAGE':
       currentView = <MyPage onBack={() => setCurrentScreen('HUNT_LIST')} />;
       break;
@@ -268,8 +256,9 @@ export default function App() {
         <div className="min-h-screen bg-black flex flex-col items-center justify-start pt-0 px-4 pb-4 select-none touch-manipulation">
           
           <div className="w-full max-w-sm flex justify-center relative z-10 drop-shadow-[0_10px_15px_rgba(0,0,0,0.8)]">
+            {/* 💡 2. 타이틀 이미지를 데이터 객체에서 바로 가져옵니다! */}
             <img 
-              src={currentDungeon === 'fire' ? "/hellofflame-title.jpg" : "/hellofaqua-title.jpg"} 
+              src={DUNGEON_INFO[currentDungeon]?.titleImg} 
               alt="Dungeon Title" 
               className="w-full object-contain block"
               draggable="false"
@@ -314,7 +303,8 @@ export default function App() {
               <div 
                 className="fixed inset-0 z-[100] flex flex-col justify-end pb-8"
                 style={{ 
-                  backgroundImage: `url(${currentDungeon === 'fire' ? '/hellofflamewin.jpeg' : '/hellofaquawin.jpeg'})`,
+                  // 💡 3. 승리 배경 이미지를 데이터 객체에서 바로 가져옵니다!
+                  backgroundImage: `url(${DUNGEON_INFO[currentDungeon]?.winBg})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   animation: 'fadeInOverlay 1.0s cubic-bezier(0.25, 1, 0.5, 1) forwards'
@@ -370,7 +360,8 @@ export default function App() {
               <div 
                 className="fixed inset-0 z-[100] flex flex-col justify-end pb-8"
                 style={{ 
-                  backgroundImage: `url(${currentDungeon === 'fire' ? '/hellofflamelose-bg.jpg' : '/hellofaqualose-bg.jpg'})`,
+                  // 💡 4. 패배 배경 이미지를 데이터 객체에서 바로 가져옵니다!
+                  backgroundImage: `url(${DUNGEON_INFO[currentDungeon]?.loseBg})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   animation: 'fadeInOverlay 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards'
