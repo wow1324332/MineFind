@@ -37,7 +37,7 @@ export const DUNGEON_INFO = {
     loadingOpacity: "opacity-70",
     // 💡 물 던전 승리/패배 배경 경로 수정 완료
     winBg: '/dungeons/water/hellofaquawin.jpg',
-    loseBg: '/dungeons/water/hellofaqualose-bg.jpg',
+    loseBg: '/dungeons/water/hellofaqualose.jpg',
     boardBg: '/dungeons/water/hellofaqua-board-bg.jpg',
     // 💡 추가된 인게임 보드용 에셋 데이터
     tileImg: '/dungeons/water/hellofaqua-tile.png', // (public 폴더 경로에 맞게 수정 필요시 변경)
