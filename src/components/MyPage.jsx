@@ -27,6 +27,15 @@ export default function MyPage({ onBack }) {
   const [stats, setStats] = useState({ wins: 0, losses: 0 });
   const [records, setRecords] = useState([]);
   
+  const [expandedDungeons, setExpandedDungeons] = useState({});
+
+  const toggleDungeon = (dungeonName) => {
+    setExpandedDungeons(prev => ({
+      ...prev,
+      [dungeonName]: !prev[dungeonName]
+    }));
+  };
+  
   const { user } = useAuth(); 
 
   useEffect(() => {
@@ -344,43 +353,59 @@ export default function MyPage({ onBack }) {
                         ) : (
                           <div className="w-full flex flex-col space-y-4 pb-2">
                             {/* 💡 던전 단위의 컨테이너 렌더링 반복문 */}
-                            {dungeonStatsList.map((dungeon, idx) => (
+{dungeonStatsList.map((dungeon, idx) => {
+                              // 이 던전이 열려있는지 상태 확인 (기본값: 닫힘)
+                              const isExpanded = expandedDungeons[dungeon.name] || false;
+
+                              return (
                               <div key={idx} className="flex flex-col bg-[#633f20]/10 border border-[#a6845c]/40 rounded-sm shadow-sm overflow-hidden">
                                 
-                                {/* 컨테이너 상단: 던전 이름 */}
-                                <div className="w-full bg-[#3a2618]/80 border-b border-[#a6845c]/40 py-1.5 flex justify-center items-center shadow-inner">
+                                {/* 💡 컨테이너 상단: 클릭 가능하도록 토글 이벤트 및 호버 효과 추가 */}
+                                <div 
+                                  onClick={() => toggleDungeon(dungeon.name)}
+                                  className="w-full bg-[#3a2618]/80 border-b border-[#a6845c]/40 py-1.5 px-3 flex justify-between items-center shadow-inner cursor-pointer hover:brightness-110 hover:bg-[#4a301c] active:bg-[#2a1a10] transition-colors"
+                                >
                                   <span className="text-[12px] font-black text-[#f5d5a9] tracking-wider">{dungeon.name}</span>
+                                  {/* 화살표 아이콘 (열림 상태에 따라 180도 회전) */}
+                                  <svg 
+                                    className={`w-3.5 h-3.5 text-[#f5d5a9] transform transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} 
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                  >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
+                                  </svg>
                                 </div>
                                 
-                                {/* 5가지 난이도를 나열하는 리스트 영역 */}
-                                <div className="flex flex-col p-1.5">
-                                  {/* 표 컬럼 이름 */}
-                                  <div className="flex border-b border-[#a6845c]/20 pb-1 mb-1 px-1">
-                                     <div className="w-[30%] text-[9px] text-[#4a3522] font-bold">난이도</div>
-                                     <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-center">승리 <span className="text-[8px]">(도전)</span></div>
-                                     <div className="w-[20%] text-[9px] text-[#4a3522] font-bold text-center">승률</div>
-                                     <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-right">최고기록</div>
+                                {/* 💡 5가지 난이도를 나열하는 리스트 영역 (isExpanded가 true일 때만 화면에 나옴) */}
+                                {isExpanded && (
+                                  <div className="flex flex-col p-1.5 animate-[fadeIn_0.2s_ease-in-out]">
+                                    {/* 표 컬럼 이름 */}
+                                    <div className="flex border-b border-[#a6845c]/20 pb-1 mb-1 px-1">
+                                       <div className="w-[30%] text-[9px] text-[#4a3522] font-bold">난이도</div>
+                                       <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-center">승리 <span className="text-[8px]">(도전)</span></div>
+                                       <div className="w-[20%] text-[9px] text-[#4a3522] font-bold text-center">승률</div>
+                                       <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-right">최고기록</div>
+                                    </div>
+                                    
+                                    {/* 각 난이도 출력 */}
+                                    {dungeon.diffs.map((diff, dIdx) => (
+                                       <div key={dIdx} className="flex items-center px-1 py-1 hover:bg-[#633f20]/20 rounded-sm transition-colors border-b border-[#8c6543]/10 last:border-0">
+                                          <div className="w-[30%] text-[10px] text-[#4a3522] font-black">{diff.diffName}</div>
+                                          <div className="w-[25%] text-[10px] text-[#4a3522] font-bold text-center">
+                                            {diff.wins} <span className="text-[8px] text-[#4a3522]">({diff.plays})</span>
+                                          </div>
+                                          <div className={`w-[20%] text-[10px] font-black text-center ${diff.plays > 0 ? (diff.winRate >= 50 ? 'text-green-500' : 'text-amber-500') : 'text-[#4a3522]'}`}>
+                                            {diff.plays > 0 ? `${diff.winRate}%` : '-'}
+                                          </div>
+                                          <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-right">
+                                            {diff.bestTime}
+                                          </div>
+                                       </div>
+                                    ))}
                                   </div>
-                                  
-                                  {/* 각 난이도 출력 */}
-                                  {dungeon.diffs.map((diff, dIdx) => (
-                                     <div key={dIdx} className="flex items-center px-1 py-1 hover:bg-[#633f20]/20 rounded-sm transition-colors border-b border-[#8c6543]/10 last:border-0">
-                                        <div className="w-[30%] text-[10px] text-[#4a3522] font-black">{diff.diffName}</div>
-                                        <div className="w-[25%] text-[10px] text-[#4a3522] font-bold text-center">
-                                          {diff.wins} <span className="text-[8px] text-[#4a3522]">({diff.plays})</span>
-                                        </div>
-                                        <div className="w-[20%] text-[10px] font-black text-center text-[#4a3522]">
-                                          {diff.plays > 0 ? `${diff.winRate}%` : '-'}
-                                        </div>
-                                        <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-right">
-                                          {diff.bestTime}
-                                        </div>
-                                     </div>
-                                  ))}
-                                </div>
+                                )}
 
                               </div>
-                            ))}
+                            )})}
                           </div>
                         )
                       ) : (
