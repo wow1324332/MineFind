@@ -13,8 +13,11 @@ const AVAILABLE_AVATARS = [
 
 export default function MyPage({ onBack }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isInventoryOpen, setIsInventoryOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('profile'); // profile, record, account
+  const [isInventoryOpen, setIsInventoryOpen] = useState(false); 
+  const [activeTab, setActiveTab] = useState('profile'); 
+  // 💡 인벤토리 전용 탭 상태 (currency: 재화, materials: 재료, consumables: 소비품)
+  const [inventoryTab, setInventoryTab] = useState('materials'); 
+
   const [isEditingNickname, setIsEditingNickname] = useState(false);
   const [isSelectAvatarOpen, setIsSelectAvatarOpen] = useState(false);
   
@@ -27,21 +30,27 @@ export default function MyPage({ onBack }) {
   
   const [stats, setStats] = useState({ wins: 0, losses: 0 });
   const [records, setRecords] = useState([]);
-  
   const [expandedDungeons, setExpandedDungeons] = useState({});
 
-  const toggleDungeon = (dungeonName) => {
-    setExpandedDungeons(prev => ({
-      ...prev,
-      [dungeonName]: !prev[dungeonName]
-    }));
-  };
-  
+  // 💡 임시 인벤토리 데이터 (나중에 DB 데이터로 교체될 자리입니다)
+  const [inventory] = useState({
+    gold: 1250,
+    exp: 420,
+    materials: [
+      { name: '작은 불씨', count: 12, icon: '🔥', rarity: 'common' },
+      { name: '심해의 결정', count: 3, icon: '💎', rarity: 'rare' },
+      { name: '화룡의 심장', count: 1, icon: '❤️‍🔥', rarity: 'legendary' },
+    ],
+    consumables: [
+      { name: '초보자의 포션', count: 5, icon: '🧪', rarity: 'common' },
+      { name: '신비한 열쇠', count: 2, icon: '🗝️', rarity: 'epic' },
+    ]
+  });
+
   const { user } = useAuth(); 
 
   useEffect(() => {
     if (!user) return;
-
     const fetchUserData = async () => {
       try {
         const userDocRef = doc(db, 'users', user.uid);
@@ -63,7 +72,6 @@ export default function MyPage({ onBack }) {
         console.error("데이터 로딩 실패:", error);
       }
     };
-
     fetchUserData();
   }, [user, avatarUrl]);
 
@@ -74,6 +82,13 @@ export default function MyPage({ onBack }) {
       setIsSelectAvatarOpen(false); 
     }
   }, [isProfileOpen, nickname]);
+
+  useEffect(() => {
+    // 인벤토리 열 때 탭 초기화
+    if (isInventoryOpen) {
+      setInventoryTab('materials');
+    }
+  }, [isInventoryOpen]);
 
   const handleSaveNickname = async () => {
     if (!tempNickname.trim()) {
@@ -117,36 +132,33 @@ export default function MyPage({ onBack }) {
     }
   };
 
+  const toggleDungeon = (dungeonName) => {
+    setExpandedDungeons(prev => ({ ...prev, [dungeonName]: !prev[dungeonName] }));
+  };
+
   const totalGames = stats.wins + stats.losses;
   const winRate = totalGames > 0 ? Math.round((stats.wins / totalGames) * 100) : 0;
 
-  // 💡 던전별, 난이도별 데이터 재구성 로직
   const getDungeonStats = () => {
     const dungeonData = {};
-    // 게임에 존재하는 5가지 난이도 (이름은 추후 게임 설정에 맞게 변경 가능합니다)
     const STANDARD_DIFFICULTIES = ['Easy', 'Normal', 'Hard', 'Expert', 'Hell'];
 
     records.forEach(rec => {
-      // 정규식으로 "던전명 (난이도)" 추출 -> 던전명과 난이도 분리
       const match = rec.dungeon.match(/(.+?)\s*\((.+?)\)$/);
       const dName = match ? match[1] : rec.dungeon;
       const diff = match ? match[2] : 'Normal';
 
       if (!dungeonData[dName]) {
         dungeonData[dName] = {};
-        // 해당 던전에 처음 데이터가 들어올 때 5가지 난이도 슬롯을 미리 생성
         STANDARD_DIFFICULTIES.forEach(d => {
            dungeonData[dName][d] = { plays: 0, wins: 0, bestTime: null };
         });
       }
-      
-      // 만약 고정된 5개 난이도 외의 이름이 파싱되었을 경우를 대비해 슬롯 생성
       if (!dungeonData[dName][diff]) {
         dungeonData[dName][diff] = { plays: 0, wins: 0, bestTime: null };
       }
 
       dungeonData[dName][diff].plays += 1;
-      
       if (rec.result === '승리') {
         dungeonData[dName][diff].wins += 1;
         if (!dungeonData[dName][diff].bestTime || rec.time < dungeonData[dName][diff].bestTime) {
@@ -156,7 +168,6 @@ export default function MyPage({ onBack }) {
     });
 
     return Object.entries(dungeonData).map(([name, diffs]) => {
-      // 난이도별 배열로 변환 및 정렬 (미리 정의된 5가지 난이도 순서대로)
       const sortedDiffs = Object.keys(diffs).sort((a, b) => {
         const idxA = STANDARD_DIFFICULTIES.indexOf(a);
         const idxB = STANDARD_DIFFICULTIES.indexOf(b);
@@ -167,19 +178,58 @@ export default function MyPage({ onBack }) {
       }).map(diffName => {
         const data = diffs[diffName];
         return {
-          diffName,
-          plays: data.plays,
-          wins: data.wins,
+          diffName, plays: data.plays, wins: data.wins,
           winRate: data.plays > 0 ? Math.round((data.wins / data.plays) * 100) : 0,
           bestTime: data.bestTime || '-'
         };
       });
-
       return { name, diffs: sortedDiffs };
     });
   };
 
   const dungeonStatsList = getDungeonStats();
+
+  // 💡 아이템 등급에 따른 테두리 색상 헬퍼 함수
+  const getRarityColor = (rarity) => {
+    switch(rarity) {
+      case 'rare': return 'border-blue-400 shadow-[0_0_5px_rgba(96,165,250,0.5)]';
+      case 'epic': return 'border-purple-400 shadow-[0_0_5px_rgba(192,132,252,0.5)]';
+      case 'legendary': return 'border-yellow-400 shadow-[0_0_5px_rgba(250,204,21,0.6)]';
+      default: return 'border-[#a6845c]/50'; // common
+    }
+  };
+
+  // 💡 인벤토리 슬롯(칸) 렌더링 함수 (빈 슬롯 포함 20칸 생성)
+  const renderInventorySlots = (items) => {
+    const slots = Array.from({ length: 20 }); 
+    return (
+      <div className="grid grid-cols-4 gap-2 overflow-y-auto pr-1 pb-2 custom-scrollbar h-full content-start">
+        {slots.map((_, i) => {
+          const item = items[i];
+          return (
+            <div key={i} className="aspect-square bg-[#3a2618]/40 border-[1.5px] border-[#6b4c33] rounded-sm shadow-inner relative flex items-center justify-center group hover:bg-[#4a301c]/60 transition-colors cursor-pointer">
+              {item && (
+                <>
+                  {/* 아이템 아이콘 (나중에 실제 이미지 태그로 변경) */}
+                  <span className="text-3xl drop-shadow-md select-none">{item.icon}</span>
+                  {/* 보유 수량 */}
+                  <span className="absolute bottom-0 right-1 text-[11px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,1)] select-none">
+                    x{item.count}
+                  </span>
+                  {/* 등급별 테두리 이펙트 */}
+                  <div className={`absolute inset-0 border-2 rounded-sm pointer-events-none opacity-60 ${getRarityColor(item.rarity)}`}></div>
+                  {/* 툴팁 (이름) */}
+                  <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/90 border border-[#a6845c] text-[#f5d5a9] text-[10px] px-2 py-1 rounded-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+                    {item.name}
+                  </div>
+                </>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
 
   return (
     <div className="relative min-h-screen bg-black text-white flex flex-col items-center px-6 pb-6 pt-0 animate-[fadeIn_0.5s_ease-in-out] overflow-hidden">
@@ -206,29 +256,24 @@ export default function MyPage({ onBack }) {
           <div className="w-12 px-2"></div>
         </div>
         
+        {/* 버튼 컨테이너 */}
         <div className="w-full max-w-sm flex flex-col items-center mt-4 space-y-3 relative z-10">
           
-          {/* 1. 마이 프로필 버튼 */}
           <button 
             onClick={() => setIsProfileOpen(true)} 
-            // 💡 실제 클릭되는 "보이지 않는 투명한 네모 상자" 크기를 딱 휘장 두께만큼(h-[55px]) 잡아줍니다.
             className="group relative flex justify-center items-center w-full max-w-[17rem] h-[55px] z-10"
             style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
           >
-            {/* 이미지는 상자 밖으로 자유롭게 삐져나가지만, pointer-events-none으로 허공 클릭을 무시합니다. */}
             <img 
               src="/myprofile-bt.png" 
               alt="My Profile" 
-              // group-hover, group-active를 써서 버튼을 누를 때 삐져나간 이미지도 같이 애니메이션 되게 합니다!
               className="absolute w-full h-auto pointer-events-none transition-all duration-200 group-hover:brightness-110 group-active:scale-95 drop-shadow-[0_10px_20px_rgba(0,0,0,0.7)]" 
               draggable="false" 
             />
           </button>
 
-          {/* 2. 인벤토리 버튼 */}
           <button 
             onClick={() => setIsInventoryOpen(true)} 
-            // 💡 실제 클릭 영역 (Hitbox)
             className="group relative flex justify-center items-center w-full max-w-[17rem] h-[55px] z-10"
             style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
           >
@@ -243,6 +288,7 @@ export default function MyPage({ onBack }) {
         </div>
       </div>
 
+      {/* 💡 1. 프로필 모달 */}
       {isProfileOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4 animate-[fadeIn_0.2s_ease-in-out]">
           <div className="absolute inset-0 bg-black/85 backdrop-blur-sm" onClick={() => setIsProfileOpen(false)}></div>
@@ -255,12 +301,12 @@ export default function MyPage({ onBack }) {
               <div className="absolute right-3 w-1.5 h-1.5 rotate-45 bg-[#7c5432]"></div>
             </div>
 
-              <div className="w-full bg-cover bg-center flex flex-col relative p-4 h-[380px] overflow-hidden" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}>
+            <div className="w-full bg-cover bg-center flex flex-col relative p-4 h-[380px] overflow-hidden" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}>
               <div className="absolute inset-0 bg-amber-50/40 pointer-events-none"></div>
 
               <div className="relative z-10 h-full flex flex-col">
                 
-                {/* 탭 1: 프로필 */}
+                {/* 프로필 탭 */}
                 {activeTab === 'profile' && (
                   <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col">
                     <div className="flex flex-row items-start mb-3">
@@ -327,7 +373,7 @@ export default function MyPage({ onBack }) {
                            </div>
                         </div>
 
-                        <div className="w-full flex-1 min-h-[140px] bg-[#3a2618]/5 border-[2px] border-[#a6845c] rounded-sm p-1.5 flex flex-col shadow-inner relative overflow-y-auto">
+                        <div className="w-full flex-1 min-h-[140px] bg-[#3a2618]/5 border-[2px] border-[#a6845c] rounded-sm p-1.5 flex flex-col shadow-inner relative overflow-y-auto custom-scrollbar">
                           {records.length === 0 ? (
                             <div className="m-auto text-[#7c5432]/50 text-xs font-bold tracking-widest bg-white/30 px-3 py-1 rounded">No Records</div>
                           ) : (
@@ -365,19 +411,15 @@ export default function MyPage({ onBack }) {
                   </div>
                 )}
 
-                {/* 💡 탭 2: 모험 일지 (던전별/난이도별 컨테이너 구조) */}
+                {/* 던전 기록 탭 */}
                 {activeTab === 'record' && (
                   <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col overflow-hidden">
-                    
-                    {/* 상단 PVE/PVP 토글 (shrink-0으로 안 찌그러지게 고정) */}
                     <div className="flex w-full bg-[#1a1008] rounded-sm p-1 mb-2 border border-[#3c2a1a] shrink-0">
                       <button onClick={() => setRecordMode('PVE')} className={`flex-1 py-1 text-[11px] font-bold rounded-sm transition-all duration-200 ${recordMode === 'PVE' ? 'bg-[#4a301c] text-[#f5d5a9] shadow-inner' : 'text-[#8c6543] hover:text-[#d8b486]'}`}>PVE</button>
                       <button onClick={() => setRecordMode('PVP')} className={`flex-1 py-1 text-[11px] font-bold rounded-sm transition-all duration-200 ${recordMode === 'PVP' ? 'bg-[#4a301c] text-[#f5d5a9] shadow-inner' : 'text-[#8c6543] hover:text-[#d8b486]'}`}>PVP</button>
                     </div>
 
-                    {/* 💡 외부 연갈색 테두리 제거 + 내부 스크롤(overflow-y-auto) 완벽 적용 */}
-                    <div className="w-full flex-1 bg-[#3a2618]/5 rounded-sm p-2 flex flex-col shadow-inner relative overflow-y-auto">
-                      
+                    <div className="w-full flex-1 bg-[#3a2618]/5 rounded-sm p-2 flex flex-col shadow-inner relative overflow-y-auto custom-scrollbar">
                       {recordMode === 'PVE' ? (
                         dungeonStatsList.length === 0 ? (
                           <div className="m-auto flex flex-col items-center">
@@ -385,13 +427,10 @@ export default function MyPage({ onBack }) {
                           </div>
                         ) : (
                           <div className="w-full flex flex-col space-y-4 pb-2">
-                            
                             {dungeonStatsList.map((dungeon, idx) => {
                               const isExpanded = expandedDungeons[dungeon.name] || false;
-
                               return (
                               <div key={idx} className="flex flex-col bg-[#633f20]/10 rounded-sm shadow-sm overflow-hidden">
-                                
                                 <div 
                                   onClick={() => toggleDungeon(dungeon.name)}
                                   className={`w-full bg-[#3a2618]/80 px-3 py-2 flex justify-between items-center shadow-inner cursor-pointer hover:bg-[#4a301c] transition-colors duration-200 ${isExpanded ? 'border-b border-[#a6845c]/40' : ''}`}
@@ -401,7 +440,6 @@ export default function MyPage({ onBack }) {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
                                   </svg>
                                 </div>
-                                
                                 <div className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
                                   <div className="overflow-hidden">
                                     <div className="flex flex-col p-1.5">
@@ -411,7 +449,6 @@ export default function MyPage({ onBack }) {
                                          <div className="w-[20%] text-[9px] text-[#4a3522] font-bold text-center">승률</div>
                                          <div className="w-[25%] text-[9px] text-[#4a3522] font-bold text-right">최고기록</div>
                                       </div>
-                                      
                                       {dungeon.diffs.map((diff, dIdx) => (
                                          <div key={dIdx} className="flex items-center px-1 py-1 hover:bg-[#633f20]/20 rounded-sm transition-colors border-b border-[#8c6543]/10 last:border-0">
                                             <div className="w-[30%] text-[10px] text-[#4a3522] font-black">{diff.diffName}</div>
@@ -429,7 +466,6 @@ export default function MyPage({ onBack }) {
                                     </div>
                                   </div>
                                 </div>
-
                               </div>
                             )})}
                           </div>
@@ -440,12 +476,11 @@ export default function MyPage({ onBack }) {
                             <span className="text-[#4a3522] text-xs font-black tracking-widest">업데이트 예정</span>
                          </div>
                       )}
-                      
                     </div>
                   </div>
                 )}
 
-                {/* 탭 3: 계정 정보 */}
+                {/* 계정 탭 */}
                 {activeTab === 'account' && (
                   <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col justify-center px-1">
                     <div className="bg-[#633f20]/10 border border-[#a6845c]/50 p-4 rounded-sm flex flex-col space-y-4 shadow-inner">
@@ -475,6 +510,110 @@ export default function MyPage({ onBack }) {
           </div>
         </div>
       )}
+
+      {/* 💡 2. 인벤토리 모달 (프로필과 완벽하게 동일한 뼈대 공유) */}
+      {isInventoryOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4 animate-[fadeIn_0.2s_ease-in-out]">
+          <div className="absolute inset-0 bg-black/85 backdrop-blur-sm" onClick={() => setIsInventoryOpen(false)}></div>
+          
+          <div className="relative z-10 w-full max-w-[320px] flex flex-col rounded-md border-[3px] border-[#3c2a1a] shadow-[0_0_30px_rgba(0,0,0,1)] bg-[#1e140d]">
+            
+            {/* 인벤토리 헤더 */}
+            <div className="w-full bg-[#2a1a10] border-b-[3px] border-[#1a1008] relative py-2.5 flex justify-center items-center">
+              <div className="absolute left-3 w-1.5 h-1.5 rotate-45 bg-[#7c5432]"></div>
+              <h2 className="text-[#d8b486] font-bold text-[15px] tracking-widest font-serif">Inventory</h2>
+              <div className="absolute right-3 w-1.5 h-1.5 rotate-45 bg-[#7c5432]"></div>
+            </div>
+
+            {/* 인벤토리 바디 (양피지 배경) */}
+            <div className="w-full bg-cover bg-center flex flex-col relative p-4 h-[380px] overflow-hidden" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}>
+              <div className="absolute inset-0 bg-amber-50/40 pointer-events-none"></div>
+
+              <div className="relative z-10 h-full flex flex-col">
+                
+                {/* 1. 재화 탭 (Currency) */}
+                {inventoryTab === 'currency' && (
+                  <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col justify-start mt-2 space-y-3">
+                    
+                    <div className="bg-[#633f20]/20 border-[2px] border-[#a6845c] p-4 rounded-sm flex flex-col items-center justify-center shadow-inner relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-16 h-16 bg-yellow-500/10 rounded-full blur-xl"></div>
+                      <span className="text-[#6b4c33] font-bold text-[11px] mb-1">소지 골드</span>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-2xl drop-shadow-md">💰</span>
+                        <span className="text-[#2e2016] font-black text-2xl tracking-tight">{inventory.gold.toLocaleString()} <span className="text-[14px] text-[#8c6543]">G</span></span>
+                      </div>
+                    </div>
+
+                    <div className="bg-[#633f20]/20 border-[2px] border-[#a6845c] p-4 rounded-sm flex flex-col items-center justify-center shadow-inner relative overflow-hidden">
+                      <div className="absolute top-0 left-0 w-16 h-16 bg-blue-500/10 rounded-full blur-xl"></div>
+                      <span className="text-[#6b4c33] font-bold text-[11px] mb-1">누적 경험치</span>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-2xl drop-shadow-md">✨</span>
+                        <span className="text-[#2e2016] font-black text-2xl tracking-tight">{inventory.exp.toLocaleString()} <span className="text-[14px] text-[#8c6543]">EXP</span></span>
+                      </div>
+                    </div>
+
+                  </div>
+                )}
+
+                {/* 2. 재료 탭 (Materials) */}
+                {inventoryTab === 'materials' && (
+                  <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col">
+                    <div className="flex items-center space-x-2 mb-3 bg-[#5c3e23]/10 border-y border-[#7c5432]/30 px-2 py-1">
+                      <div className="w-1.5 h-1.5 bg-[#d8b486] rotate-45"></div>
+                      <span className="text-[#4a3522] text-[11px] font-black tracking-wide">던전 전리품</span>
+                    </div>
+                    <div className="flex-1 bg-[#3a2618]/5 border-[2px] border-[#a6845c] p-2 shadow-inner">
+                      {renderInventorySlots(inventory.materials)}
+                    </div>
+                  </div>
+                )}
+
+                {/* 3. 소비품 탭 (Consumables) */}
+                {inventoryTab === 'consumables' && (
+                  <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col">
+                    <div className="flex items-center space-x-2 mb-3 bg-[#5c3e23]/10 border-y border-[#7c5432]/30 px-2 py-1">
+                      <div className="w-1.5 h-1.5 bg-[#d8b486] rotate-45"></div>
+                      <span className="text-[#4a3522] text-[11px] font-black tracking-wide">사용 가능한 아이템</span>
+                    </div>
+                    <div className="flex-1 bg-[#3a2618]/5 border-[2px] border-[#a6845c] p-2 shadow-inner">
+                      {renderInventorySlots(inventory.consumables)}
+                    </div>
+                  </div>
+                )}
+
+              </div>
+            </div>
+
+            {/* 인벤토리 하단 탭 버튼 */}
+            <div className="flex w-full bg-[#2a1a10] border-t-[3px] border-[#1a1008] text-[11px] font-bold">
+              <button onClick={() => setInventoryTab('currency')} className={`flex-1 py-3 border-r border-[#1a1008] transition-colors ${inventoryTab === 'currency' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}>재화</button>
+              <button onClick={() => setInventoryTab('materials')} className={`flex-1 py-3 border-r border-[#1a1008] transition-colors ${inventoryTab === 'materials' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}>재료</button>
+              <button onClick={() => setInventoryTab('consumables')} className={`flex-1 py-3 border-r border-[#1a1008] transition-colors ${inventoryTab === 'consumables' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}>소비품</button>
+              <button onClick={() => setIsInventoryOpen(false)} className="flex-1 py-3 hover:bg-[#3a2618] text-[#a84444] hover:text-[#d65a5a] transition-colors">닫기</button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* 💡 전역 스크롤바 커스텀 스타일 (인벤토리/기록창에서 공통 사용) */}
+      <style>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(99, 63, 32, 0.1);
+          border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(166, 132, 92, 0.8);
+          border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(124, 84, 50, 1);
+        }
+      `}</style>
     </div>
   );
 }
