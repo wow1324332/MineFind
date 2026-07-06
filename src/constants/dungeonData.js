@@ -26,15 +26,15 @@ export const DUNGEON_INFO = {
     id: 'water',
     name: 'Hell of aqua',
     buttonImg: '/hellofaqua-bt.png',
-    titleImg: '/hellofaqua-title.jpg',
-    loadingBg: '/hellofaqualoading-bg.jpg',
+    titleImg: '/dungeons/water/hellofaqua-title.jpg',
+    loadingBg: '/dungeons/water/hellofaqualoading-bg.jpg',
     // 💡 로딩 화면 정보 전역 데이터화
     loadingMsg: "물의 던전으로 잠수 중...",
     loadingLogo: "/hellofaqua-bt.png",
     loadingOpacity: "opacity-70",
     winBg: '/hellofaquawin.jpeg',
     loseBg: '/hellofaqualose-bg.jpg',
-    boardBg: '/hellofaqua-board-bg.jpg',
+    boardBg: '/dungeons/water/hellofaqua-board-bg.jpg',
     rewards: {
       Easy: { gold: 10, exp: 5, materials: { '맑은 물방울': 1 } },
       Normal: { gold: 30, exp: 15, materials: { '맑은 물방울': 3, '심해의 결정': 1 } },
