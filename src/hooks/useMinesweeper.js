@@ -1,41 +1,47 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { GAME_CONFIG, createEmptyBoard, cloneBoard, placeMinesAndCalculate, revealEmptyCells, checkWinCondition, getMineCount } from '../utils/gameLogic';
 import { doc, updateDoc, increment, arrayUnion } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from '../hooks/useAuth';
 
-export const useMinesweeper = (rows = 9, cols = 9, mines = 10, dungeonName = "초급 광산") => {
-  const { user } = useAuth();
-  
-  const [board, setBoard] = useState([]);
-  const [gameOver, setGameOver] = useState(false);
-  const [gameWon, setGameWon] = useState(false);
-  const [timer, setTimer] = useState(0);
-  const [isTimerActive, setIsTimerActive] = useState(false);
+export const useMinesweeper = () => {
+  // 💡 크래시 방지용 안전 장치: useAuth()가 로딩 중이거나 undefined일 때 화면이 굳는 현상을 방지합니다.
+  const auth = useAuth();
+  const user = auth ? auth.user : null;
 
+  const [board, setBoard] = useState([]);
+  const [isFirstClick, setIsFirstClick] = useState(true);
+  const [gameStatus, setGameStatus] = useState('idle');
+  const [minesLeft, setMinesLeft] = useState(0);
+  const [timeElapsed, setTimeElapsed] = useState(0);
+  const [isFlagMode, setIsFlagMode] = useState(false);
+  const timerRef = useRef(null);
+  const [difficultyLevel, setDifficultyLevel] = useState('Normal');
+
+  // 시간을 "00:00" 포맷 문자열로 변환하는 헬퍼 함수
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
     const secs = (seconds % 60).toString().padStart(2, '0');
     return `${mins}:${secs}`;
   };
 
-  useEffect(() => {
-    let interval = null;
-    if (isTimerActive && !gameOver && !gameWon) {
-      interval = setInterval(() => {
-        setTimer((prev) => prev + 1);
-      }, 1000);
-    } else {
-      clearInterval(interval);
+  // 선택한 난이도에 대응하는 던전 이름을 매핑합니다.
+  const getDungeonName = (level) => {
+    switch (level) {
+      case 'Easy': return '초급 광산';
+      case 'Normal': return '중급 지하묘지';
+      case 'Hard': return '고급 지옥문';
+      default: return `${level} 던전`;
     }
-    return () => clearInterval(interval);
-  }, [isTimerActive, gameOver, gameWon]);
+  };
 
+  // 💡 파이어베이스에 게임 결과를 영구 저장하는 함수
   const saveGameResult = useCallback(async (isWin, clearTime) => {
     if (!user) return;
-
+    
     const userDocRef = doc(db, 'users', user.uid);
     const newRecord = {
-      dungeon: dungeonName,
+      dungeon: getDungeonName(difficultyLevel),
       result: isWin ? '승리' : '패배',
       time: clearTime,
       timestamp: new Date().getTime()
@@ -46,147 +52,107 @@ export const useMinesweeper = (rows = 9, cols = 9, mines = 10, dungeonName = "�
         [`stats.${isWin ? 'wins' : 'losses'}`]: increment(1),
         records: arrayUnion(newRecord)
       });
+      console.log('전적 기록 완료!');
     } catch (error) {
-      console.error('전적 저장 실패:', error);
+      console.error('전적 기록 실패:', error);
     }
-  }, [user, dungeonName]);
+  }, [user, difficultyLevel]);
 
-  const resetGame = useCallback(() => {
-    let newBoard = Array(rows).fill(null).map((_, r) =>
-      Array(cols).fill(null).map((_, c) => ({
-        row: r,
-        col: c,
-        isMine: false,
-        isOpened: false,
-        isFlagged: false,
-        neighborMines: 0
-      }))
-    );
+  const initGame = useCallback((newDifficulty) => {
+    const targetDifficulty = newDifficulty || difficultyLevel;
+    if (newDifficulty) setDifficultyLevel(newDifficulty);
 
-    let minesPlaced = 0;
-    while (minesPlaced < mines) {
-      const r = Math.floor(Math.random() * rows);
-      const c = Math.floor(Math.random() * cols);
-      if (!newBoard[r][c].isMine) {
-        newBoard[r][c].isMine = true;
-        minesPlaced++;
-      }
-    }
-
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        if (newBoard[r][c].isMine) continue;
-        let count = 0;
-        for (let dr = -1; dr <= 1; dr++) {
-          for (let dc = -1; dc <= 1; dc++) {
-            const nr = r + dr;
-            const nc = c + dc;
-            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && newBoard[nr][nc].isMine) {
-              count++;
-            }
-          }
-        }
-        newBoard[r][c].neighborMines = count;
-      }
-    }
-
-    setBoard(newBoard);
-    setGameOver(false);
-    setGameWon(false);
-    setTimer(0);
-    setIsTimerActive(false);
-  }, [rows, cols, mines]);
+    setBoard(createEmptyBoard());
+    setGameStatus('idle');
+    setIsFirstClick(true);
+    setMinesLeft(getMineCount(targetDifficulty)); 
+    setTimeElapsed(0);
+    clearInterval(timerRef.current);
+    timerRef.current = null;
+  }, [difficultyLevel]);
 
   useEffect(() => {
-    resetGame();
-  }, [resetGame]);
+    initGame();
+    return () => clearInterval(timerRef.current);
+  }, [initGame]);
 
-  const checkWinCondition = (currentBoard) => {
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        if (!currentBoard[r][c].isMine && !currentBoard[r][c].isOpened) {
-          return false;
-        }
-      }
+  const startTimer = () => {
+    if (!timerRef.current) {
+      timerRef.current = setInterval(() => setTimeElapsed(prev => prev + 1), 1000);
     }
-    return true;
   };
 
-  const openEmptyCells = (currentBoard, r, c) => {
-    if (r < 0 || r >= rows || c < 0 || c >= cols || currentBoard[r][c].isOpened || currentBoard[r][c].isFlagged) return;
-    
-    currentBoard[r][c].isOpened = true;
-    
-    if (currentBoard[r][c].neighborMines === 0) {
-      for (let dr = -1; dr <= 1; dr++) {
-        for (let dc = -1; dc <= 1; dc++) {
-          openEmptyCells(currentBoard, r + dr, c + dc);
-        }
-      }
+  const pauseTimer = useCallback(() => {
+    clearInterval(timerRef.current);
+    timerRef.current = null;
+  }, []);
+
+  const resumeTimer = useCallback(() => {
+    if (gameStatus === 'playing' && !timerRef.current) {
+      timerRef.current = setInterval(() => setTimeElapsed(prev => prev + 1), 1000);
     }
+  }, [gameStatus]);
+
+  const handleGameOver = (currentBoard) => {
+    setGameStatus('lost');
+    clearInterval(timerRef.current);
+    currentBoard.forEach(row => row.forEach(cell => {
+      if (cell.isMine) cell.isRevealed = true;
+    }));
+  };
+
+  const toggleFlag = (r, c) => {
+    if (gameStatus === 'won' || gameStatus === 'lost') return;
+    const newBoard = cloneBoard(board);
+    const cell = newBoard[r][c];
+    if (cell.isRevealed) return;
+
+    cell.isFlagged = !cell.isFlagged;
+    setMinesLeft(prev => cell.isFlagged ? prev - 1 : prev + 1);
+    setBoard(newBoard);
   };
 
   const handleCellClick = (r, c) => {
-    if (gameOver || gameWon || board[r][c].isOpened || board[r][c].isFlagged) return;
+    if (gameStatus === 'won' || gameStatus === 'lost') return;
+    const newBoard = cloneBoard(board);
+    const cell = newBoard[r][c];
 
-    if (!isTimerActive) {
-      setIsTimerActive(true);
-    }
-
-    const newBoard = board.map(row => row.map(cell => ({ ...cell })));
-    const clickedCell = newBoard[r][c];
-
-    if (clickedCell.isMine) {
-      setGameOver(true);
-      setIsTimerActive(false);
-      
-      newBoard.forEach(row => row.forEach(cell => {
-        if (cell.isMine) cell.isOpened = true;
-      }));
-      setBoard(newBoard);
-
-      saveGameResult(false, formatTime(timer));
+    if (cell.isRevealed) return;
+    if (isFlagMode) {
+      toggleFlag(r, c);
       return;
     }
+    if (cell.isFlagged) return;
 
-    if (clickedCell.neighborMines === 0) {
-      openEmptyCells(newBoard, r, c);
+    if (isFirstClick) {
+      setIsFirstClick(false);
+      setGameStatus('playing');
+      startTimer();
+      const totalMinesToPlace = getMineCount(difficultyLevel);
+      const actualPlacedMines = placeMinesAndCalculate(newBoard, r, c, totalMinesToPlace);
+      setMinesLeft(actualPlacedMines);
+    }
+
+    cell.isRevealed = true;
+
+    // 💡 누락되었던 else 구조를 다시 정상화하고 서버 전송 시점을 명확하게 조립했습니다.
+    if (cell.isMine) {
+      handleGameOver(newBoard);
+      saveGameResult(false, formatTime(timeElapsed));
     } else {
-      clickedCell.isOpened = true;
+      if (cell.neighborMines === 0) revealEmptyCells(newBoard, r, c);
+      if (checkWinCondition(newBoard)) {
+        setGameStatus('won');
+        clearInterval(timerRef.current);
+        saveGameResult(true, formatTime(timeElapsed));
+      }
     }
-
-    if (checkWinCondition(newBoard)) {
-      setGameWon(true);
-      setIsTimerActive(false);
-      setBoard(newBoard);
-      
-      saveGameResult(true, formatTime(timer));
-      return;
-    }
-
-    setBoard(newBoard);
-  };
-
-  const handleCellRightClick = (e, r, c) => {
-    e.preventDefault();
-    if (gameOver || gameWon || board[r][c].isOpened) return;
-
-    if (!isTimerActive) {
-      setIsTimerActive(true);
-    }
-
-    const newBoard = board.map(row => row.map(cell => ({ ...cell })));
-    newBoard[r][c].isFlagged = !newBoard[r][c].isFlagged;
     setBoard(newBoard);
   };
 
   return {
-    board,
-    gameOver,
-    gameWon,
-    timer: formatTime(timer),
-    handleCellClick,
-    handleCellRightClick,
-    resetGame
+    board, gameStatus, minesLeft, timeElapsed, isFlagMode,
+    setIsFlagMode, initGame, handleCellClick, toggleFlag,
+    pauseTimer, resumeTimer
   };
 };
