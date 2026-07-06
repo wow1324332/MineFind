@@ -5,7 +5,6 @@ import { db } from '../firebase';
 import { useAuth } from '../hooks/useAuth';
 
 export const useMinesweeper = () => {
-  // 💡 크래시 방지용 안전 장치: useAuth()가 로딩 중이거나 undefined일 때 화면이 굳는 현상을 방지합니다.
   const auth = useAuth();
   const user = auth ? auth.user : null;
 
@@ -16,23 +15,15 @@ export const useMinesweeper = () => {
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [isFlagMode, setIsFlagMode] = useState(false);
   const timerRef = useRef(null);
+  
+  // 💡 난이도와 던전 이름을 각각 동적으로 관리하도록 상태 수정
   const [difficultyLevel, setDifficultyLevel] = useState('Normal');
+  const [dungeonName, setDungeonName] = useState('Hell of flame');
 
-  // 시간을 "00:00" 포맷 문자열로 변환하는 헬퍼 함수
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
     const secs = (seconds % 60).toString().padStart(2, '0');
     return `${mins}:${secs}`;
-  };
-
-  // 선택한 난이도에 대응하는 던전 이름을 매핑합니다.
-  const getDungeonName = (level) => {
-    switch (level) {
-      case 'Easy': return '초급 광산';
-      case 'Normal': return '중급 지하묘지';
-      case 'Hard': return '고급 지옥문';
-      default: return `${level} 던전`;
-    }
   };
 
   // 💡 파이어베이스에 게임 결과를 영구 저장하는 함수
@@ -41,7 +32,8 @@ export const useMinesweeper = () => {
     
     const userDocRef = doc(db, 'users', user.uid);
     const newRecord = {
-      dungeon: getDungeonName(difficultyLevel),
+      // 💡 유저가 선택한 던전명과 난이도가 그대로 조합되어 기록됩니다. (예: "Hell of flame (Normal)")
+      dungeon: `${dungeonName} (${difficultyLevel})`,
       result: isWin ? '승리' : '패배',
       time: clearTime,
       timestamp: new Date().getTime()
@@ -56,11 +48,13 @@ export const useMinesweeper = () => {
     } catch (error) {
       console.error('전적 기록 실패:', error);
     }
-  }, [user, difficultyLevel]);
+  }, [user, dungeonName, difficultyLevel]);
 
-  const initGame = useCallback((newDifficulty) => {
+  // 💡 던전 선택 화면에서 난이도와 던전명을 함께 넘겨받아 초기화할 수 있도록 인자를 확장했습니다.
+  const initGame = useCallback((newDifficulty, newDungeonName) => {
     const targetDifficulty = newDifficulty || difficultyLevel;
     if (newDifficulty) setDifficultyLevel(newDifficulty);
+    if (newDungeonName) setDungeonName(newDungeonName);
 
     setBoard(createEmptyBoard());
     setGameStatus('idle');
@@ -135,7 +129,6 @@ export const useMinesweeper = () => {
 
     cell.isRevealed = true;
 
-    // 💡 누락되었던 else 구조를 다시 정상화하고 서버 전송 시점을 명확하게 조립했습니다.
     if (cell.isMine) {
       handleGameOver(newBoard);
       saveGameResult(false, formatTime(timeElapsed));
