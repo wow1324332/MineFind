@@ -9,7 +9,6 @@ import DevilMineMode from './components/DevilMineMode';
 import DungeonSelection from './components/DungeonSelection';
 import { useAuth } from './hooks/useAuth';
 import MyPage from './components/MyPage';
-// 💡 던전 데이터 파일 임포트
 import { DUNGEON_INFO } from './constants/dungeonData';
 
 const SPLASH_CONFIG = {
@@ -42,22 +41,7 @@ const SPLASH_CONFIG = {
     disablePulse: true,
     useFadeIn: true
   },
-  FIRE_DUNGEON_LOADING: {
-    message: "불의 던전으로 강습 중...",
-    logoSrc: "/hellofflame-bt.png", 
-    bgSrc: "/hellofflameloading-bg.jpg", 
-    bgOpacity: "opacity-70",
-    disablePulse: true,
-    useFadeIn: true
-  },
-  WATER_DUNGEON_LOADING: {
-    message: "물의 던전으로 잠수 중...",
-    logoSrc: "/huntlistloading-logo.png", 
-    bgSrc: "/devilmineloading-bg.jpg", 
-    bgOpacity: "opacity-90",
-    disablePulse: true,
-    useFadeIn: true
-  },
+  // 💡 개별 던전 로딩 설정(FIRE_DUNGEON_LOADING 등) 하드코딩 목록 완전히 삭제됨
 };
 
 export default function App() {
@@ -159,17 +143,11 @@ export default function App() {
     setCurrentDungeon(dungeonId); 
     setCurrentDifficulty(selectedDifficulty); 
 
-    // 💡 1. 삼항 연산자 대신 DUNGEON_INFO 객체에서 깔끔하게 이름을 가져옵니다.
     const fullDungeonName = DUNGEON_INFO[dungeonId]?.name || '알 수 없는 던전';
     initGame(selectedDifficulty, fullDungeonName); 
 
-    if (dungeonId === 'fire') {
-      setCurrentScreen('FIRE_DUNGEON_LOADING');
-    } else if (dungeonId === 'water') {
-      setCurrentScreen('WATER_DUNGEON_LOADING');
-    } else {
-      setCurrentScreen('GAME_LOADING');
-    }
+    // 💡 개별 던전 분기처리 제거하고 공통 DUNGEON_LOADING 스크린 상태 하나로 고정
+    setCurrentScreen('DUNGEON_LOADING');
     setTimeout(() => setCurrentScreen('GAME_PVE'), 2000);
   };
 
@@ -212,9 +190,25 @@ export default function App() {
     return <LoginModal deferredPrompt={deferredPrompt} handleInstallClick={handleInstallClick} />;
   }
 
+  // 💡 로딩 렌더링 영역 시스템 고도화
   if (currentScreen.endsWith('_LOADING')) {
-    const config = SPLASH_CONFIG[currentScreen] || SPLASH_CONFIG.GAME_LOADING;
-    return <SplashScreen {...config} />;
+    let config = SPLASH_CONFIG[currentScreen];
+    
+    // 💡 선택한 던전 로딩일 경우, 데이터 파일(DUNGEON_INFO)에서 실시간으로 데이터 조합 생성
+    if (currentScreen === 'DUNGEON_LOADING') {
+      const dungeon = DUNGEON_INFO[currentDungeon];
+      config = {
+        message: dungeon?.loadingMsg || "던전 입장 중...",
+        logoSrc: dungeon?.loadingLogo || "/huntlistloading-logo.png",
+        bgSrc: dungeon?.loadingBg || "/devilmineloading-bg.jpg",
+        bgOpacity: dungeon?.loadingOpacity || "opacity-70",
+        disablePulse: true,
+        useFadeIn: true
+      };
+    }
+    
+    const finalConfig = config || SPLASH_CONFIG.GAME_LOADING;
+    return <SplashScreen {...finalConfig} />;
   }
 
   let currentView = null;
@@ -256,7 +250,6 @@ export default function App() {
         <div className="min-h-screen bg-black flex flex-col items-center justify-start pt-0 px-4 pb-4 select-none touch-manipulation">
           
           <div className="w-full max-w-sm flex justify-center relative z-10 drop-shadow-[0_10px_15px_rgba(0,0,0,0.8)]">
-            {/* 💡 2. 타이틀 이미지를 데이터 객체에서 바로 가져옵니다! */}
             <img 
               src={DUNGEON_INFO[currentDungeon]?.titleImg} 
               alt="Dungeon Title" 
@@ -303,7 +296,6 @@ export default function App() {
               <div 
                 className="fixed inset-0 z-[100] flex flex-col justify-end pb-8"
                 style={{ 
-                  // 💡 3. 승리 배경 이미지를 데이터 객체에서 바로 가져옵니다!
                   backgroundImage: `url(${DUNGEON_INFO[currentDungeon]?.winBg})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
@@ -360,7 +352,6 @@ export default function App() {
               <div 
                 className="fixed inset-0 z-[100] flex flex-col justify-end pb-8"
                 style={{ 
-                  // 💡 4. 패배 배경 이미지를 데이터 객체에서 바로 가져옵니다!
                   backgroundImage: `url(${DUNGEON_INFO[currentDungeon]?.loseBg})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
