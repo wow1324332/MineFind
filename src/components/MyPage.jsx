@@ -206,7 +206,7 @@ export default function MyPage({ onBack }) {
           <div className="w-12 px-2"></div>
         </div>
         
-        <div className="w-full max-w-sm flex flex-col items-center -mt-16 -space-y-4 relative z-10">
+        <div className="w-full max-w-sm flex flex-col items-center -mt-16 -space-y-8 relative z-10">
           
           <button onClick={() => setIsProfileOpen(true)} className="w-full max-w-[18rem] transition-all duration-200 hover:brightness-110 active:scale-95 drop-shadow-[0_10px_20px_rgba(0,0,0,0.7)]">
             <img src="/myprofile-bt.png" alt="My Profile" className="w-full h-auto object-contain" />
