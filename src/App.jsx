@@ -159,7 +159,16 @@ export default function App() {
     setCurrentDungeon(dungeonId); 
     setCurrentDifficulty(selectedDifficulty); 
 
-    initGame(selectedDifficulty); 
+    // 💡 1. dungeonId('fire' 또는 'water')를 파이어베이스에 기록할 예쁜 이름으로 번역
+    let fullDungeonName = "알 수 없는 던전";
+    if (dungeonId === 'fire') {
+      fullDungeonName = "Hell of flame";
+    } else if (dungeonId === 'water') {
+      fullDungeonName = "Hell of aqua";
+    }
+
+    // 💡 2. 번역된 전체 던전 이름을 initGame의 두 번째 인자로 확실하게 넘겨줌!
+    initGame(selectedDifficulty, fullDungeonName); 
 
     if (dungeonId === 'fire') {
       setCurrentScreen('FIRE_DUNGEON_LOADING');
@@ -168,8 +177,8 @@ export default function App() {
     } else {
       setCurrentScreen('GAME_LOADING');
     }
-    setTimeout(() => setCurrentScreen('GAME_PVE'), 2000);
-  };
+      setTimeout(() => setCurrentScreen('GAME_PVE'), 2000);
+    };
 
   // 💡 게임 오프닝 화면 (강제 로딩 딜레이 제거 완료)
   if (showOpening) {
