@@ -224,7 +224,7 @@ export default function MyPage({ onBack }) {
               <div className="absolute right-3 w-1.5 h-1.5 rotate-45 bg-[#7c5432]"></div>
             </div>
 
-            <div className="flex-1 w-full bg-cover bg-center flex flex-col relative p-4 h-[350px]" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}>
+            <div className="flex-1 w-full bg-cover bg-center flex flex-col relative p-4 h-[400px]" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}>
               <div className="absolute inset-0 bg-amber-50/40 pointer-events-none"></div>
 
               <div className="relative z-10 h-full flex flex-col">
@@ -343,9 +343,10 @@ export default function MyPage({ onBack }) {
                       <button onClick={() => setRecordMode('PVP')} className={`flex-1 py-1 text-[11px] font-bold rounded-sm transition-all duration-200 ${recordMode === 'PVP' ? 'bg-[#4a301c] text-[#f5d5a9] shadow-inner' : 'text-[#8c6543] hover:text-[#d8b486]'}`}>PVP</button>
                     </div>
 
-                    <div className="w-full flex-1 bg-[#3a2618]/5 border-[2px] border-[#a6845c] rounded-sm p-2 flex flex-col shadow-inner relative overflow-y-auto">
+                    {/* 💡 border-[2px] border-[#a6845c] 속성이 제거된 코드 */}
+                    <div className="w-full flex-1 bg-[#3a2618]/5 rounded-sm p-2 flex flex-col shadow-inner relative overflow-y-auto">
                       
-{recordMode === 'PVE' ? (
+                {recordMode === 'PVE' ? (
                         dungeonStatsList.length === 0 ? (
                           <div className="m-auto flex flex-col items-center">
                             <span className="text-[#7c5432]/50 text-xs font-bold tracking-widest bg-white/30 px-3 py-1 rounded">No records</span>
