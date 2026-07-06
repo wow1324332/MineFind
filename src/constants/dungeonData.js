@@ -25,12 +25,12 @@ export const DUNGEON_INFO = {
   water: {
     id: 'water',
     name: 'Hell of aqua',
-    buttonImg: '/hellofaqua-bt.png',
+    buttonImg: '/dungeons/water/hellofaqua-bt.png',
     titleImg: '/dungeons/water/hellofaqua-title.jpg',
     loadingBg: '/dungeons/water/hellofaqualoading-bg.jpg',
     // 💡 로딩 화면 정보 전역 데이터화
     loadingMsg: "물의 던전으로 잠수 중...",
-    loadingLogo: "/hellofaqua-bt.png",
+    loadingLogo: "/dungeons/water/hellofaqua-bt.png",
     loadingOpacity: "opacity-70",
     winBg: '/hellofaquawin.jpeg',
     loseBg: '/hellofaqualose-bg.jpg',
