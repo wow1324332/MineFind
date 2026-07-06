@@ -281,7 +281,7 @@ export default function MyPage({ onBack }) {
                             <div className="m-auto text-[#7c5432]/50 text-xs font-bold tracking-widest bg-white/30 px-3 py-1 rounded">최근 전적이 없습니다</div>
                           ) : (
                             <div className="w-full flex flex-col space-y-1">
-                              {records.slice(0, 5).map((rec, idx) => (
+                              {[...records].reverse().slice(0, 5).map((rec, idx) => (
                                 <div key={idx} className="flex justify-between items-center bg-[#633f20]/10 border border-[#a6845c]/30 px-2 py-1.5 rounded-sm">
                                   <span className="text-[10px] font-bold text-[#4a3522] w-2/5 truncate">{rec.dungeon}</span>
                                   <span className={`text-[10px] font-black w-1/5 text-center ${rec.result === '승리' ? 'text-green-700' : 'text-red-700'}`}>{rec.result}</span>
