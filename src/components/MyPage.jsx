@@ -211,7 +211,7 @@ export default function MyPage({ onBack }) {
             
             <div className="w-full bg-[#2a1a10] border-b-[3px] border-[#1a1008] relative py-2.5 flex justify-center items-center">
               <div className="absolute left-3 w-1.5 h-1.5 rotate-45 bg-[#7c5432]"></div>
-              <h2 className="text-[#d8b486] font-bold text-[15px] tracking-widest font-serif">유저 정보</h2>
+              <h2 className="text-[#d8b486] font-bold text-[15px] tracking-widest font-serif">User Profile</h2>
               <div className="absolute right-3 w-1.5 h-1.5 rotate-45 bg-[#7c5432]"></div>
             </div>
 
@@ -250,7 +250,7 @@ export default function MyPage({ onBack }) {
                           ) : (
                             <div className="flex w-full mt-1.5 space-x-1">
                               <input type="text" value={tempNickname} onChange={(e) => setTempNickname(e.target.value)} maxLength={10} className="flex-1 bg-white/70 border border-[#8c6543] px-1 py-0.5 text-[11px] text-black font-bold focus:outline-none" />
-                              <button onClick={handleSaveNickname} className="bg-[#4a3522] text-white px-1.5 py-0.5 text-[10px] font-bold">저장</button>
+                              <button onClick={handleSaveNickname} className="bg-[#4a3522] text-white px-1.5 py-0.5 text-[10px] font-bold">Save</button>
                               <button onClick={() => setIsEditingNickname(false)} className="bg-transparent border border-[#4a3522] text-[#4a3522] px-1.5 py-0.5 text-[10px] font-bold">취소</button>
                             </div>
                           )}
@@ -266,7 +266,7 @@ export default function MyPage({ onBack }) {
                             <span className="text-[#4a3522] text-[11px] font-black tracking-wide">PVE 전체 통계</span>
                           </div>
                           <button onClick={handleResetStats} className="text-[#a84444] text-[9px] font-bold border border-[#a84444]/40 px-1.5 py-0.5 rounded-sm bg-white/30 hover:bg-[#a84444] hover:text-white transition-colors">
-                            기록 초기화
+                            Reset
                           </button>
                         </div>
 
@@ -289,7 +289,7 @@ export default function MyPage({ onBack }) {
 
                         <div className="w-full flex-1 min-h-[140px] bg-[#3a2618]/5 border-[2px] border-[#a6845c] rounded-sm p-1.5 flex flex-col shadow-inner relative overflow-y-auto">
                           {records.length === 0 ? (
-                            <div className="m-auto text-[#7c5432]/50 text-xs font-bold tracking-widest bg-white/30 px-3 py-1 rounded">최근 전적이 없습니다</div>
+                            <div className="m-auto text-[#7c5432]/50 text-xs font-bold tracking-widest bg-white/30 px-3 py-1 rounded">No Records</div>
                           ) : (
                             <div className="w-full flex flex-col space-y-1">
                               {[...records].reverse().slice(0, 5).map((rec, idx) => (
@@ -306,7 +306,7 @@ export default function MyPage({ onBack }) {
                     ) : (
                       <div className="w-full flex-1 min-h-[224px] bg-[#2a1a10]/5 border-[2px] border-[#a6845c] rounded-sm p-2 flex flex-col shadow-inner animate-[fadeIn_0.2s_ease-in-out]">
                         <div className="flex justify-between items-center border-b border-[#a6845c]/30 pb-1.5 mb-2">
-                          <span className="text-[#633f20] text-[11px] font-black tracking-wide">아바타 인벤토리</span>
+                          <span className="text-[#633f20] text-[11px] font-black tracking-wide">Avatars</span>
                           <button onClick={() => setIsSelectAvatarOpen(false)} className="text-[#a36b33] text-[9px] font-black hover:text-black border border-[#a6845c]/30 px-1.5 py-0.5 rounded-sm bg-white/20 shadow-sm">닫기</button>
                         </div>
                         <div className="grid grid-cols-5 gap-1.5">
@@ -330,8 +330,8 @@ export default function MyPage({ onBack }) {
                   <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col">
                     
                     <div className="flex w-full bg-[#1a1008] rounded-sm p-1 mb-2 border border-[#3c2a1a]">
-                      <button onClick={() => setRecordMode('PVE')} className={`flex-1 py-1 text-[11px] font-bold rounded-sm transition-all duration-200 ${recordMode === 'PVE' ? 'bg-[#4a301c] text-[#f5d5a9] shadow-inner' : 'text-[#8c6543] hover:text-[#d8b486]'}`}>PVE 던전</button>
-                      <button onClick={() => setRecordMode('PVP')} className={`flex-1 py-1 text-[11px] font-bold rounded-sm transition-all duration-200 ${recordMode === 'PVP' ? 'bg-[#4a301c] text-[#f5d5a9] shadow-inner' : 'text-[#8c6543] hover:text-[#d8b486]'}`}>PVP 전장</button>
+                      <button onClick={() => setRecordMode('PVE')} className={`flex-1 py-1 text-[11px] font-bold rounded-sm transition-all duration-200 ${recordMode === 'PVE' ? 'bg-[#4a301c] text-[#f5d5a9] shadow-inner' : 'text-[#8c6543] hover:text-[#d8b486]'}`}>PVE</button>
+                      <button onClick={() => setRecordMode('PVP')} className={`flex-1 py-1 text-[11px] font-bold rounded-sm transition-all duration-200 ${recordMode === 'PVP' ? 'bg-[#4a301c] text-[#f5d5a9] shadow-inner' : 'text-[#8c6543] hover:text-[#d8b486]'}`}>PVP</button>
                     </div>
 
                     <div className="w-full flex-1 bg-[#3a2618]/5 border-[2px] border-[#a6845c] rounded-sm p-2 flex flex-col shadow-inner relative overflow-y-auto">
@@ -339,7 +339,7 @@ export default function MyPage({ onBack }) {
                       {recordMode === 'PVE' ? (
                         dungeonStatsList.length === 0 ? (
                           <div className="m-auto flex flex-col items-center">
-                            <span className="text-[#7c5432]/50 text-xs font-bold tracking-widest bg-white/30 px-3 py-1 rounded">모험 기록이 없습니다</span>
+                            <span className="text-[#7c5432]/50 text-xs font-bold tracking-widest bg-white/30 px-3 py-1 rounded">No records</span>
                           </div>
                         ) : (
                           <div className="w-full flex flex-col space-y-4 pb-2">
@@ -399,7 +399,7 @@ export default function MyPage({ onBack }) {
                   <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col justify-center px-1">
                     <div className="bg-[#633f20]/10 border border-[#a6845c]/50 p-4 rounded-sm flex flex-col space-y-4 shadow-inner">
                       <div className="flex justify-between items-center border-b border-[#a6845c]/30 pb-2">
-                         <span className="text-[#a36b33] font-bold text-[12px] tracking-wide">연동 이메일</span>
+                         <span className="text-[#a36b33] font-bold text-[12px] tracking-wide">Account</span>
                          <span className="text-[#2e2016] font-black text-[12px]">{user?.email || '알 수 없음'}</span>
                       </div>
                       <div className="flex justify-between items-center pt-1">
@@ -415,9 +415,9 @@ export default function MyPage({ onBack }) {
             </div>
 
             <div className="flex w-full bg-[#2a1a10] border-t-[3px] border-[#1a1008] text-[11px] font-bold">
-              <button onClick={() => setActiveTab('profile')} className={`flex-1 py-3 border-r border-[#1a1008] transition-colors ${activeTab === 'profile' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}>프로필</button>
-              <button onClick={() => setActiveTab('record')} className={`flex-1 py-3 border-r border-[#1a1008] transition-colors ${activeTab === 'record' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}>기록</button>
-              <button onClick={() => setActiveTab('account')} className={`flex-1 py-3 border-r border-[#1a1008] transition-colors ${activeTab === 'account' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}>계정 정보</button>
+              <button onClick={() => setActiveTab('profile')} className={`flex-1 py-3 border-r border-[#1a1008] transition-colors ${activeTab === 'profile' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}>Profile</button>
+              <button onClick={() => setActiveTab('record')} className={`flex-1 py-3 border-r border-[#1a1008] transition-colors ${activeTab === 'record' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}>Records</button>
+              <button onClick={() => setActiveTab('account')} className={`flex-1 py-3 border-r border-[#1a1008] transition-colors ${activeTab === 'account' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}>Account</button>
               <button onClick={() => setIsProfileOpen(false)} className="flex-1 py-3 hover:bg-[#3a2618] text-[#a84444] hover:text-[#d65a5a] transition-colors">닫기</button>
             </div>
 
