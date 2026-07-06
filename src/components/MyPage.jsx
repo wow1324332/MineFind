@@ -15,8 +15,6 @@ export default function MyPage({ onBack }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isInventoryOpen, setIsInventoryOpen] = useState(false); 
   const [activeTab, setActiveTab] = useState('profile'); 
-  // 💡 인벤토리 전용 탭 상태 (currency: 재화, materials: 재료, consumables: 소비품)
-  const [inventoryTab, setInventoryTab] = useState('materials'); 
 
   const [isEditingNickname, setIsEditingNickname] = useState(false);
   const [isSelectAvatarOpen, setIsSelectAvatarOpen] = useState(false);
@@ -36,6 +34,7 @@ export default function MyPage({ onBack }) {
   const [inventory] = useState({
     gold: 1250,
     exp: 420,
+    // 💡 재료와 소비품을 하나의 큰 가방 안에 몰아넣습니다.
     materials: [
       { name: '작은 불씨', count: 12, icon: '🔥', rarity: 'common' },
       { name: '심해의 결정', count: 3, icon: '💎', rarity: 'rare' },
@@ -46,6 +45,9 @@ export default function MyPage({ onBack }) {
       { name: '신비한 열쇠', count: 2, icon: '🗝️', rarity: 'epic' },
     ]
   });
+
+  // 💡 렌더링용으로 모든 아이템을 하나의 배열로 합칩니다.
+  const allInventoryItems = [...inventory.materials, ...inventory.consumables];
 
   const { user } = useAuth(); 
 
@@ -82,13 +84,6 @@ export default function MyPage({ onBack }) {
       setIsSelectAvatarOpen(false); 
     }
   }, [isProfileOpen, nickname]);
-
-  useEffect(() => {
-    // 인벤토리 열 때 탭 초기화
-    if (isInventoryOpen) {
-      setInventoryTab('materials');
-    }
-  }, [isInventoryOpen]);
 
   const handleSaveNickname = async () => {
     if (!tempNickname.trim()) {
@@ -189,37 +184,35 @@ export default function MyPage({ onBack }) {
 
   const dungeonStatsList = getDungeonStats();
 
-  // 💡 아이템 등급에 따른 테두리 색상 헬퍼 함수
   const getRarityColor = (rarity) => {
     switch(rarity) {
       case 'rare': return 'border-blue-400 shadow-[0_0_5px_rgba(96,165,250,0.5)]';
       case 'epic': return 'border-purple-400 shadow-[0_0_5px_rgba(192,132,252,0.5)]';
       case 'legendary': return 'border-yellow-400 shadow-[0_0_5px_rgba(250,204,21,0.6)]';
-      default: return 'border-[#a6845c]/50'; // common
+      default: return 'border-[#a6845c]/50'; 
     }
   };
 
-  // 💡 인벤토리 슬롯(칸) 렌더링 함수 (빈 슬롯 포함 20칸 생성)
+  // 💡 클래식 RPG 가방 (24칸 바둑판 배열)
   const renderInventorySlots = (items) => {
-    const slots = Array.from({ length: 20 }); 
+    // 💡 4열 x 6행 = 24칸 고정
+    const slots = Array.from({ length: 24 }); 
     return (
       <div className="grid grid-cols-4 gap-2 overflow-y-auto pr-1 pb-2 custom-scrollbar h-full content-start">
         {slots.map((_, i) => {
           const item = items[i];
           return (
-            <div key={i} className="aspect-square bg-[#3a2618]/40 border-[1.5px] border-[#6b4c33] rounded-sm shadow-inner relative flex items-center justify-center group hover:bg-[#4a301c]/60 transition-colors cursor-pointer">
+            <div key={i} className="aspect-square bg-[#2a1a10] border-[1.5px] border-[#5c3e23] rounded-sm shadow-[inset_0_0_10px_rgba(0,0,0,0.9)] relative flex items-center justify-center group hover:bg-[#4a301c]/80 transition-colors cursor-pointer">
               {item && (
                 <>
-                  {/* 아이템 아이콘 (나중에 실제 이미지 태그로 변경) */}
-                  <span className="text-3xl drop-shadow-md select-none">{item.icon}</span>
-                  {/* 보유 수량 */}
-                  <span className="absolute bottom-0 right-1 text-[11px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,1)] select-none">
-                    x{item.count}
+                  <span className="text-3xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] select-none pointer-events-none">{item.icon}</span>
+                  <span className="absolute bottom-0 right-1 text-[11px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,1)] select-none pointer-events-none">
+                    {item.count}
                   </span>
-                  {/* 등급별 테두리 이펙트 */}
                   <div className={`absolute inset-0 border-2 rounded-sm pointer-events-none opacity-60 ${getRarityColor(item.rarity)}`}></div>
-                  {/* 툴팁 (이름) */}
-                  <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/90 border border-[#a6845c] text-[#f5d5a9] text-[10px] px-2 py-1 rounded-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+                  
+                  {/* 툴팁 */}
+                  <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/95 border border-[#a6845c] text-[#f5d5a9] text-[10px] px-2 py-1 rounded-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-[0_4px_6px_rgba(0,0,0,0.5)]">
                     {item.name}
                   </div>
                 </>
@@ -256,7 +249,6 @@ export default function MyPage({ onBack }) {
           <div className="w-12 px-2"></div>
         </div>
         
-        {/* 버튼 컨테이너 */}
         <div className="w-full max-w-sm flex flex-col items-center mt-4 space-y-3 relative z-10">
           
           <button 
@@ -306,7 +298,6 @@ export default function MyPage({ onBack }) {
 
               <div className="relative z-10 h-full flex flex-col">
                 
-                {/* 프로필 탭 */}
                 {activeTab === 'profile' && (
                   <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col">
                     <div className="flex flex-row items-start mb-3">
@@ -411,7 +402,6 @@ export default function MyPage({ onBack }) {
                   </div>
                 )}
 
-                {/* 던전 기록 탭 */}
                 {activeTab === 'record' && (
                   <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col overflow-hidden">
                     <div className="flex w-full bg-[#1a1008] rounded-sm p-1 mb-2 border border-[#3c2a1a] shrink-0">
@@ -480,7 +470,6 @@ export default function MyPage({ onBack }) {
                   </div>
                 )}
 
-                {/* 계정 탭 */}
                 {activeTab === 'account' && (
                   <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col justify-center px-1">
                     <div className="bg-[#633f20]/10 border border-[#a6845c]/50 p-4 rounded-sm flex flex-col space-y-4 shadow-inner">
@@ -511,7 +500,7 @@ export default function MyPage({ onBack }) {
         </div>
       )}
 
-      {/* 💡 2. 인벤토리 모달 (프로필과 완벽하게 동일한 뼈대 공유) */}
+      {/* 💡 2. 인벤토리 모달 (클래식 바둑판 타입) */}
       {isInventoryOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4 animate-[fadeIn_0.2s_ease-in-out]">
           <div className="absolute inset-0 bg-black/85 backdrop-blur-sm" onClick={() => setIsInventoryOpen(false)}></div>
@@ -526,71 +515,44 @@ export default function MyPage({ onBack }) {
             </div>
 
             {/* 인벤토리 바디 (양피지 배경) */}
-            <div className="w-full bg-cover bg-center flex flex-col relative p-4 h-[380px] overflow-hidden" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}>
+            <div className="w-full bg-cover bg-center flex flex-col relative p-3 h-[380px] overflow-hidden" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}>
               <div className="absolute inset-0 bg-amber-50/40 pointer-events-none"></div>
 
               <div className="relative z-10 h-full flex flex-col">
                 
-                {/* 1. 재화 탭 (Currency) */}
-                {inventoryTab === 'currency' && (
-                  <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col justify-start mt-2 space-y-3">
-                    
-                    <div className="bg-[#633f20]/20 border-[2px] border-[#a6845c] p-4 rounded-sm flex flex-col items-center justify-center shadow-inner relative overflow-hidden">
-                      <div className="absolute top-0 right-0 w-16 h-16 bg-yellow-500/10 rounded-full blur-xl"></div>
-                      <span className="text-[#6b4c33] font-bold text-[11px] mb-1">소지 골드</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-2xl drop-shadow-md">💰</span>
-                        <span className="text-[#2e2016] font-black text-2xl tracking-tight">{inventory.gold.toLocaleString()} <span className="text-[14px] text-[#8c6543]">G</span></span>
-                      </div>
-                    </div>
-
-                    <div className="bg-[#633f20]/20 border-[2px] border-[#a6845c] p-4 rounded-sm flex flex-col items-center justify-center shadow-inner relative overflow-hidden">
-                      <div className="absolute top-0 left-0 w-16 h-16 bg-blue-500/10 rounded-full blur-xl"></div>
-                      <span className="text-[#6b4c33] font-bold text-[11px] mb-1">누적 경험치</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-2xl drop-shadow-md">✨</span>
-                        <span className="text-[#2e2016] font-black text-2xl tracking-tight">{inventory.exp.toLocaleString()} <span className="text-[14px] text-[#8c6543]">EXP</span></span>
-                      </div>
-                    </div>
-
+                {/* 💡 상단 재화 (골드 & 경험치) 표시 영역 */}
+                <div className="flex justify-between items-center bg-[#3a2618]/70 border-[2px] border-[#a6845c] rounded-sm px-4 py-2.5 mb-3 shadow-[inset_0_2px_8px_rgba(0,0,0,0.6)]">
+                  <div className="flex items-center space-x-1.5">
+                    <span className="text-xl drop-shadow-md">💰</span>
+                    <span className="text-[#f5d5a9] font-black text-[14px] tracking-wide">
+                      {inventory.gold.toLocaleString()} <span className="text-[10px] text-[#a6845c]">G</span>
+                    </span>
                   </div>
-                )}
-
-                {/* 2. 재료 탭 (Materials) */}
-                {inventoryTab === 'materials' && (
-                  <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col">
-                    <div className="flex items-center space-x-2 mb-3 bg-[#5c3e23]/10 border-y border-[#7c5432]/30 px-2 py-1">
-                      <div className="w-1.5 h-1.5 bg-[#d8b486] rotate-45"></div>
-                      <span className="text-[#4a3522] text-[11px] font-black tracking-wide">던전 전리품</span>
-                    </div>
-                    <div className="flex-1 bg-[#3a2618]/5 border-[2px] border-[#a6845c] p-2 shadow-inner">
-                      {renderInventorySlots(inventory.materials)}
-                    </div>
+                  <div className="w-px h-6 bg-[#a6845c]/50"></div>
+                  <div className="flex items-center space-x-1.5">
+                    <span className="text-xl drop-shadow-md">✨</span>
+                    <span className="text-[#f5d5a9] font-black text-[14px] tracking-wide">
+                      {inventory.exp.toLocaleString()} <span className="text-[10px] text-[#a6845c]">EXP</span>
+                    </span>
                   </div>
-                )}
+                </div>
 
-                {/* 3. 소비품 탭 (Consumables) */}
-                {inventoryTab === 'consumables' && (
-                  <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col">
-                    <div className="flex items-center space-x-2 mb-3 bg-[#5c3e23]/10 border-y border-[#7c5432]/30 px-2 py-1">
-                      <div className="w-1.5 h-1.5 bg-[#d8b486] rotate-45"></div>
-                      <span className="text-[#4a3522] text-[11px] font-black tracking-wide">사용 가능한 아이템</span>
-                    </div>
-                    <div className="flex-1 bg-[#3a2618]/5 border-[2px] border-[#a6845c] p-2 shadow-inner">
-                      {renderInventorySlots(inventory.consumables)}
-                    </div>
-                  </div>
-                )}
+                {/* 💡 하단 바둑판 슬롯 영역 (모든 아이템 통합 렌더링) */}
+                <div className="flex-1 bg-[#1a1008]/40 border-[2px] border-[#a6845c] p-2 shadow-[inset_0_0_10px_rgba(0,0,0,0.8)] rounded-sm">
+                  {renderInventorySlots(allInventoryItems)}
+                </div>
 
               </div>
             </div>
 
-            {/* 인벤토리 하단 탭 버튼 */}
+            {/* 인벤토리 하단 닫기 버튼 */}
             <div className="flex w-full bg-[#2a1a10] border-t-[3px] border-[#1a1008] text-[11px] font-bold">
-              <button onClick={() => setInventoryTab('currency')} className={`flex-1 py-3 border-r border-[#1a1008] transition-colors ${inventoryTab === 'currency' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}>재화</button>
-              <button onClick={() => setInventoryTab('materials')} className={`flex-1 py-3 border-r border-[#1a1008] transition-colors ${inventoryTab === 'materials' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}>재료</button>
-              <button onClick={() => setInventoryTab('consumables')} className={`flex-1 py-3 border-r border-[#1a1008] transition-colors ${inventoryTab === 'consumables' ? 'bg-[#4a301c] text-[#f5d5a9]' : 'text-[#8c6543] hover:bg-[#3a2618] hover:text-[#d8b486]'}`}>소비품</button>
-              <button onClick={() => setIsInventoryOpen(false)} className="flex-1 py-3 hover:bg-[#3a2618] text-[#a84444] hover:text-[#d65a5a] transition-colors">닫기</button>
+              <button 
+                onClick={() => setIsInventoryOpen(false)} 
+                className="flex-1 py-3 bg-[#1a1008] hover:bg-[#3a2618] text-[#a84444] hover:text-[#d65a5a] transition-colors text-[13px] tracking-widest shadow-inner"
+              >
+                닫기
+              </button>
             </div>
 
           </div>
