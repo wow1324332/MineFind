@@ -4,16 +4,16 @@ export const DUNGEON_INFO = {
   fire: {
     id: 'fire',
     name: 'Hell of flame',
-    buttonImg: '/hellofflame-bt.png',
-    titleImg: '/hellofflame-title.jpg',
-    loadingBg: '/hellofflameloading-bg.jpg',
+    buttonImg: '/dungeons/fire/hellofflame-bt.png',
+    titleImg: '/dungeons/fire/hellofflame-title.jpg',
+    loadingBg: '/dungeons/fire/hellofflameloading-bg.jpg',
     // 💡 로딩 화면 정보 전역 데이터화
     loadingMsg: "불의 던전으로 강습 중...",
-    loadingLogo: "/hellofflame-bt.png",
+    loadingLogo: "/dungeons/fire/hellofflame-bt.png",
     loadingOpacity: "opacity-70",
-    winBg: '/hellofflamewin.jpeg',
-    loseBg: '/hellofflamelose-bg.jpg',
-    boardBg: '/dungeoninsite-bg.jpg',
+    winBg: '/dungeons/fire/hellofflamewin.jpeg',
+    loseBg: '/dungeons/fire/hellofflamelose-bg.jpg',
+    boardBg: '/dungeons/fire/dungeoninsite-bg.jpg',
     rewards: {
       Easy: { gold: 10, exp: 5, materials: { '작은 불씨': 1 } },
       Normal: { gold: 30, exp: 15, materials: { '작은 불씨': 3, '꺼지지 않는 불꽃': 1 } },
