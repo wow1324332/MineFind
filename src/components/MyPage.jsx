@@ -189,26 +189,27 @@ export default function MyPage({ onBack }) {
     }
   };
 
-  // 💡 스크롤 테스트를 위해 36칸(4x9)으로 넉넉히 가방을 확장
   const renderInventorySlots = (items) => {
     const slots = Array.from({ length: 36 }); 
     return (
-      <div className="grid grid-cols-4 gap-2 content-start pb-2">
+      <div className="grid grid-cols-4 gap-2 content-start pb-2 w-full">
         {slots.map((_, i) => {
           const item = items[i];
           return (
-            <div key={i} className="aspect-square bg-[#2a1a10]/50 border-[1px] border-[#5c3e23]/60 rounded-sm shadow-[inset_0_0_8px_rgba(0,0,0,0.8)] relative flex items-center justify-center group hover:bg-[#4a301c]/80 transition-colors cursor-pointer backdrop-blur-[2px]">
+            <div key={i} className="aspect-square bg-[#2a1a10]/50 border-[1px] border-[#5c3e23]/60 rounded-sm shadow-[inset_0_0_8px_rgba(0,0,0,0.8)] relative flex items-center justify-center group cursor-pointer backdrop-blur-[2px] overflow-hidden">
               {item && (
                 <>
                   <span className="text-3xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] select-none pointer-events-none">{item.icon}</span>
                   <span className="absolute bottom-0 right-1 text-[11px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,1)] select-none pointer-events-none">
                     {item.count}
                   </span>
-                  <div className={`absolute inset-0 border-2 rounded-sm pointer-events-none opacity-80 ${getRarityColor(item.rarity)}`}></div>
+                  <div className={`absolute inset-0 border-[1.5px] rounded-sm pointer-events-none opacity-80 ${getRarityColor(item.rarity)}`}></div>
                   
-                  {/* 툴팁 */}
-                  <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/95 border border-[#a6845c] text-[#f5d5a9] text-[10px] px-2 py-1 rounded-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-[0_4px_6px_rgba(0,0,0,0.5)]">
-                    {item.name}
+                  {/* 💡 상단 잘림 해결: 내부 오버레이 툴팁 (호버 시 칸 자체가 어두워지며 이름 표시) */}
+                  <div className="absolute inset-0 bg-black/85 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 border border-[#a6845c] rounded-sm p-0.5">
+                    <span className="text-[#f5d5a9] text-[10px] font-bold text-center leading-tight break-keep drop-shadow-md">
+                      {item.name}
+                    </span>
                   </div>
                 </>
               )}
@@ -275,7 +276,6 @@ export default function MyPage({ onBack }) {
         </div>
       </div>
 
-      {/* 💡 1. 프로필 모달 (이전과 동일) */}
       {isProfileOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4 animate-[fadeIn_0.2s_ease-in-out]">
           <div className="absolute inset-0 bg-black/85 backdrop-blur-sm" onClick={() => setIsProfileOpen(false)}></div>
@@ -495,46 +495,38 @@ export default function MyPage({ onBack }) {
         </div>
       )}
 
-      {/* 💡 2. 인벤토리 모달 (투명감 + 스크롤 보완) */}
       {isInventoryOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4 animate-[fadeIn_0.2s_ease-in-out]">
-          {/* 어둡고 살짝 뿌연 뒷배경 */}
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setIsInventoryOpen(false)}></div>
           
-          {/* 💡 인벤토리 전체 테두리 박스 (투명도 부여: bg-black/60, backdrop-blur-md) */}
           <div className="relative z-10 w-full max-w-[320px] flex flex-col rounded-md border-[2px] border-[#8c6543]/80 shadow-[0_0_40px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-md overflow-hidden">
             
-            {/* 상단 헤더 */}
             <div className="w-full bg-[#2a1a10]/60 border-b-[2px] border-[#1a1008]/80 relative py-2.5 flex justify-center items-center">
               <div className="absolute left-3 w-1.5 h-1.5 rotate-45 bg-[#a6845c]/80"></div>
               <h2 className="text-[#f5d5a9] font-bold text-[15px] tracking-widest font-serif drop-shadow-md">Inventory</h2>
               <div className="absolute right-3 w-1.5 h-1.5 rotate-45 bg-[#a6845c]/80"></div>
             </div>
 
-            {/* 인벤토리 바디 (양피지 배경 투명화) */}
             <div className="w-full flex flex-col relative h-[400px]">
-              {/* 💡 배경 이미지에 투명도를 주고 섞어 은은하게 연출 */}
               <div className="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}></div>
               <div className="absolute inset-0 bg-[#2a1a10]/40 pointer-events-none"></div>
 
               <div className="relative z-10 h-full flex flex-col p-3">
                 
-                {/* 💡 상단 고급 골드 영역 */}
                 <div className="flex justify-center items-center bg-[#1a1008]/50 border border-[#a6845c]/40 rounded-sm py-2 mb-3 shadow-[inset_0_2px_8px_rgba(0,0,0,0.5)]">
                   <span className="text-[#f5d5a9] font-black text-[18px] tracking-widest font-serif drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
                     {inventory.gold.toLocaleString()} <span className="text-[12px] text-[#d8b486] ml-1 tracking-wider font-sans">GOLD</span>
                   </span>
                 </div>
 
-                {/* 💡 하단 바둑판 슬롯 영역 (min-h-0을 추가해 내부 스크롤이 부드럽게 작동하도록 강제) */}
-                <div className="flex-1 min-h-0 bg-[#1a1008]/40 border-[1.5px] border-[#8c6543]/50 p-2 shadow-[inset_0_0_15px_rgba(0,0,0,0.8)] rounded-sm overflow-y-auto custom-scrollbar">
+                {/* 💡 가로 스크롤 방지를 위해 overflow-x-hidden 강제 적용 */}
+                <div className="flex-1 min-h-0 bg-[#1a1008]/40 border-[1.5px] border-[#8c6543]/50 p-2 shadow-[inset_0_0_15px_rgba(0,0,0,0.8)] rounded-sm overflow-y-auto overflow-x-hidden custom-scrollbar">
                   {renderInventorySlots(allInventoryItems)}
                 </div>
 
               </div>
             </div>
 
-            {/* 💡 인벤토리 하단 닫기 버튼 (Close 변경) */}
             <div className="flex w-full bg-[#1a1008]/80 border-t-[2px] border-[#000000]/50 text-[12px] font-bold backdrop-blur-sm">
               <button 
                 onClick={() => setIsInventoryOpen(false)} 
@@ -548,7 +540,6 @@ export default function MyPage({ onBack }) {
         </div>
       )}
 
-      {/* 💡 전역 스크롤바 커스텀 스타일 */}
       <style>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 4px;
