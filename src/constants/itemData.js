@@ -57,7 +57,7 @@ export const ITEM_DATABASE = {
     id: 'mat_water_1',
     type: 'material',
     name: 'aqua crystal',
-    icon: '/items/aquacrystal.png', 
+    icon: '/items/aquacristal.png', 
     rarity: 'common',
     desc: '물의 악마의 기운을 머금고있는 작은 수정.',
     sellPrice: 100
