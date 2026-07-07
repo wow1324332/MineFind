@@ -7,11 +7,11 @@ export const ITEM_DATABASE = {
   'mat_fire_1': {
     id: 'mat_fire_1',
     type: 'material',
-    name: '작은 불씨',
-    icon: '🔥', // 추후 '/items/mat_fire_1.png' 등으로 변경
+    name: 'flame crystal',
+    icon: '/items/flamecrystal.png',
     rarity: 'common',
-    desc: '아주 희미하게 타오르는 작은 불씨. 기본적인 제작 재료로 쓰인다.',
-    sellPrice: 10
+    desc: '불의 악마들의 피를 굳혀 만든 작은 불꽃의 기운을 담은 수정.',
+    sellPrice: 100
   },
   'mat_fire_2': {
     id: 'mat_fire_2',
