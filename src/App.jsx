@@ -154,31 +154,29 @@ export default function App() {
   };
 
   // 💡 획득한 보상(골드, 아이템)을 모달창에 예쁘게 그려주는 미니 렌더링 함수
-  const renderRewardsUI = (isWin) => {
+  const renderRewardsUI = () => {
     if (!rewards) return null;
 
     return (
-      <div className="w-full max-w-[16rem] mx-auto mb-4 relative z-10 animate-[fadeIn_0.5s_ease-in-out]">
-        <div className="bg-black/80 border-[1.5px] border-[#a6845c]/60 rounded-md p-3 backdrop-blur-sm shadow-[0_0_20px_rgba(0,0,0,0.9)]">
-          <h3 className={`text-center font-black text-xs tracking-wider mb-2 drop-shadow-md ${isWin ? 'text-[#f5d5a9]' : 'text-neutral-400'}`}>
-            {isWin ? '✨ 획득한 전리품 ✨' : '💀 위로 보상'}
+      <div className="w-full max-w-[16rem] mx-auto mb-6 relative z-10 animate-[fadeIn_0.5s_ease-in-out]">
+        <div className="bg-black/20 rounded-md p-4 backdrop-blur-md">
+          <h3 className="text-center font-serif text-[#d8b486] text-sm tracking-[0.3em] mb-4 drop-shadow-md uppercase">
+            Acquired
           </h3>
           
-          {/* 골드 표시 영역 */}
-          <div className="flex justify-center items-center bg-[#1a1008]/80 border border-[#a6845c]/40 rounded-sm py-1.5 mb-2 shadow-inner">
+          <div className="flex justify-center items-center bg-black/30 rounded-sm py-1.5 mb-3">
             <span className="text-[#f5d5a9] font-black text-[16px] tracking-widest font-serif drop-shadow-md">
-              {rewards.gold} <span className="text-[10px] text-[#d8b486] ml-1 font-sans">GOLD</span>
+              {rewards.gold} <span className="text-[10px] text-[#d8b486] ml-1 font-sans uppercase">Gold</span>
             </span>
           </div>
 
-          {/* 아이템 표시 영역 */}
           {rewards.items && Object.keys(rewards.items).length > 0 && (
             <div className="flex flex-wrap justify-center gap-2 mt-2">
               {Object.entries(rewards.items).map(([itemId, count]) => {
                 const item = ITEM_DATABASE[itemId];
                 if (!item) return null;
                 return (
-                  <div key={itemId} className="w-12 h-12 bg-[#2a1a10]/80 border border-[#5c3e23]/60 rounded-sm flex items-center justify-center relative shadow-sm group">
+                  <div key={itemId} className="w-12 h-12 bg-black/40 rounded-sm flex items-center justify-center relative group">
                     {item.icon.startsWith('/') ? (
                       <img src={item.icon} alt={item.name} className="w-[70%] h-[70%] object-contain drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]" draggable="false" />
                     ) : (
@@ -188,8 +186,7 @@ export default function App() {
                       {count}
                     </span>
                     
-                    {/* 툴팁 (이름) */}
-                    <div className="absolute inset-0 bg-black/85 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 border border-[#a6845c] rounded-sm p-0.5">
+                    <div className="absolute inset-0 bg-black/85 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 rounded-sm p-0.5">
                       <span className="text-[#f5d5a9] text-[9px] font-bold text-center leading-tight break-keep drop-shadow-md">
                         {item.name}
                       </span>
@@ -346,8 +343,7 @@ export default function App() {
             <Board board={board} onCellClick={handleCellClick} onCellRightClick={toggleFlag} dungeon={currentDungeon} />
             
             {gameStatus === 'won' && (
-              <div 
-                className="fixed inset-0 z-[100] flex flex-col justify-end pb-8"
+              <div className="fixed inset-0 z-[100] flex flex-col justify-center items-center"
                 style={{ 
                   backgroundImage: `url(${DUNGEON_INFO[currentDungeon]?.winBg})`,
                   backgroundSize: 'cover',
@@ -365,9 +361,9 @@ export default function App() {
                 <div className="absolute inset-0 bg-black/50 pointer-events-none z-0"></div>
                 
                 {/* 💡 승리 보상 UI 렌더링! */}
-                {renderRewardsUI(true)}
+                {renderRewardsUI()}
 
-                <div className="flex justify-center items-center gap-4 px-6 mb-8 w-full max-w-md mx-auto relative z-10">
+                <div className="flex justify-center items-center gap-4 px-6 w-full max-w-md mx-auto relative z-10">
                   
                   <button 
                     onClick={() => {
@@ -406,7 +402,7 @@ export default function App() {
 
             {gameStatus === 'lost' && (
               <div 
-                className="fixed inset-0 z-[100] flex flex-col justify-end pb-8"
+                className="fixed inset-0 z-[100] flex flex-col justify-center items-center"
                 style={{ 
                   backgroundImage: `url(${DUNGEON_INFO[currentDungeon]?.loseBg})`,
                   backgroundSize: 'cover',
@@ -424,9 +420,9 @@ export default function App() {
                 <div className="absolute inset-0 bg-black/50 pointer-events-none z-0"></div>
                 
                 {/* 💡 패배 위로 보상 UI 렌더링! */}
-                {renderRewardsUI(false)}
+                {renderRewardsUI()}
 
-                <div className="flex justify-center items-center gap-4 px-6 mb-8 w-full max-w-md mx-auto relative z-10">
+                <div className="flex justify-center items-center gap-4 px-6 w-full max-w-md mx-auto relative z-10">
                   
                   <button 
                     onClick={() => {
