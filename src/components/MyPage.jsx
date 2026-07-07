@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { doc, getDoc, setDoc } from 'firebase/firestore'; 
 import { db } from '../firebase'; 
 import { useAuth } from '../hooks/useAuth'; 
+// 💡 방금 만든 아이템 백과사전 불러오기
+import { ITEM_DATABASE } from '../constants/itemData'; 
 
 const DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%231e140d'/%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z' fill='%238c6543'/%3E%3C/svg%3E";
 
@@ -30,20 +32,26 @@ export default function MyPage({ onBack }) {
   const [records, setRecords] = useState([]);
   const [expandedDungeons, setExpandedDungeons] = useState({});
 
+  // 💡 향후 파이어베이스에 저장될 '진짜' 데이터 형태 (ID와 수량만 저장됨)
   const [inventory] = useState({
     gold: 1250,
-    materials: [
-      { name: '작은 불씨', count: 12, icon: '🔥', rarity: 'common' },
-      { name: '심해의 결정', count: 3, icon: '💎', rarity: 'rare' },
-      { name: '화룡의 심장', count: 1, icon: '❤️‍🔥', rarity: 'legendary' },
-    ],
-    consumables: [
-      { name: '초보자의 포션', count: 5, icon: '🧪', rarity: 'common' },
-      { name: '신비한 열쇠', count: 2, icon: '🗝️', rarity: 'epic' },
-    ]
+    items: {
+      'mat_fire_1': 12,      // 작은 불씨 12개
+      'mat_water_2': 3,      // 심해의 결정 3개
+      'mat_fire_5': 1,       // 화룡의 심장 1개
+      'con_potion_1': 5,     // 초보자의 포션 5개
+      'con_key_1': 2         // 신비한 열쇠 2개
+    }
   });
 
-  const allInventoryItems = [...inventory.materials, ...inventory.consumables];
+  // 💡 유저가 가진 아이템 ID를 도감(ITEM_DATABASE)과 매칭하여 완벽한 배열로 조립!
+  const allInventoryItems = Object.entries(inventory.items).map(([itemId, count]) => {
+    const itemInfo = ITEM_DATABASE[itemId];
+    return {
+      ...itemInfo, // 백과사전의 정보(이름, 등급, 아이콘 등) 복사
+      count: count // 유저가 실제로 가진 수량 추가
+    };
+  });
 
   const { user } = useAuth(); 
 
@@ -199,13 +207,23 @@ export default function MyPage({ onBack }) {
             <div key={i} className="aspect-square bg-[#2a1a10]/50 border-[1px] border-[#5c3e23]/60 rounded-sm shadow-[inset_0_0_8px_rgba(0,0,0,0.8)] relative flex items-center justify-center group cursor-pointer backdrop-blur-[2px] overflow-hidden">
               {item && (
                 <>
-                  <span className="text-3xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] select-none pointer-events-none">{item.icon}</span>
+                  {/* 💡 icon 데이터가 '/'로 시작하면 이미지(img)로, 아니면 이모지(span)로 렌더링! */}
+                  {item.icon.startsWith('/') ? (
+                    <img 
+                      src={item.icon} 
+                      alt={item.name} 
+                      className="w-[70%] h-[70%] object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] pointer-events-none" 
+                      draggable="false" 
+                    />
+                  ) : (
+                    <span className="text-3xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] select-none pointer-events-none">{item.icon}</span>
+                  )}
+
                   <span className="absolute bottom-0 right-1 text-[11px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,1)] select-none pointer-events-none">
                     {item.count}
                   </span>
                   <div className={`absolute inset-0 border-[1.5px] rounded-sm pointer-events-none opacity-80 ${getRarityColor(item.rarity)}`}></div>
                   
-                  {/* 💡 상단 잘림 해결: 내부 오버레이 툴팁 (호버 시 칸 자체가 어두워지며 이름 표시) */}
                   <div className="absolute inset-0 bg-black/85 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 border border-[#a6845c] rounded-sm p-0.5">
                     <span className="text-[#f5d5a9] text-[10px] font-bold text-center leading-tight break-keep drop-shadow-md">
                       {item.name}
@@ -519,7 +537,6 @@ export default function MyPage({ onBack }) {
                   </span>
                 </div>
 
-                {/* 💡 가로 스크롤 방지를 위해 overflow-x-hidden 강제 적용 */}
                 <div className="flex-1 min-h-0 bg-[#1a1008]/40 border-[1.5px] border-[#8c6543]/50 p-2 shadow-[inset_0_0_15px_rgba(0,0,0,0.8)] rounded-sm overflow-y-auto overflow-x-hidden custom-scrollbar">
                   {renderInventorySlots(allInventoryItems)}
                 </div>
