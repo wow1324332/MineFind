@@ -4,7 +4,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 import { getRequiredExp } from '../utils/expUtils';
 
-export default function UserProfileCard({ user }) {
+export default function UserProfileCard({ user, isDimmed }) { // 💡 6번: 딤처리용 프롭 추가
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
@@ -23,50 +23,53 @@ export default function UserProfileCard({ user }) {
   const currentExp = userData.exp || 0;
   const requiredExp = getRequiredExp(level);
   
-  const expPercent = requiredExp > 0 ? Math.min((currentExp / requiredExp) * 100, 100) : 100;
+  const expPercent = requiredExp > 0 ? Math.min((currentExp / requiredExp) * 105, 100) : 100;
 
-  // 💡 수정된 부분: Firestore DB(userData)에 저장된 커스텀 프로필 정보를 최우선으로 가져옵니다!
-  // (DB에 없으면 구글 계정 정보, 그것도 없으면 기본값 사용)
   const displayNickname = userData.nickname || userData.displayName || user.displayName || '용사님';
   const displayPhoto = userData.photoURL || userData.profileImage || user.photoURL || '/My-icon.png';
 
   return (
-    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-sm z-40 animate-[fadeIn_0.5s_ease-in-out]">
-      <div className="bg-black/60 backdrop-blur-md border border-[#a6845c]/40 rounded-xl p-3 flex items-center gap-4 shadow-[0_4px_20px_rgba(0,0,0,0.9)]">
+    // 💡 2번&6번: 테두리(border) 제거, 마이프로필 스타일의 배경색(#f1e4d3) 적용
+    // 💡 isDimmed 가 true 이면 투명도와 밝기를 낮춰 자연스럽게 백그라운드로 밀려나도록 딤처리 구현
+    <div className={`fixed bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-sm z-40 transition-all duration-300 ${isDimmed ? 'opacity-25 brightness-[0.3] pointer-events-none' : 'animate-[fadeIn_0.5s_ease-in-out]'}`}>
+      <div className="bg-[#f1e4d3] rounded-xl p-3 flex items-center gap-4 shadow-[0_10px_25px_rgba(0,0,0,0.5)]">
         
-        {/* 1. 프로필 이미지 영역 */}
-        <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#d8b486]/70 flex-shrink-0 shadow-[0_0_10px_rgba(216,180,134,0.3)] bg-neutral-800">
+        {/* 💡 1번: rounded-full을 제거하고 깔끔한 사각형(rounded-md) 프레임으로 변경 */}
+        <div className="w-12 h-12 rounded-md overflow-hidden border-2 border-[#4a2c11]/40 flex-shrink-0 shadow-md bg-neutral-800">
           <img 
-            src={displayPhoto} // 💡 DB에서 가져온 이미지 적용!
+            src={displayPhoto} 
             alt="Profile" 
             className="w-full h-full object-cover"
             draggable="false"
           />
         </div>
 
-        {/* 2. 유저 정보 & 경험치 바 영역 */}
+        {/* 유저 정보 & 경험치 바 영역 */}
         <div className="flex-1 flex flex-col justify-center">
           
+          {/* 💡 3번&5번: 모든 폰트를 고풍스러운 짙은 갈색(#4a2c11)으로 통일하고 레벨 폰트를 세리프(font-serif) 스타일로 교체 */}
           <div className="flex justify-between items-end mb-1.5 px-1">
-            {/* 💡 DB에서 가져온 닉네임 적용! */}
-            <span className="text-[#f5d5a9] font-bold text-sm drop-shadow-md truncate max-w-[130px]">
+            <span className="text-[#4a2c11] font-black text-sm truncate max-w-[130px]">
               {displayNickname}
             </span>
-            <span className="text-yellow-400 font-black text-xs italic drop-shadow-[0_0_5px_rgba(250,204,21,0.5)]">
+            <span className="text-[#4a2c11] font-serif font-black text-xs tracking-wider uppercase">
               Lv.{level}
             </span>
           </div>
 
-          <div className="w-full h-2.5 bg-black/80 rounded-full overflow-hidden border border-white/10 relative shadow-inner">
+          {/* 경험치 Bar 배경 슬롯 */}
+          <div className="w-full h-2.5 bg-[#dcc9b4] rounded-full overflow-hidden border border-[#4a2c11]/10 relative shadow-inner">
+            {/* 💡 4번: 경험치 게이지 색상을 테마에 어울리는 짙은 갈색 톤(from-[#4a2c11] to-[#7c5230]) 그라데이션으로 변경 */}
             <div
-              className="h-full bg-gradient-to-r from-blue-700 via-blue-500 to-cyan-400 transition-all duration-700 ease-out"
+              className="h-full bg-gradient-to-r from-[#4a2c11] to-[#7c5230] transition-all duration-700 ease-out"
               style={{ width: `${expPercent}%` }}
             >
-              <div className="absolute top-0 right-0 bottom-0 w-4 bg-gradient-to-r from-transparent to-white/30 mix-blend-overlay"></div>
+              <div className="absolute top-0 right-0 bottom-0 w-4 bg-gradient-to-r from-transparent to-white/10 mix-blend-overlay"></div>
             </div>
           </div>
           
-          <div className="text-right text-[9px] text-blue-200/60 mt-1 font-sans font-medium">
+          {/* 💡 3번: 내측 하단 경험치 텍스트 역시 짙은 갈색 톤으로 일치 */}
+          <div className="text-right text-[9px] text-[#4a2c11]/70 mt-1 font-sans font-bold">
             {currentExp.toLocaleString()} / {requiredExp.toLocaleString()} EXP
           </div>
           
