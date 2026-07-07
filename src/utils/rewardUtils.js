@@ -146,5 +146,12 @@ export const calculateDungeonRewards = (dungeonName, difficulty, isWin) => {
     }
   }
 
-  return { gold, items: droppedItems };
+  const finalItems = {};
+  for (const itemId in droppedItems) {
+    if (droppedItems[itemId] > 0) {
+      finalItems[itemId] = droppedItems[itemId];
+    }
+  }
+
+  return { gold, items: finalItems };
 };
