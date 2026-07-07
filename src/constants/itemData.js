@@ -16,11 +16,11 @@ export const ITEM_DATABASE = {
   'mat_fire_2': {
     id: 'mat_fire_2',
     type: 'material',
-    name: '꺼지지 않는 불꽃',
-    icon: '☄️',
-    rarity: 'rare',
-    desc: '바람이 불어도 절대 꺼지지 않는 신비한 불꽃.',
-    sellPrice: 50
+    name: 'high flame crystal',
+    icon: '/items/highflamecrystal.png',
+    rarity: 'common',
+    desc: '중급 불의 악마 피를 굳혀 만든 작은 강력한 불꽃의 기운을 담은 수정.',
+    sellPrice: 200
   },
   'mat_fire_3': {
     id: 'mat_fire_3',
