@@ -11,7 +11,8 @@ import { useAuth } from './hooks/useAuth';
 import MyPage from './components/MyPage';
 import { DUNGEON_INFO } from './constants/dungeonData';
 // 💡 보상 아이템의 아이콘과 이름을 가져오기 위해 도감 호출
-import { ITEM_DATABASE } from './constants/itemData'; 
+import { ITEM_DATABASE } from './constants/itemData';
+import UserProfileCard from './components/UserProfileCard';
 
 const SPLASH_CONFIG = {
   INITIAL: {
@@ -544,6 +545,11 @@ export default function App() {
             )}
             
           </div>
+
+          {gameStatus === 'playing' || gameStatus === 'idle' ? (
+            <UserProfileCard user={user} />
+          ) : null}
+          
         </div>
       );
       break; 
