@@ -92,7 +92,7 @@ export const ITEM_DATABASE = {
   'mat_water_5': {
     id: 'mat_water_5',
     type: 'material',
-    name: 'lung of ba'al',
+    name: 'lung of baal',
     icon: '/items/lungofbaal.png',
     rarity: 'rare',
     desc: '물의 대악마 바알을 처치하고 얻은 바알의 폐.',
