@@ -154,27 +154,48 @@ export default function App() {
   };
 
   // 💡 획득한 보상(골드, 아이템)을 모달창에 예쁘게 그려주는 미니 렌더링 함수
-  const renderRewardsUI = () => {
+    const renderRewardsUI = () => {
     if (!rewards) return null;
 
     return (
-      // 💡 absolute top-1/2 ... 속성으로 팝업만 화면 한가운데에 못 박아둡니다!
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[16rem] z-10 animate-[fadeIn_0.5s_ease-in-out]">
         
-        {/* 💡 backdrop-blur-md 지우고 bg-black/70 으로 깔끔한 반투명 적용 */}
-        <div className="bg-black/70 rounded-md p-4">
+        {/* 💡 레벨업 시 화려한 이펙트 텍스트 띄우기 */}
+        {rewards.hasLeveledUp && (
+          <div className="absolute -top-14 left-1/2 -translate-x-1/2 w-full text-center animate-bounce z-20">
+            <span className="text-yellow-400 font-black text-3xl tracking-widest drop-shadow-[0_0_15px_rgba(250,204,21,1)] italic border-black text-stroke-2">
+              LEVEL UP!
+            </span>
+            <div className="text-[#f5d5a9] text-xs font-bold mt-1 drop-shadow-md">
+              Lv. {rewards.newLevel} 달성!
+            </div>
+          </div>
+        )}
+
+        <div className="bg-black/70 rounded-md p-4 border border-[#a6845c]/20 shadow-[0_0_30px_rgba(0,0,0,0.9)]">
           <h3 className="text-center font-serif text-[#d8b486] text-sm tracking-[0.3em] mb-4 drop-shadow-md uppercase">
             Acquired
           </h3>
           
-          <div className="flex justify-center items-center bg-black/40 rounded-sm py-1.5 mb-3">
-            <span className="text-[#f5d5a9] font-black text-[16px] tracking-widest font-serif drop-shadow-md">
-              {rewards.gold} <span className="text-[10px] text-[#d8b486] ml-1 font-sans uppercase">Gold</span>
-            </span>
+          {/* 골드 & 경험치 표시 영역 */}
+          <div className="flex flex-col gap-2 mb-4">
+            <div className="flex justify-center items-center bg-black/40 rounded-sm py-1.5">
+              <span className="text-[#f5d5a9] font-black text-[16px] tracking-widest font-serif drop-shadow-md">
+                +{rewards.gold} <span className="text-[10px] text-[#d8b486] ml-1 font-sans uppercase">Gold</span>
+              </span>
+            </div>
+            
+            {/* 💡 경험치 표시 줄 추가 */}
+            <div className="flex justify-center items-center bg-black/40 rounded-sm py-1.5 border border-blue-900/30">
+              <span className="text-blue-300 font-black text-[16px] tracking-widest font-serif drop-shadow-md">
+                +{rewards.earnedExp} <span className="text-[10px] text-blue-400/80 ml-1 font-sans uppercase">EXP</span>
+              </span>
+            </div>
           </div>
 
+          {/* 아이템 렌더링 (구분선 추가) */}
           {rewards.items && Object.keys(rewards.items).length > 0 && (
-            <div className="flex flex-wrap justify-center gap-2 mt-2">
+            <div className="flex flex-wrap justify-center gap-2 mt-2 pt-3 border-t border-[#a6845c]/20">
               {Object.entries(rewards.items).map(([itemId, count]) => {
                 const item = ITEM_DATABASE[itemId];
                 if (!item) return null;
