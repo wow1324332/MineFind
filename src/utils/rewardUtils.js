@@ -28,23 +28,23 @@ export const calculateDungeonRewards = (dungeonName, difficulty, isWin) => {
           break;
         case 'Normal':
           gold = 200;
-          droppedItems['mat_fire_1'] = getRandomCount(1, 2);
+          droppedItems['mat_fire_1'] = getRandomCount(1, 2, 3);
           droppedItems['mat_fire_2'] = 1; 
           break;
         case 'Hard':
           gold = 500;
-          droppedItems['mat_fire_2'] = getRandomCount(2, 3);
+          droppedItems['mat_fire_2'] = getRandomCount(1, 2, 3);
           droppedItems['mat_fire_3'] = 1;
           break;
         case 'Expert':
           gold = 800;
-          droppedItems['mat_fire_3'] = getRandomCount(1, 2);
+          droppedItems['mat_fire_3'] = getRandomCount(1, 2, 3);
           droppedItems['mat_fire_4'] = 1;
           droppedItems['con_key_1'] = 1; 
           break;
         case 'Hell':
           gold = 1500;
-          droppedItems['mat_fire_4'] = getRandomCount(2, 3);
+          droppedItems['mat_fire_4'] = getRandomCount(1, 2, 3);
           droppedItems['mat_fire_5'] = 1; 
           droppedItems['con_key_1'] = getRandomCount(1, 2);
           break;
@@ -60,21 +60,15 @@ export const calculateDungeonRewards = (dungeonName, difficulty, isWin) => {
           break;
         case 'Normal':
           gold = 80;
-          droppedItems['mat_fire_1'] = 1; // 실패해도 기본 재료 1개 지급
           break;
         case 'Hard':
           gold = 100;
-          droppedItems['mat_fire_1'] = 1;
-          droppedItems['con_potion_1'] = 1; // 포션 지급
           break;
         case 'Expert':
           gold = 200;
-          droppedItems['mat_fire_2'] = 1; // 실패해도 레어 재료 지급
-          droppedItems['con_potion_1'] = getRandomCount(1, 2);
           break;
         case 'Hell':
           gold = 200;
-          droppedItems['mat_fire_3'] = 1; // 헬 난이도는 실패해도 에픽 재료 지급!
           break;
         default:
           gold = 10;
