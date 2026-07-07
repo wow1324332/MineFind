@@ -70,7 +70,7 @@ export const calculateDungeonRewards = (dungeonName, difficulty, isWin) => {
           break;
         case 'Normal':
           exp = 10;
-          gold = 80;
+          gold = 100;
           break;
         case 'Hard':
           exp = 10;
@@ -100,35 +100,37 @@ export const calculateDungeonRewards = (dungeonName, difficulty, isWin) => {
     if (isWin) {
       switch (difficulty) {
         case 'Easy':
-          exp = 50;
+          exp = 20;
           gold = 100;
           droppedItems['mat_water_1'] = getRandomCount(1, 2);
           break;
         case 'Normal':
-          exp = 150;
+          exp = 50;
           gold = 200;
-          droppedItems['mat_water_1'] = getRandomCount(1, 2);
-          droppedItems['mat_water_2'] = 1;
+          droppedItems['mat_water_1'] = getRandomCount(0, 2);
+          droppedItems['mat_water_2'] = getRandomCount(1, 2);
           break;
         case 'Hard':
-          exp = 400;
-          gold = 400;
-          droppedItems['mat_water_2'] = getRandomCount(2, 3);
+          exp = 150;
+          gold = 500;
+          droppedItems['mat_water_1'] = getRandomCount(0, 2);
+          droppedItems['mat_water_2'] = getRandomCount(0, 2);
           droppedItems['mat_water_3'] = 1;
           break;
         case 'Expert':
-          exp = 1000;
+          exp = 300;
           gold = 800;
-          droppedItems['mat_water_3'] = getRandomCount(1, 2);
+          droppedItems['mat_water_2'] = getRandomCount(0, 2);
+          droppedItems['mat_water_3'] = getRandomCount(0, 2);
           droppedItems['mat_water_4'] = 1;
-          droppedItems['con_key_1'] = 1;
           break;
         case 'Hell':
-          exp = 3000;
-          gold = 2000;
-          droppedItems['mat_water_4'] = getRandomCount(2, 3);
+          exp = 1000;
+          gold = 1500;
+          droppedItems['mat_water_2'] = getRandomCount(0, 2);
+          droppedItems['mat_water_3'] = getRandomCount(0, 2);
+          droppedItems['mat_water_4'] = getRandomCo7nt(1, 2)
           droppedItems['mat_water_5'] = 1;
-          droppedItems['con_key_1'] = getRandomCount(1, 2);
           break;
         default:
           exp = 30;
@@ -143,26 +145,20 @@ export const calculateDungeonRewards = (dungeonName, difficulty, isWin) => {
           gold = 10;
           break;
         case 'Normal':
-          exp = 30;
-          gold = 30;
-          droppedItems['mat_water_1'] = 1;
+          exp = 10;
+          gold = 50;
           break;
         case 'Hard':
-          exp = 80;
+          exp = 10;
           gold = 50;
-          droppedItems['mat_water_1'] = 1;
-          droppedItems['con_potion_1'] = 1;
           break;
         case 'Expert':
-          exp = 200;
+          exp = 10;
           gold = 100;
-          droppedItems['mat_water_2'] = 1;
-          droppedItems['con_potion_1'] = getRandomCount(1, 2);
           break;
         case 'Hell':
-          exp = 500;
-          gold = 300;
-          droppedItems['mat_water_3'] = 1;
+          exp = 10;
+          gold = 100;
           break;
         default:
           exp = 5;
