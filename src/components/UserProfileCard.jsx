@@ -35,7 +35,7 @@ export default function UserProfileCard({ user, isDimmed }) {
       <div 
         className="rounded-xl p-3 flex items-center gap-4 shadow-[0_10px_25px_rgba(0,0,0,0.5)] relative overflow-hidden"
         style={{
-          backgroundImage: "url('/popup-bg.png')", // 💡 마이페이지에서 쓰는 정확한 양피지 이미지 파일명으로 변경해 주세요!
+          backgroundImage: "url('/yangpiji-bg.jpeg')", // 💡 마이페이지에서 쓰는 정확한 양피지 이미지 파일명으로 변경해 주세요!
           backgroundSize: '100% 100%',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
