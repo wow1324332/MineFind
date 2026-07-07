@@ -4,6 +4,7 @@ import { db } from '../firebase';
 import { useAuth } from '../hooks/useAuth'; 
 // 💡 방금 만든 아이템 백과사전 불러오기
 import { ITEM_DATABASE } from '../constants/itemData'; 
+import { getRequiredExp } from '../utils/expUtils';
 
 const DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%231e140d'/%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z' fill='%238c6543'/%3E%3C/svg%3E";
 
@@ -34,6 +35,8 @@ export default function MyPage({ onBack }) {
 
   // 💡 파이어베이스에서 불러올 실제 데이터 상태 (기본은 빈 가방)
   const [inventory, setInventory] = useState({ gold: 0, items: {} });
+  const [level, setLevel] = useState(1);
+  const [exp, setExp] = useState(0);
 
   // 💡 유저가 가진 아이템 ID를 도감(ITEM_DATABASE)과 매칭하여 조립
   // (inventory.items가 안전하게 읽히도록 빈 객체 `{}` 대비 처리 추가)
@@ -62,6 +65,9 @@ export default function MyPage({ onBack }) {
           if (data.photoURL) setAvatarUrl(data.photoURL);
           if (data.stats) setStats(data.stats);
           if (data.records) setRecords(data.records);
+          // 🔥 2. 파이어베이스에서 레벨과 경험치 가져오기
+          if (data.level) setLevel(data.level);
+          if (data.exp) setExp(data.exp);
           
           // 💡 파이어베이스에 인벤토리 데이터가 있다면 세팅, 없으면 새로 생성
           if (data.inventory) {
@@ -239,6 +245,9 @@ export default function MyPage({ onBack }) {
     );
   };
 
+  const requiredExp = getRequiredExp(level);
+  const expPercent = requiredExp > 0 ? Math.min((exp / requiredExp) * 100, 100) : 100;
+  
   return (
     <div className="relative min-h-screen bg-black text-white flex flex-col items-center px-6 pb-6 pt-0 animate-[fadeIn_0.5s_ease-in-out] overflow-hidden">
       
@@ -346,6 +355,26 @@ export default function MyPage({ onBack }) {
                             </div>
                           )}
                         </div>
+
+                        <div className="mt-2 w-full pr-2">
+                          <div className="text-[#4a2c11] font-serif font-black text-[11px] tracking-wider uppercase mb-1">
+                            Lv.{level}
+                          </div>
+                          {/* 경험치 바 */}
+                          <div className="w-full h-2 bg-[#dcc9b4]/80 rounded-full overflow-hidden border border-[#4a2c11]/20 relative shadow-inner">
+                            <div
+                              className="h-full bg-gradient-to-r from-[#4a2c11] to-[#7c5230] transition-all duration-700 ease-out"
+                              style={{ width: `${expPercent}%` }}
+                            >
+                              <div className="absolute top-0 right-0 bottom-0 w-4 bg-gradient-to-r from-transparent to-white/10 mix-blend-overlay"></div>
+                            </div>
+                          </div>
+                          {/* 경험치 텍스트 */}
+                          <div className="text-right text-[9px] text-[#4a2c11]/80 mt-0.5 font-sans font-bold">
+                            {exp.toLocaleString()} / {requiredExp.toLocaleString()} EXP
+                          </div>
+                        </div>
+                        
                       </div>
                     </div>
 
