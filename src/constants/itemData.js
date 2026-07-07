@@ -56,47 +56,47 @@ export const ITEM_DATABASE = {
   'mat_water_1': {
     id: 'mat_water_1',
     type: 'material',
-    name: '맑은 물방울',
-    icon: '💧', 
+    name: 'aqua crystal',
+    icon: '/items/aquacrystal.png', 
     rarity: 'common',
-    desc: '마력을 머금고 있는 투명한 물방울. 차가운 기운이 감돈다.',
-    sellPrice: 10
+    desc: '물의 악마의 기운을 머금고있는 작은 수정.',
+    sellPrice: 100
   },
   'mat_water_2': {
     id: 'mat_water_2',
     type: 'material',
-    name: '심해의 결정',
-    icon: '💎',
-    rarity: 'rare',
-    desc: '빛이 닿지 않는 깊은 바다 밑바닥에서 굳어진 아름다운 보석.',
-    sellPrice: 50
+    name: 'high aqua crystal',
+    icon: '/items/highaquacrystal.png',
+    rarity: 'normal',
+    desc: '물의 악마의 기운을 가득 머금고 있는 수정.',
+    sellPrice: 200
   },
   'mat_water_3': {
     id: 'mat_water_3',
     type: 'material',
-    name: '얼어붙은 눈물',
-    icon: '❄️',
-    rarity: 'epic',
-    desc: '슬픔을 간직한 인어의 눈물이 극한의 추위에 얼어붙은 조각.',
-    sellPrice: 200
+    name: 'eye of aqua devil',
+    icon: '/items/eyeofaquadevil.png',
+    rarity: 'rare',
+    desc: '중급 심해의 악마를 처치하고 나온 물의 기운이 담긴 눈.',
+    sellPrice: 350
   },
   'mat_water_4': {
     id: 'mat_water_4',
     type: 'material',
-    name: '해신의 삼지창 조각',
-    icon: '🔱',
-    rarity: 'epic',
-    desc: '바다를 지배하던 해신의 무기 파편. 강력한 수속성 마력을 뿜어낸다.',
-    sellPrice: 800
+    name: 'core of aqua',
+    icon: '/items/coreofaqua.png',
+    rarity: 'rare',
+    desc: '심해 악마들의 물의 기운을 잔뜩모은 강력한 물의 정수.',
+    sellPrice: 500
   },
   'mat_water_5': {
     id: 'mat_water_5',
     type: 'material',
-    name: '리바이어던의 비늘',
-    icon: '🐉',
-    rarity: 'legendary',
-    desc: '전설의 해양 마수 리바이어던의 껍질. 절대 부서지지 않는다고 전해진다.',
-    sellPrice: 5000
+    name: 'lung of ba'al',
+    icon: '/items/lungofbaal.png',
+    rarity: 'rare',
+    desc: '물의 대악마 바알을 처치하고 얻은 바알의 폐.',
+    sellPrice: 2000
   },
 
   // ==========================================
