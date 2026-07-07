@@ -32,27 +32,19 @@ export default function MyPage({ onBack }) {
   const [records, setRecords] = useState([]);
   const [expandedDungeons, setExpandedDungeons] = useState({});
 
-  // 💡 향후 파이어베이스에 저장될 '진짜' 데이터 형태 (ID와 수량만 저장됨)
+  // 💡 파이어베이스에서 불러올 실제 데이터 상태 (기본은 빈 가방)
   const [inventory, setInventory] = useState({ gold: 0, items: {} });
 
-  // 유저가 가진 아이템 ID를 도감(ITEM_DATABASE)과 매칭하여 조립하는 로직 (그대로 유지)
-  const allInventoryItems = Object.entries(inventory.items).map(([itemId, count]) => {
+  // 💡 유저가 가진 아이템 ID를 도감(ITEM_DATABASE)과 매칭하여 조립
+  // (inventory.items가 안전하게 읽히도록 빈 객체 `{}` 대비 처리 추가)
+  const allInventoryItems = Object.entries(inventory?.items || {}).map(([itemId, count]) => {
     const itemInfo = ITEM_DATABASE[itemId];
-    if (!itemInfo) return null; // 도감에 없는 이상한 아이템은 무시
+    if (!itemInfo) return null;
     return {
       ...itemInfo, 
       count: count 
     };
   }).filter(Boolean);
-
-  // 💡 유저가 가진 아이템 ID를 도감(ITEM_DATABASE)과 매칭하여 완벽한 배열로 조립!
-  const allInventoryItems = Object.entries(inventory.items).map(([itemId, count]) => {
-    const itemInfo = ITEM_DATABASE[itemId];
-    return {
-      ...itemInfo, // 백과사전의 정보(이름, 등급, 아이콘 등) 복사
-      count: count // 유저가 실제로 가진 수량 추가
-    };
-  });
 
   const { user } = useAuth(); 
 
@@ -71,12 +63,10 @@ export default function MyPage({ onBack }) {
           if (data.stats) setStats(data.stats);
           if (data.records) setRecords(data.records);
           
-          // 💡 파이어베이스에 인벤토리 데이터가 있다면 불러오기!
+          // 💡 파이어베이스에 인벤토리 데이터가 있다면 세팅, 없으면 새로 생성
           if (data.inventory) {
             setInventory(data.inventory);
           } else {
-            // 아직 인벤토리 데이터가 없는 기존 유저나 신규 유저라면?
-            // DB에 'ID와 수량' 형태의 빈 가방을 새로 만들어줍니다.
             const initialInventory = { gold: 0, items: {} };
             await setDoc(userDocRef, { inventory: initialInventory }, { merge: true });
             setInventory(initialInventory);
@@ -219,7 +209,6 @@ export default function MyPage({ onBack }) {
             <div key={i} className="aspect-square bg-[#2a1a10]/50 border-[1px] border-[#5c3e23]/60 rounded-sm shadow-[inset_0_0_8px_rgba(0,0,0,0.8)] relative flex items-center justify-center group cursor-pointer backdrop-blur-[2px] overflow-hidden">
               {item && (
                 <>
-                  {/* 💡 icon 데이터가 '/'로 시작하면 이미지(img)로, 아니면 이모지(span)로 렌더링! */}
                   {item.icon.startsWith('/') ? (
                     <img 
                       src={item.icon} 
