@@ -168,7 +168,7 @@ export default function App() {
               LEVEL UP!
             </span>
             <div className="text-[#f5d5a9] text-xs font-bold mt-1 drop-shadow-md">
-              Lv. {rewards.newLevel} 달성!
+              Lv. {rewards.newLevel} Up!
             </div>
           </div>
         )}
