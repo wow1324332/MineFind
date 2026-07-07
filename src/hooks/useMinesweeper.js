@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { GAME_CONFIG, createEmptyBoard, cloneBoard, placeMinesAndCalculate, revealEmptyCells, checkWinCondition, getMineCount } from '../utils/gameLogic';
-import { doc, updateDoc, increment, arrayUnion } from 'firebase/firestore';
+// 💡 파이어베이스에서 데이터를 읽어오기 위해 getDoc 추가
+import { doc, getDoc, updateDoc, increment, arrayUnion } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from '../hooks/useAuth';
-// 💡 방금 만든 보상 계산기 가져오기
 import { calculateDungeonRewards } from '../utils/rewardUtils';
+// 💡 방금 만든 레벨업 계산기 불러오기
+import { processExpGain } from '../utils/expUtils';
 
 export const useMinesweeper = () => {
   const auth = useAuth();
@@ -21,7 +23,6 @@ export const useMinesweeper = () => {
   const [difficultyLevel, setDifficultyLevel] = useState('Normal');
   const [dungeonName, setDungeonName] = useState('Hell of flame');
 
-  // 💡 모달창에 띄워주기 위해 획득한 보상 정보를 저장할 상태 추가
   const [rewards, setRewards] = useState(null);
 
   const formatTime = (seconds) => {
@@ -30,39 +31,58 @@ export const useMinesweeper = () => {
     return `${mins}:${secs}`;
   };
 
-  // 💡 파이어베이스에 게임 결과 + 획득 보상을 영구 저장하는 함수로 업그레이드!
   const saveGameResult = useCallback(async (isWin, clearTime) => {
     if (!user) return;
     
-    // 1. 결과에 따른 보상(골드, 아이템) 계산
+    // 1. 결과에 따른 보상(경험치, 골드, 아이템) 계산
     const generatedRewards = calculateDungeonRewards(dungeonName, difficultyLevel, isWin);
-    setRewards(generatedRewards); // UI(모달창)에서 보여주기 위해 상태에 저장
 
     const userDocRef = doc(db, 'users', user.uid);
-    const newRecord = {
-      dungeon: `${dungeonName} (${difficultyLevel})`,
-      result: isWin ? '승리' : '패배',
-      time: clearTime,
-      timestamp: new Date().getTime()
-    };
-
-    // 2. 파이어베이스에 업데이트할 데이터 덩어리 준비
-    const updateData = {
-      [`stats.${isWin ? 'wins' : 'losses'}`]: increment(1),
-      records: arrayUnion(newRecord),
-      // 💡 획득한 골드를 기존 골드에 누적 합산 (increment 사용)
-      ['inventory.gold']: increment(generatedRewards.gold)
-    };
-
-    // 3. 획득한 아이템들도 수량만큼 누적 합산되도록 데이터 덩어리에 추가
-    Object.entries(generatedRewards.items).forEach(([itemId, count]) => {
-      updateData[`inventory.items.${itemId}`] = increment(count);
-    });
 
     try {
-      // 4. 파이어베이스 DB로 한 방에 전송!
+      // 💡 2. DB에서 유저의 "현재 레벨"과 "현재 경험치"를 먼저 가져옵니다.
+      const userSnap = await getDoc(userDocRef);
+      if (!userSnap.exists()) return;
+      
+      const userData = userSnap.data();
+      const currentLevel = userData.level || 1; // 없으면 1레벨
+      const currentExp = userData.exp || 0;     // 없으면 0 EXP
+
+      // 💡 3. 레벨업 계산기를 돌립니다!
+      const { newLevel, newExp, hasLeveledUp } = processExpGain(currentLevel, currentExp, generatedRewards.exp);
+
+      // 모달창 UI에 띄워주기 위해 계산된 정보들을 종합해서 상태에 저장합니다.
+      setRewards({
+        ...generatedRewards,
+        earnedExp: generatedRewards.exp,
+        hasLeveledUp: hasLeveledUp,
+        newLevel: newLevel
+      });
+
+      const newRecord = {
+        dungeon: `${dungeonName} (${difficultyLevel})`,
+        result: isWin ? '승리' : '패배',
+        time: clearTime,
+        timestamp: new Date().getTime()
+      };
+
+      // 💡 4. 파이어베이스에 업데이트할 데이터 덩어리 준비
+      const updateData = {
+        [`stats.${isWin ? 'wins' : 'losses'}`]: increment(1),
+        records: arrayUnion(newRecord),
+        ['inventory.gold']: increment(generatedRewards.gold),
+        level: newLevel, // 새로 계산된 레벨로 덮어쓰기
+        exp: newExp      // 남은 경험치로 덮어쓰기
+      };
+
+      // 획득한 아이템 누적
+      Object.entries(generatedRewards.items).forEach(([itemId, count]) => {
+        updateData[`inventory.items.${itemId}`] = increment(count);
+      });
+
+      // 5. 파이어베이스 DB로 한 방에 전송!
       await updateDoc(userDocRef, updateData);
-      console.log('전적 및 보상 기록 완료!', generatedRewards);
+      console.log('전적, 보상 및 레벨 경험치 기록 완료!');
     } catch (error) {
       console.error('기록 저장 실패:', error);
     }
@@ -78,7 +98,7 @@ export const useMinesweeper = () => {
     setIsFirstClick(true);
     setMinesLeft(getMineCount(targetDifficulty)); 
     setTimeElapsed(0);
-    setRewards(null); // 💡 새 게임 시작 시 이전 보상 초기화
+    setRewards(null); 
     clearInterval(timerRef.current);
     timerRef.current = null;
   }, [difficultyLevel]);
@@ -163,7 +183,7 @@ export const useMinesweeper = () => {
 
   return {
     board, gameStatus, minesLeft, timeElapsed, isFlagMode,
-    rewards, // 💡 새로 추가된 보상 데이터를 밖으로 내보내줌!
+    rewards,
     setIsFlagMode, initGame, handleCellClick, toggleFlag,
     pauseTimer, resumeTimer
   };
