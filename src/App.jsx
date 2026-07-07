@@ -158,13 +158,16 @@ export default function App() {
     if (!rewards) return null;
 
     return (
-      <div className="w-full max-w-[16rem] mx-auto mb-6 relative z-10 animate-[fadeIn_0.5s_ease-in-out]">
-        <div className="bg-black/20 rounded-md p-4 backdrop-blur-md">
+      // 💡 absolute top-1/2 ... 속성으로 팝업만 화면 한가운데에 못 박아둡니다!
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[16rem] z-10 animate-[fadeIn_0.5s_ease-in-out]">
+        
+        {/* 💡 backdrop-blur-md 지우고 bg-black/70 으로 깔끔한 반투명 적용 */}
+        <div className="bg-black/70 rounded-md p-4">
           <h3 className="text-center font-serif text-[#d8b486] text-sm tracking-[0.3em] mb-4 drop-shadow-md uppercase">
             Acquired
           </h3>
           
-          <div className="flex justify-center items-center bg-black/30 rounded-sm py-1.5 mb-3">
+          <div className="flex justify-center items-center bg-black/40 rounded-sm py-1.5 mb-3">
             <span className="text-[#f5d5a9] font-black text-[16px] tracking-widest font-serif drop-shadow-md">
               {rewards.gold} <span className="text-[10px] text-[#d8b486] ml-1 font-sans uppercase">Gold</span>
             </span>
@@ -343,7 +346,7 @@ export default function App() {
             <Board board={board} onCellClick={handleCellClick} onCellRightClick={toggleFlag} dungeon={currentDungeon} />
             
             {gameStatus === 'won' && (
-              <div className="fixed inset-0 z-[100] flex flex-col justify-center items-center"
+              <div className="fixed inset-0 z-[100] flex flex-col justify-end pb-8"
                 style={{ 
                   backgroundImage: `url(${DUNGEON_INFO[currentDungeon]?.winBg})`,
                   backgroundSize: 'cover',
@@ -402,7 +405,7 @@ export default function App() {
 
             {gameStatus === 'lost' && (
               <div 
-                className="fixed inset-0 z-[100] flex flex-col justify-center items-center"
+                className="fixed inset-0 z-[100] flex flex-col justify-end pb-8"
                 style={{ 
                   backgroundImage: `url(${DUNGEON_INFO[currentDungeon]?.loseBg})`,
                   backgroundSize: 'cover',
