@@ -10,6 +10,8 @@ import DungeonSelection from './components/DungeonSelection';
 import { useAuth } from './hooks/useAuth';
 import MyPage from './components/MyPage';
 import { DUNGEON_INFO } from './constants/dungeonData';
+// 💡 보상 아이템의 아이콘과 이름을 가져오기 위해 도감 호출
+import { ITEM_DATABASE } from './constants/itemData'; 
 
 const SPLASH_CONFIG = {
   INITIAL: {
@@ -40,14 +42,15 @@ const SPLASH_CONFIG = {
     bgOpacity: "opacity-70",
     disablePulse: true,
     useFadeIn: true
-  },
-  // 💡 개별 던전 로딩 설정(FIRE_DUNGEON_LOADING 등) 하드코딩 목록 완전히 삭제됨
+  }
 };
 
 export default function App() {
   const { user, loading, logout } = useAuth();
+  
+  // 💡 방금 추가한 rewards(보상 데이터)도 훅에서 가져옵니다!
   const { 
-    board, gameStatus, minesLeft, timeElapsed, isFlagMode, 
+    board, gameStatus, minesLeft, timeElapsed, isFlagMode, rewards,
     setIsFlagMode, initGame, handleCellClick, toggleFlag,
     pauseTimer, resumeTimer
   } = useMinesweeper();
@@ -146,9 +149,59 @@ export default function App() {
     const fullDungeonName = DUNGEON_INFO[dungeonId]?.name || '알 수 없는 던전';
     initGame(selectedDifficulty, fullDungeonName); 
 
-    // 💡 개별 던전 분기처리 제거하고 공통 DUNGEON_LOADING 스크린 상태 하나로 고정
     setCurrentScreen('DUNGEON_LOADING');
     setTimeout(() => setCurrentScreen('GAME_PVE'), 2000);
+  };
+
+  // 💡 획득한 보상(골드, 아이템)을 모달창에 예쁘게 그려주는 미니 렌더링 함수
+  const renderRewardsUI = (isWin) => {
+    if (!rewards) return null;
+
+    return (
+      <div className="w-full max-w-[16rem] mx-auto mb-4 relative z-10 animate-[fadeIn_0.5s_ease-in-out]">
+        <div className="bg-black/80 border-[1.5px] border-[#a6845c]/60 rounded-md p-3 backdrop-blur-sm shadow-[0_0_20px_rgba(0,0,0,0.9)]">
+          <h3 className={`text-center font-black text-xs tracking-wider mb-2 drop-shadow-md ${isWin ? 'text-[#f5d5a9]' : 'text-neutral-400'}`}>
+            {isWin ? '✨ 획득한 전리품 ✨' : '💀 위로 보상'}
+          </h3>
+          
+          {/* 골드 표시 영역 */}
+          <div className="flex justify-center items-center bg-[#1a1008]/80 border border-[#a6845c]/40 rounded-sm py-1.5 mb-2 shadow-inner">
+            <span className="text-[#f5d5a9] font-black text-[16px] tracking-widest font-serif drop-shadow-md">
+              {rewards.gold} <span className="text-[10px] text-[#d8b486] ml-1 font-sans">GOLD</span>
+            </span>
+          </div>
+
+          {/* 아이템 표시 영역 */}
+          {rewards.items && Object.keys(rewards.items).length > 0 && (
+            <div className="flex flex-wrap justify-center gap-2 mt-2">
+              {Object.entries(rewards.items).map(([itemId, count]) => {
+                const item = ITEM_DATABASE[itemId];
+                if (!item) return null;
+                return (
+                  <div key={itemId} className="w-12 h-12 bg-[#2a1a10]/80 border border-[#5c3e23]/60 rounded-sm flex items-center justify-center relative shadow-sm group">
+                    {item.icon.startsWith('/') ? (
+                      <img src={item.icon} alt={item.name} className="w-[70%] h-[70%] object-contain drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]" draggable="false" />
+                    ) : (
+                      <span className="text-2xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] select-none">{item.icon}</span>
+                    )}
+                    <span className="absolute bottom-0 right-1 text-[10px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,1)] select-none">
+                      {count}
+                    </span>
+                    
+                    {/* 툴팁 (이름) */}
+                    <div className="absolute inset-0 bg-black/85 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 border border-[#a6845c] rounded-sm p-0.5">
+                      <span className="text-[#f5d5a9] text-[9px] font-bold text-center leading-tight break-keep drop-shadow-md">
+                        {item.name}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+    );
   };
 
   if (showOpening) {
@@ -190,11 +243,9 @@ export default function App() {
     return <LoginModal deferredPrompt={deferredPrompt} handleInstallClick={handleInstallClick} />;
   }
 
-  // 💡 로딩 렌더링 영역 시스템 고도화
   if (currentScreen.endsWith('_LOADING')) {
     let config = SPLASH_CONFIG[currentScreen];
     
-    // 💡 선택한 던전 로딩일 경우, 데이터 파일(DUNGEON_INFO)에서 실시간으로 데이터 조합 생성
     if (currentScreen === 'DUNGEON_LOADING') {
       const dungeon = DUNGEON_INFO[currentDungeon];
       config = {
@@ -313,6 +364,9 @@ export default function App() {
                 
                 <div className="absolute inset-0 bg-black/50 pointer-events-none z-0"></div>
                 
+                {/* 💡 승리 보상 UI 렌더링! */}
+                {renderRewardsUI(true)}
+
                 <div className="flex justify-center items-center gap-4 px-6 mb-8 w-full max-w-md mx-auto relative z-10">
                   
                   <button 
@@ -369,6 +423,9 @@ export default function App() {
                 
                 <div className="absolute inset-0 bg-black/50 pointer-events-none z-0"></div>
                 
+                {/* 💡 패배 위로 보상 UI 렌더링! */}
+                {renderRewardsUI(false)}
+
                 <div className="flex justify-center items-center gap-4 px-6 mb-8 w-full max-w-md mx-auto relative z-10">
                   
                   <button 
