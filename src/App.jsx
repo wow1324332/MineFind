@@ -547,7 +547,7 @@ export default function App() {
           </div>
 
           {gameStatus === 'playing' || gameStatus === 'idle' ? (
-            <UserProfileCard user={user} />
+            <UserProfileCard user={user} isDimmed={showExitPopup} />
           ) : null}
           
         </div>
