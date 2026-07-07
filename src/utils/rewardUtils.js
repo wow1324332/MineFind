@@ -28,25 +28,27 @@ export const calculateDungeonRewards = (dungeonName, difficulty, isWin) => {
           break;
         case 'Normal':
           gold = 200;
-          droppedItems['mat_fire_1'] = getRandomCount(1, 2, 3);
-          droppedItems['mat_fire_2'] = 1; 
+          droppedItems['mat_fire_1'] = getRandomCount(0, 1, 2);
+          droppedItems['mat_fire_2'] = getRandomCount(1, 2); 
           break;
         case 'Hard':
           gold = 500;
-          droppedItems['mat_fire_2'] = getRandomCount(1, 2, 3);
+          droppedItems['mat_fire_1'] = getRandomCount(0, 1, 2);
+          droppedItems['mat_fire_2'] = getRandomCount(0, 1, 2);
           droppedItems['mat_fire_3'] = 1;
           break;
         case 'Expert':
           gold = 800;
-          droppedItems['mat_fire_3'] = getRandomCount(1, 2, 3);
+          droppedItems['mat_fire_2'] = getRandomCount(0, 1, 2);
+          droppedItems['mat_fire_3'] = getRandomCount(0, 1, 2);
           droppedItems['mat_fire_4'] = 1;
-          droppedItems['con_key_1'] = 1; 
           break;
         case 'Hell':
           gold = 1500;
-          droppedItems['mat_fire_4'] = getRandomCount(1, 2, 3);
+          droppedItems['mat_fire_2'] = getRandomCount(0, 1, 2);
+          droppedItems['mat_fire_3'] = getRandomCount(0, 1, 2);
+          droppedItems['mat_fire_4'] = getRandomCount(1, 2);
           droppedItems['mat_fire_5'] = 1; 
-          droppedItems['con_key_1'] = getRandomCount(1, 2);
           break;
         default:
           gold = 50;
