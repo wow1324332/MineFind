@@ -259,7 +259,7 @@ export default function MyPage({ onBack }) {
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
           <button onClick={onBack} className="transition-all duration-150 active:scale-90 px-2 outline-none">
-            <img src="/My-icon.png" alt="Back" className="w-8 h-8 object-contain" />
+            <img src="/backkey.png" alt="Back" className="w-8 h-8 object-contain" />
           </button>
           <div className="w-12 px-2"></div>
         </div>
