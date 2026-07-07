@@ -163,7 +163,7 @@ export default function App() {
         
         {/* 💡 레벨업 시 화려한 이펙트 텍스트 띄우기 */}
         {rewards.hasLeveledUp && (
-          <div className="absolute -top-14 left-1/2 -translate-x-1/2 w-full text-center animate-bounce z-20">
+          <div className="absolute -top-16 left-0 w-full flex flex-col items-center justify-center animate-bounce z-20 pointer-events-none">
             <span className="text-yellow-400 font-black text-3xl tracking-widest drop-shadow-[0_0_15px_rgba(250,204,21,1)] italic border-black text-stroke-2">
               LEVEL UP!
             </span>
