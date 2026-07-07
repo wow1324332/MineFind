@@ -55,7 +55,7 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout }) {
             className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2 select-none"
             style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
           >
-            <img src="/My-icon.png" alt="Back" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
+            <img src="/backkey.png" alt="Back" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
           </button>
           
           {/* 오른쪽 로그아웃 버튼 */}
