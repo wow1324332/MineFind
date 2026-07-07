@@ -25,29 +25,29 @@ export const ITEM_DATABASE = {
   'mat_fire_3': {
     id: 'mat_fire_3',
     type: 'material',
-    name: '지옥불 파편',
-    icon: '🌋',
-    rarity: 'epic',
-    desc: '지옥의 뜨거운 열기를 그대로 품고 있는 암석 파편.',
-    sellPrice: 200
+    name: 'eye of flame devil',
+    icon: '/items/eyeofflamedevil.png',
+    rarity: 'rare',
+    desc: '불의 악마 제3의 눈.',
+    sellPrice: 350
   },
   'mat_fire_4': {
     id: 'mat_fire_4',
     type: 'material',
-    name: '악마의 코어',
-    icon: '👁️‍🗨️',
-    rarity: 'epic',
-    desc: '상급 악마의 심장부에서 추출한 불길한 기운의 결정체.',
-    sellPrice: 800
+    name: 'core of flame',
+    icon: '/items/coreofflame.png',
+    rarity: 'rare',
+    desc: '중급 불의 악마들의 화염의 기운을 모은 불의 정수.',
+    sellPrice: 500
   },
   'mat_fire_5': {
     id: 'mat_fire_5',
     type: 'material',
-    name: '화룡의 심장',
-    icon: '❤️‍🔥',
-    rarity: 'legendary',
-    desc: '전설 속 화룡의 심장. 만지면 화상을 입을 정도로 뜨겁다.',
-    sellPrice: 5000
+    name: 'heart of mephisto',
+    icon: '/items/heartofmephisto.png',
+    rarity: 'rare',
+    desc: '불꽃의 대악마 메피스토의 심장 파편.',
+    sellPrice: 2000
   },
 
   // ==========================================
