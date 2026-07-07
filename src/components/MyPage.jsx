@@ -33,16 +33,17 @@ export default function MyPage({ onBack }) {
   const [expandedDungeons, setExpandedDungeons] = useState({});
 
   // 💡 향후 파이어베이스에 저장될 '진짜' 데이터 형태 (ID와 수량만 저장됨)
-  const [inventory] = useState({
-    gold: 1250,
-    items: {
-      'mat_fire_1': 12,      // 작은 불씨 12개
-      'mat_water_2': 3,      // 심해의 결정 3개
-      'mat_fire_5': 1,       // 화룡의 심장 1개
-      'con_potion_1': 5,     // 초보자의 포션 5개
-      'con_key_1': 2         // 신비한 열쇠 2개
-    }
-  });
+  const [inventory, setInventory] = useState({ gold: 0, items: {} });
+
+  // 유저가 가진 아이템 ID를 도감(ITEM_DATABASE)과 매칭하여 조립하는 로직 (그대로 유지)
+  const allInventoryItems = Object.entries(inventory.items).map(([itemId, count]) => {
+    const itemInfo = ITEM_DATABASE[itemId];
+    if (!itemInfo) return null; // 도감에 없는 이상한 아이템은 무시
+    return {
+      ...itemInfo, 
+      count: count 
+    };
+  }).filter(Boolean);
 
   // 💡 유저가 가진 아이템 ID를 도감(ITEM_DATABASE)과 매칭하여 완벽한 배열로 조립!
   const allInventoryItems = Object.entries(inventory.items).map(([itemId, count]) => {
@@ -69,6 +70,17 @@ export default function MyPage({ onBack }) {
           if (data.photoURL) setAvatarUrl(data.photoURL);
           if (data.stats) setStats(data.stats);
           if (data.records) setRecords(data.records);
+          
+          // 💡 파이어베이스에 인벤토리 데이터가 있다면 불러오기!
+          if (data.inventory) {
+            setInventory(data.inventory);
+          } else {
+            // 아직 인벤토리 데이터가 없는 기존 유저나 신규 유저라면?
+            // DB에 'ID와 수량' 형태의 빈 가방을 새로 만들어줍니다.
+            const initialInventory = { gold: 0, items: {} };
+            await setDoc(userDocRef, { inventory: initialInventory }, { merge: true });
+            setInventory(initialInventory);
+          }
         }
 
         if (!avatarUrl && !userDoc.data()?.photoURL) {
