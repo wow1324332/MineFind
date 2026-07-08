@@ -13,11 +13,14 @@ export const DUNGEON_INFO = {
     winBg: '/dungeons/fire/hellofflamewin.jpeg',
     loseBg: '/dungeons/fire/hellofflamelose-bg.jpg',
     boardBg: '/dungeons/fire/dungeoninsite-bg.jpg',
-    // 💡 추가된 인게임 보드용 에셋 데이터
-    tileImg: '/dungeons/fire/hellofflame-tile.png', // (public 폴더 경로에 맞게 수정 필요시 변경)
+    tileImg: '/dungeons/fire/hellofflame-tile.png',
     mineImg: '/dungeons/fire/hellofflame-mine.png',
     mineShadow: 'drop-shadow-[0_0_15px_rgba(220,38,38,1)]',
     revealedMineBg: 'bg-red-950/80 shadow-[inset_0_0_20px_rgba(220,38,38,0.8)]',
+    
+    // 💡 10행 8열의 기본 사각형 맵
+    layout: Array(10).fill(Array(8).fill(1)),
+    
     rewards: {
       Easy: { gold: 10, exp: 5, materials: { '작은 불씨': 1 } },
       Normal: { gold: 30, exp: 15, materials: { '작은 불씨': 3, '꺼지지 않는 불꽃': 1 } },
@@ -35,15 +38,27 @@ export const DUNGEON_INFO = {
     loadingMsg: "물의 던전으로 잠수 중...",
     loadingLogo: "/dungeons/water/hellofaqua-bt.png",
     loadingOpacity: "opacity-70",
-    // 💡 물 던전 승리/패배 배경 경로 수정 완료
     winBg: '/dungeons/water/hellofaquawin.jpg',
     loseBg: '/dungeons/water/hellofaqualose.jpg',
     boardBg: '/dungeons/water/hellofaqua-board-bg.jpg',
-    // 💡 추가된 인게임 보드용 에셋 데이터
-    tileImg: '/dungeons/water/hellofaqua-tile.png', // (public 폴더 경로에 맞게 수정 필요시 변경)
-    mineImg: '/dungeons/water/hellofaqua-mine.png', // 🦑 오징어 이모지 대신 들어갈 전용 이미지!
+    tileImg: '/dungeons/water/hellofaqua-tile.png',
+    mineImg: '/dungeons/water/hellofaqua-mine.png',
     mineShadow: 'drop-shadow-[0_0_15px_rgba(37,99,235,1)]',
     revealedMineBg: 'bg-blue-950/80 shadow-[inset_0_0_20px_rgba(37,99,235,0.8)]',
+    
+    // 💡 모서리가 깎인 팔각형 구조 (0은 투명 타일 처리됨)
+    layout: [
+      [0, 0, 1, 1, 1, 1, 1, 0, 0],
+      [0, 1, 1, 1, 1, 1, 1, 1, 0],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [0, 1, 1, 1, 1, 1, 1, 1, 0],
+      [0, 0, 1, 1, 1, 1, 1, 0, 0]
+    ],
+
     rewards: {
       Easy: { gold: 10, exp: 5, materials: { '맑은 물방울': 1 } },
       Normal: { gold: 30, exp: 15, materials: { '맑은 물방울': 3, '심해의 결정': 1 } },
