@@ -1,17 +1,15 @@
 // src/constants/knightData.js
 
 export const KNIGHT_DATABASE = {
-  // 💡 1. 주인공 (유저 본인) 데이터
   'knight_main': {
     id: 'knight_main',
-    // UI에 띄울 때는 파이어베이스에 저장된 유저의 닉네임으로 덮어씌웁니다.
     name: '주인공', 
     title: '견습 기사',
-    attribute: 'neutral', // 무속성: 어떤 속성의 장비든 페널티 없이 착용 가능
-    rarity: 'player', // 영혼 소환으로 뽑을 수 없는 플레이어 전용 등급
+    attribute: 'neutral', 
+    rarity: 'player', 
+    image: '/mainknight-profile.png', // 🔥여기에 이미지 데이터를 추가합니다!
     description: '기사단의 단장인 당신 자신입니다. 끝없는 잠재력을 지니고 있습니다.',
     
-    // 1레벨 기준 초기 스탯 (모든 스탯이 균형 잡힌 형태)
     baseStats: {
       str: 10,
       agi: 10,
