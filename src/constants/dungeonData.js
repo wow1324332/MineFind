@@ -19,7 +19,7 @@ export const DUNGEON_INFO = {
     revealedMineBg: 'bg-red-950/80 shadow-[inset_0_0_20px_rgba(220,38,38,0.8)]',
     
     // 💡 10행 8열의 기본 사각형 맵
-    layout: Array(10).fill(Array(8).fill(1)),
+    layout: Array(10).fill(Array(10).fill(1)),
     
     rewards: {
       Easy: { gold: 10, exp: 5, materials: { '작은 불씨': 1 } },
