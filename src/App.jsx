@@ -9,6 +9,7 @@ import DevilMineMode from './components/DevilMineMode';
 import DungeonSelection from './components/DungeonSelection';
 import { useAuth } from './hooks/useAuth';
 import MyPage from './components/MyPage';
+import Knights from './components/Knights';
 import { DUNGEON_INFO } from './constants/dungeonData';
 // 💡 보상 아이템의 아이콘과 이름을 가져오기 위해 도감 호출
 import { ITEM_DATABASE } from './constants/itemData';
@@ -297,7 +298,17 @@ export default function App() {
       break;
 
     case 'MY_PAGE':
-      currentView = <MyPage onBack={() => setCurrentScreen('HUNT_LIST')} />;
+      currentView = (
+        <MyPage 
+          onBack={() => setCurrentScreen('HUNT_LIST')} 
+          onKnights={() => setCurrentScreen('KNIGHTS')} // 💡 기사단 화면으로 이동 신호 연결
+        />
+      );
+      break;
+
+    // 💡 마이페이지 아래에 기사단 전용 독립 화면 라우팅 추가
+    case 'KNIGHTS':
+      currentView = <Knights onBack={() => setCurrentScreen('MY_PAGE')} />;
       break;
     
     case 'DEVIL_MINE_MODE':
