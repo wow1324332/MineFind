@@ -66,7 +66,7 @@ export const KNIGHT_DATABASE = {
     title: '화염의 수련기사',
     attribute: 'fire',
     rarity: 'rare',
-    image: '/knights/knight-lancelot-profile.png',    // 갤러리/목록용 미니 프로필
+    image: '/knights/knight-lencelot-profile.png',    // 갤러리/목록용 미니 프로필
     fullImage: '/knights/knight-lancelot.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
     description: '지옥불 던전 깊은 곳에서 계약을 맺은 화염의 기사입니다.',
     
