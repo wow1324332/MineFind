@@ -145,14 +145,15 @@ export default function App() {
   };
 
   const handleSelectDungeon = (dungeonId, selectedDifficulty) => {
-    setCurrentDungeon(dungeonId); 
-    setCurrentDifficulty(selectedDifficulty); 
+  setCurrentDungeon(dungeonId); 
+  setCurrentDifficulty(selectedDifficulty); 
 
-    const fullDungeonName = DUNGEON_INFO[dungeonId]?.name || '알 수 없는 던전';
-    initGame(selectedDifficulty, fullDungeonName); 
+  // 💡 던전 고유 ID(fire, water 등)를 그대로 전달해야 
+  // useMinesweeper 훅과 dungeonData의 key가 정확히 매칭되어 맵 레이아웃을 불러옵니다!
+  initGame(selectedDifficulty, dungeonId); 
 
-    setCurrentScreen('DUNGEON_LOADING');
-    setTimeout(() => setCurrentScreen('GAME_PVE'), 2000);
+  setCurrentScreen('DUNGEON_LOADING');
+  setTimeout(() => setCurrentScreen('GAME_PVE'), 2000);
   };
 
   // 💡 획득한 보상(골드, 아이템)을 모달창에 예쁘게 그려주는 미니 렌더링 함수
