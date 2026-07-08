@@ -1,5 +1,4 @@
 // src/hooks/useMinesweeper.js
-
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { createEmptyBoard, cloneBoard, placeMinesAndCalculate, revealEmptyCells, checkWinCondition, getMineCount } from '../utils/gameLogic';
 import { doc, getDoc, updateDoc, increment, arrayUnion } from 'firebase/firestore';
@@ -7,7 +6,6 @@ import { db } from '../firebase';
 import { useAuth } from '../hooks/useAuth';
 import { calculateDungeonRewards } from '../utils/rewardUtils';
 import { processExpGain } from '../utils/expUtils';
-// 💡 레이아웃 호출을 위해 던전 인포 로드
 import { DUNGEON_INFO } from '../constants/dungeonData';
 
 export const useMinesweeper = () => {
@@ -23,7 +21,8 @@ export const useMinesweeper = () => {
   const timerRef = useRef(null);
   
   const [difficultyLevel, setDifficultyLevel] = useState('Normal');
-  const [dungeonName, setDungeonName] = useState('fire'); // 초기값 변경
+  // 💡 상태 명칭을 명확하게 dungeonId로 변경하여 관리합니다. (기본값 'fire')
+  const [dungeonId, setDungeonId] = useState('fire');
 
   const [rewards, setRewards] = useState(null);
 
@@ -36,7 +35,11 @@ export const useMinesweeper = () => {
   const saveGameResult = useCallback(async (isWin, clearTime) => {
     if (!user) return;
     
-    const generatedRewards = calculateDungeonRewards(dungeonName, difficultyLevel, isWin);
+    // 💡 원인 해결 핵심: 보상 계산기(calculateDungeonRewards)가 기존에 쓰던 풀네임('Hell of flame' 등)을 원하므로
+    // 도감에서 현재 id에 매칭되는 진짜 이름을 찾아서 가공해 넘겨줍니다!
+    const fullDungeonName = DUNGEON_INFO[dungeonId]?.name || 'Hell of flame';
+    const generatedRewards = calculateDungeonRewards(fullDungeonName, difficultyLevel, isWin);
+
     const userDocRef = doc(db, 'users', user.uid);
 
     try {
@@ -57,7 +60,7 @@ export const useMinesweeper = () => {
       });
 
       const newRecord = {
-        dungeon: `${dungeonName} (${difficultyLevel})`,
+        dungeon: `${fullDungeonName} (${difficultyLevel})`,
         result: isWin ? '승리' : '패배',
         time: clearTime,
         timestamp: new Date().getTime()
@@ -76,20 +79,20 @@ export const useMinesweeper = () => {
       });
 
       await updateDoc(userDocRef, updateData);
+      console.log('전적, 보상 및 레벨 경험치 기록 완료!');
     } catch (error) {
       console.error('기록 저장 실패:', error);
     }
-  }, [user, dungeonName, difficultyLevel]);
+  }, [user, dungeonId, difficultyLevel]);
 
-  // 💡 초기화 시 던전 layout을 맵 생성기에 주입!
-  const initGame = useCallback((newDifficulty, newDungeonName) => {
+  const initGame = useCallback((newDifficulty, newDungeonId) => {
     const targetDifficulty = newDifficulty || difficultyLevel;
-    const targetDungeon = newDungeonName || dungeonName;
+    const targetDungeonId = newDungeonId || dungeonId;
     if (newDifficulty) setDifficultyLevel(newDifficulty);
-    if (newDungeonName) setDungeonName(newDungeonName);
+    if (newDungeonId) setDungeonId(newDungeonId);
 
-    // 던전 ID를 기반으로 레이아웃 불러오기 (없으면 10x8)
-    const mapLayout = DUNGEON_INFO[targetDungeon]?.layout || Array(10).fill(Array(8).fill(1));
+    // 던전 ID를 기반으로 레이아웃 불러오기
+    const mapLayout = DUNGEON_INFO[targetDungeonId]?.layout || Array(10).fill(Array(8).fill(1));
     
     setBoard(createEmptyBoard(mapLayout));
     setGameStatus('idle');
@@ -99,7 +102,7 @@ export const useMinesweeper = () => {
     setRewards(null); 
     clearInterval(timerRef.current);
     timerRef.current = null;
-  }, [difficultyLevel, dungeonName]);
+  }, [difficultyLevel, dungeonId]);
 
   useEffect(() => {
     initGame();
