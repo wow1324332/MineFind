@@ -404,7 +404,7 @@ export default function Knights({ onBack }) {
             {/* 닫기 버튼 (모달 우측 상단 바깥쪽, 폰트만) */}
             <button 
               onClick={() => setShowSummonModal(false)} 
-              className="absolute -top-10 right-0 text-white/80 hover:text-white font-serif font-black tracking-widest text-lg transition-colors bg-transparent border-none outline-none drop-shadow-md"
+              className="absolute -top-10 right-0 text-white/80 hover:text-white font-serif font-black tracking-widest text-sm transition-colors bg-transparent border-none outline-none drop-shadow-md"
             >
               Close
             </button>
@@ -420,7 +420,7 @@ export default function Knights({ onBack }) {
 
               {/* 제단 UI 및 캐러셀 컨테이너 */}
               <div 
-                className="relative z-20 w-full h-full flex flex-col justify-end items-center pb-6"
+                className="relative z-20 w-full h-full flex flex-col justify-center items-center pb-20"
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
               >
@@ -467,7 +467,7 @@ export default function Knights({ onBack }) {
                               <button
                                 onClick={(e) => { e.stopPropagation(); handleSummon(knight); }}
                                 disabled={!canSummon}
-                                className={`font-serif tracking-widest text-2xl font-black bg-transparent outline-none transition-all drop-shadow-[0_2px_5px_rgba(0,0,0,1)]
+                                className={`font-serif tracking-widest text-base font-black bg-transparent outline-none transition-all drop-shadow-[0_2px_5px_rgba(0,0,0,1)]
                                   ${canSummon ? 'text-amber-400 hover:text-white hover:scale-110 active:scale-95' : 'text-neutral-500/80'}
                                 `}
                               >
@@ -500,7 +500,7 @@ export default function Knights({ onBack }) {
                         <img 
                           src={ITEM_DATABASE[summonableKnights[focusedIndex].cost.itemId]?.image || ITEM_DATABASE[summonableKnights[focusedIndex].cost.itemId]?.icon || '/default-item.png'} 
                           alt="재료" 
-                          className="w-5 h-5 object-contain drop-shadow-md"
+                          className="w-8 h-8 object-contain drop-shadow-md"
                           onError={(e) => { e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a6845c'%3E%3Cpath d='M12 2L2 22h20L12 2z'/%3E%3C/svg%3E"; }}
                         />
                         {/* 보유수 / 필요수 폰트 */}
