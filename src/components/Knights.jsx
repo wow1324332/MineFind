@@ -10,7 +10,6 @@ export default function Knights({ onBack }) {
   const [userData, setUserData] = useState(null);
   
   const [selectedKnight, setSelectedKnight] = useState(null);
-  // 💡 탭 상태(detailTab)는 모두 통합되어 더 이상 필요하지 않습니다.
 
   useEffect(() => {
     if (!user) return;
@@ -45,18 +44,18 @@ export default function Knights({ onBack }) {
     return (
       <div className="relative min-h-screen bg-black text-white flex flex-col items-center animate-[fadeIn_0.3s_ease-in-out] overflow-hidden">
         
-        {/* 기사 고유 배경 이미지 */}
+        {/* 💡 수정 1. 기사 고유 배경 이미지 어둡기 완화 (opacity-100으로 밝게) */}
         <div 
-          className="absolute inset-0 bg-cover bg-top z-0 opacity-80"
+          className="absolute inset-0 bg-cover bg-top z-0 opacity-100"
           style={{ backgroundImage: `url(${mainKnightBase.bgImage || mainKnightBase.image})` }}
         ></div>
         
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent z-0"></div>
+        {/* 💡 수정 1. 하단 그라데이션 농도 감소 (via-black/80 -> via-black/50) */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-0"></div>
 
         <div className="relative z-10 w-full max-w-sm flex flex-col h-screen">
           
           <div className="w-full flex justify-between items-center p-4 pt-6 shrink-0">
-            {/* 💡 유저 커스텀 반영: w-6 h-6 뒤로가기 버튼 */}
             <button onClick={() => setSelectedKnight(null)} className="transition-all duration-150 active:scale-90 p-1 outline-none">
               <img src="/backkey.png" alt="Back" className="w-6 h-6 object-contain opacity-80" />
             </button>
@@ -88,44 +87,54 @@ export default function Knights({ onBack }) {
               </div>
             </div>
 
-            {/* 💡 탭을 제거하고 스탯과 장비를 하나로 통합한 타이트한 패널 */}
-            <div className="w-full bg-black/60 border border-[#4a2c11]/50 rounded-md p-3.5 backdrop-blur-md shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] animate-[slideUp_0.5s_ease-out]">
+            {/* 💡 수정 2 & 3. 양피지 배경 적용 및 짙은 갈색 폰트 통일 */}
+            <div className="w-full border-2 border-[#5c3e23] rounded-md p-4 shadow-[0_10px_30px_rgba(0,0,0,0.8)] animate-[slideUp_0.5s_ease-out] relative overflow-hidden">
               
-              {/* 상단: 5대 스탯 일렬 배치 */}
-              <div className="flex justify-between items-center border-b border-[#5c3e23]/50 pb-3 mb-3 px-1">
-                {[
-                  { label: 'STR', val: finalStats.str },
-                  { label: 'AGI', val: finalStats.agi },
-                  { label: 'INT', val: finalStats.int },
-                  { label: 'VIT', val: finalStats.vit },
-                  { label: 'LUK', val: finalStats.luk }
-                ].map((stat, idx) => (
-                  <div key={idx} className="flex flex-col items-center">
-                    <span className="text-[#a6845c] font-bold text-[10px] tracking-widest mb-0.5">{stat.label}</span>
-                    <span className="text-[#f5d5a9] font-black text-sm">{stat.val}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* 하단: 장비 4슬롯 일렬 배치 (명칭 텍스트 완전 제거) */}
-              <div className="flex justify-between items-center px-1">
-                {['WEAPON', 'HELMET', 'SHIELD', 'ARMOR'].map((part, idx) => (
-                  <div key={idx} className="w-[21%] aspect-square max-w-[60px] bg-[#1a1008] border border-[#5c3e23] rounded-sm relative flex items-center justify-center shadow-[inset_0_0_10px_rgba(0,0,0,0.8)] cursor-pointer hover:border-[#a6845c] transition-colors">
-                    <div className="w-full h-full p-2.5 opacity-40 flex items-center justify-center">
-                      <img 
-                        src={`/equip-default-${part.toLowerCase()}.png`} 
-                        alt={part} 
-                        className="w-full h-full object-contain"
-                        onError={(e) => { 
-                          e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%235c3e23'%3E%3Cpath d='M12 2L2 22h20L12 2z'/%3E%3C/svg%3E";
-                        }} 
-                      />
+              {/* 양피지 배경 이미지 (크롭 형태 유지) */}
+              <div 
+                className="absolute inset-0 bg-cover bg-center z-0" 
+                style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}
+              ></div>
+              
+              {/* 콘텐츠가 배경 위에 오도록 설정 */}
+              <div className="relative z-10">
+                {/* 상단: 5대 스탯 일렬 배치 */}
+                <div className="flex justify-between items-center border-b-[1.5px] border-[#8c6543]/40 pb-3 mb-3 px-1">
+                  {[
+                    { label: 'STR', val: finalStats.str },
+                    { label: 'AGI', val: finalStats.agi },
+                    { label: 'INT', val: finalStats.int },
+                    { label: 'VIT', val: finalStats.vit },
+                    { label: 'LUK', val: finalStats.luk }
+                  ].map((stat, idx) => (
+                    <div key={idx} className="flex flex-col items-center">
+                      <span className="text-[#3a2210] font-serif font-black text-[11px] tracking-widest mb-0.5 drop-shadow-sm">{stat.label}</span>
+                      <span className="text-[#3a2210] font-serif font-black text-[15px] drop-shadow-sm">{stat.val}</span>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
 
+                {/* 하단: 장비 4슬롯 일렬 배치 */}
+                <div className="flex justify-between items-center px-1">
+                  {['WEAPON', 'HELMET', 'SHIELD', 'ARMOR'].map((part, idx) => (
+                    <div key={idx} className="w-[21%] aspect-square max-w-[60px] bg-[#3a2210]/5 border border-[#5c3e23]/60 rounded-sm relative flex items-center justify-center shadow-[inset_0_2px_5px_rgba(0,0,0,0.2)] cursor-pointer hover:border-[#3a2210] transition-colors">
+                      <div className="w-full h-full p-2.5 opacity-60 flex items-center justify-center">
+                        <img 
+                          src={`/equip-default-${part.toLowerCase()}.png`} 
+                          alt={part} 
+                          className="w-full h-full object-contain"
+                          onError={(e) => { 
+                            // 이미지가 없을 때 나타나는 기본 아이콘도 짙은 갈색으로 변경
+                            e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233a2210'%3E%3Cpath d='M12 2L2 22h20L12 2z'/%3E%3C/svg%3E";
+                          }} 
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -151,7 +160,6 @@ export default function Knights({ onBack }) {
         
         <div className="w-full max-w-sm mt-2 mb-0 mx-auto relative flex justify-center pointer-events-none z-20 shrink-0">
           <div className="w-full flex justify-center" style={{ WebkitMaskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)', maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)' }}>
-            {/* 💡 유저 커스텀 반영: knights-title.jpg */}
             <img src="/knights-title.jpg" alt="Knights Title" className="w-[85%] h-auto object-contain drop-shadow-[0_0_20px_rgba(220,38,38,0.2)]" />
           </div>
         </div>
@@ -160,7 +168,6 @@ export default function Knights({ onBack }) {
           <div className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10" style={{ backgroundImage: "url('/header-bg.jpg')", WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)', maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)' }}>
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
-          {/* 💡 유저 커스텀 반영: w-6 h-6 뒤로가기 및 텍스트 제거 */}
           <button onClick={onBack} className="transition-all duration-150 active:scale-90 px-2 outline-none">
             <img src="/backkey.png" alt="Back" className="w-6 h-6 object-contain" />
           </button>
