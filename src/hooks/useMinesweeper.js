@@ -1,12 +1,14 @@
+// src/hooks/useMinesweeper.js
+
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { GAME_CONFIG, createEmptyBoard, cloneBoard, placeMinesAndCalculate, revealEmptyCells, checkWinCondition, getMineCount } from '../utils/gameLogic';
-// 💡 파이어베이스에서 데이터를 읽어오기 위해 getDoc 추가
+import { createEmptyBoard, cloneBoard, placeMinesAndCalculate, revealEmptyCells, checkWinCondition, getMineCount } from '../utils/gameLogic';
 import { doc, getDoc, updateDoc, increment, arrayUnion } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from '../hooks/useAuth';
 import { calculateDungeonRewards } from '../utils/rewardUtils';
-// 💡 방금 만든 레벨업 계산기 불러오기
 import { processExpGain } from '../utils/expUtils';
+// 💡 레이아웃 호출을 위해 던전 인포 로드
+import { DUNGEON_INFO } from '../constants/dungeonData';
 
 export const useMinesweeper = () => {
   const auth = useAuth();
@@ -21,7 +23,7 @@ export const useMinesweeper = () => {
   const timerRef = useRef(null);
   
   const [difficultyLevel, setDifficultyLevel] = useState('Normal');
-  const [dungeonName, setDungeonName] = useState('Hell of flame');
+  const [dungeonName, setDungeonName] = useState('fire'); // 초기값 변경
 
   const [rewards, setRewards] = useState(null);
 
@@ -34,24 +36,19 @@ export const useMinesweeper = () => {
   const saveGameResult = useCallback(async (isWin, clearTime) => {
     if (!user) return;
     
-    // 1. 결과에 따른 보상(경험치, 골드, 아이템) 계산
     const generatedRewards = calculateDungeonRewards(dungeonName, difficultyLevel, isWin);
-
     const userDocRef = doc(db, 'users', user.uid);
 
     try {
-      // 💡 2. DB에서 유저의 "현재 레벨"과 "현재 경험치"를 먼저 가져옵니다.
       const userSnap = await getDoc(userDocRef);
       if (!userSnap.exists()) return;
       
       const userData = userSnap.data();
-      const currentLevel = userData.level || 1; // 없으면 1레벨
-      const currentExp = userData.exp || 0;     // 없으면 0 EXP
+      const currentLevel = userData.level || 1; 
+      const currentExp = userData.exp || 0;     
 
-      // 💡 3. 레벨업 계산기를 돌립니다!
       const { newLevel, newExp, hasLeveledUp } = processExpGain(currentLevel, currentExp, generatedRewards.exp);
 
-      // 모달창 UI에 띄워주기 위해 계산된 정보들을 종합해서 상태에 저장합니다.
       setRewards({
         ...generatedRewards,
         earnedExp: generatedRewards.exp,
@@ -66,34 +63,35 @@ export const useMinesweeper = () => {
         timestamp: new Date().getTime()
       };
 
-      // 💡 4. 파이어베이스에 업데이트할 데이터 덩어리 준비
       const updateData = {
         [`stats.${isWin ? 'wins' : 'losses'}`]: increment(1),
         records: arrayUnion(newRecord),
         ['inventory.gold']: increment(generatedRewards.gold),
-        level: newLevel, // 새로 계산된 레벨로 덮어쓰기
-        exp: newExp      // 남은 경험치로 덮어쓰기
+        level: newLevel, 
+        exp: newExp      
       };
 
-      // 획득한 아이템 누적
       Object.entries(generatedRewards.items).forEach(([itemId, count]) => {
         updateData[`inventory.items.${itemId}`] = increment(count);
       });
 
-      // 5. 파이어베이스 DB로 한 방에 전송!
       await updateDoc(userDocRef, updateData);
-      console.log('전적, 보상 및 레벨 경험치 기록 완료!');
     } catch (error) {
       console.error('기록 저장 실패:', error);
     }
   }, [user, dungeonName, difficultyLevel]);
 
+  // 💡 초기화 시 던전 layout을 맵 생성기에 주입!
   const initGame = useCallback((newDifficulty, newDungeonName) => {
     const targetDifficulty = newDifficulty || difficultyLevel;
+    const targetDungeon = newDungeonName || dungeonName;
     if (newDifficulty) setDifficultyLevel(newDifficulty);
     if (newDungeonName) setDungeonName(newDungeonName);
 
-    setBoard(createEmptyBoard());
+    // 던전 ID를 기반으로 레이아웃 불러오기 (없으면 10x8)
+    const mapLayout = DUNGEON_INFO[targetDungeon]?.layout || Array(10).fill(Array(8).fill(1));
+    
+    setBoard(createEmptyBoard(mapLayout));
     setGameStatus('idle');
     setIsFirstClick(true);
     setMinesLeft(getMineCount(targetDifficulty)); 
@@ -101,7 +99,7 @@ export const useMinesweeper = () => {
     setRewards(null); 
     clearInterval(timerRef.current);
     timerRef.current = null;
-  }, [difficultyLevel]);
+  }, [difficultyLevel, dungeonName]);
 
   useEffect(() => {
     initGame();
