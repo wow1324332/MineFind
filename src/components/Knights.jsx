@@ -4,6 +4,8 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from '../hooks/useAuth';
 import { KNIGHT_DATABASE } from '../constants/knightData';
+// 💡 방금 만든 장비 도감 임포트!
+import { EQUIP_DATABASE } from '../constants/equipData';
 
 export default function Knights({ onBack }) {
   const { user } = useAuth();
@@ -27,13 +29,48 @@ export default function Knights({ onBack }) {
   const userLevel = userData.level || 1;
   const userNickname = userData.nickname || user.displayName || '무명의 용사';
 
-  // 스탯 계산
+  // 💡 1. 유저의 장비 상태 읽어오기 (DB에 없으면 0티어 기본 장비로 세팅)
+  const defaultEquip = { tier: 0, element: 'neutral', enhance: 0 };
+  const userEquipment = userData.equipment || {
+    WEAPON: { ...defaultEquip },
+    HELMET: { ...defaultEquip },
+    SHIELD: { ...defaultEquip },
+    ARMOR: { ...defaultEquip }
+  };
+
+  // 💡 2. 장비 스탯 및 이미지 계산 로직
+  let equipBonus = { str: 0, agi: 0, int: 0, vit: 0, luk: 0 };
+  const parsedEquip = {}; // 화면에 그릴 최종 장비 데이터 모음
+
+  ['WEAPON', 'HELMET', 'SHIELD', 'ARMOR'].forEach(part => {
+    const state = userEquipment[part] || defaultEquip;
+    const equipKey = `tier_${state.tier}_${state.element || 'neutral'}`;
+    
+    // 도감에서 데이터 찾기 (없으면 0티어 기본 장비)
+    const dbData = EQUIP_DATABASE[part].evolutions[equipKey] || EQUIP_DATABASE[part].evolutions['tier_0_neutral'];
+    const growth = EQUIP_DATABASE[part].enhanceGrowth;
+
+    parsedEquip[part] = {
+      ...state,
+      name: dbData.name,
+      image: dbData.image,
+    };
+
+    // 장비 기본 스탯 + (강화 상승치 * 현재 강화도) 합산
+    equipBonus.str += dbData.baseStat.str + (growth.str * state.enhance);
+    equipBonus.agi += dbData.baseStat.agi + (growth.agi * state.enhance);
+    equipBonus.int += dbData.baseStat.int + (growth.int * state.enhance);
+    equipBonus.vit += dbData.baseStat.vit + (growth.vit * state.enhance);
+    equipBonus.luk += dbData.baseStat.luk + (growth.luk * state.enhance);
+  });
+
+  // 💡 3. 최종 스탯 = 기사 성장 스탯 + 장비 스탯 합산
   const finalStats = {
-    str: mainKnightBase.baseStats.str + mainKnightBase.statGrowth.str * (userLevel - 1),
-    agi: mainKnightBase.baseStats.agi + mainKnightBase.statGrowth.agi * (userLevel - 1),
-    int: mainKnightBase.baseStats.int + mainKnightBase.statGrowth.int * (userLevel - 1),
-    vit: mainKnightBase.baseStats.vit + mainKnightBase.statGrowth.vit * (userLevel - 1),
-    luk: mainKnightBase.baseStats.luk + mainKnightBase.statGrowth.luk * (userLevel - 1),
+    str: mainKnightBase.baseStats.str + mainKnightBase.statGrowth.str * (userLevel - 1) + equipBonus.str,
+    agi: mainKnightBase.baseStats.agi + mainKnightBase.statGrowth.agi * (userLevel - 1) + equipBonus.agi,
+    int: mainKnightBase.baseStats.int + mainKnightBase.statGrowth.int * (userLevel - 1) + equipBonus.int,
+    vit: mainKnightBase.baseStats.vit + mainKnightBase.statGrowth.vit * (userLevel - 1) + equipBonus.vit,
+    luk: mainKnightBase.baseStats.luk + mainKnightBase.statGrowth.luk * (userLevel - 1) + equipBonus.luk,
   };
   const combatPower = (finalStats.str * 10) + (finalStats.agi * 8) + (finalStats.vit * 6) + (finalStats.int * 4) + (finalStats.luk * 2);
 
@@ -44,13 +81,11 @@ export default function Knights({ onBack }) {
     return (
       <div className="relative min-h-screen bg-black text-white flex flex-col items-center animate-[fadeIn_0.3s_ease-in-out] overflow-hidden">
         
-        {/* 💡 수정 1. 기사 고유 배경 이미지 어둡기 완화 (opacity-100으로 밝게) */}
         <div 
           className="absolute inset-0 bg-cover bg-top z-0 opacity-100"
           style={{ backgroundImage: `url(${mainKnightBase.bgImage || mainKnightBase.image})` }}
         ></div>
         
-        {/* 💡 수정 1. 하단 그라데이션 농도 감소 (via-black/80 -> via-black/50) */}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-0"></div>
 
         <div className="relative z-10 w-full max-w-sm flex flex-col h-screen">
@@ -87,18 +122,13 @@ export default function Knights({ onBack }) {
               </div>
             </div>
 
-            {/* 💡 수정 2 & 3. 양피지 배경 적용 및 짙은 갈색 폰트 통일 */}
             <div className="w-full border-2 border-[#5c3e23] rounded-md p-4 shadow-[0_10px_30px_rgba(0,0,0,0.8)] animate-[slideUp_0.5s_ease-out] relative overflow-hidden">
-              
-              {/* 양피지 배경 이미지 (크롭 형태 유지) */}
               <div 
                 className="absolute inset-0 bg-cover bg-center z-0" 
                 style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}
               ></div>
               
-              {/* 콘텐츠가 배경 위에 오도록 설정 */}
               <div className="relative z-10">
-                {/* 상단: 5대 스탯 일렬 배치 */}
                 <div className="flex justify-between items-center border-b-[1.5px] border-[#8c6543]/40 pb-3 mb-3 px-1">
                   {[
                     { label: 'STR', val: finalStats.str },
@@ -114,23 +144,34 @@ export default function Knights({ onBack }) {
                   ))}
                 </div>
 
-                {/* 하단: 장비 4슬롯 일렬 배치 */}
                 <div className="flex justify-between items-center px-1">
-                  {['WEAPON', 'HELMET', 'SHIELD', 'ARMOR'].map((part, idx) => (
-                    <div key={idx} className="w-[21%] aspect-square max-w-[60px] bg-[#3a2210]/5 border border-[#5c3e23]/60 rounded-sm relative flex items-center justify-center shadow-[inset_0_2px_5px_rgba(0,0,0,0.2)] cursor-pointer hover:border-[#3a2210] transition-colors">
-                      <div className="w-full h-full p-2.5 opacity-60 flex items-center justify-center">
-                        <img 
-                          src={`/equip-default-${part.toLowerCase()}.png`} 
-                          alt={part} 
-                          className="w-full h-full object-contain"
-                          onError={(e) => { 
-                            // 이미지가 없을 때 나타나는 기본 아이콘도 짙은 갈색으로 변경
-                            e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233a2210'%3E%3Cpath d='M12 2L2 22h20L12 2z'/%3E%3C/svg%3E";
-                          }} 
-                        />
+                  {['WEAPON', 'HELMET', 'SHIELD', 'ARMOR'].map((part, idx) => {
+                    // 💡 위에서 파싱한 현재 장비 정보를 불러옵니다.
+                    const equipItem = parsedEquip[part];
+                    
+                    return (
+                      <div key={idx} className="w-[21%] aspect-square max-w-[60px] bg-[#3a2210]/5 border border-[#5c3e23]/60 rounded-sm relative flex items-center justify-center shadow-[inset_0_2px_5px_rgba(0,0,0,0.2)] cursor-pointer hover:border-[#3a2210] transition-colors group">
+                        
+                        {/* 💡 강화도가 1 이상일 때만 좌측 상단에 노란색 +수치를 표시합니다! */}
+                        {equipItem.enhance > 0 && (
+                          <span className="absolute -top-1 -left-1 bg-black/80 text-yellow-500 font-black text-[10px] px-1 rounded-sm shadow-md border border-[#5c3e23] z-20">
+                            +{equipItem.enhance}
+                          </span>
+                        )}
+
+                        <div className="w-full h-full p-2.5 opacity-70 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <img 
+                            src={equipItem.image} 
+                            alt={equipItem.name} 
+                            className="w-full h-full object-contain drop-shadow-md"
+                            onError={(e) => { 
+                              e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233a2210'%3E%3Cpath d='M12 2L2 22h20L12 2z'/%3E%3C/svg%3E";
+                            }} 
+                          />
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>
