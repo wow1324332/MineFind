@@ -5,7 +5,7 @@ import { db } from '../firebase';
 import { useAuth } from '../hooks/useAuth';
 import { KNIGHT_DATABASE } from '../constants/knightData';
 import { EQUIP_DATABASE } from '../constants/equipData';
-import { ITEM_DATABASE } from '../constants/itemData'; // 💡 소환 요구 아이템 이름을 표시하기 위해 추가
+import { ITEM_DATABASE } from '../constants/itemData'; 
 
 export default function Knights({ onBack }) {
   const { user } = useAuth();
@@ -14,10 +14,14 @@ export default function Knights({ onBack }) {
   const [selectedKnight, setSelectedKnight] = useState(null);
   const [selectedEquipPart, setSelectedEquipPart] = useState(null);
 
-  // 🔮 소환 시스템용 상태 추가
+  // 🔮 소환 시스템용 상태 
   const [showSummonModal, setShowSummonModal] = useState(false);
   const [summoningKnight, setSummoningKnight] = useState(null);
   const [showCinematicText, setShowCinematicText] = useState(false);
+  
+  // 💡 캐러셀(좌우 스크롤) 중앙 포커싱을 위한 인덱스 상태 및 터치 상태
+  const [focusedIndex, setFocusedIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
 
   useEffect(() => {
     if (!user) return;
@@ -34,14 +38,13 @@ export default function Knights({ onBack }) {
   const userLevel = userData.level || 1;
   const userNickname = userData.nickname || user.displayName || '무명의 용사';
   
-  // 💡 유저의 재화 및 갤러리 보유 현황
   const gold = userData.inventory?.gold || 0;
   const items = userData.inventory?.items || {};
-  const unlockedKnights = userData.unlockedKnights || ['knight_main']; // 기본으로 주인공 보유
-  const maxSlots = 6; // 화면에 보여줄 총 슬롯 개수
+  const unlockedKnights = userData.unlockedKnights || ['knight_main']; 
+  const maxSlots = 6; 
 
   // =========================================
-  // 🛡️ 장비 및 스탯 계산 로직 (기존 완벽 보존)
+  // 🛡️ 장비 및 스탯 계산 로직 
   // =========================================
   const defaultEquip = { tier: 0, element: 'neutral', enhance: 0 };
   const userEquipment = userData.equipment || {
@@ -75,7 +78,6 @@ export default function Knights({ onBack }) {
     equipBonus.luk += currentStats.luk;
   });
 
-  // 선택된 기사의 베이스 스탯 가져오기 (주인공 외 기사들도 상세창 볼 수 있게 동적 처리)
   let activeKnightBase = null;
   let finalStats = { str: 0, agi: 0, int: 0, vit: 0, luk: 0 };
   let combatPower = 0;
@@ -101,6 +103,9 @@ export default function Knights({ onBack }) {
   // 🔮 기사 소환 처리 함수
   // =========================================
   const handleSummon = async (knight) => {
+    const isOwned = unlockedKnights.includes(knight.id);
+    if (isOwned) return;
+
     const { itemId, count, gold: costGold } = knight.cost;
     const userItemCount = items[itemId] || 0;
 
@@ -108,9 +113,8 @@ export default function Knights({ onBack }) {
     if (userItemCount < count) { alert("소환 재료 아이템이 부족합니다!"); return; }
 
     setShowSummonModal(false);
-    setSummoningKnight(knight); // 시네마틱 시작
+    setSummoningKnight(knight); 
 
-    // 3초 연출 후 실제 데이터 차감 및 갤러리 추가
     setTimeout(async () => {
       setShowCinematicText(true);
       if (user) {
@@ -129,12 +133,21 @@ export default function Knights({ onBack }) {
     setShowCinematicText(false);
   };
 
-  // 소환 가능한 기사 목록 필터링 (도감 중 cost가 있고, 내가 아직 안 가진 기사)
   const summonableKnights = Object.values(KNIGHT_DATABASE).filter(k => k.cost);
+
+  // 💡 캐러셀 스와이프 로직
+  const handleTouchStart = (e) => setTouchStart(e.touches[0].clientX);
+  const handleTouchEnd = (e) => {
+    if (!touchStart) return;
+    const distance = touchStart - e.changedTouches[0].clientX;
+    if (distance > 50 && focusedIndex < summonableKnights.length - 1) setFocusedIndex(prev => prev + 1);
+    if (distance < -50 && focusedIndex > 0) setFocusedIndex(prev => prev - 1);
+    setTouchStart(null);
+  };
 
 
   // =========================================
-  // 🛡️ 화면 2. 기사 상세 풀스크린 화면 🛡️
+  // 🛡️ 화면 2. 기사 상세 풀스크린 화면 
   // =========================================
   if (selectedKnight) {
     return (
@@ -227,7 +240,6 @@ export default function Knights({ onBack }) {
           </div>
         </div>
 
-        {/* 🔮 장비 모달 (기존 완벽 유지) */}
         {selectedEquipPart && (
           <div className="absolute inset-0 z-50 flex items-center justify-center p-6 bg-black/70 backdrop-blur-sm animate-[fadeIn_0.2s_ease-in-out]">
             <div className="w-full max-w-xs border-2 border-[#5c3e23] rounded-md shadow-[0_10px_40px_rgba(0,0,0,1)] relative overflow-hidden flex flex-col">
@@ -286,12 +298,12 @@ export default function Knights({ onBack }) {
   }
 
   // =========================================
-  // ⚔️ 화면 1. 기사단 목록(갤러리) 화면 ⚔️
+  // ⚔️ 화면 1. 기사단 목록(갤러리) 화면 
   // =========================================
   return (
     <div className="relative min-h-screen bg-black text-white flex flex-col items-center px-6 pb-6 pt-0 animate-[fadeIn_0.5s_ease-in-out] overflow-hidden">
       
-      {/* 🎬 시네마틱 애니메이션용 스타일 태그 */}
+      {/* 🎬 애니메이션 키프레임 */}
       <style>{`
         @keyframes cinematicRise {
           0% { opacity: 0; transform: scale(0.9) translateY(40px); filter: brightness(0.5) blur(4px); }
@@ -329,7 +341,6 @@ export default function Knights({ onBack }) {
             <img src="/backkey.png" alt="Back" className="w-6 h-6 object-contain" />
           </button>
           
-          {/* 우측에 골드 현황 배치 */}
           <div className="text-xs bg-[#1a1008] border border-[#5c3e23] px-2 py-1 rounded-sm text-yellow-400 font-bold mr-2 shadow-md flex items-center gap-1">
             🪙 {gold.toLocaleString()}
           </div>
@@ -338,7 +349,6 @@ export default function Knights({ onBack }) {
         <div className="w-full max-w-sm flex-1 overflow-y-auto custom-scrollbar animate-[fadeIn_0.3s_ease-in-out]">
           <div className="grid grid-cols-3 gap-3 p-1">
             
-            {/* 1. 갤러리: 보유한 기사들 출력 (기존 주인공 포함) */}
             {unlockedKnights.map((id) => {
               const knightInfo = KNIGHT_DATABASE[id];
               if (!knightInfo) return null;
@@ -363,11 +373,13 @@ export default function Knights({ onBack }) {
               );
             })}
 
-            {/* 2. 소환 슬롯: 남은 빈 자리만큼 클릭 가능한 슬롯 생성 */}
             {[...Array(Math.max(0, maxSlots - unlockedKnights.length))].map((_, i) => (
               <div 
                 key={`empty-${i}`} 
-                onClick={() => setShowSummonModal(true)}
+                onClick={() => {
+                  setFocusedIndex(0); // 💡 슬롯 오픈 시 첫 기사로 포커싱 초기화
+                  setShowSummonModal(true);
+                }}
                 className="aspect-[1/2] relative rounded-sm border-[1.5px] border-[#4a2c11]/40 border-dashed bg-[#1a1008]/50 flex items-center justify-center shadow-inner opacity-70 cursor-pointer hover:opacity-100 hover:border-[#a6845c]/70 hover:bg-[#3a2210]/40 transition-all group"
               >
                 <div className="w-6 h-6 border border-[#a6845c]/20 rotate-45 flex items-center justify-center group-hover:border-[#a6845c]/80 transition-colors">
@@ -381,62 +393,126 @@ export default function Knights({ onBack }) {
       </div>
 
       {/* ========================================= */}
-      {/* 📜 소환 가능 기사 목록 모달 */}
+      {/* 📜 9:16 비율 시네마틱 소환 제단 모달 */}
       {/* ========================================= */}
       {showSummonModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-[fadeIn_0.2s_ease-out]">
-          <div className="w-full max-w-sm border-2 border-[#5c3e23] rounded-md shadow-[0_10px_40px_rgba(0,0,0,1)] relative overflow-hidden flex flex-col">
-            <div className="absolute inset-0 bg-cover bg-center z-0 opacity-90" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}></div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm animate-[fadeIn_0.2s_ease-out]">
+          
+          {/* 모달 래퍼 (9:16 비율 강제 유지) */}
+          <div className="relative w-full max-w-[400px] aspect-[9/16] max-h-[90vh]">
             
-            <div className="relative z-10 flex flex-col p-4 max-h-[70vh]">
-              <div className="flex justify-between items-center mb-4 border-b border-[#8c6543]/40 pb-2">
-                <h3 className="font-serif text-[#3a2210] font-black text-lg tracking-widest drop-shadow-sm">소환의 제단</h3>
-                <button onClick={() => setShowSummonModal(false)} className="text-[#5c3e23] hover:text-[#3a2210] font-black text-sm p-1">닫기</button>
-              </div>
+            {/* 닫기 버튼 (모달 우측 상단 바깥쪽, 폰트만) */}
+            <button 
+              onClick={() => setShowSummonModal(false)} 
+              className="absolute -top-10 right-0 text-white/80 hover:text-white font-serif font-black tracking-widest text-lg transition-colors bg-transparent border-none outline-none drop-shadow-md"
+            >
+              Close
+            </button>
 
-              <div className="flex flex-col gap-3 overflow-y-auto custom-scrollbar pr-1">
-                {summonableKnights.map((knight) => {
-                  const isOwned = unlockedKnights.includes(knight.id);
-                  const reqItemInfo = ITEM_DATABASE[knight.cost.itemId] || { name: '알 수 없는 재료' };
-                  const userItemCount = items[knight.cost.itemId] || 0;
-                  
-                  const hasGold = gold >= knight.cost.gold;
-                  const hasItem = userItemCount >= knight.cost.count;
-                  const canSummon = hasGold && hasItem && !isOwned;
+            {/* 메인 9:16 제단 컨텐츠 영역 */}
+            <div className="w-full h-full rounded-xl overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,1)] border border-neutral-800">
+              
+              {/* 배경 이미지 적용 */}
+              <img src="/summon-bg.jpg" alt="Summon Altar" className="absolute inset-0 w-full h-full object-cover z-0" />
+              
+              {/* 하단부 텍스트 가독성을 위한 그라데이션 오버레이 */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent z-10 pointer-events-none"></div>
 
-                  return (
-                    <div key={knight.id} className="border border-[#8c6543]/40 bg-[#3a2210]/10 rounded-sm p-2.5 flex gap-3 items-center shadow-inner">
-                      <div className="w-12 h-12 border border-[#5c3e23] bg-black shrink-0 overflow-hidden rounded-sm">
-                        <img src={knight.image} alt={knight.name} className="w-full h-full object-cover" />
-                      </div>
-                      
-                      <div className="flex-1 min-w-0">
-                        <div className="text-xs font-black text-[#3a2210] drop-shadow-sm mb-0.5">{knight.name}</div>
+              {/* 제단 UI 및 캐러셀 컨테이너 */}
+              <div 
+                className="relative z-20 w-full h-full flex flex-col justify-end items-center pb-6"
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+              >
+                
+                {/* 🎠 기사 1:2 프로필 좌우 스크롤 캐러셀 영역 */}
+                <div className="relative w-full h-[45%] flex items-center justify-center perspective-1000">
+                  {summonableKnights.map((knight, idx) => {
+                    const isCenter = idx === focusedIndex;
+                    const isLeft = idx === focusedIndex - 1;
+                    const isRight = idx === focusedIndex + 1;
+                    const isHidden = Math.abs(idx - focusedIndex) > 1; // 양옆까지만 표시
+                    const isOwned = unlockedKnights.includes(knight.id);
+                    
+                    const hasGold = gold >= knight.cost.gold;
+                    const hasItem = (items[knight.cost.itemId] || 0) >= knight.cost.count;
+                    const canSummon = hasGold && hasItem && !isOwned;
+
+                    if (isHidden) return null;
+
+                    return (
+                      <div
+                        key={knight.id}
+                        onClick={() => setFocusedIndex(idx)} // 양옆 클릭 시 중앙으로 이동
+                        className={`absolute top-1/2 -translate-y-1/2 transition-all duration-300 ease-out cursor-pointer flex flex-col items-center
+                          ${isCenter ? 'z-30 scale-100 opacity-100' : 'z-20 scale-75 opacity-40 grayscale-[40%] hover:opacity-60'}
+                          ${isLeft ? '-translate-x-[75%]' : ''}
+                          ${isRight ? 'translate-x-[75%]' : ''}
+                        `}
+                        style={{ height: '85%' }} // 세로 기준 꽉 차게 조절
+                      >
+                        {/* 1:2 비율 기사 프로필 */}
+                        <img 
+                          src={knight.image} 
+                          alt={knight.name} 
+                          className="h-full aspect-[1/2] object-cover rounded-md border-[1.5px] border-[#8c6543] shadow-[0_10px_25px_rgba(0,0,0,0.8)]"
+                        />
                         
-                        <div className="flex flex-col gap-1 mt-1.5">
-                          <div className={`text-[9px] font-black px-1.5 py-0.5 rounded-sm border ${hasGold ? 'bg-amber-900/10 border-amber-800/50 text-amber-900' : 'bg-red-900/10 border-red-800/50 text-red-700'}`}>
-                            🪙 {knight.cost.gold.toLocaleString()} G
+                        {/* 💡 소환 폰트 버튼 (가운데 기사일 때만 프로필 바로 아래 표시) */}
+                        {isCenter && (
+                          <div className="absolute -bottom-10 w-full flex justify-center">
+                            {isOwned ? (
+                              <span className="font-serif tracking-widest text-lg font-black text-neutral-500 drop-shadow-[0_2px_5px_rgba(0,0,0,1)]">Owned</span>
+                            ) : (
+                              <button
+                                onClick={(e) => { e.stopPropagation(); handleSummon(knight); }}
+                                disabled={!canSummon}
+                                className={`font-serif tracking-widest text-2xl font-black bg-transparent outline-none transition-all drop-shadow-[0_2px_5px_rgba(0,0,0,1)]
+                                  ${canSummon ? 'text-amber-400 hover:text-white hover:scale-110 active:scale-95' : 'text-neutral-500/80'}
+                                `}
+                              >
+                                Summon
+                              </button>
+                            )}
                           </div>
-                          <div className={`text-[9px] font-black px-1.5 py-0.5 rounded-sm border ${hasItem ? 'bg-[#3a2210]/10 border-[#5c3e23]/50 text-[#3a2210]' : 'bg-red-900/10 border-red-800/50 text-red-700'}`}>
-                            📦 {reqItemInfo.name} ({userItemCount}/{knight.cost.count})
-                          </div>
-                        </div>
+                        )}
                       </div>
+                    );
+                  })}
+                </div>
 
-                      {isOwned ? (
-                        <button disabled className="bg-[#1a1008]/40 border border-[#4a2c11]/50 text-[#4a2c11] text-[10px] px-3 py-4 rounded-sm font-black whitespace-nowrap">보유중</button>
-                      ) : (
-                        <button 
-                          onClick={() => handleSummon(knight)}
-                          disabled={!canSummon}
-                          className={`text-[10px] font-black px-3 py-4 rounded-sm border whitespace-nowrap active:scale-95 transition-all shadow-md ${canSummon ? 'bg-[#4a2c11] border-[#8c6543] text-[#f5d5a9] hover:bg-[#3a2210]' : 'bg-neutral-800/20 border-neutral-700/30 text-neutral-500'}`}
-                        >
-                          소환
-                        </button>
-                      )}
+                {/* 💎 제단 하단부 재화/비용 표기 영역 */}
+                {summonableKnights[focusedIndex] && (
+                  <div className="mt-14 flex items-center justify-center gap-8 z-20">
+                    
+                    {/* 골드 폰트 표기 */}
+                    <div className="flex flex-col items-center">
+                      <span className={`font-serif font-black text-sm tracking-wider drop-shadow-md
+                        ${gold >= summonableKnights[focusedIndex].cost.gold ? 'text-[#f5d5a9]' : 'text-red-500'}`}>
+                        {summonableKnights[focusedIndex].cost.gold.toLocaleString()} G
+                      </span>
                     </div>
-                  );
-                })}
+
+                    {/* 아이템 이미지 및 수량 표기 */}
+                    <div className="flex flex-col items-center">
+                      <div className="flex items-center gap-2">
+                        {/* 도감에 정의된 실제 아이템 아이콘(이미지) 연결 */}
+                        <img 
+                          src={ITEM_DATABASE[summonableKnights[focusedIndex].cost.itemId]?.image || ITEM_DATABASE[summonableKnights[focusedIndex].cost.itemId]?.icon || '/default-item.png'} 
+                          alt="재료" 
+                          className="w-5 h-5 object-contain drop-shadow-md"
+                          onError={(e) => { e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a6845c'%3E%3Cpath d='M12 2L2 22h20L12 2z'/%3E%3C/svg%3E"; }}
+                        />
+                        {/* 보유수 / 필요수 폰트 */}
+                        <span className={`font-mono font-black text-sm drop-shadow-md
+                          ${(items[summonableKnights[focusedIndex].cost.itemId] || 0) >= summonableKnights[focusedIndex].cost.count ? 'text-[#f5d5a9]' : 'text-red-500'}`}>
+                          {(items[summonableKnights[focusedIndex].cost.itemId] || 0)} / {summonableKnights[focusedIndex].cost.count}
+                        </span>
+                      </div>
+                    </div>
+
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -449,7 +525,6 @@ export default function Knights({ onBack }) {
       {summoningKnight && (
         <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/95 select-none overflow-hidden">
           
-          {/* 강렬한 빛 섬광 오버레이 */}
           <div className="absolute inset-0 bg-white mix-blend-overlay z-20 pointer-events-none opacity-0" style={{ animation: 'cinematicFlash 2.5s ease-in-out forwards' }} />
           
           <div className="w-full max-w-sm aspect-[3/4] relative z-10 flex items-center justify-center p-4">
