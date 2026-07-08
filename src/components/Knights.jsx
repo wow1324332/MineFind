@@ -10,7 +10,7 @@ export default function Knights({ onBack }) {
   const [userData, setUserData] = useState(null);
   
   const [selectedKnight, setSelectedKnight] = useState(null);
-  const [detailTab, setDetailTab] = useState('stats');
+  // 💡 탭 상태(detailTab)는 모두 통합되어 더 이상 필요하지 않습니다.
 
   useEffect(() => {
     if (!user) return;
@@ -55,8 +55,8 @@ export default function Knights({ onBack }) {
 
         <div className="relative z-10 w-full max-w-sm flex flex-col h-screen">
           
-          {/* 💡 수정 4. 뒤로가기 버튼의 원형 배경(bg, rounded, border) 모두 제거 */}
           <div className="w-full flex justify-between items-center p-4 pt-6 shrink-0">
+            {/* 💡 유저 커스텀 반영: w-6 h-6 뒤로가기 버튼 */}
             <button onClick={() => setSelectedKnight(null)} className="transition-all duration-150 active:scale-90 p-1 outline-none">
               <img src="/backkey.png" alt="Back" className="w-6 h-6 object-contain opacity-80" />
             </button>
@@ -64,7 +64,7 @@ export default function Knights({ onBack }) {
 
           <div className="flex-1 flex flex-col justify-end p-5 pb-8">
             
-            <div className="mb-5 animate-[slideUp_0.4s_ease-out] flex justify-between items-end">
+            <div className="mb-4 animate-[slideUp_0.4s_ease-out] flex justify-between items-end">
               <div>
                 <div className="flex items-center gap-2 mb-1.5">
                   <span className="text-yellow-400 font-serif font-black text-[12px] border border-yellow-500/50 bg-black/60 px-1.5 py-0.5 rounded-sm backdrop-blur-sm">Lv.{userLevel}</span>
@@ -76,7 +76,6 @@ export default function Knights({ onBack }) {
                 </div>
               </div>
               
-              {/* 💡 수정 3. "SKILL" 텍스트 제거하고, 모달 연동을 위해 정사각형 프레임에 이미지 갇힌 형태로만 유지 */}
               <div className="flex flex-col items-center mb-1">
                 <div className="w-12 h-12 bg-[#1a1008] border-[1.5px] border-[#a6845c] rounded-sm relative cursor-pointer shadow-[0_0_15px_rgba(0,0,0,0.8)] overflow-hidden group">
                   <img 
@@ -89,71 +88,43 @@ export default function Knights({ onBack }) {
               </div>
             </div>
 
-            <div className="flex w-full bg-black/50 border border-[#5c3e23]/70 rounded-md p-1 mb-3 shrink-0 backdrop-blur-md shadow-lg">
-              <button onClick={() => setDetailTab('stats')} className={`flex-1 py-1.5 text-[12px] font-bold rounded-sm transition-all duration-200 ${detailTab === 'stats' ? 'bg-[#4a2c11] text-[#f5d5a9] shadow-inner' : 'text-[#8c6543] hover:text-[#d8b486]'}`}>스탯 정보</button>
-              <button onClick={() => setDetailTab('equip')} className={`flex-1 py-1.5 text-[12px] font-bold rounded-sm transition-all duration-200 ${detailTab === 'equip' ? 'bg-[#4a2c11] text-[#f5d5a9] shadow-inner' : 'text-[#8c6543] hover:text-[#d8b486]'}`}>장비 진화</button>
-            </div>
-
-            {/* 💡 컨테이너 패딩을 줄여 타이트하게 조임 */}
-            <div className="w-full bg-black/60 border border-[#4a2c11]/50 rounded-md p-3 backdrop-blur-md shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
+            {/* 💡 탭을 제거하고 스탯과 장비를 하나로 통합한 타이트한 패널 */}
+            <div className="w-full bg-black/60 border border-[#4a2c11]/50 rounded-md p-3.5 backdrop-blur-md shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] animate-[slideUp_0.5s_ease-out]">
               
-              {/* 💡 수정 1. 스탯 탭 - 한글 제거, 가로로 3/2 배열하여 초압축 렌더링 (스킬 영역 삭제됨) */}
-              {detailTab === 'stats' && (
-                <div className="animate-[fadeIn_0.2s_ease-in-out]">
-                  <div className="flex flex-col gap-3 py-1">
-                    <div className="flex justify-between px-2">
-                      <div className="flex items-end gap-1.5">
-                        <span className="text-[#a6845c] font-bold text-[11px] tracking-widest">STR</span>
-                        <span className="text-[#f5d5a9] font-black text-sm leading-none">{finalStats.str}</span>
-                      </div>
-                      <div className="flex items-end gap-1.5">
-                        <span className="text-[#a6845c] font-bold text-[11px] tracking-widest">AGI</span>
-                        <span className="text-[#f5d5a9] font-black text-sm leading-none">{finalStats.agi}</span>
-                      </div>
-                      <div className="flex items-end gap-1.5">
-                        <span className="text-[#a6845c] font-bold text-[11px] tracking-widest">INT</span>
-                        <span className="text-[#f5d5a9] font-black text-sm leading-none">{finalStats.int}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-center gap-12">
-                      <div className="flex items-end gap-1.5">
-                        <span className="text-[#a6845c] font-bold text-[11px] tracking-widest">VIT</span>
-                        <span className="text-[#f5d5a9] font-black text-sm leading-none">{finalStats.vit}</span>
-                      </div>
-                      <div className="flex items-end gap-1.5">
-                        <span className="text-[#a6845c] font-bold text-[11px] tracking-widest">LUK</span>
-                        <span className="text-[#f5d5a9] font-black text-sm leading-none">{finalStats.luk}</span>
-                      </div>
+              {/* 상단: 5대 스탯 일렬 배치 */}
+              <div className="flex justify-between items-center border-b border-[#5c3e23]/50 pb-3 mb-3 px-1">
+                {[
+                  { label: 'STR', val: finalStats.str },
+                  { label: 'AGI', val: finalStats.agi },
+                  { label: 'INT', val: finalStats.int },
+                  { label: 'VIT', val: finalStats.vit },
+                  { label: 'LUK', val: finalStats.luk }
+                ].map((stat, idx) => (
+                  <div key={idx} className="flex flex-col items-center">
+                    <span className="text-[#a6845c] font-bold text-[10px] tracking-widest mb-0.5">{stat.label}</span>
+                    <span className="text-[#f5d5a9] font-black text-sm">{stat.val}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* 하단: 장비 4슬롯 일렬 배치 (명칭 텍스트 완전 제거) */}
+              <div className="flex justify-between items-center px-1">
+                {['WEAPON', 'HELMET', 'SHIELD', 'ARMOR'].map((part, idx) => (
+                  <div key={idx} className="w-[21%] aspect-square max-w-[60px] bg-[#1a1008] border border-[#5c3e23] rounded-sm relative flex items-center justify-center shadow-[inset_0_0_10px_rgba(0,0,0,0.8)] cursor-pointer hover:border-[#a6845c] transition-colors">
+                    <div className="w-full h-full p-2.5 opacity-40 flex items-center justify-center">
+                      <img 
+                        src={`/equip-default-${part.toLowerCase()}.png`} 
+                        alt={part} 
+                        className="w-full h-full object-contain"
+                        onError={(e) => { 
+                          e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%235c3e23'%3E%3Cpath d='M12 2L2 22h20L12 2z'/%3E%3C/svg%3E";
+                        }} 
+                      />
                     </div>
                   </div>
-                </div>
-              )}
+                ))}
+              </div>
 
-              {/* 💡 수정 2. 장비 탭 - 4개 슬롯으로 일렬 정렬 */}
-              {detailTab === 'equip' && (
-                <div className="animate-[fadeIn_0.2s_ease-in-out] py-1">
-                  <div className="grid grid-cols-4 gap-2 place-items-center">
-                    {['WEAPON', 'HELMET', 'SHIELD', 'ARMOR'].map((part, idx) => (
-                      <div key={idx} className="flex flex-col items-center w-full">
-                         <span className="text-[#a6845c] font-bold text-[8px] tracking-widest mb-1.5">{part}</span>
-                         <div className="w-full aspect-square max-w-[60px] bg-[#1a1008] border border-[#5c3e23] rounded-sm relative flex items-center justify-center shadow-[inset_0_0_10px_rgba(0,0,0,0.8)] cursor-pointer hover:border-[#a6845c] transition-colors">
-                            <div className="w-full h-full p-1.5 opacity-40 flex items-center justify-center">
-                              <img 
-                                src={`/equip-default-${part.toLowerCase()}.png`} 
-                                alt={part} 
-                                className="w-full h-full object-contain"
-                                onError={(e) => { 
-                                  e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%235c3e23'%3E%3Cpath d='M12 2L2 22h20L12 2z'/%3E%3C/svg%3E";
-                                }} 
-                              />
-                            </div>
-                         </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
             </div>
           </div>
         </div>
@@ -180,6 +151,7 @@ export default function Knights({ onBack }) {
         
         <div className="w-full max-w-sm mt-2 mb-0 mx-auto relative flex justify-center pointer-events-none z-20 shrink-0">
           <div className="w-full flex justify-center" style={{ WebkitMaskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)', maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)' }}>
+            {/* 💡 유저 커스텀 반영: knights-title.jpg */}
             <img src="/knights-title.jpg" alt="Knights Title" className="w-[85%] h-auto object-contain drop-shadow-[0_0_20px_rgba(220,38,38,0.2)]" />
           </div>
         </div>
@@ -188,6 +160,7 @@ export default function Knights({ onBack }) {
           <div className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10" style={{ backgroundImage: "url('/header-bg.jpg')", WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)', maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)' }}>
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
+          {/* 💡 유저 커스텀 반영: w-6 h-6 뒤로가기 및 텍스트 제거 */}
           <button onClick={onBack} className="transition-all duration-150 active:scale-90 px-2 outline-none">
             <img src="/backkey.png" alt="Back" className="w-6 h-6 object-contain" />
           </button>
