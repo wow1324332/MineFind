@@ -45,94 +45,115 @@ export default function Knights({ onBack }) {
     return (
       <div className="relative min-h-screen bg-black text-white flex flex-col items-center animate-[fadeIn_0.3s_ease-in-out] overflow-hidden">
         
-        {/* 1. 기사 고유 배경 이미지 (도감에서 bgImage를 가져옵니다) */}
+        {/* 기사 고유 배경 이미지 */}
         <div 
           className="absolute inset-0 bg-cover bg-top z-0 opacity-80"
           style={{ backgroundImage: `url(${mainKnightBase.bgImage || mainKnightBase.image})` }}
         ></div>
         
-        {/* 2. 하단 UI가 잘 보이도록 밑에서부터 올라오는 다크 그라데이션 */}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent z-0"></div>
 
         <div className="relative z-10 w-full max-w-sm flex flex-col h-screen">
           
-          {/* 상단 투명 헤더 (뒤로가기 버튼) */}
           <div className="w-full flex justify-between items-center p-4 pt-6 shrink-0">
             <button onClick={() => setSelectedKnight(null)} className="transition-all duration-150 active:scale-90 p-1 bg-black/30 rounded-full backdrop-blur-sm border border-white/10 outline-none">
-              <img src="/backkey.png" alt="Back" className="w-6 h-6 object-contain opacity-80" />
+              <img src="/backkey.png" alt="Back" className="w-7 h-7 object-contain opacity-80" />
             </button>
-            <div className="w-8"></div> {/* 여백 밸런스 */}
           </div>
 
-          {/* 하단 콘텐츠 영역 (캐릭터 정보, 탭, 스탯/장비) */}
           <div className="flex-1 flex flex-col justify-end p-5 pb-8">
             
-            {/* 타이틀 및 전투력 텍스트 */}
-            <div className="mb-5 animate-[slideUp_0.4s_ease-out]">
-              <div className="flex items-center gap-2 mb-1.5">
-                <span className="text-yellow-400 font-serif font-black text-[12px] border border-yellow-500/50 bg-black/60 px-1.5 py-0.5 rounded-sm backdrop-blur-sm">Lv.{userLevel}</span>
-                <span className="text-[#d8b486] font-bold text-xs drop-shadow-[0_2px_2px_rgba(0,0,0,1)]">{mainKnightBase.title}</span>
+            {/* 💡 수정 1. 타이틀 영역 & 고유 스킬 우측 배치 */}
+            <div className="mb-5 animate-[slideUp_0.4s_ease-out] flex justify-between items-end">
+              <div>
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="text-yellow-400 font-serif font-black text-[12px] border border-yellow-500/50 bg-black/60 px-1.5 py-0.5 rounded-sm backdrop-blur-sm">Lv.{userLevel}</span>
+                  <span className="text-[#d8b486] font-bold text-xs drop-shadow-[0_2px_2px_rgba(0,0,0,1)]">{mainKnightBase.title}</span>
+                </div>
+                {/* 닉네임이 보이는 곳 우측에 스킬을 배치하기 위해 레이아웃을 나눔 */}
+                <h2 className="text-[#f5d5a9] font-black text-4xl drop-shadow-[0_4px_4px_rgba(0,0,0,1)] tracking-tight mb-1">{userNickname}</h2>
+                <div className="text-amber-400 font-serif font-black text-sm tracking-widest drop-shadow-[0_2px_2px_rgba(0,0,0,1)]">
+                  CP : {combatPower.toLocaleString()}
+                </div>
               </div>
-              <h2 className="text-[#f5d5a9] font-black text-4xl drop-shadow-[0_4px_4px_rgba(0,0,0,1)] tracking-tight mb-1">{userNickname}</h2>
-              <div className="text-amber-400 font-serif font-black text-sm tracking-widest drop-shadow-[0_2px_2px_rgba(0,0,0,1)]">
-                CP : {combatPower.toLocaleString()}
+              
+              {/* 기사명 우측 끝 고유 스킬 아이콘 */}
+              <div className="flex flex-col items-center mb-1">
+                <span className="text-[#8c6543] font-bold text-[8px] tracking-widest mb-1.5 drop-shadow-[0_2px_2px_rgba(0,0,0,1)]">SKILL</span>
+                <div className="w-12 h-12 bg-[#1a1008] border-[1.5px] border-[#a6845c] rounded-sm relative cursor-pointer shadow-[0_0_15px_rgba(0,0,0,0.8)] overflow-hidden group">
+                  {/* 스킬 임시 이미지 (나중에 /skill-icon.png 같은 걸로 교체하세요) */}
+                  <img 
+                    src="/default-skill-icon.png" 
+                    alt="Skill" 
+                    className="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-300" 
+                    onError={(e) => { e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%231a1008'/%3E%3Ccircle cx='12' cy='12' r='5' fill='%238c6543'/%3E%3C/svg%3E" }} 
+                  />
+                </div>
               </div>
             </div>
 
-            {/* 탭 네비게이션 */}
             <div className="flex w-full bg-black/50 border border-[#5c3e23]/70 rounded-md p-1 mb-4 shrink-0 backdrop-blur-md shadow-lg">
               <button onClick={() => setDetailTab('stats')} className={`flex-1 py-2 text-[12px] font-bold rounded-sm transition-all duration-200 ${detailTab === 'stats' ? 'bg-[#4a2c11] text-[#f5d5a9] shadow-inner' : 'text-[#8c6543] hover:text-[#d8b486]'}`}>스탯 정보</button>
-              <button onClick={() => setDetailTab('equip')} className={`flex-1 py-2 text-[12px] font-bold rounded-sm transition-all duration-200 ${detailTab === 'equip' ? 'bg-[#4a2c11] text-[#f5d5a9] shadow-inner' : 'text-[#8c6543] hover:text-[#d8b486]'}`}>장비 착용</button>
+              <button onClick={() => setDetailTab('equip')} className={`flex-1 py-2 text-[12px] font-bold rounded-sm transition-all duration-200 ${detailTab === 'equip' ? 'bg-[#4a2c11] text-[#f5d5a9] shadow-inner' : 'text-[#8c6543] hover:text-[#d8b486]'}`}>장비 진화</button>
             </div>
 
-            {/* 탭 내부 콘텐츠 패널 */}
-            <div className="w-full bg-black/60 border border-[#4a2c11]/50 rounded-md p-4 backdrop-blur-md shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] min-h-[220px]">
+            {/* 💡 수정 2 & 3. 탭 내부를 타이트하게 조절 (min-h 제거, 불필요한 여백 최소화) */}
+            <div className="w-full bg-black/60 border border-[#4a2c11]/50 rounded-md p-3.5 backdrop-blur-md shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
               
-              {/* 스탯 탭 */}
+              {/* 스탯 탭 내용 */}
               {detailTab === 'stats' && (
-                <div className="animate-[fadeIn_0.2s_ease-in-out] space-y-3">
-                  <div className="grid grid-cols-2 gap-2.5">
-                    <div className="bg-[#1a1008]/80 border border-[#5c3e23]/50 p-2.5 rounded-sm flex justify-between items-center shadow-inner">
-                      <span className="text-[#a6845c] font-bold text-xs">✊ 힘</span>
-                      <span className="text-[#f5d5a9] font-black">{finalStats.str}</span>
+                <div className="animate-[fadeIn_0.2s_ease-in-out]">
+                  {/* 컨테이너 나누지 않고 하나의 표처럼 리스트 형태로 배치, 아이콘 제거 */}
+                  <div className="flex flex-col">
+                    <div className="flex justify-between items-center border-b border-[#5c3e23]/40 py-2.5 px-2">
+                      <span className="text-[#a6845c] font-bold text-xs tracking-widest">힘 (STR)</span>
+                      <span className="text-[#f5d5a9] font-black text-sm">{finalStats.str}</span>
                     </div>
-                    <div className="bg-[#1a1008]/80 border border-[#5c3e23]/50 p-2.5 rounded-sm flex justify-between items-center shadow-inner">
-                      <span className="text-[#a6845c] font-bold text-xs">⚡ 민첩</span>
-                      <span className="text-[#f5d5a9] font-black">{finalStats.agi}</span>
+                    <div className="flex justify-between items-center border-b border-[#5c3e23]/40 py-2.5 px-2">
+                      <span className="text-[#a6845c] font-bold text-xs tracking-widest">민첩 (AGI)</span>
+                      <span className="text-[#f5d5a9] font-black text-sm">{finalStats.agi}</span>
                     </div>
-                    <div className="bg-[#1a1008]/80 border border-[#5c3e23]/50 p-2.5 rounded-sm flex justify-between items-center shadow-inner">
-                      <span className="text-[#a6845c] font-bold text-xs">🔮 지력</span>
-                      <span className="text-[#f5d5a9] font-black">{finalStats.int}</span>
+                    <div className="flex justify-between items-center border-b border-[#5c3e23]/40 py-2.5 px-2">
+                      <span className="text-[#a6845c] font-bold text-xs tracking-widest">지력 (INT)</span>
+                      <span className="text-[#f5d5a9] font-black text-sm">{finalStats.int}</span>
                     </div>
-                    <div className="bg-[#1a1008]/80 border border-[#5c3e23]/50 p-2.5 rounded-sm flex justify-between items-center shadow-inner">
-                      <span className="text-[#a6845c] font-bold text-xs">❤️ 체력</span>
-                      <span className="text-[#f5d5a9] font-black">{finalStats.vit}</span>
+                    <div className="flex justify-between items-center border-b border-[#5c3e23]/40 py-2.5 px-2">
+                      <span className="text-[#a6845c] font-bold text-xs tracking-widest">체력 (VIT)</span>
+                      <span className="text-[#f5d5a9] font-black text-sm">{finalStats.vit}</span>
                     </div>
-                    <div className="bg-[#1a1008]/80 border border-[#5c3e23]/50 p-2.5 rounded-sm flex justify-between items-center col-span-2 shadow-inner">
-                      <span className="text-[#a6845c] font-bold text-xs">🍀 운 (LUK)</span>
-                      <span className="text-[#f5d5a9] font-black">{finalStats.luk}</span>
+                    <div className="flex justify-between items-center py-2.5 px-2">
+                      <span className="text-[#a6845c] font-bold text-xs tracking-widest">운 (LUK)</span>
+                      <span className="text-[#f5d5a9] font-black text-sm">{finalStats.luk}</span>
                     </div>
-                  </div>
-
-                  <div className="bg-black/50 border border-[#a6845c]/40 p-3 rounded-sm mt-4">
-                     <span className="text-[#d8b486] font-bold text-xs block mb-1.5">고유 특성 스킬</span>
-                     <div className="text-[11px] text-[#8c6543]">
-                       {userLevel < 10 ? 'Lv.10 도달 시 스킬 해금 가능' : '스킬 각성 대기 중...'}
-                     </div>
                   </div>
                 </div>
               )}
 
-              {/* 장비 탭 */}
+              {/* 장비 탭 내용 */}
               {detailTab === 'equip' && (
-                <div className="animate-[fadeIn_0.2s_ease-in-out]">
-                  <div className="grid grid-cols-3 gap-3 place-items-center mt-1">
-                    {['검', '투구', '장갑', '방패', '갑옷', '신발'].map((part, idx) => (
-                      <div key={idx} className="w-16 h-16 bg-[#1a1008]/80 border-2 border-[#4a3522]/60 rounded-sm relative flex flex-col items-center justify-center shadow-inner cursor-pointer hover:border-[#a6845c] transition-colors">
-                         <div className="w-full h-full flex items-center justify-center opacity-30">
-                            <svg className="w-6 h-6 text-[#d8b486]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                <div className="animate-[fadeIn_0.2s_ease-in-out] px-1 py-1">
+                  {/* 컨테이너 사이 간격을 좁혀 타이트하게 구성 */}
+                  <div className="grid grid-cols-3 gap-x-2 gap-y-4 place-items-center">
+                    {['WEAPON', 'HELMET', 'GLOVES', 'SHIELD', 'ARMOR', 'SHOES'].map((part, idx) => (
+                      <div key={idx} className="flex flex-col items-center">
+                         {/* 장비 명칭을 밖으로 빼서 상단 배치 */}
+                         <span className="text-[#a6845c] font-bold text-[9px] tracking-widest mb-1.5">{part}</span>
+                         
+                         {/* 기본 아이템이 장착된 제단(프레임) */}
+                         <div className="w-[52px] h-[52px] bg-[#1a1008] border border-[#5c3e23] rounded-sm relative flex items-center justify-center shadow-[inset_0_0_10px_rgba(0,0,0,0.8)] cursor-pointer hover:border-[#a6845c] transition-colors">
+                            {/* 디폴트 기본 장비 이미지 (실제 이미지가 없을 때를 대비한 SVG 플레이스홀더) */}
+                            <div className="w-full h-full p-2 opacity-50 flex items-center justify-center">
+                              <img 
+                                src={`/equip-default-${part.toLowerCase()}.png`} 
+                                alt={part} 
+                                className="w-full h-full object-contain"
+                                onError={(e) => { 
+                                  // 이미지가 없을 때 출력되는 기본 쐐기/보석 모양
+                                  e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%235c3e23'%3E%3Cpath d='M12 2L2 22h20L12 2z'/%3E%3C/svg%3E";
+                                }} 
+                              />
+                            </div>
                          </div>
-                         <span className="text-[#a6845c] font-bold text-[9px] absolute bottom-1 bg-black/50 px-1 rounded-sm">{part}</span>
                       </div>
                     ))}
                   </div>
@@ -165,7 +186,7 @@ export default function Knights({ onBack }) {
         
         <div className="w-full max-w-sm mt-2 mb-0 mx-auto relative flex justify-center pointer-events-none z-20 shrink-0">
           <div className="w-full flex justify-center" style={{ WebkitMaskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)', maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)' }}>
-            <img src="/knights-title.jpg" alt="Knights Title" className="w-[85%] h-auto object-contain drop-shadow-[0_0_20px_rgba(220,38,38,0.2)]" />
+            <img src="/knights-bt.png" alt="Knights Title" className="w-[85%] h-auto object-contain drop-shadow-[0_0_20px_rgba(220,38,38,0.2)]" />
           </div>
         </div>
 
@@ -174,8 +195,11 @@ export default function Knights({ onBack }) {
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
           <button onClick={onBack} className="transition-all duration-150 active:scale-90 px-2 outline-none">
-            <img src="/backkey.png" alt="Back" className="w-6 h-6 object-contain" />
+            <img src="/backkey.png" alt="Back" className="w-8 h-8 object-contain" />
           </button>
+          <div className="text-[#d8b486] font-serif font-black text-sm tracking-[0.3em] drop-shadow-md">
+            ORDER OF KNIGHTS
+          </div>
           <div className="w-12 px-2"></div>
         </div>
         
