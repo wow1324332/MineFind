@@ -399,7 +399,7 @@ export default function Knights({ onBack }) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm animate-[fadeIn_0.2s_ease-out]">
           
           {/* 모달 래퍼 (9:16 비율 강제 유지) */}
-          <div className="relative w-full max-w-[400px] aspect-[9/16] max-h-[90vh]">
+          <div className="relative w-full max-w-[400px] aspect-[4/5] max-h-[80vh]">
             
             {/* 닫기 버튼 (모달 우측 상단 바깥쪽, 폰트만) */}
             <button 
@@ -467,11 +467,11 @@ export default function Knights({ onBack }) {
                               <button
                                 onClick={(e) => { e.stopPropagation(); handleSummon(knight); }}
                                 disabled={!canSummon}
-                                className={`font-serif tracking-widest text-base font-black bg-transparent outline-none transition-all drop-shadow-[0_2px_5px_rgba(0,0,0,1)]
-                                  ${canSummon ? 'text-amber-400 hover:text-white hover:scale-110 active:scale-95' : 'text-neutral-500/80'}
+                                className={`font-serif tracking-wider text-sm font-black px-8 py-2.5 rounded-full border shadow-lg transition-all active:scale-95
+                                  ${canSummon ? 'bg-gradient-to-r from-amber-700 to-yellow-600 border-yellow-400/50 text-white hover:brightness-110' : 'bg-neutral-800 border-neutral-700 text-neutral-500'}
                                 `}
                               >
-                                Summon
+                               Summon
                               </button>
                             )}
                           </div>
@@ -481,36 +481,32 @@ export default function Knights({ onBack }) {
                   })}
                 </div>
 
-                {/* 💎 제단 하단부 재화/비용 표기 영역 */}
-                {summonableKnights[focusedIndex] && (
-                  <div className="mt-14 flex items-center justify-center gap-8 z-20">
+               {summonableKnights[focusedIndex] && (
+                  <div className="mb-4 flex items-center justify-center gap-6 z-20 bg-black/40 px-4 py-1.5 rounded-full border border-neutral-700/50">
                     
                     {/* 골드 폰트 표기 */}
                     <div className="flex flex-col items-center">
-                      <span className={`font-serif font-black text-sm tracking-wider drop-shadow-md
+                      <span className={`font-serif font-black text-xs tracking-wider drop-shadow-md
                         ${gold >= summonableKnights[focusedIndex].cost.gold ? 'text-[#f5d5a9]' : 'text-red-500'}`}>
-                        {summonableKnights[focusedIndex].cost.gold.toLocaleString()} G
+                        🪙 {summonableKnights[focusedIndex].cost.gold.toLocaleString()} G
                       </span>
                     </div>
 
                     {/* 아이템 이미지 및 수량 표기 */}
                     <div className="flex flex-col items-center">
-                      <div className="flex items-center gap-2">
-                        {/* 도감에 정의된 실제 아이템 아이콘(이미지) 연결 */}
+                      <div className="flex items-center gap-1.5">
                         <img 
                           src={ITEM_DATABASE[summonableKnights[focusedIndex].cost.itemId]?.image || ITEM_DATABASE[summonableKnights[focusedIndex].cost.itemId]?.icon || '/default-item.png'} 
                           alt="재료" 
-                          className="w-8 h-8 object-contain drop-shadow-md"
+                          className="w-5 h-5 object-contain drop-shadow-md"
                           onError={(e) => { e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a6845c'%3E%3Cpath d='M12 2L2 22h20L12 2z'/%3E%3C/svg%3E"; }}
                         />
-                        {/* 보유수 / 필요수 폰트 */}
-                        <span className={`font-mono font-black text-sm drop-shadow-md
+                        <span className={`font-mono font-black text-xs drop-shadow-md
                           ${(items[summonableKnights[focusedIndex].cost.itemId] || 0) >= summonableKnights[focusedIndex].cost.count ? 'text-[#f5d5a9]' : 'text-red-500'}`}>
                           {(items[summonableKnights[focusedIndex].cost.itemId] || 0)} / {summonableKnights[focusedIndex].cost.count}
                         </span>
                       </div>
                     </div>
-
                   </div>
                 )}
               </div>
