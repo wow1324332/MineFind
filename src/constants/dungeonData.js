@@ -19,15 +19,7 @@ export const DUNGEON_INFO = {
     revealedMineBg: 'bg-red-950/80 shadow-[inset_0_0_20px_rgba(220,38,38,0.8)]',
     
     // 💡 10행 8열의 기본 사각형 맵
-    layout: Array(10).fill(Array(10).fill(1)),
-    
-    rewards: {
-      Easy: { gold: 10, exp: 5, materials: { '작은 불씨': 1 } },
-      Normal: { gold: 30, exp: 15, materials: { '작은 불씨': 3, '꺼지지 않는 불꽃': 1 } },
-      Hard: { gold: 100, exp: 50, materials: { '꺼지지 않는 불꽃': 3, '지옥불 파편': 1 } },
-      Expert: { gold: 300, exp: 150, materials: { '지옥불 파편': 3, '악마의 코어': 1 } },
-      Hell: { gold: 1000, exp: 500, materials: { '악마의 코어': 3, '화룡의 심장': 1 } }
-    }
+    layout: Array(10).fill(Array(10).fill(1))
   },
   water: {
     id: 'water',
@@ -58,14 +50,6 @@ export const DUNGEON_INFO = {
       [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
       [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0],
     ],
-
-    rewards: {
-      Easy: { gold: 10, exp: 5, materials: { '맑은 물방울': 1 } },
-      Normal: { gold: 30, exp: 15, materials: { '맑은 물방울': 3, '심해의 결정': 1 } },
-      Hard: { exp: 50, gold: 100, materials: { '심해의 결정': 3, '얼어붙은 눈물': 1 } },
-      Expert: { gold: 300, exp: 150, materials: { '얼어붙은 눈물': 3, '해신의 삼지창 조각': 1 } },
-      Hell: { gold: 1000, exp: 500, materials: { '해신의 삼지창 조각': 3, '리바이어던의 비늘': 1 } }
-    }
   }
 };
 
