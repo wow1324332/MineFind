@@ -71,25 +71,29 @@ export default function Board({ board, onCellClick, onCellRightClick, dungeon })
     return '';
   };
 
-  return (
-    /* 💡 가로세로 스크롤 허용 래퍼 (tailwind scrollbar-hide 클래스 추가) */
-    <div className="w-full max-h-[60vh] overflow-auto flex justify-center py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+return (
+    /* 💡 수정 1: flex justify-center 제거 (화면보다 커질 때 좌측 스크롤 짤림 방지) */
+    <div className="w-full max-h-[60vh] overflow-auto py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      
+      {/* 💡 수정 2: w-fit 대신 w-max 적용 (컨텐츠 크기만큼 무조건 늘어나도록 허용) */}
       <div 
-        className="grid gap-0 w-fit mx-auto transition-all duration-300"
+        className="grid gap-0 w-max mx-auto transition-all duration-300"
         style={{ gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))` }}
       >
         {board.map((row, r) => (
           row.map((cell, c) => {
-            // 💡 0(투명 타일)로 지정된 곳은 클릭도 안 되고 렌더링도 안 되는 빈 껍데기로 처리!
+            // 투명 타일 처리
             if (!cell.isPlayable) {
               return (
                 <div 
                   key={`${r}-${c}`}
-                  className="w-10 h-10 sm:w-12 sm:h-12 bg-transparent pointer-events-none"
+                  // 💡 수정 3: shrink-0 추가 (억지로 찌그러짐 방지)
+                  className="w-10 h-10 sm:w-12 sm:h-12 bg-transparent pointer-events-none shrink-0" 
                 />
               );
             }
 
+            // 실제 밟을 수 있는 타일
             return (
               <div
                 key={`${r}-${c}`}
@@ -113,7 +117,8 @@ export default function Board({ board, onCellClick, onCellRightClick, dungeon })
                 onTouchEnd={handleTouchEnd}
                 onTouchMove={handleTouchMove}
                 className={`
-                  w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-xl sm:text-2xl cursor-pointer rounded-sm transition-all duration-150 select-none bg-cover bg-center
+                  /* 💡 수정 3: shrink-0 추가 (억지로 찌그러짐 방지) */
+                  w-10 h-10 sm:w-12 sm:h-12 shrink-0 flex items-center justify-center text-xl sm:text-2xl cursor-pointer rounded-sm transition-all duration-150 select-none bg-cover bg-center
                   ${cell.isRevealed 
                     ? (cell.isMine 
                         ? `bg-neutral-900 border-t border-l border-neutral-950 border-b border-r border-neutral-700 ${currentDungeonInfo?.revealedMineBg || 'bg-red-950/80 shadow-[inset_0_0_20px_rgba(220,38,38,0.8)]'}` 
