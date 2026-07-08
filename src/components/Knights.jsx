@@ -47,11 +47,6 @@ export default function Knights({ onBack }) {
             <img src="/backkey.png" alt="Back" className="w-8 h-8 object-contain" />
           </button>
           
-          {/* 헤더 중앙 텍스트 (타이틀 이미지가 있으므로 심플하게 처리) */}
-          <div className="text-[#d8b486] font-serif font-black text-sm tracking-[0.3em] drop-shadow-md">
-            ORDER OF KNIGHTS
-          </div>
-          
           <div className="w-12 px-2"></div> {/* 비율을 맞추기 위한 투명 박스 */}
         </div>
         
