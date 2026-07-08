@@ -23,7 +23,7 @@ export default function Knights({ onBack }) {
             {/* 💡 아까 버튼으로 썼던 깃발 이미지를 타이틀로 재활용했습니다! 
                 따로 타이틀 이미지를 만드신다면 src 경로만 바꿔주세요. */}
             <img 
-              src="/knights-bt.png" 
+              src="/knights-title.jpg" 
               alt="Knights Title" 
               className="w-[85%] h-auto object-contain drop-shadow-[0_0_20px_rgba(220,38,38,0.2)]" 
             />
