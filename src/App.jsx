@@ -371,13 +371,15 @@ export default function App() {
           </div>
 
           <div 
-            className="p-4 sm:p-6 rounded-2xl shadow-2xl max-w-full relative z-10 bg-cover bg-center"
+            className="p-4 sm:p-6 rounded-2xl shadow-2xl max-w-full relative z-10 bg-cover bg-center min-h-[550px] flex flex-col"
             style={{ 
               backgroundImage: `url('${DUNGEON_INFO[currentDungeon]?.boardBg || '/dungeoninsite-bg.jpg'}')` 
             }}
           >
             <Header minesLeft={minesLeft} gameStatus={gameStatus} timeElapsed={timeElapsed} onReset={() => initGame()} dungeon={currentDungeon} />
-            <Board board={board} onCellClick={handleCellClick} onCellRightClick={toggleFlag} dungeon={currentDungeon} />
+            <div className="flex-1 flex flex-col justify-center">
+              <Board board={board} onCellClick={handleCellClick} onCellRightClick={toggleFlag} dungeon={currentDungeon} />
+            </div>
             
             {gameStatus === 'won' && (
               <div className="fixed inset-0 z-[100] flex flex-col justify-end pb-8"
