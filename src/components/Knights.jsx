@@ -89,7 +89,7 @@ export default function Knights({ onBack }) {
                 className="aspect-[3/4] relative rounded-sm bg-black border-2 border-[#5c3e23] shadow-[0_4px_10px_rgba(0,0,0,0.8)] cursor-pointer group hover:border-[#d8b486] hover:shadow-[0_0_15px_rgba(216,180,134,0.4)] transition-all overflow-hidden"
               >
                 {/* 첨부해주신 이미지 반영 */}
-                <img src="/mainknight-profile.png" alt="Main Knight" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img src={mainKnightBase.image} alt={mainKnightBase.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 
                 {/* 다크 판타지 프레임 오버레이 */}
                 <div className="absolute inset-0 border-[1px] border-[#a6845c]/30 pointer-events-none"></div>
@@ -124,7 +124,7 @@ export default function Knights({ onBack }) {
               <div className="absolute inset-0 bg-cover bg-center opacity-10 pointer-events-none" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}></div>
               
               <div className="w-16 h-20 rounded-sm border border-[#5c3e23] overflow-hidden shrink-0 relative z-10">
-                <img src="/mainknight-profile.png" alt="Profile" className="w-full h-full object-cover" />
+                <img src={mainKnightBase.image} alt={mainKnightBase.name} className="w-full h-full object-cover" />
               </div>
               
               <div className="ml-4 flex flex-col justify-center relative z-10 flex-1">
