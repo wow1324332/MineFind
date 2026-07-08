@@ -11,7 +11,6 @@ export default function Knights({ onBack }) {
   const [userData, setUserData] = useState(null);
   
   const [selectedKnight, setSelectedKnight] = useState(null);
-  // 💡 모달 제어를 위한 장비 선택 상태 추가
   const [selectedEquipPart, setSelectedEquipPart] = useState(null);
 
   useEffect(() => {
@@ -48,7 +47,6 @@ export default function Knights({ onBack }) {
     const dbData = EQUIP_DATABASE[part].evolutions[equipKey] || EQUIP_DATABASE[part].evolutions['tier_0_neutral'];
     const growth = EQUIP_DATABASE[part].enhanceGrowth;
 
-    // 💡 현재 장비의 최종 스탯 계산 (기본 스탯 + 강화 보너스)
     const currentStats = {
       str: dbData.baseStat.str + (growth.str * state.enhance),
       agi: dbData.baseStat.agi + (growth.agi * state.enhance),
@@ -121,7 +119,7 @@ export default function Knights({ onBack }) {
                   <img 
                     src="/default-skill-icon.png" 
                     alt="Skill" 
-                    className="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-300" 
+                    className="w-full h-full object-cover opacity-100 group-hover:scale-110 transition-transform duration-300" 
                     onError={(e) => { e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%231a1008'/%3E%3Ccircle cx='12' cy='12' r='6' fill='%238c6543'/%3E%3C/svg%3E" }} 
                   />
                 </div>
@@ -153,19 +151,20 @@ export default function Knights({ onBack }) {
                     return (
                       <div 
                         key={idx} 
-                        onClick={() => setSelectedEquipPart(part)} // 💡 클릭 시 해당 부위를 상태로 저장하여 모달을 띄움
-                        className="w-[21%] aspect-square max-w-[60px] bg-[#3a2210]/5 border border-[#5c3e23]/60 rounded-sm relative flex items-center justify-center shadow-[inset_0_2px_5px_rgba(0,0,0,0.2)] cursor-pointer hover:border-[#3a2210] transition-colors group"
+                        onClick={() => setSelectedEquipPart(part)}
+                        className="w-[21%] aspect-square max-w-[60px] bg-[#3a2210]/10 border border-[#5c3e23]/60 rounded-sm relative flex items-center justify-center shadow-[inset_0_2px_5px_rgba(0,0,0,0.2)] cursor-pointer hover:border-[#3a2210] transition-colors group overflow-hidden"
                       >
                         {equipItem.enhance > 0 && (
                           <span className="absolute -top-1 -left-1 bg-black/80 text-yellow-500 font-black text-[10px] px-1 rounded-sm shadow-md border border-[#5c3e23] z-20">
                             +{equipItem.enhance}
                           </span>
                         )}
-                        <div className="w-full h-full p-2.5 opacity-60 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        {/* 💡 투명도(opacity)와 여백(padding)을 완전히 제거하여 이미지가 프레임에 꽉 차게 수정 */}
+                        <div className="w-full h-full flex items-center justify-center">
                           <img 
                             src={equipItem.image} 
                             alt={equipItem.name} 
-                            className="w-full h-full object-contain drop-shadow-md"
+                            className="w-full h-full object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300"
                             onError={(e) => { e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233a2210'%3E%3Cpath d='M12 2L2 22h20L12 2z'/%3E%3C/svg%3E"; }} 
                           />
                         </div>
@@ -186,11 +185,9 @@ export default function Knights({ onBack }) {
           <div className="absolute inset-0 z-50 flex items-center justify-center p-6 bg-black/70 backdrop-blur-sm animate-[fadeIn_0.2s_ease-in-out]">
             <div className="w-full max-w-xs border-2 border-[#5c3e23] rounded-md shadow-[0_10px_40px_rgba(0,0,0,1)] relative overflow-hidden flex flex-col">
               
-              {/* 모달 양피지 배경 */}
               <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}></div>
               
               <div className="relative z-10 flex flex-col p-5">
-                {/* 닫기 버튼 */}
                 <button 
                   onClick={() => setSelectedEquipPart(null)} 
                   className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center text-[#5c3e23] hover:text-[#3a2210] transition-colors"
@@ -198,18 +195,18 @@ export default function Knights({ onBack }) {
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
 
-                {/* 장비 아이콘 및 명칭 */}
                 <div className="flex flex-col items-center mb-4 mt-2">
-                  <div className="w-16 h-16 bg-[#3a2210]/10 border border-[#5c3e23] rounded-sm flex items-center justify-center shadow-inner mb-3 relative">
+                  <div className="w-16 h-16 bg-[#3a2210]/10 border border-[#5c3e23] rounded-sm flex items-center justify-center shadow-inner mb-3 relative overflow-hidden">
                     {parsedEquip[selectedEquipPart].enhance > 0 && (
-                      <span className="absolute -top-1.5 -left-1.5 bg-black/80 text-yellow-500 font-black text-xs px-1.5 py-0.5 rounded-sm shadow-md border border-[#5c3e23]">
+                      <span className="absolute -top-1.5 -left-1.5 bg-black/80 text-yellow-500 font-black text-xs px-1.5 py-0.5 rounded-sm shadow-md border border-[#5c3e23] z-20">
                         +{parsedEquip[selectedEquipPart].enhance}
                       </span>
                     )}
+                    {/* 💡 모달 내부의 장비 이미지도 투명도와 여백을 없애 선명하고 꽉 차게 수정 */}
                     <img 
                       src={parsedEquip[selectedEquipPart].image} 
                       alt={parsedEquip[selectedEquipPart].name} 
-                      className="w-full h-full object-contain p-2 opacity-80"
+                      className="w-full h-full object-contain drop-shadow-md"
                       onError={(e) => { e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233a2210'%3E%3Cpath d='M12 2L2 22h20L12 2z'/%3E%3C/svg%3E"; }} 
                     />
                   </div>
@@ -221,12 +218,11 @@ export default function Knights({ onBack }) {
                   </span>
                 </div>
 
-                {/* 현재 장비 스탯 요약 */}
                 <div className="bg-[#3a2210]/5 border border-[#8c6543]/30 rounded-sm p-3 mb-5">
                   <div className="text-[#5c3e23] font-black text-[11px] mb-2 border-b border-[#8c6543]/30 pb-1">부여된 스탯</div>
                   <div className="grid grid-cols-2 gap-2">
                     {Object.entries(parsedEquip[selectedEquipPart].stats)
-                      .filter(([_, val]) => val > 0) // 값이 0 초과인 스탯만 필터링하여 노출
+                      .filter(([_, val]) => val > 0)
                       .map(([key, val]) => (
                         <div key={key} className="flex justify-between items-center">
                           <span className="text-[#5c3e23] font-bold text-xs uppercase">{key}</span>
@@ -236,7 +232,6 @@ export default function Knights({ onBack }) {
                   </div>
                 </div>
 
-                {/* 액션 버튼 그룹 */}
                 <div className="flex gap-2">
                   <button className="flex-1 bg-[#4a2c11] hover:bg-[#3a2210] text-[#f5d5a9] font-bold text-xs py-2.5 rounded-sm transition-colors border border-[#5c3e23] shadow-md active:scale-95">
                     장비 강화
