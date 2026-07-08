@@ -58,76 +58,76 @@ export const KNIGHT_DATABASE = {
   },
 
   // ========================================================
-  // 🌋 2. 이프리트 (불의 던전 소환 기사)
+  // 🌋 2. 랜슬록 (불의 던전 소환 기사)
   // ========================================================
-  'knight_fire_ifrit': {
-    id: 'knight_fire_ifrit',
-    name: '이프리트',
-    title: '화염의 화신',
+  'knight_fire_lancelot': {
+    id: 'knight_fire_lancelot',
+    name: 'Lancelot',
+    title: '화염의 수련기사',
     attribute: 'fire',
-    rarity: 'epic',
-    image: '/knights/ifrit-profile.png',    // 갤러리/목록용 미니 프로필
-    fullImage: '/knights/ifrit-full.png',   // 🎬 시네마틱 연출용 전신 일러스트
-    description: '지옥불 던전 깊은 곳에서 계약을 맺은 화염의 정령 기사입니다.',
+    rarity: 'rare',
+    image: '/knights/knight-lancelot-profile.png',    // 갤러리/목록용 미니 프로필
+    fullImage: '/knights/knight-lancelot.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '지옥불 던전 깊은 곳에서 계약을 맺은 화염의 기사입니다.',
     
     // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
     cost: {
-      itemId: 'mat_fire_rare', // 불의 던전 난이도별 확률 드랍템 (지옥염룡의 역린 등)
-      count: 1,
+      itemId: 'con_soul_1', // 불의 던전 난이도별 확률 드랍템 (지옥염룡의 역린 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 20,
+      agi: 10,
+      int: 5,
+      vit: 20,
+      luk: 15
+    },
+
+    statGrowth: {
+      str: 3,
+      agi: 1,
+      int: 1,
+      vit: 3,
+      luk: 2
+    }
+  },
+
+  // ========================================================
+  // 💧 3. 가웨인 (불의 던전 소환 기사)
+  // ========================================================
+  'knight_fire_gawain': {
+    id: 'knight_fire_gawain',
+    name: 'Gawain',
+    title: '화염의 인도자',
+    attribute: 'fire',
+    rarity: 'rare',
+    image: '/knights/knight-gawain-profile.png',
+    fullImage: '/knights/knight-gawain.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '불의 던전에서 구출된 후 당신에게 충성을 맹세한 기사입니다.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_1', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 5,
       gold: 5000
     },
 
     baseStats: {
       str: 25,
-      agi: 15,
+      agi: 5,
       int: 5,
       vit: 20,
-      luk: 5
+      luk: 10
     },
 
     statGrowth: {
       str: 4,
-      agi: 2,
+      agi: 1,
       int: 1,
-      vit: 3,
-      luk: 1
-    }
-  },
-
-  // ========================================================
-  // 💧 3. 운디네 (물의 던전 소환 기사)
-  // ========================================================
-  'knight_water_undine': {
-    id: 'knight_water_undine',
-    name: '운디네',
-    title: '심해의 인도자',
-    attribute: 'water',
-    rarity: 'epic',
-    image: '/knights/undine-profile.png',
-    fullImage: '/knights/undine-full.png',   // 🎬 시네마틱 연출용 전신 일러스트
-    description: '물의 던전에서 구출된 후 당신에게 충성을 맹세한 기사입니다.',
-    
-    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
-    cost: {
-      itemId: 'mat_water_rare', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
-      count: 1,
-      gold: 5000
-    },
-
-    baseStats: {
-      str: 10,
-      agi: 25,
-      int: 20,
-      vit: 10,
-      luk: 15
-    },
-
-    statGrowth: {
-      str: 1,
-      agi: 4,
-      int: 3,
       vit: 1,
-      luk: 2
+      luk: 1
     }
   }
 };
