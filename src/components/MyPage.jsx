@@ -14,7 +14,7 @@ const AVAILABLE_AVATARS = [
   { id: 'knight3', src: '/avatars/knight3.jpeg', name: '견습 기사' },
 ];
 
-export default function MyPage({ onBack }) {
+export default function MyPage({ onBack, onKnights }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isInventoryOpen, setIsInventoryOpen] = useState(false); 
   const [activeTab, setActiveTab] = useState('profile'); 
@@ -301,6 +301,19 @@ export default function MyPage({ onBack }) {
             />
           </button>
 
+          <button 
+            onClick={onKnights} 
+            className="group relative flex justify-center items-center w-full max-w-[17rem] h-[55px] z-10 mt-1"
+            style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+          >
+            <img 
+              src="/knights-bt.png" 
+              alt="Knights Order" 
+              className="absolute w-full h-auto pointer-events-none transition-all duration-200 group-hover:brightness-110 group-active:scale-95 drop-shadow-[0_10px_20px_rgba(0,0,0,0.7)]" 
+              draggable="false" 
+            />
+          </button>
+          
         </div>
       </div>
 
