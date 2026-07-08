@@ -9,14 +9,14 @@ export const EQUIP_DATABASE = {
     evolutions: {
       // [티어 0] 무속성 (디폴트)
       'tier_0_neutral': {
-        name: '녹슨 훈련용 검',
-        image: '/equip-default-weapon.png',
-        baseStat: { str: 5, agi: 2, int: 0, vit: 0, luk: 0 },
+        name: 'wooden sword',
+        image: '/equips/woodensword.png',
+        baseStat: { str: 3, agi: 0, int: 0, vit: 0, luk: 0 },
       },
       // [티어 1] 불 속성
       'tier_1_flame': {
-        name: '타오르는 잉걸불 검',
-        image: '/equip-weapon-flame-1.png', // 추후 이미지 파일명에 맞게 변경
+        name: 'wooden sword',
+        image: '/equips/woodensword.png', // 추후 이미지 파일명에 맞게 변경
         baseStat: { str: 25, agi: 5, int: 0, vit: 0, luk: 0 },
       },
       // [티어 2] 불 속성
@@ -42,9 +42,9 @@ export const EQUIP_DATABASE = {
     
     evolutions: {
       'tier_0_neutral': {
-        name: '낡은 가죽 투구',
-        image: '/equip-default-helmet.png',
-        baseStat: { str: 0, agi: 0, int: 2, vit: 5, luk: 0 },
+        name: 'leather helmet',
+        image: '/equips/leatherhelmet.png',
+        baseStat: { str: 0, agi: 0, int: 0, vit: 5, luk: 0 },
       },
       'tier_1_flame': {
         name: '광신도의 두건',
@@ -67,9 +67,9 @@ export const EQUIP_DATABASE = {
     
     evolutions: {
       'tier_0_neutral': {
-        name: '금이 간 나무 방패',
-        image: '/equip-default-shield.png',
-        baseStat: { str: 0, agi: 0, int: 0, vit: 10, luk: 2 },
+        name: 'leather shield',
+        image: '/equips/leathershield.png',
+        baseStat: { str: 0, agi: 0, int: 0, vit: 4, luk: 1 },
       },
       'tier_1_aqua': {
         name: '심연의 수호벽',
@@ -92,9 +92,9 @@ export const EQUIP_DATABASE = {
     
     evolutions: {
       'tier_0_neutral': {
-        name: '빛바랜 사슬 갑옷',
-        image: '/equip-default-armor.png',
-        baseStat: { str: 2, agi: 0, int: 0, vit: 15, luk: 0 },
+        name: 'leather armor',
+        image: '/equips/leatherarmor.png',
+        baseStat: { str: 0, agi: 2, int: 0, vit: 10, luk: 2 },
       },
       'tier_1_dark': {
         name: '저주받은 판금 갑옷',
