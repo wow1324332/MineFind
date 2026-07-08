@@ -119,6 +119,15 @@ export const ITEM_DATABASE = {
     rarity: 'rare',
     desc: '숨겨진 던전의 문이나 굳게 닫힌 보물상자를 열 수 있는 황금 열쇠.',
     sellPrice: 100
+  },
+  'con_soul_1':{
+    id: 'con_soul_1',
+    type: 'consumable',
+    name: 'soul of fire knight',
+    icon: '/items/knightsoul-fire-small.png',
+    rarity: 'rare',
+    desc: '화염의 기사들의 영혼 조각',
+    sellPrice: 2000
   }
 };
 
