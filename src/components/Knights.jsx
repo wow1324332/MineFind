@@ -356,9 +356,9 @@ export default function Knights({ onBack }) {
               {/* 🧪 경험치 포션 3종 (소, 중, 대) 배열 */}
               <div className="flex justify-between items-center gap-2">
                 {[
-                  { id: `potion_exp_${activeKnightBase.attribute || 'neutral'}_small`, defaultName: '하급' },
-                  { id: `potion_exp_${activeKnightBase.attribute || 'neutral'}_medium`, defaultName: '중급' },
-                  { id: `potion_exp_${activeKnightBase.attribute || 'neutral'}_large`, defaultName: '상급' }
+                  { id: `potion_exp_${activeKnightBase.attribute || 'neutral'}_small`, defaultName: 'Small' },
+                  { id: `potion_exp_${activeKnightBase.attribute || 'neutral'}_medium`, defaultName: 'Medium' },
+                  { id: `potion_exp_${activeKnightBase.attribute || 'neutral'}_large`, defaultName: 'Large' }
                 ].map((potionObj) => {
                   const itemData = ITEM_DATABASE[potionObj.id];
                   const potionCount = items[potionObj.id] || 0;
