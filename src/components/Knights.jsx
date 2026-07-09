@@ -6,6 +6,7 @@ import { useAuth } from '../hooks/useAuth';
 import { KNIGHT_DATABASE } from '../constants/knightData';
 import { EQUIP_DATABASE } from '../constants/equipData';
 import { ITEM_DATABASE } from '../constants/itemData'; 
+import { getKnightRequiredExp, processKnightExpGain } from '../utils/expUtils';
 
 export default function Knights({ onBack }) {
   const { user } = useAuth();
@@ -16,6 +17,7 @@ export default function Knights({ onBack }) {
 
   // 🔮 소환 시스템용 상태 
   const [showSummonModal, setShowSummonModal] = useState(false);
+  const [showLevelUpModal, setShowLevelUpModal] = useState(false);
   const [summoningKnight, setSummoningKnight] = useState(null);
   const [showCinematicText, setShowCinematicText] = useState(false);
   
@@ -97,6 +99,10 @@ export default function Knights({ onBack }) {
     activeKnightLevel = selectedKnight === 'knight_main' 
       ? userLevel 
       : (userData.knightStats?.[selectedKnight]?.level || 1);
+
+    const activeKnightExp = selectedKnight === 'knight_main' ? 0 : (userData.knightStats?.[selectedKnight]?.exp || 0);
+    const requiredKnightExp = selectedKnight === 'knight_main' ? 1 : getKnightRequiredExp(activeKnightLevel);
+    const knightExpPercent = selectedKnight === 'knight_main' ? 100 : Math.min((activeKnightExp / requiredKnightExp) * 100, 100);
 
     finalStats = {
       str: activeKnightBase.baseStats.str + activeKnightBase.statGrowth.str * (activeKnightLevel - 1) + equipBonus.str,
@@ -180,7 +186,15 @@ export default function Knights({ onBack }) {
             <div className="mb-4 animate-[slideUp_0.4s_ease-out] flex justify-between items-end">
               <div>
                 <div className="flex items-center gap-2 mb-1.5">
-                  <span className="text-yellow-400 font-serif font-black text-[12px] border border-yellow-500/50 bg-black/60 px-1.5 py-0.5 rounded-sm backdrop-blur-sm">Lv.{activeKnightLevel}</span>
+                <div 
+                  onClick={() => {
+                    if (selectedKnight !== 'knight_main') setShowLevelUpModal(true);
+                  }}
+                  className={`flex items-center justify-center bg-black/60 border border-yellow-500/50 px-2 py-0.5 rounded-sm backdrop-blur-sm transition-all
+                    ${selectedKnight !== 'knight_main' ? 'cursor-pointer hover:scale-110 active:scale-95 shadow-[0_0_10px_rgba(250,204,21,0.5)]' : ''}`}
+                >
+                  <span className="text-yellow-400 font-serif font-black text-[12px] leading-none">Lv.{activeKnightLevel}</span>
+                </div>
                   <span className="text-[#d8b486] font-bold text-xs drop-shadow-[0_2px_2px_rgba(0,0,0,1)]">{displayTitle}</span>
                 </div>
                 <h2 className="text-[#f5d5a9] font-black text-4xl drop-shadow-[0_4px_4px_rgba(0,0,0,1)] tracking-tight mb-1">{displayName}</h2>
@@ -526,6 +540,104 @@ export default function Knights({ onBack }) {
                   })}
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================= */}
+      {/* 🧪 9. 기사 레벨업 (포션 먹이기) 모달 */}
+      {/* ========================================= */}
+      {showLevelUpModal && selectedKnight !== 'knight_main' && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-[fadeIn_0.2s_ease-out]">
+          
+          <div className="relative w-full max-w-[300px] border-2 border-[#5c3e23] rounded-md shadow-[0_10px_40px_rgba(0,0,0,1)] flex flex-col mt-10">
+            
+            {/* 닫기 폰트 버튼 (소환 제단과 동일한 우측 상단 X 폰트) */}
+            <button 
+              onClick={() => setShowLevelUpModal(false)} 
+              className="absolute -top-10 right-0 text-white/80 hover:text-white font-black text-xl transition-colors bg-transparent border-none outline-none drop-shadow-md"
+            >
+              X
+            </button>
+
+            {/* 양피지 배경 */}
+            <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}></div>
+            
+            <div className="relative z-10 flex flex-col p-5">
+              <h3 className="text-[#3a2210] font-black text-lg text-center leading-tight drop-shadow-sm mb-4">
+                성장의 비약
+              </h3>
+
+              {/* 📊 경험치 게이지 바 */}
+              <div className="mb-6">
+                <div className="flex justify-between items-end mb-1 px-1">
+                  <span className="text-[#5c3e23] font-serif font-black text-xs tracking-wider">Lv.{activeKnightLevel}</span>
+                  <span className="text-[#8c6543] font-bold text-[10px]">
+                    {activeKnightExp.toLocaleString()} / {requiredKnightExp.toLocaleString()}
+                  </span>
+                </div>
+                <div className="w-full h-3 bg-[#3a2210]/20 rounded-sm overflow-hidden border border-[#5c3e23]/40 shadow-inner relative">
+                  <div 
+                    className="h-full bg-gradient-to-r from-yellow-600 to-yellow-400 transition-all duration-300"
+                    style={{ width: `${knightExpPercent}%` }}
+                  ></div>
+                </div>
+              </div>
+
+              {/* 🧪 경험치 포션 3종 (소, 중, 대) 배열 */}
+              <div className="flex justify-between items-center gap-2">
+                {[
+                  { id: 'potion_exp_fire_small', name: '하급', expGrant: 50 },
+                  { id: 'potion_exp_fire_medium', name: '중급', expGrant: 200 },
+                  { id: 'potion_exp_fire_large', name: '상급', expGrant: 1000 }
+                ].map((potion) => {
+                  const potionCount = items[potion.id] || 0;
+                  const itemData = ITEM_DATABASE[potion.id];
+                  
+                  return (
+                    <div key={potion.id} className="flex flex-col items-center w-1/3">
+                      <div 
+                        onClick={async (e) => {
+                          e.stopPropagation();
+                          if (potionCount < 1) {
+                            alert("물약이 부족합니다!");
+                            return;
+                          }
+                          // 물약 사용 (DB 통신)
+                          const { newLevel, newExp } = processKnightExpGain(activeKnightLevel, activeKnightExp, potion.expGrant);
+                          const userDocRef = doc(db, 'users', user.uid);
+                          await updateDoc(userDocRef, {
+                            [`inventory.items.${potion.id}`]: increment(-1),
+                            [`knightStats.${selectedKnight}.level`]: newLevel,
+                            [`knightStats.${selectedKnight}.exp`]: newExp
+                          });
+                        }}
+                        className={`w-full aspect-square bg-[#3a2210]/10 border border-[#5c3e23]/60 rounded-sm relative flex items-center justify-center shadow-[inset_0_2px_5px_rgba(0,0,0,0.2)] transition-all group select-none
+                          ${potionCount > 0 ? 'cursor-pointer hover:border-[#3a2210] active:scale-95' : 'opacity-50 grayscale'}`}
+                      >
+                        {/* 수량 뱃지 */}
+                        <span className="absolute -top-2 -right-1 bg-black text-[#f5d5a9] font-black text-[9px] px-1.5 py-0.5 rounded-full shadow-md border border-[#5c3e23] z-20">
+                          {potionCount}
+                        </span>
+                        
+                        {/* 포션 이미지 */}
+                        <div className="w-8 h-8 flex items-center justify-center text-xl drop-shadow-md group-hover:scale-110 transition-transform">
+                          {itemData?.image ? (
+                            <img src={itemData.image} alt={potion.name} className="w-full h-full object-contain" />
+                          ) : (
+                            itemData?.icon || '🧪'
+                          )}
+                        </div>
+                      </div>
+                      <span className="text-[#5c3e23] font-bold text-[10px] mt-1 text-center leading-tight">
+                        {potion.name}<br/>(+{potion.expGrant})
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+
             </div>
           </div>
         </div>
