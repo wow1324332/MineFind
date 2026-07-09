@@ -318,9 +318,11 @@ export default function Knights({ onBack }) {
             </div>
           </div>
         )}
-      </div>
 
-{showLevelUpModal && selectedKnight !== 'knight_main' && (
+        {/* ========================================= */}
+        {/* 🧪 기사 레벨업 (포션 먹이기) 모달 */}
+        {/* ========================================= */}
+        {showLevelUpModal && selectedKnight !== 'knight_main' && (
           <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-[fadeIn_0.2s_ease-out]">
             <div className="relative w-full max-w-[300px] border-2 border-[#5c3e23] rounded-md shadow-[0_10px_40px_rgba(0,0,0,1)] flex flex-col mt-10">
               <button 
@@ -385,8 +387,10 @@ export default function Knights({ onBack }) {
                 </div>
               </div>
             </div>
-          )}
-       </div>
+          </div>
+        )}
+
+      </div>
     );
   }
 
