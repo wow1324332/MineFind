@@ -353,44 +353,63 @@ export default function Knights({ onBack }) {
                     <div className="h-full bg-gradient-to-r from-yellow-600 to-yellow-400 transition-all duration-300" style={{ width: `${knightExpPercent}%` }}></div>
                   </div>
                 </div>
-                <div className="flex justify-between items-center gap-2">
-                  {[
-                    { id: `potion_exp_${activeKnightBase.element || 'neutral'}_small`, name: '하급', expGrant: 50 },
-                    { id: `potion_exp_${activeKnightBase.element || 'neutral'}_medium`, name: '중급', expGrant: 200 },
-                    { id: `potion_exp_${activeKnightBase.element || 'neutral'}_large`, name: '상급', expGrant: 1000 }
-                  ].map((potion) => {
-                    const potionCount = items[potion.id] || 0;
-                    const itemData = ITEM_DATABASE[potion.id];
-                    return (
-                      <div key={potion.id} className="flex flex-col items-center w-1/3">
-                        <div 
-                          onClick={async (e) => {
-                            e.stopPropagation();
-                            if (potionCount < 1) { alert("물약이 부족합니다!"); return; }
-                            const { newLevel, newExp } = processKnightExpGain(activeKnightLevel, activeKnightExp, potion.expGrant);
-                            const userDocRef = doc(db, 'users', user.uid);
-                            await updateDoc(userDocRef, {
-                              [`inventory.items.${potion.id}`]: increment(-1),
-                              [`knightStats.${selectedKnight}.level`]: newLevel,
-                              [`knightStats.${selectedKnight}.exp`]: newExp
-                            });
-                          }}
-                          className={`w-full aspect-square bg-[#3a2210]/10 border border-[#5c3e23]/60 rounded-sm relative flex items-center justify-center shadow-[inset_0_2px_5px_rgba(0,0,0,0.2)] transition-all group select-none ${potionCount > 0 ? 'cursor-pointer hover:border-[#3a2210] active:scale-95' : 'opacity-50 grayscale'}`}
-                        >
-                          <span className="absolute -top-2 -right-1 bg-black text-[#f5d5a9] font-black text-[9px] px-1.5 py-0.5 rounded-full shadow-md border border-[#5c3e23] z-20">
-                            {potionCount}
-                          </span>
-                          <div className="w-8 h-8 flex items-center justify-center text-xl drop-shadow-md group-hover:scale-110 transition-transform">
-                            {itemData?.image ? <img src={itemData.image} alt={potion.name} className="w-full h-full object-contain" /> : (itemData?.icon || '🧪')}
-                          </div>
-                        </div>
-                        <span className="text-[#5c3e23] font-bold text-[10px] mt-1 text-center leading-tight">
-                          {potion.name}<br/>(+{potion.expGrant})
+              {/* 🧪 경험치 포션 3종 (소, 중, 대) 배열 */}
+              <div className="flex justify-between items-center gap-2">
+                {[
+                  { id: `potion_exp_${activeKnightBase.element || 'neutral'}_small`, defaultName: '하급' },
+                  { id: `potion_exp_${activeKnightBase.element || 'neutral'}_medium`, defaultName: '중급' },
+                  { id: `potion_exp_${activeKnightBase.element || 'neutral'}_large`, defaultName: '상급' }
+                ].map((potionObj) => {
+                  const itemData = ITEM_DATABASE[potionObj.id];
+                  const potionCount = items[potionObj.id] || 0;
+                  
+                  // 💡 DB(itemData)에 설정된 이름과 경험치를 우선 적용합니다.
+                  const potionName = itemData?.name || potionObj.defaultName;
+                  const potionExp = itemData?.expAmount || itemData?.expGrant || 0;
+                  
+                  // 💡 image나 icon에 경로(/)가 포함되어 있으면 이미지로 처리합니다.
+                  const imgSrc = itemData?.image || (itemData?.icon && itemData.icon.includes('/') ? itemData.icon : null);
+                  const iconEmoji = !imgSrc ? (itemData?.icon || '🧪') : null;
+
+                  return (
+                    <div key={potionObj.id} className="flex flex-col items-center w-1/3">
+                      <div 
+                        onClick={async (e) => {
+                          e.stopPropagation();
+                          if (potionCount < 1) { alert("물약이 부족합니다!"); return; }
+                          if (potionExp === 0) { alert("물약 데이터가 없습니다!"); return; }
+                          
+                          // 💡 하드코딩된 값이 아닌 DB의 경험치(potionExp)만큼 증가시킵니다.
+                          const { newLevel, newExp } = processKnightExpGain(activeKnightLevel, activeKnightExp, potionExp);
+                          const userDocRef = doc(db, 'users', user.uid);
+                          await updateDoc(userDocRef, {
+                            [`inventory.items.${potionObj.id}`]: increment(-1),
+                            [`knightStats.${selectedKnight}.level`]: newLevel,
+                            [`knightStats.${selectedKnight}.exp`]: newExp
+                          });
+                        }}
+                        className={`w-full aspect-square bg-[#3a2210]/10 border border-[#5c3e23]/60 rounded-sm relative flex items-center justify-center shadow-[inset_0_2px_5px_rgba(0,0,0,0.2)] transition-all group select-none ${potionCount > 0 ? 'cursor-pointer hover:border-[#3a2210] active:scale-95' : 'opacity-50 grayscale'}`}
+                      >
+                        <span className="absolute -top-2 -right-1 bg-black text-[#f5d5a9] font-black text-[9px] px-1.5 py-0.5 rounded-full shadow-md border border-[#5c3e23] z-20">
+                          {potionCount}
                         </span>
+                        
+                        <div className="w-8 h-8 flex items-center justify-center text-xl drop-shadow-md group-hover:scale-110 transition-transform">
+                          {imgSrc ? (
+                            <img src={imgSrc} alt={potionName} className="w-full h-full object-contain" />
+                          ) : (
+                            iconEmoji
+                          )}
+                        </div>
                       </div>
-                    );
-                  })}
-                </div>
+                      
+                      <span className="text-[#5c3e23] font-bold text-[10px] mt-1 text-center leading-tight">
+                        {potionName}<br/>(+{potionExp})
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
               </div>
             </div>
           </div>
