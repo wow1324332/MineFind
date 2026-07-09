@@ -82,6 +82,7 @@ export default function Knights({ onBack }) {
   });
 
   let activeKnightBase = null;
+  let activeKnightLevel = 1; // 💡 기사 개별 레벨 변수 추가
   let finalStats = { str: 0, agi: 0, int: 0, vit: 0, luk: 0 };
   let combatPower = 0;
   let displayTitle = '';
@@ -92,12 +93,17 @@ export default function Knights({ onBack }) {
     displayTitle = activeKnightBase.title;
     displayName = selectedKnight === 'knight_main' ? userNickname : activeKnightBase.name;
 
+    // 💡 핵심: 주인공은 유저 레벨을, 소환된 기사는 DB의 개별 레벨(없으면 기본 1)을 사용합니다!
+    activeKnightLevel = selectedKnight === 'knight_main' 
+      ? userLevel 
+      : (userData.knightStats?.[selectedKnight]?.level || 1);
+
     finalStats = {
-      str: activeKnightBase.baseStats.str + activeKnightBase.statGrowth.str * (userLevel - 1) + equipBonus.str,
-      agi: activeKnightBase.baseStats.agi + activeKnightBase.statGrowth.agi * (userLevel - 1) + equipBonus.agi,
-      int: activeKnightBase.baseStats.int + activeKnightBase.statGrowth.int * (userLevel - 1) + equipBonus.int,
-      vit: activeKnightBase.baseStats.vit + activeKnightBase.statGrowth.vit * (userLevel - 1) + equipBonus.vit,
-      luk: activeKnightBase.baseStats.luk + activeKnightBase.statGrowth.luk * (userLevel - 1) + equipBonus.luk,
+      str: activeKnightBase.baseStats.str + activeKnightBase.statGrowth.str * (activeKnightLevel - 1) + equipBonus.str,
+      agi: activeKnightBase.baseStats.agi + activeKnightBase.statGrowth.agi * (activeKnightLevel - 1) + equipBonus.agi,
+      int: activeKnightBase.baseStats.int + activeKnightBase.statGrowth.int * (activeKnightLevel - 1) + equipBonus.int,
+      vit: activeKnightBase.baseStats.vit + activeKnightBase.statGrowth.vit * (activeKnightLevel - 1) + equipBonus.vit,
+      luk: activeKnightBase.baseStats.luk + activeKnightBase.statGrowth.luk * (activeKnightLevel - 1) + equipBonus.luk,
     };
     combatPower = (finalStats.str * 10) + (finalStats.agi * 8) + (finalStats.vit * 6) + (finalStats.int * 4) + (finalStats.luk * 2);
   }
@@ -174,7 +180,7 @@ export default function Knights({ onBack }) {
             <div className="mb-4 animate-[slideUp_0.4s_ease-out] flex justify-between items-end">
               <div>
                 <div className="flex items-center gap-2 mb-1.5">
-                  <span className="text-yellow-400 font-serif font-black text-[12px] border border-yellow-500/50 bg-black/60 px-1.5 py-0.5 rounded-sm backdrop-blur-sm">Lv.{userLevel}</span>
+                  <span className="text-yellow-400 font-serif font-black text-[12px] border border-yellow-500/50 bg-black/60 px-1.5 py-0.5 rounded-sm backdrop-blur-sm">Lv.{activeKnightLevel}</span>
                   <span className="text-[#d8b486] font-bold text-xs drop-shadow-[0_2px_2px_rgba(0,0,0,1)]">{displayTitle}</span>
                 </div>
                 <h2 className="text-[#f5d5a9] font-black text-4xl drop-shadow-[0_4px_4px_rgba(0,0,0,1)] tracking-tight mb-1">{displayName}</h2>
@@ -361,6 +367,8 @@ export default function Knights({ onBack }) {
               const isMain = id === 'knight_main';
               const nameToShow = isMain ? userNickname : knightInfo.name;
 
+              const thisKnightLevel = isMain ? userLevel : (userData.knightStats?.[id]?.level || 1);
+
               return (
                 <div 
                   key={id}
@@ -371,7 +379,8 @@ export default function Knights({ onBack }) {
                   <div className="absolute inset-0 border-[1px] border-[#a6845c]/30 pointer-events-none"></div>
                   
                   <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black via-black/90 to-transparent pt-8 pb-1.5 px-1 flex flex-col items-center">
-                    {isMain && <span className="text-yellow-400 font-serif font-black text-[10px] drop-shadow-md leading-none mb-0.5">Lv.{userLevel}</span>}
+                    {/* 💡 기존의 {isMain && ...} 조건을 없애고 모든 기사가 자기 레벨을 표시하게 함 */}
+                    <span className="text-yellow-400 font-serif font-black text-[10px] drop-shadow-md leading-none mb-0.5">Lv.{thisKnightLevel}</span>
                     <span className="text-[#f5d5a9] font-black text-[10px] truncate w-full text-center">{nameToShow}</span>
                   </div>
                 </div>
