@@ -330,17 +330,17 @@ export default function Knights({ onBack }) {
         {/* ========================================= */}
         {showLevelUpModal && selectedKnight !== 'knight_main' && (
           <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-[fadeIn_0.2s_ease-out]">
-            <div className="relative w-full max-w-[300px] border-2 border-[#5c3e23] rounded-md shadow-[0_10px_40px_rgba(0,0,0,1)] flex flex-col mt-10">
+            <div className="relative w-full max-w-[300px] rounded-md shadow-[0_10px_40px_rgba(0,0,0,1)] flex flex-col mt-10">
               <button 
                 onClick={() => setShowLevelUpModal(false)} 
-                className="absolute -top-10 right-0 text-white/80 hover:text-white font-black text-xl transition-colors bg-transparent border-none outline-none drop-shadow-md"
+                className="absolute -top-10 right-0 text-white/80 hover:text-white font-black text-base transition-colors bg-transparent border-none outline-none drop-shadow-md"
               >
                 X
               </button>
               <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}></div>
               <div className="relative z-10 flex flex-col p-5">
                 <h3 className="text-[#3a2210] font-black text-lg text-center leading-tight drop-shadow-sm mb-4">
-                  성장의 비약
+                  Level Up!
                 </h3>
                 <div className="mb-6">
                   <div className="flex justify-between items-end mb-1 px-1">
