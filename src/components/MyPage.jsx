@@ -40,7 +40,7 @@ export default function MyPage({ onBack, onKnights }) {
 
   // 💡 유저가 가진 아이템 ID를 도감(ITEM_DATABASE)과 매칭하여 조립
   // (inventory.items가 안전하게 읽히도록 빈 객체 `{}` 대비 처리 추가)
-  const allInventoryItems = Object.entries(inventory?.items || {}).map(([itemId, count]) => {
+  const allInventoryItems = Object.entries(inventory?.items || {}).filter(([itemId, count]) => count > 0).map(([itemId, count]) => {
     const itemInfo = ITEM_DATABASE[itemId];
     if (!itemInfo) return null;
     return {
