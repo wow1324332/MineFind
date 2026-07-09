@@ -498,8 +498,8 @@ export default function Knights({ onBack }) {
                                 disabled={!canSummon}
                                 className={`font-serif tracking-widest text-base font-black bg-transparent outline-none transition-all
                                   ${canSummon 
-                                    ? 'text-[#fffff0] animate-pulse drop-shadow-[0_0_10px_rgba(255,255,240,0.8)] hover:scale-110 active:scale-95' 
-                                    : 'text-neutral-500/80 drop-shadow-md'
+                                    ? 'text-[#fffff0] animate-pulse drop-shadow-[0_0_15px_rgba(0,0,0,1)] hover:scale-110 active:scale-95' 
+                                    : 'text-neutral-500/80 drop-shadow-[0_2px_5px_rgba(0,0,0,1)]'
                                   }
                                 `}
                               >
