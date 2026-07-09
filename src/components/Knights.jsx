@@ -325,18 +325,19 @@ export default function Knights({ onBack }) {
           </div>
         )}
 
-        {/* ========================================= */}
+{/* ========================================= */}
         {/* 🧪 기사 레벨업 (포션 먹이기) 모달 */}
         {/* ========================================= */}
         {showLevelUpModal && selectedKnight !== 'knight_main' && (
-          <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-[fadeIn_0.2s_ease-out]">
-            <div className="relative w-full max-w-[300px] rounded-md shadow-[0_10px_40px_rgba(0,0,0,1)] flex flex-col mt-10">
-              <button 
-                onClick={() => setShowLevelUpModal(false)} 
-                className="absolute -top-10 right-0 text-white/80 hover:text-white font-black text-base transition-colors bg-transparent border-none outline-none drop-shadow-md"
-              >
-                X
-              </button>
+          <div 
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-[fadeIn_0.2s_ease-out]"
+            onClick={() => setShowLevelUpModal(false)} // 💡 배경 클릭 시 모달 닫기
+          >
+            <div 
+              className="relative w-full max-w-[300px] rounded-xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,1)] flex flex-col mt-10"
+              onClick={(e) => e.stopPropagation()} // 💡 모달 내부 클릭 시 닫히는 것 방지
+            >
+              {/* 💡 X 닫기 버튼 제거됨 */}
               <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}></div>
               <div className="relative z-10 flex flex-col p-5">
                 <h3 className="text-[#3a2210] font-black text-lg text-center leading-tight drop-shadow-sm mb-4">
@@ -350,7 +351,8 @@ export default function Knights({ onBack }) {
                     </span>
                   </div>
                   <div className="w-full h-3 bg-[#3a2210]/20 rounded-sm overflow-hidden border border-[#5c3e23]/40 shadow-inner relative">
-                    <div className="h-full bg-gradient-to-r from-yellow-600 to-yellow-400 transition-all duration-300" style={{ width: `${knightExpPercent}%` }}></div>
+                    {/* 💡 게이지 색상을 짙은 갈색 톤으로 변경 */}
+                    <div className="h-full bg-gradient-to-r from-[#5c3e23] to-[#8c6543] transition-all duration-300" style={{ width: `${knightExpPercent}%` }}></div>
                   </div>
                 </div>
               {/* 🧪 경험치 포션 3종 (소, 중, 대) 배열 */}
@@ -363,11 +365,9 @@ export default function Knights({ onBack }) {
                   const itemData = ITEM_DATABASE[potionObj.id];
                   const potionCount = items[potionObj.id] || 0;
                   
-                  // 💡 DB(itemData)에 설정된 이름과 경험치를 우선 적용합니다.
                   const potionName = itemData?.name || potionObj.defaultName;
                   const potionExp = itemData?.expAmount || itemData?.expGrant || 0;
                   
-                  // 💡 image나 icon에 경로(/)가 포함되어 있으면 이미지로 처리합니다.
                   const imgSrc = itemData?.image || (itemData?.icon && itemData.icon.includes('/') ? itemData.icon : null);
                   const iconEmoji = !imgSrc ? (itemData?.icon || '🧪') : null;
 
@@ -387,7 +387,6 @@ export default function Knights({ onBack }) {
                             [`knightStats.${selectedKnight}.exp`]: newExp
                           });
                         }}
-                        // 💡 수정 1: 'grayscale'을 제거하고, 0개일 때는 살짝 투명하게(opacity-60)만 처리합니다.
                         className={`w-full aspect-square bg-[#3a2210]/10 border border-[#5c3e23]/60 rounded-sm relative flex items-center justify-center shadow-[inset_0_2px_5px_rgba(0,0,0,0.2)] transition-all group select-none 
                           ${potionCount > 0 ? 'cursor-pointer hover:border-[#3a2210] active:scale-95' : 'opacity-60 cursor-not-allowed'}`}
                       >
@@ -395,7 +394,6 @@ export default function Knights({ onBack }) {
                           {potionCount}
                         </span>
                         
-                        {/* 💡 수정 2: w-8 h-8(32px)을 w-14 h-14(56px)로 대폭 키웠습니다! */}
                         <div className="w-14 h-14 flex items-center justify-center text-xl drop-shadow-md group-hover:scale-110 transition-transform">
                           {imgSrc ? (
                             <img src={imgSrc} alt={potionName} className="w-full h-full object-contain" />
