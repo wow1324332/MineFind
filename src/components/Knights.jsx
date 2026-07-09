@@ -410,7 +410,7 @@ export default function Knights({ onBack }) {
             </button>
 
             {/* 메인 9:16 제단 컨텐츠 영역 */}
-            <div className="w-full h-full rounded-xl overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,1)] border border-neutral-800">
+            <div className="w-full h-full rounded-xl overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,1)]">
               
               {/* 배경 이미지 적용 */}
               <img src="/summon-bg.jpg" alt="Summon Altar" className="absolute inset-0 w-full h-full object-cover z-0" />
