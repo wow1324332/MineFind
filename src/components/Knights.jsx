@@ -379,7 +379,6 @@ export default function Knights({ onBack }) {
                           if (potionCount < 1) { alert("물약이 부족합니다!"); return; }
                           if (potionExp === 0) { alert("물약 데이터가 없습니다!"); return; }
                           
-                          // 💡 하드코딩된 값이 아닌 DB의 경험치(potionExp)만큼 증가시킵니다.
                           const { newLevel, newExp } = processKnightExpGain(activeKnightLevel, activeKnightExp, potionExp);
                           const userDocRef = doc(db, 'users', user.uid);
                           await updateDoc(userDocRef, {
@@ -388,13 +387,16 @@ export default function Knights({ onBack }) {
                             [`knightStats.${selectedKnight}.exp`]: newExp
                           });
                         }}
-                        className={`w-full aspect-square bg-[#3a2210]/10 border border-[#5c3e23]/60 rounded-sm relative flex items-center justify-center shadow-[inset_0_2px_5px_rgba(0,0,0,0.2)] transition-all group select-none ${potionCount > 0 ? 'cursor-pointer hover:border-[#3a2210] active:scale-95' : 'opacity-50 grayscale'}`}
+                        // 💡 수정 1: 'grayscale'을 제거하고, 0개일 때는 살짝 투명하게(opacity-60)만 처리합니다.
+                        className={`w-full aspect-square bg-[#3a2210]/10 border border-[#5c3e23]/60 rounded-sm relative flex items-center justify-center shadow-[inset_0_2px_5px_rgba(0,0,0,0.2)] transition-all group select-none 
+                          ${potionCount > 0 ? 'cursor-pointer hover:border-[#3a2210] active:scale-95' : 'opacity-60 cursor-not-allowed'}`}
                       >
                         <span className="absolute -top-2 -right-1 bg-black text-[#f5d5a9] font-black text-[9px] px-1.5 py-0.5 rounded-full shadow-md border border-[#5c3e23] z-20">
                           {potionCount}
                         </span>
                         
-                        <div className="w-8 h-8 flex items-center justify-center text-xl drop-shadow-md group-hover:scale-110 transition-transform">
+                        {/* 💡 수정 2: w-8 h-8(32px)을 w-14 h-14(56px)로 대폭 키웠습니다! */}
+                        <div className="w-14 h-14 flex items-center justify-center text-xl drop-shadow-md group-hover:scale-110 transition-transform">
                           {imgSrc ? (
                             <img src={imgSrc} alt={potionName} className="w-full h-full object-contain" />
                           ) : (
