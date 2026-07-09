@@ -683,7 +683,7 @@ export default function Knights({ onBack }) {
                 </h4>
                 
                 {/* 💡 버튼을 없애고 깜빡이는 터치 유도 문구 삽입 */}
-                <div className="mt-16 text-[#a6845c]/70 font-serif tracking-[0.3em] text-[10px] animate-pulse">
+                <div className="mt-16 text-[#a6845c]/70 font-serif tracking-[0.3em] text-[12px] animate-pulse">
                   - Continue -
                 </div>
               </div>
