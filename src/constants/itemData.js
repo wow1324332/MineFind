@@ -129,6 +129,15 @@ export const ITEM_DATABASE = {
     desc: '화염의 기사들의 영혼 조각',
     sellPrice: 2000
   },
+    'con_soul_2':{
+    id: 'con_soul_2',
+    type: 'consumable',
+    name: 'soul of water knight',
+    icon: '/items/knightsoul-water-small.png',
+    rarity: 'rare',
+    desc: '물의의 기사들의 영혼 조각',
+    sellPrice: 2000
+  },
   'potion_exp_fire_small': {
     name: '작은 불꽃 포션',
     description: '불 속성 기사에게 먹이면 경험치가 20 상승합니다.',
@@ -152,6 +161,30 @@ export const ITEM_DATABASE = {
     element: 'fire',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 200,       // 올려주는 경험치 량
     icon: '/items/exppotion-fire-large.png'
+  }
+    'potion_exp_fire_small': {
+    name: '작은 물방울 포션',
+    description: '물 속성 기사에게 먹이면 경험치가 20 상승합니다.',
+    type: 'consumable',
+    element: 'water',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
+    expAmount: 20,       // 올려주는 경험치 량
+    icon: '/items/exppotion-water-small.png'
+  },
+  'potion_exp_water_medium': {
+    name: '중급 물방울 포션',
+    description: '물 속성 기사에게 먹이면 경험치가 50 상승합니다.',
+    type: 'consumable',
+    element: 'water',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
+    expAmount: 50,       // 올려주는 경험치 량
+    icon: '/items/exppotion-water-medium.png'
+  },
+  'potion_exp_water_large': {
+    name: '고급 물방울 포션',
+    description: '물 속성 기사에게 먹이면 경험치가 200 상승합니다.',
+    type: 'consumable',
+    element: 'water',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
+    expAmount: 200,       // 올려주는 경험치 량
+    icon: '/items/exppotion-water-large.png'
   }
 };
 
