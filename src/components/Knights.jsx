@@ -399,7 +399,7 @@ export default function Knights({ onBack }) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm animate-[fadeIn_0.2s_ease-out]">
           
           {/* 모달 래퍼 (9:16 비율 강제 유지) */}
-          <div className="relative w-full max-w-[400px] aspect-[4/5] max-h-[80vh]">
+          <div className="relative w-full max-w-[400px] aspect-[9/16] max-h-[80vh]">
             
             {/* 닫기 버튼 (모달 우측 상단 바깥쪽, 폰트만) */}
             <button 
