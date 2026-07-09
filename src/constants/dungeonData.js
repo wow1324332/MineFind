@@ -50,7 +50,7 @@ export const DUNGEON_INFO = {
       [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0],
     ],
   },
-    poison: {
+  poison: {
     id: 'posison',
     name: 'Hell of poison',
     buttonImg: '/hellofpoison-bt.png',
