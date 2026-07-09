@@ -29,7 +29,8 @@ export const calculateDungeonRewards = (dungeonName, difficulty, isWin) => {
         case 'Easy':
           exp = 20;
           gold = 100;
-          droppedItems['mat_fire_1'] = getRandomCount(1, 2); 
+          droppedItems['mat_fire_1'] = getRandomCount(1, 2);
+          droppedItems['potion_exp_fire_small'] = getRandomCount(0, 2);
           // 🔥 Easy 전용 레어 드랍 세팅 (예: 2% 확률)
           rareDropsToRoll.push({ id: 'con_soul_1', chance: 0.10 });
           break;
