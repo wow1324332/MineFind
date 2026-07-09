@@ -129,13 +129,13 @@ export const ITEM_DATABASE = {
     desc: '화염의 기사들의 영혼 조각',
     sellPrice: 2000
   },
-  'potion_exp_fire': {
-    name: '타오르는 불꽃의 정수',
-    description: '불 속성 기사에게 먹이면 경험치가 100 상승합니다.',
+  'potion_exp_fire_small': {
+    name: '작은 불꽃 포션',
+    description: '불 속성 기사에게 먹이면 경험치가 20 상승합니다.',
     type: 'consumable',
     element: 'fire',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
-    expAmount: 100,       // 올려주는 경험치 량
-    icon: '🔥'
+    expAmount: 20,       // 올려주는 경험치 량
+    icon: '/items/exppotion-fire-small.png'
   }
 };
 
