@@ -39,12 +39,14 @@ export const calculateDungeonRewards = (dungeonName, difficulty, isWin) => {
           gold = 200;
           droppedItems['mat_fire_1'] = getRandomCount(0, 2); 
           droppedItems['mat_fire_2'] = getRandomCount(1, 2); 
+          droppedItems['potion_exp_fire_small'] = getRandomCount(0, 2);
           break;
         case 'Hard':
           exp = 150;
           gold = 500;
           droppedItems['mat_fire_1'] = getRandomCount(0, 2);
           droppedItems['mat_fire_2'] = getRandomCount(0, 2);
+          droppedItems['potion_exp_fire_small'] = getRandomCount(0, 2);
           droppedItems['mat_fire_3'] = 1;
           break;
         case 'Expert':
@@ -52,6 +54,7 @@ export const calculateDungeonRewards = (dungeonName, difficulty, isWin) => {
           gold = 800;
           droppedItems['mat_fire_2'] = getRandomCount(0, 2);
           droppedItems['mat_fire_3'] = getRandomCount(0, 2);
+          droppedItems['potion_exp_fire_small'] = getRandomCount(0, 2);
           droppedItems['mat_fire_4'] = 1;
           break;
         case 'Hell':
@@ -61,6 +64,7 @@ export const calculateDungeonRewards = (dungeonName, difficulty, isWin) => {
           droppedItems['mat_fire_3'] = getRandomCount(0, 2);
           droppedItems['mat_fire_4'] = getRandomCount(1, 2);
           droppedItems['mat_fire_5'] = 1; 
+          droppedItems['potion_exp_fire_small'] = getRandomCount(0, 2);
           break;
         default:
           exp = 30;
