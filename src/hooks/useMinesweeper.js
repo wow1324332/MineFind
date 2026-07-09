@@ -21,9 +21,7 @@ export const useMinesweeper = () => {
   const timerRef = useRef(null);
   
   const [difficultyLevel, setDifficultyLevel] = useState('Normal');
-  // 💡 상태 명칭을 명확하게 dungeonId로 변경하여 관리합니다. (기본값 'fire')
   const [dungeonId, setDungeonId] = useState('fire');
-
   const [rewards, setRewards] = useState(null);
 
   const formatTime = (seconds) => {
@@ -35,11 +33,8 @@ export const useMinesweeper = () => {
   const saveGameResult = useCallback(async (isWin, clearTime) => {
     if (!user) return;
     
-    // 💡 원인 해결 핵심: 보상 계산기(calculateDungeonRewards)가 기존에 쓰던 풀네임('Hell of flame' 등)을 원하므로
-    // 도감에서 현재 id에 매칭되는 진짜 이름을 찾아서 가공해 넘겨줍니다!
     const fullDungeonName = DUNGEON_INFO[dungeonId]?.name || 'Hell of flame';
     const generatedRewards = calculateDungeonRewards(fullDungeonName, difficultyLevel, isWin);
-
     const userDocRef = doc(db, 'users', user.uid);
 
     try {
@@ -79,7 +74,6 @@ export const useMinesweeper = () => {
       });
 
       await updateDoc(userDocRef, updateData);
-      console.log('전적, 보상 및 레벨 경험치 기록 완료!');
     } catch (error) {
       console.error('기록 저장 실패:', error);
     }
@@ -91,13 +85,24 @@ export const useMinesweeper = () => {
     if (newDifficulty) setDifficultyLevel(newDifficulty);
     if (newDungeonId) setDungeonId(newDungeonId);
 
-    // 던전 ID를 기반으로 레이아웃 불러오기
     const mapLayout = DUNGEON_INFO[targetDungeonId]?.layout || Array(10).fill(Array(8).fill(1));
     
+    // 💡 1. 맵의 실제 '밟을 수 있는 타일(1)' 개수를 미리 스캔합니다.
+    let playableCount = 0;
+    mapLayout.forEach(row => {
+      row.forEach(cell => {
+        if (cell === 1) playableCount++;
+      });
+    });
+
+    // 💡 2. 난이도별 요구 지뢰 수와 '최대 수용 가능량(첫 클릭 1칸 제외)' 중 작은 값을 선택해 오차를 원천 차단합니다.
+    const theoreticalMines = getMineCount(targetDifficulty);
+    const actualMines = Math.min(theoreticalMines, playableCount - 1);
+
     setBoard(createEmptyBoard(mapLayout));
     setGameStatus('idle');
     setIsFirstClick(true);
-    setMinesLeft(getMineCount(targetDifficulty)); 
+    setMinesLeft(actualMines); // 정확하게 계산된 실제 지뢰 수로 렌더링
     setTimeElapsed(0);
     setRewards(null); 
     clearInterval(timerRef.current);
@@ -161,9 +166,18 @@ export const useMinesweeper = () => {
       setIsFirstClick(false);
       setGameStatus('playing');
       startTimer();
+      
       const totalMinesToPlace = getMineCount(difficultyLevel);
       const actualPlacedMines = placeMinesAndCalculate(newBoard, r, c, totalMinesToPlace);
-      setMinesLeft(actualPlacedMines);
+      
+      // 💡 3. 유저가 첫 칸을 열기 전에 미리 꽂아둔 깃발이 있다면 개수를 파악합니다.
+      let flagCount = 0;
+      newBoard.forEach(row => row.forEach(c => {
+        if (c.isFlagged) flagCount++;
+      }));
+      
+      // 실제 심어진 지뢰 수에서 꽂혀있는 깃발 수만큼 차감하여 덮어씁니다.
+      setMinesLeft(actualPlacedMines - flagCount);
     }
 
     cell.isRevealed = true;
