@@ -161,8 +161,8 @@ export const ITEM_DATABASE = {
     element: 'fire',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 200,       // 올려주는 경험치 량
     icon: '/items/exppotion-fire-large.png'
-  }
-    'potion_exp_fire_small': {
+  },
+    'potion_exp_water_small': {
     name: '작은 물방울 포션',
     description: '물 속성 기사에게 먹이면 경험치가 20 상승합니다.',
     type: 'consumable',
