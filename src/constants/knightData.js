@@ -63,7 +63,7 @@ export const KNIGHT_DATABASE = {
   'knight_fire_lancelot': {
     id: 'knight_fire_lancelot',
     name: 'Lancelot',
-    title: '화염의 수련기사',
+    title: 'Knight of Flame',
     attribute: 'fire',
     rarity: 'rare',
     image: '/knights/knight-lencelot-profile.png',    // 갤러리/목록용 미니 프로필
@@ -100,7 +100,7 @@ export const KNIGHT_DATABASE = {
   'knight_fire_gawain': {
     id: 'knight_fire_gawain',
     name: 'Gawain',
-    title: '화염의 인도자',
+    title: 'Knight of Fire',
     attribute: 'fire',
     rarity: 'rare',
     image: '/knights/knight-gawain-profile.png',
@@ -117,17 +117,90 @@ export const KNIGHT_DATABASE = {
     baseStats: {
       str: 25,
       agi: 5,
-      int: 5,
+      int: 10,
       vit: 20,
       luk: 10
     },
 
     statGrowth: {
-      str: 4,
-      agi: 1,
+      str: 5,
+      agi: 2,
       int: 1,
       vit: 1,
       luk: 1
+    }
+  },
+  
+  // ========================================================
+  // 4. 겔러해드 (물의 던전 소환 기사)
+  // ========================================================
+  'knight_water_galahad': {
+    id: 'knight_water_galahad',
+    name: 'Galahad',
+    title: 'Defender of Water',
+    attribute: 'water',
+    rarity: 'rare',
+    image: '/knights/knight-galahad-profile.png',
+    fullImage: '/knights/knight-galahad.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '물의 던전을 수호하던 고대 기사의 영령.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_2', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 15,
+      agi: 5,
+      int: 10,
+      vit: 25,
+      luk: 15
+    },
+
+    statGrowth: {
+      str: 2,
+      agi: 1,
+      int: 1,
+      vit: 4,
+      luk: 2
+    }
+  },
+  // ========================================================
+  // 5. 퍼시벌 (물의 던전 소환 기사)
+  // ========================================================
+  'knight_water_percival': {
+    id: 'knight_water_percival',
+    name: 'Percival',
+    title: 'Defender of Water',
+    attribute: 'water',
+    rarity: 'rare',
+    image: '/knights/knight-percival-profile.png',
+    fullImage: '/knights/knight-percival.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '물의 던전을 수호하던 고대 기사의 영령.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_2', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 10,
+      agi: 5,
+      int: 10,
+      vit: 30,
+      luk: 15
+    },
+
+    statGrowth: {
+      str: 1,
+      agi: 1,
+      int: 1,
+      vit: 5,
+      luk: 2
     }
   }
 };
