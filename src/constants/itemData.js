@@ -136,6 +136,22 @@ export const ITEM_DATABASE = {
     element: 'fire',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 20,       // 올려주는 경험치 량
     icon: '/items/exppotion-fire-small.png'
+  },
+  'potion_exp_fire_medium': {
+    name: '중급 불꽃 포션',
+    description: '불 속성 기사에게 먹이면 경험치가 50 상승합니다.',
+    type: 'consumable',
+    element: 'fire',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
+    expAmount: 50,       // 올려주는 경험치 량
+    icon: '/items/exppotion-fire-medium.png'
+  },
+  'potion_exp_fire_large': {
+    name: '고급 불꽃 포션',
+    description: '불 속성 기사에게 먹이면 경험치가 200 상승합니다.',
+    type: 'consumable',
+    element: 'fire',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
+    expAmount: 200,       // 올려주는 경험치 량
+    icon: '/items/exppotion-fire-large.png'
   }
 };
 
