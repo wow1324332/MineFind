@@ -646,37 +646,52 @@ export default function Knights({ onBack }) {
       {/* 🎬 시네마틱 소환 연출 플레이어 */}
       {/* ========================================= */}
       {summoningKnight && (
-        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/95 select-none overflow-hidden">
+        <div 
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black select-none overflow-hidden cursor-pointer"
+          onClick={() => {
+            // 💡 로딩이 끝나고 텍스트가 뜬 상태일 때만 화면 터치로 닫기 허용
+            if (showCinematicText) {
+              closeCinematic();
+            }
+          }}
+        >
+          {/* 1. 번쩍이는 섬광 효과 */}
+          <div className="absolute inset-0 bg-white mix-blend-overlay z-30 pointer-events-none opacity-0" style={{ animation: 'cinematicFlash 2.5s ease-in-out forwards' }} />
           
-          <div className="absolute inset-0 bg-white mix-blend-overlay z-20 pointer-events-none opacity-0" style={{ animation: 'cinematicFlash 2.5s ease-in-out forwards' }} />
-          
-          <div className="w-full max-w-sm aspect-[3/4] relative z-10 flex items-center justify-center p-4">
+          {/* 2. 화면을 꽉 채우는 기사 이미지 */}
+          <div className="absolute inset-0 z-10 flex items-center justify-center">
             <img 
               src={summoningKnight.fullImage || summoningKnight.image} 
               alt={summoningKnight.name} 
-              className="w-full h-full object-contain opacity-0 drop-shadow-[0_0_25px_rgba(250,204,21,0.3)]"
+              className="w-full h-full object-cover object-center opacity-0"
               style={{ animation: 'cinematicRise 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s forwards' }}
             />
           </div>
 
-          <div className="absolute bottom-16 w-full text-center z-30">
+          {/* 3. 강력한 테두리 그라데이션 (다크 판타지 비네팅 효과) */}
+          <div className="absolute inset-0 z-20 pointer-events-none bg-[radial-gradient(circle_at_center,_transparent_20%,_black_100%)] opacity-95"></div>
+          <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-t from-black via-black/80 to-transparent h-full"></div>
+          <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-b from-black/80 via-transparent to-transparent"></div>
+
+          {/* 4. 하단 폰트 연출 영역 */}
+          <div className="absolute bottom-24 w-full text-center z-40 px-4">
             {showCinematicText ? (
-              <div className="animate-[fadeIn_0.5s_ease-out_forwards] flex flex-col items-center">
-                <h4 className="text-yellow-400 font-serif font-black text-2xl tracking-[0.2em] drop-shadow-[0_0_15px_rgba(250,204,21,0.6)]">
+              <div className="animate-[fadeIn_1s_ease-out_forwards] flex flex-col items-center">
+                {/* 💡 폰트를 게임 컨셉에 맞게 고급스러운 명조체(Serif)와 이탤릭 적용 */}
+                <h4 className="text-yellow-400 font-serif font-black text-4xl tracking-[0.25em] drop-shadow-[0_0_20px_rgba(250,204,21,0.8)] italic">
                   {summoningKnight.name}
                 </h4>
-                <p className="text-[#d8b486] text-xs font-bold mt-2 tracking-widest">
+                <p className="text-[#d8b486] font-serif font-bold mt-4 tracking-[0.4em] drop-shadow-md text-sm">
                   [ {summoningKnight.title} ] 기사단 합류
                 </p>
-                <button 
-                  onClick={closeCinematic} 
-                  className="mt-6 bg-[#1a1008] text-amber-400 font-black text-xs px-8 py-2.5 rounded-sm border border-[#a6845c] shadow-[0_0_15px_rgba(166,132,92,0.4)] active:scale-95 transition-transform"
-                >
-                  확인
-                </button>
+                
+                {/* 💡 버튼을 없애고 깜빡이는 터치 유도 문구 삽입 */}
+                <div className="mt-16 text-[#a6845c]/70 font-serif tracking-[0.3em] text-[10px] animate-pulse">
+                  - Continue -
+                </div>
               </div>
             ) : (
-              <div className="text-[#a6845c] font-black tracking-[0.4em] text-xs animate-pulse">
+              <div className="text-[#a6845c] font-serif font-black tracking-[0.5em] text-xs animate-pulse drop-shadow-md">
                 시공의 틈을 여는 중...
               </div>
             )}
