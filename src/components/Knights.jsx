@@ -424,6 +424,35 @@ export default function Knights({ onBack }) {
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
               >
+
+                {summonableKnights[focusedIndex] && (
+                  <div className="mb-6 flex items-center justify-center gap-6 z-20 bg-black/40 px-4 py-1.5 rounded-full border border-neutral-700/50">
+                    
+                    {/* 골드 폰트 표기 (아이콘 제거) */}
+                    <div className="flex flex-col items-center">
+                      <span className={`font-serif font-black text-xs tracking-wider drop-shadow-md
+                        ${gold >= summonableKnights[focusedIndex].cost.gold ? 'text-[#f5d5a9]' : 'text-red-500'}`}>
+                        {summonableKnights[focusedIndex].cost.gold.toLocaleString()} G
+                      </span>
+                    </div>
+
+                    {/* 아이템 이미지 및 수량 표기 */}
+                    <div className="flex flex-col items-center">
+                      <div className="flex items-center gap-1.5">
+                        <img 
+                          src={ITEM_DATABASE[summonableKnights[focusedIndex].cost.itemId]?.image || ITEM_DATABASE[summonableKnights[focusedIndex].cost.itemId]?.icon || '/default-item.png'} 
+                          alt="재료" 
+                          className="w-5 h-5 object-contain drop-shadow-md"
+                          onError={(e) => { e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a6845c'%3E%3Cpath d='M12 2L2 22h20L12 2z'/%3E%3C/svg%3E"; }}
+                        />
+                        <span className={`font-mono font-black text-xs drop-shadow-md
+                          ${(items[summonableKnights[focusedIndex].cost.itemId] || 0) >= summonableKnights[focusedIndex].cost.count ? 'text-[#f5d5a9]' : 'text-red-500'}`}>
+                          {(items[summonableKnights[focusedIndex].cost.itemId] || 0)} / {summonableKnights[focusedIndex].cost.count}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 
                 {/* 🎠 기사 1:2 프로필 좌우 스크롤 캐러셀 영역 */}
                 <div className="relative w-full h-[45%] flex items-center justify-center perspective-1000">
@@ -458,20 +487,22 @@ export default function Knights({ onBack }) {
                           className="h-full aspect-[1/2] object-cover rounded-md border-[1.5px] border-[#8c6543] shadow-[0_10px_25px_rgba(0,0,0,0.8)]"
                         />
                         
-                        {/* 💡 소환 폰트 버튼 (가운데 기사일 때만 프로필 바로 아래 표시) */}
                         {isCenter && (
-                          <div className="absolute -bottom-10 w-full flex justify-center">
+                          <div className="absolute -bottom-12 w-full flex justify-center">
                             {isOwned ? (
-                              <span className="font-serif tracking-widest text-lg font-black text-neutral-500 drop-shadow-[0_2px_5px_rgba(0,0,0,1)]">Owned</span>
+                              <span className="font-serif tracking-widest text-sm font-black text-neutral-500 drop-shadow-[0_2px_5px_rgba(0,0,0,1)]">Owned</span>
                             ) : (
                               <button
                                 onClick={(e) => { e.stopPropagation(); handleSummon(knight); }}
                                 disabled={!canSummon}
-                                className={`font-serif tracking-wider text-sm font-black px-8 py-2.5 rounded-full border shadow-lg transition-all active:scale-95
-                                  ${canSummon ? 'bg-gradient-to-r from-amber-700 to-yellow-600 border-yellow-400/50 text-white hover:brightness-110' : 'bg-neutral-800 border-neutral-700 text-neutral-500'}
+                                className={`font-serif tracking-widest text-base font-black bg-transparent outline-none transition-all
+                                  ${canSummon 
+                                    ? 'text-[#fffff0] animate-pulse drop-shadow-[0_0_10px_rgba(255,255,240,0.8)] hover:scale-110 active:scale-95' 
+                                    : 'text-neutral-500/80 drop-shadow-md'
+                                  }
                                 `}
                               >
-                               Summon
+                                Summon
                               </button>
                             )}
                           </div>
@@ -480,40 +511,6 @@ export default function Knights({ onBack }) {
                     );
                   })}
                 </div>
-
-               {summonableKnights[focusedIndex] && (
-                  <div className="mb-4 flex items-center justify-center gap-6 z-20 bg-black/40 px-4 py-1.5 rounded-full border border-neutral-700/50">
-                    
-                    {/* 골드 폰트 표기 */}
-                    <div className="flex flex-col items-center">
-                      <span className={`font-serif font-black text-xs tracking-wider drop-shadow-md
-                        ${gold >= summonableKnights[focusedIndex].cost.gold ? 'text-[#f5d5a9]' : 'text-red-500'}`}>
-                        🪙 {summonableKnights[focusedIndex].cost.gold.toLocaleString()} G
-                      </span>
-                    </div>
-
-                    {/* 아이템 이미지 및 수량 표기 */}
-                    <div className="flex flex-col items-center">
-                      <div className="flex items-center gap-1.5">
-                        <img 
-                          src={ITEM_DATABASE[summonableKnights[focusedIndex].cost.itemId]?.image || ITEM_DATABASE[summonableKnights[focusedIndex].cost.itemId]?.icon || '/default-item.png'} 
-                          alt="재료" 
-                          className="w-5 h-5 object-contain drop-shadow-md"
-                          onError={(e) => { e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a6845c'%3E%3Cpath d='M12 2L2 22h20L12 2z'/%3E%3C/svg%3E"; }}
-                        />
-                        <span className={`font-mono font-black text-xs drop-shadow-md
-                          ${(items[summonableKnights[focusedIndex].cost.itemId] || 0) >= summonableKnights[focusedIndex].cost.count ? 'text-[#f5d5a9]' : 'text-red-500'}`}>
-                          {(items[summonableKnights[focusedIndex].cost.itemId] || 0)} / {summonableKnights[focusedIndex].cost.count}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* ========================================= */}
       {/* 🎬 시네마틱 소환 연출 플레이어 */}
