@@ -681,9 +681,6 @@ export default function Knights({ onBack }) {
                 <h4 className="text-yellow-400 font-serif font-black text-4xl tracking-[0.25em] drop-shadow-[0_0_20px_rgba(250,204,21,0.8)] italic">
                   {summoningKnight.name}
                 </h4>
-                <p className="text-[#d8b486] font-serif font-bold mt-4 tracking-[0.4em] drop-shadow-md text-sm">
-                  [ {summoningKnight.title} ] 기사단 합류
-                </p>
                 
                 {/* 💡 버튼을 없애고 깜빡이는 터치 유도 문구 삽입 */}
                 <div className="mt-16 text-[#a6845c]/70 font-serif tracking-[0.3em] text-[10px] animate-pulse">
