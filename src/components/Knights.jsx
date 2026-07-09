@@ -84,7 +84,13 @@ export default function Knights({ onBack }) {
   });
 
   let activeKnightBase = null;
-  let activeKnightLevel = 1; // 💡 기사 개별 레벨 변수 추가
+  let activeKnightLevel = 1;
+  
+  // 💡 핵심 해결: 모달이 데이터를 읽을 수 있도록 변수들을 조건문 밖(전역)으로 꺼내줍니다!
+  let activeKnightExp = 0;
+  let requiredKnightExp = 1;
+  let knightExpPercent = 0;
+
   let finalStats = { str: 0, agi: 0, int: 0, vit: 0, luk: 0 };
   let combatPower = 0;
   let displayTitle = '';
@@ -95,14 +101,14 @@ export default function Knights({ onBack }) {
     displayTitle = activeKnightBase.title;
     displayName = selectedKnight === 'knight_main' ? userNickname : activeKnightBase.name;
 
-    // 💡 핵심: 주인공은 유저 레벨을, 소환된 기사는 DB의 개별 레벨(없으면 기본 1)을 사용합니다!
     activeKnightLevel = selectedKnight === 'knight_main' 
       ? userLevel 
       : (userData.knightStats?.[selectedKnight]?.level || 1);
 
-    const activeKnightExp = selectedKnight === 'knight_main' ? 0 : (userData.knightStats?.[selectedKnight]?.exp || 0);
-    const requiredKnightExp = selectedKnight === 'knight_main' ? 1 : getKnightRequiredExp(activeKnightLevel);
-    const knightExpPercent = selectedKnight === 'knight_main' ? 100 : Math.min((activeKnightExp / requiredKnightExp) * 100, 100);
+    // 💡 const를 제거하고 밖에서 만든 변수에 값을 쏙쏙 담아줍니다.
+    activeKnightExp = selectedKnight === 'knight_main' ? 0 : (userData.knightStats?.[selectedKnight]?.exp || 0);
+    requiredKnightExp = selectedKnight === 'knight_main' ? 1 : getKnightRequiredExp(activeKnightLevel);
+    knightExpPercent = selectedKnight === 'knight_main' ? 100 : Math.min((activeKnightExp / requiredKnightExp) * 100, 100);
 
     finalStats = {
       str: activeKnightBase.baseStats.str + activeKnightBase.statGrowth.str * (activeKnightLevel - 1) + equipBonus.str,
