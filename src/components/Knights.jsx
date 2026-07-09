@@ -487,6 +487,7 @@ export default function Knights({ onBack }) {
                           className="h-full aspect-[1/2] object-cover rounded-md border-[1.5px] border-[#8c6543] shadow-[0_10px_25px_rgba(0,0,0,0.8)]"
                         />
                         
+                        {/* 💡 소환 폰트 버튼 (겹침 방지 및 아이보리색 숨쉬기 효과) */}
                         {isCenter && (
                           <div className="absolute -bottom-12 w-full flex justify-center">
                             {isOwned ? (
@@ -511,6 +512,11 @@ export default function Knights({ onBack }) {
                     );
                   })}
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ========================================= */}
       {/* 🎬 시네마틱 소환 연출 플레이어 */}
