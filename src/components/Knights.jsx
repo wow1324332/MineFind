@@ -102,7 +102,7 @@ export default function Knights({ onBack }) {
     combatPower = (finalStats.str * 10) + (finalStats.agi * 8) + (finalStats.vit * 6) + (finalStats.int * 4) + (finalStats.luk * 2);
   }
 
-  // =========================================
+// =========================================
   // 🔮 기사 소환 처리 함수
   // =========================================
   const handleSummon = async (knight) => {
@@ -125,7 +125,9 @@ export default function Knights({ onBack }) {
         await updateDoc(userDocRef, {
           'inventory.gold': increment(-costGold),
           [`inventory.items.${itemId}`]: increment(-count),
-          unlockedKnights: arrayUnion(knight.id)
+          unlockedKnights: arrayUnion(knight.id),
+          // 💡 추가된 부분: 기사를 소환하면 해당 기사의 고유 ID를 키값으로 1레벨/0경험치 데이터를 세팅합니다.
+          [`knightStats.${knight.id}`]: { level: 1, exp: 0 }
         });
       }
     }, 2500);
