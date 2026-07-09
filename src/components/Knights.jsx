@@ -40,7 +40,10 @@ export default function Knights({ onBack }) {
   
   const gold = userData.inventory?.gold || 0;
   const items = userData.inventory?.items || {};
-  const unlockedKnights = userData.unlockedKnights || ['knight_main']; 
+  const dbUnlocked = userData.unlockedKnights || [];
+  const unlockedKnights = dbUnlocked.includes('knight_main')
+    ? dbUnlocked
+    : ['knight_main', ...dbUnlocked];
   const maxSlots = 6; 
 
   // =========================================
