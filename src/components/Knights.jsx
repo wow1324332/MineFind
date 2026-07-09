@@ -385,9 +385,8 @@ export default function Knights({ onBack }) {
                 </div>
               </div>
             </div>
-          </div>
-        )}
-      
+          )}
+       </div>
     );
   }
 
