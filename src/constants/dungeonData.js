@@ -38,7 +38,6 @@ export const DUNGEON_INFO = {
     mineShadow: 'drop-shadow-[0_0_15px_rgba(37,99,235,1)]',
     revealedMineBg: 'bg-blue-950/80 shadow-[inset_0_0_20px_rgba(37,99,235,0.8)]',
     
-    // 💡 모서리가 깎인 팔각형 구조 (0은 투명 타일 처리됨)
     layout: [
       [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0],
       [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
@@ -49,6 +48,34 @@ export const DUNGEON_INFO = {
       [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
       [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
       [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0],
+    ],
+  },
+    water: {
+    id: 'posison',
+    name: 'Hell of poison',
+    buttonImg: '/dungeons/water/hellofpoison-bt.png',
+    titleImg: '/dungeons/water/hellofpoison-title.jpg',
+    loadingBg: '/dungeons/water/hellofpoisonloading-bg.jpg',
+    loadingMsg: "독의 심연으로 이동 중...",
+    loadingLogo: "/dungeons/water/hellofpoison-bt.png",
+    loadingOpacity: "opacity-70",
+    winBg: '/dungeons/water/hellofpoisonwin.jpg',
+    loseBg: '/dungeons/water/hellofpoisonlose.jpg',
+    boardBg: '/dungeons/water/hellofpoison-board-bg.jpg',
+    tileImg: '/dungeons/water/hellofpoison-tile.png',
+    mineImg: '/dungeons/water/hellofpoison-mine.png',
+    mineShadow: 'drop-shadow-[0_0_15px_rgba(37,99,235,1)]',
+    revealedMineBg: 'bg-blue-950/80 shadow-[inset_0_0_20px_rgba(37,99,235,0.8)]',
+    
+    layout: [
+      [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+      [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+      [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
     ],
   }
 };
