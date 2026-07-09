@@ -487,27 +487,26 @@ export default function Knights({ onBack }) {
                           className="h-full aspect-[1/2] object-cover rounded-md border-[1.5px] border-[#8c6543] shadow-[0_10px_25px_rgba(0,0,0,0.8)]"
                         />
                         
-                        {/* 💡 소환 폰트 버튼 (겹침 방지 및 아이보리색 숨쉬기 효과) */}
-                        {isCenter && (
-                          <div className="absolute -bottom-12 w-full flex justify-center">
-                            {isOwned ? (
-                              <span className="font-serif tracking-widest text-sm font-black text-neutral-500 drop-shadow-[0_2px_5px_rgba(0,0,0,1)]">Owned</span>
-                            ) : (
-                              <button
-                                onClick={(e) => { e.stopPropagation(); handleSummon(knight); }}
-                                disabled={!canSummon}
-                                className={`font-serif tracking-widest text-base font-black bg-transparent outline-none transition-all
-                                  ${canSummon 
-                                    ? 'text-[#fffff0] animate-pulse drop-shadow-[0_0_15px_rgba(0,0,0,1)] hover:scale-110 active:scale-95' 
-                                    : 'text-neutral-500/80 drop-shadow-[0_2px_5px_rgba(0,0,0,1)]'
-                                  }
-                                `}
-                              >
-                                Summon
-                              </button>
+                            {/* 💡 소환 폰트 버튼 (버그 수정: 항상 활성화하여 부족 알림창이 뜨게 하고, 숨쉬기 고정) */}
+                            {isCenter && (
+                              <div className="absolute -bottom-12 w-full flex justify-center z-50">
+                                {isOwned ? (
+                                  <span className="font-serif tracking-widest text-sm font-black text-neutral-500 drop-shadow-[0_2px_5px_rgba(0,0,0,1)]">Owned</span>
+                                ) : (
+                                  <button
+                                    onClick={(e) => { 
+                                      e.preventDefault(); 
+                                      e.stopPropagation(); 
+                                      handleSummon(knight); 
+                                    }}
+                                    // disabled 속성을 제거하여 무조건 클릭을 허용합니다.
+                                    className="font-serif tracking-widest text-base font-black bg-transparent outline-none transition-all cursor-pointer text-[#fffff0] animate-pulse drop-shadow-[0_0_15px_rgba(0,0,0,1)] hover:scale-110 active:scale-95"
+                                  >
+                                    Summon
+                                  </button>
+                                )}
+                              </div>
                             )}
-                          </div>
-                        )}
                       </div>
                     );
                   })}
