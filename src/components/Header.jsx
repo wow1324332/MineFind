@@ -15,7 +15,7 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
     panelColor = "text-green-500 shadow-[inset_0_0_12px_rgba(34,197,94,0.25)] drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]";
   } else if (dungeon === 'light') {
     // 👇👇👇여기가 새로 추가된 4번째 번뇌의 던전(빛) 영역입니다! 👇👇👇
-    glowClass = 'text-yellow-500 drop-shadow-[0_0_8px_rgba(234,179,8,0.8)] shadow-[inset_0_0_12px_rgba(234,179,8,0.25)]';
+    panelColor = "text-yellow-500 shadow-[inset_0_0_12px_rgba(234,179,8,0.25)] drop-shadow-[0_0_8px_rgba(234,179,8,0.8)]";
   }
 
   return (
