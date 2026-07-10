@@ -646,29 +646,34 @@ export default function Knights({ onBack, hp }) {
                         
                             {/* 💡 소환 폰트 버튼 (버그 수정: 항상 활성화하여 부족 알림창이 뜨게 하고, 숨쉬기 고정) */}
                             {isCenter && (
-                              <div className="absolute -bottom-14 w-full flex justify-center z-50">
+                          // 💡 핵심: top-full을 써서 이미지의 맨 아래 경계선에 컨테이너의 윗부분을 딱 붙입니다.
+                          // mt-1을 주어 이미지와 이름 사이에 1px 정도의 숨 쉴 틈만 줍니다.
+                          <div className="absolute top-full mt-1 left-1/2 -translate-x-1/2 flex flex-col items-center z-50 w-max">
+                            
+                            {/* ✨ 기사 이름 (이미지 하단에 바짝 붙음) */}
+                            <span className="text-[#a6845c] font-serif font-bold text-[11px] tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,1)] whitespace-nowrap">
+                              {knight.name}
+                            </span>
 
-                                <span className="text-[#a6845c] font-serif font-bold text-[10px] tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
-                                  {knight.name}
-                                </span>
-                                
-                                {isOwned ? (
-                                  <span className="font-serif tracking-widest text-sm font-black text-neutral-500 drop-shadow-[0_2px_5px_rgba(0,0,0,1)]">Owned</span>
-                                ) : (
-                                  <button
-                                    onClick={(e) => { 
-                                      e.preventDefault(); 
-                                      e.stopPropagation(); 
-                                      handleSummon(knight); 
-                                    }}
-                                    // disabled 속성을 제거하여 무조건 클릭을 허용합니다.
-                                    className="font-serif tracking-widest text-base font-black bg-transparent outline-none transition-all cursor-pointer text-[#fffff0] animate-pulse drop-shadow-[0_0_15px_rgba(0,0,0,1)] hover:scale-110 active:scale-95"
-                                  >
-                                    Summon
-                                  </button>
-                                )}
-                              </div>
+                            {/* 🔘 소환 버튼 (이름 아래에 mt-2.5로 적당한 간격을 두고 띄움) */}
+                            {isOwned ? (
+                              <span className="font-serif tracking-widest text-sm font-black text-neutral-500 drop-shadow-[0_2px_5px_rgba(0,0,0,1)] whitespace-nowrap mt-2.5">
+                                Owned
+                              </span>
+                            ) : (
+                              <button
+                                onClick={(e) => { 
+                                  e.preventDefault(); 
+                                  e.stopPropagation(); 
+                                  handleSummon(knight); 
+                                }}
+                                className="font-serif tracking-widest text-base font-black bg-transparent outline-none transition-all cursor-pointer text-[#fffff0] animate-pulse drop-shadow-[0_0_15px_rgba(0,0,0,1)] hover:scale-110 active:scale-95 whitespace-nowrap mt-2.5"
+                              >
+                                Summon
+                              </button>
                             )}
+                          </div>
+                        )}
                       </div>
                     );
                   })}
