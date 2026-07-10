@@ -456,7 +456,7 @@ export default function App() {
                   key={i} 
                   src="/hpball.png" // 💡 실제 파일 확장자가 .png이면 png로, .jpg인데 누끼가 박힌 거라면 jpg로 맞춰주세요!
                   alt="HP" 
-                  className={`w-[22px] h-[22px] object-contain transition-all duration-500 ${
+                  className={`w-[18px] h-[18px] object-contain transition-all duration-500 ${
                     i < hpData.hp 
                       ? 'opacity-100 drop-shadow-[0_0_5px_rgba(220,38,38,0.95)]' // 💡 구슬 곡선을 따라 정밀하게 불빛이 맺힙니다.
                       : 'opacity-20 grayscale saturate-50' // 소진 시 투명하게 꺼짐
