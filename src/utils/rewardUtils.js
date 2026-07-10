@@ -256,7 +256,7 @@ export const calculateDungeonRewards = (dungeonName, difficulty, isWin) => {
   // ==========================================
   // 🔵 4. 번뇌의 던전 (Hell of agony)
   // ==========================================
-  else if (dungeonLower.includes('light')) {
+  else if (dungeonLower.includes('agony')) {
     
     // ✨ 번뇌의 던전 [승리] 시 보상
     if (isWin) {
