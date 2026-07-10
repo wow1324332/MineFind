@@ -425,6 +425,22 @@ export default function Knights({ onBack, hp }) {
     );
   }
 
+  let totalCombatPower = 0;
+  unlockedKnights.forEach(id => {
+    const kBase = KNIGHT_DATABASE[id];
+    if (kBase) {
+      const kLevel = id === 'knight_main' ? userLevel : (userData.knightStats?.[id]?.level || 1);
+      const kStr = kBase.baseStats.str + kBase.statGrowth.str * (kLevel - 1) + equipBonus.str;
+      const kAgi = kBase.baseStats.agi + kBase.statGrowth.agi * (kLevel - 1) + equipBonus.agi;
+      const kInt = kBase.baseStats.int + kBase.statGrowth.int * (kLevel - 1) + equipBonus.int;
+      const kVit = kBase.baseStats.vit + kBase.statGrowth.vit * (kLevel - 1) + equipBonus.vit;
+      const kLuk = kBase.baseStats.luk + kBase.statGrowth.luk * (kLevel - 1) + equipBonus.luk;
+      
+      const cp = (kStr * 10) + (kAgi * 8) + (kVit * 6) + (kInt * 4) + (kLuk * 2);
+      totalCombatPower += cp;
+    }
+  });
+
   // =========================================
   // ⚔️ 화면 1. 기사단 목록(갤러리) 화면 
   // =========================================
@@ -485,8 +501,8 @@ export default function Knights({ onBack, hp }) {
             ))}
           </div>
           
-          <div className="text-xs bg-[#1a1008] border border-[#5c3e23] px-2 py-1 rounded-sm text-yellow-400 font-bold mr-2 shadow-md flex items-center gap-1">
-            🪙 {gold.toLocaleString()}
+          <div className="text-amber-400 font-serif font-black text-sm tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,1)] mr-3 z-20 select-none">
+            BP {totalCombatPower.toLocaleString()}
           </div>
         </div>
         
