@@ -13,6 +13,9 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
   } else if (dungeon === 'poison') {
     // 💡 독 던전(poison)일 경우 녹색 불빛 적용
     panelColor = "text-green-500 shadow-[inset_0_0_12px_rgba(34,197,94,0.25)] drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]";
+  } else if (dungeon === 'light') {
+    // 👇👇👇여기가 새로 추가된 4번째 번뇌의 던전(빛) 영역입니다! 👇👇👇
+    glowClass = 'text-yellow-500 drop-shadow-[0_0_8px_rgba(234,179,8,0.8)] shadow-[inset_0_0_12px_rgba(234,179,8,0.25)]';
   }
 
   return (
