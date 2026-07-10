@@ -175,6 +175,85 @@ export const calculateDungeonRewards = (dungeonName, difficulty, isWin) => {
     }
   }
 
+    // ==========================================
+  // 🔵 3. 독의 던전 (Hell of poison)
+  // ==========================================
+  else if (dungeonLower.includes('poison')) {
+    
+    // ✨ 물의 던전 [승리] 시 보상
+    if (isWin) {
+      let rareDropsToRoll = []; 
+
+      switch (difficulty) {
+        case 'Easy':
+          exp = 20;
+          gold = 100;
+          droppedItems['mat_poison_1'] = getRandomCount(1, 2);
+          droppedItems['potion_exp_poison_small'] = getRandomCount(0, 2);
+          rareDropsToRoll.push({ id: 'con_soul_3', chance: 0.20 });
+          break;
+        case 'Normal':
+          exp = 50;
+          gold = 200;
+          droppedItems['mat_poison_1'] = getRandomCount(0, 2); 
+          droppedItems['mat_poison_2'] = getRandomCount(1, 2); 
+          droppedItems['potion_exp_poison_small'] = getRandomCount(0, 2);
+          droppedItems['potion_exp_poison_medium'] = getRandomCount(0, 1);
+          break;
+        case 'Hard':
+          exp = 150;
+          gold = 500;
+          droppedItems['mat_poison_1'] = getRandomCount(0, 2);
+          droppedItems['mat_poison_2'] = getRandomCount(0, 2);
+          droppedItems['potion_exp_poison_small'] = getRandomCount(0, 2);
+          droppedItems['potion_exp_poison_medium'] = getRandomCount(0, 2);
+          droppedItems['mat_water_3'] = 1;
+          break;
+        case 'Expert':
+          exp = 300;
+          gold = 800;
+          droppedItems['mat_poison_2'] = getRandomCount(0, 2);
+          droppedItems['mat_poison_3'] = getRandomCount(0, 2);
+          droppedItems['potion_exp_poison_medium'] = getRandomCount(0, 3);
+          droppedItems['potion_exp_poison_large'] = getRandomCount(0, 2);
+          droppedItems['mat_water_4'] = 1;
+          break;
+        case 'Hell':
+          exp = 1000;
+          gold = 1500;
+          droppedItems['mat_poison_2'] = getRandomCount(0, 2);
+          droppedItems['mat_poison_3'] = getRandomCount(0, 2);
+          droppedItems['mat_poison_4'] = getRandomCount(1, 2);
+          droppedItems['mat_poison_5'] = 1; 
+          droppedItems['potion_exp_poison_medium'] = getRandomCount(0, 3);
+          droppedItems['potion_exp_poison_large'] = getRandomCount(0, 3);
+          break;
+        default:
+          exp = 30;
+          gold = 50;
+      }
+
+      // 💡 설정된 주사위 목록(rareDropsToRoll)을 하나씩 꺼내서 굴립니다.
+      rareDropsToRoll.forEach(drop => {
+        if (Math.random() < drop.chance) {
+          droppedItems[drop.id] = (droppedItems[drop.id] || 0) + 1;
+        }
+      });
+
+    }
+    // 💀 독의 던전 [패배] 시 위로 보상
+    else {
+      switch (difficulty) {
+        case 'Easy': exp = 10; gold = 10; break;
+        case 'Normal': exp = 10; gold = 50; break;
+        case 'Hard': exp = 10; gold = 50; break;
+        case 'Expert': exp = 10; gold = 100; break;
+        case 'Hell': exp = 10; gold = 100; break;
+        default: exp = 5; gold = 10;
+      }
+    }
+  }
+
   const finalItems = {};
   for (const itemId in droppedItems) {
     if (droppedItems[itemId] > 0) {
