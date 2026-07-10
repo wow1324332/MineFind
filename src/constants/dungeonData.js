@@ -79,6 +79,41 @@ export const DUNGEON_INFO = {
       [1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1],
       [1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1],
     ],
+  },
+    light: {
+    id: 'light',
+    name: 'Hell of agony',
+    buttonImg: '/dungeons/agony/hellofagony-bt.png',
+    titleImg: '/dungeons/agony/hellofagony-title.jpg',
+    loadingBg: '/dungeons/agony/hellofagonyloading-bg.jpg',
+    loadingMsg: "번놔의 심연으로 이동 중...",
+    loadingLogo: "/dungeons/agony/hellofagony-bt.png", // 💡 로고 경로 수정
+    loadingOpacity: "opacity-70",
+    winBg: '/dungeons/agony/hellofagonywin.jpg',
+    loseBg: '/dungeons/agony/hellofagonylose.jpg',
+    boardBg: '/dungeons/agony/hellofagony-board-bg.jpg',
+    tileImg: '/dungeons/agony/hellofagony-tile.png',
+    mineImg: '/dungeons/agony/hellofagony-mine.png',
+    mineShadow: 'drop-shadow-[0_0_15px_rgba(34,197,94,1)]', // 💡 독 던전 전용 녹색 불빛으로 수정
+    revealedMineBg: 'bg-yellow-950/80 shadow-[inset_0_0_20px_rgba(34,197,94,0.8)]', // 💡 독 던전 전용 녹색 불빛으로 수정
+    
+    layout: [
+      [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+      [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+      [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+      [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+      [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+      [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+      [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+    ],
   }
 };
 
