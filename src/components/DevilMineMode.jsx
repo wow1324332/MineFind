@@ -64,7 +64,7 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout, hp }) {
                    key={i} 
                    src="/hpball.png" 
                    alt="HP" 
-                   className={`w-[22px] h-[22px] object-contain transition-all duration-500 ${
+                   className={`w-[18px] h-[18px] object-contain transition-all duration-500 ${
                      i < hp 
                        ? 'opacity-100 drop-shadow-[0_0_5px_rgba(220,38,38,0.95)]' 
                        : 'opacity-20 grayscale saturate-50'
