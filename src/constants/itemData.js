@@ -99,6 +99,55 @@ export const ITEM_DATABASE = {
     sellPrice: 2000
   },
 
+    // ==========================================
+  // 💧 독의 던전 (Hell of poison) 전리품
+  // ==========================================
+  'mat_poison_1': {
+    id: 'mat_poison_1',
+    type: 'material',
+    name: 'poison crystal',
+    icon: '/items/poisoncristal.png', 
+    rarity: 'common',
+    desc: '독의 악마 기운을 머금고있는 작은 수정.',
+    sellPrice: 100
+  },
+  'mat_poison_2': {
+    id: 'mat_poison_2',
+    type: 'material',
+    name: 'high poison crystal',
+    icon: '/items/highpoisoncrystal.png',
+    rarity: 'normal',
+    desc: '독의 악마의 기운을 가득 머금고 있는 수정.',
+    sellPrice: 200
+  },
+  'mat_poison_3': {
+    id: 'mat_poison_3',
+    type: 'material',
+    name: 'eye of poison devil',
+    icon: '/items/eyeofpoisondevil.png',
+    rarity: 'rare',
+    desc: '중급 독연의 악마를 처치하고 나온 독의 기운이 담긴 눈.',
+    sellPrice: 350
+  },
+  'mat_poison_4': {
+    id: 'mat_poison_4',
+    type: 'material',
+    name: 'core of poison',
+    icon: '/items/coreofpoison.png',
+    rarity: 'rare',
+    desc: '독연 악마들의 독의 기운을 잔뜩모은 강력한 독의 정수.',
+    sellPrice: 500
+  },
+  'mat_poison_5': {
+    id: 'mat_poison_5',
+    type: 'material',
+    name: 'brain of belial',
+    icon: '/items/brainofbelial.png',
+    rarity: 'rare',
+    desc: '독의 대악마 벨리알을 처치하고 얻은 벨리알의 뇌.',
+    sellPrice: 2000
+  },
+
   // ==========================================
   // 🧪 소비품 (Consumables) 및 기타 아이템
   // ==========================================
@@ -135,7 +184,16 @@ export const ITEM_DATABASE = {
     name: 'soul of water knight',
     icon: '/items/knightsoul-water-small.png',
     rarity: 'rare',
-    desc: '물의의 기사들의 영혼 조각',
+    desc: '물의 기사들의 영혼 조각',
+    sellPrice: 2000
+  },
+      'con_soul_3':{
+    id: 'con_soul_3',
+    type: 'consumable',
+    name: 'soul of poison knight',
+    icon: '/items/knightsoul-poison-small.png',
+    rarity: 'rare',
+    desc: '독의 기사들의 영혼 조각',
     sellPrice: 2000
   },
   'potion_exp_fire_small': {
@@ -185,7 +243,31 @@ export const ITEM_DATABASE = {
     element: 'water',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 200,       // 올려주는 경험치 량
     icon: '/items/exppotion-water-large.png'
-  }
+  },
+      'potion_exp_poison_small': {
+    name: '작은 독액 포션',
+    description: '독 속성 기사에게 먹이면 경험치가 20 상승합니다.',
+    type: 'consumable',
+    element: 'poison',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
+    expAmount: 20,       // 올려주는 경험치 량
+    icon: '/items/exppotion-poison-small.png'
+  },
+  'potion_exp_poison_medium': {
+    name: '중급 독액 포션',
+    description: '독 속성 기사에게 먹이면 경험치가 50 상승합니다.',
+    type: 'consumable',
+    element: 'poison',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
+    expAmount: 50,       // 올려주는 경험치 량
+    icon: '/items/exppotion-poison-medium.png'
+  },
+  'potion_exp_poison_large': {
+    name: '고급 독액 포션',
+    description: '독 속성 기사에게 먹이면 경험치가 200 상승합니다.',
+    type: 'consumable',
+    element: 'poison',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
+    expAmount: 200,       // 올려주는 경험치 량
+    icon: '/items/exppotion-poison-large.png'
+  },
 };
 
 // 💡 보조 함수: 이름으로 아이템 ID 찾기 
