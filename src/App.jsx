@@ -642,15 +642,29 @@ export default function App() {
     <>
       {currentView}
       {showEnergyToast && (
-        <div className="fixed top-1/4 left-1/2 -translate-x-1/2 z-[300] flex flex-col items-center justify-center pointer-events-none animate-[fadeIn_0.3s_ease-out]">
-          {/* 💡 px, py를 줄여서 상자 두께를 더 날렵하게 만들었습니다. */}
-          <div className="bg-black/90 border border-red-900/80 shadow-[0_0_20px_rgba(220,38,38,0.8)] px-6 py-2 rounded-md flex items-center justify-center">
-            {/* 💡 text-sm으로 크기를 줄이고, whitespace-nowrap으로 줄바꿈을 원천 차단했습니다. */}
-            <span className="text-red-500 font-serif font-black tracking-wider text-sm italic drop-shadow-md whitespace-nowrap">
-              Not enough energy..
-            </span>
+        <>
+          {/* 💡 2.5초의 타이머에 딱 맞게 나타났다가 스르륵 사라지는 전용 애니메이션 */}
+          <style>{`
+            @keyframes toastFadeInOut {
+              0% { opacity: 0; }
+              15% { opacity: 1; }
+              80% { opacity: 1; }
+              100% { opacity: 0; }
+            }
+          `}</style>
+          
+          <div 
+            className="fixed top-1/4 left-1/2 -translate-x-1/2 z-[300] flex flex-col items-center justify-center pointer-events-none"
+            style={{ animation: 'toastFadeInOut 2.5s ease-in-out forwards' }}
+          >
+            {/* 💡 배경 투명도를 90에서 60으로 낮추고, 뒤가 은은하게 비치는 backdrop-blur-md 추가 */}
+            <div className="bg-black/60 backdrop-blur-md border border-red-900/50 shadow-[0_0_15px_rgba(220,38,38,0.5)] px-6 py-2 rounded-md flex items-center justify-center">
+              <span className="text-red-500 font-serif font-black tracking-wider text-sm italic drop-shadow-md whitespace-nowrap opacity-90">
+                Not enough energy..
+              </span>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </>
   );
