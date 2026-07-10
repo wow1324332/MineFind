@@ -57,15 +57,15 @@ export const DUNGEON_INFO = {
     titleImg: '/dungeons/poison/hellofpoison-title.jpg',
     loadingBg: '/dungeons/poison/hellofpoisonloading-bg.jpg',
     loadingMsg: "독의 심연으로 이동 중...",
-    loadingLogo: "/dungeons/poison/hellofpoison-bt.png",
+    loadingLogo: "/dungeons/poison/hellofpoison-bt.png", // 💡 로고 경로 수정
     loadingOpacity: "opacity-70",
     winBg: '/dungeons/poison/hellofpoisonwin.jpg',
     loseBg: '/dungeons/poison/hellofpoisonlose.jpg',
     boardBg: '/dungeons/poison/hellofpoison-board-bg.jpg',
     tileImg: '/dungeons/poison/hellofpoison-tile.png',
     mineImg: '/dungeons/poison/hellofpoison-mine.png',
-    mineShadow: 'drop-shadow-[0_0_15px_rgba(37,99,235,1)]',
-    revealedMineBg: 'bg-green-950/80 shadow-[inset_0_0_20px_rgba(37,99,235,0.8)]',
+    mineShadow: 'drop-shadow-[0_0_15px_rgba(34,197,94,1)]', // 💡 독 던전 전용 녹색 불빛으로 수정
+    revealedMineBg: 'bg-green-950/80 shadow-[inset_0_0_20px_rgba(34,197,94,0.8)]', // 💡 독 던전 전용 녹색 불빛으로 수정
     
     layout: [
       [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
