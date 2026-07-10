@@ -221,15 +221,20 @@ export default function App() {
   };
 
   const handleSelectDungeon = (dungeonId, selectedDifficulty) => {
-  setCurrentDungeon(dungeonId); 
-  setCurrentDifficulty(selectedDifficulty); 
+    // 💡 체력이 없으면 입장 차단
+    if (hpData.hp < 1) {
+      alert("체력 구슬이 부족합니다! 구슬이 차오를 때까지 기다려주세요.");
+      return;
+    }
 
-  // 💡 던전 고유 ID(fire, water 등)를 그대로 전달해야 
-  // useMinesweeper 훅과 dungeonData의 key가 정확히 매칭되어 맵 레이아웃을 불러옵니다!
-  initGame(selectedDifficulty, dungeonId); 
+    setCurrentDungeon(dungeonId); 
+    setCurrentDifficulty(selectedDifficulty); 
+    
+    setHasDeductedHp(false); // 💡 새 게임 입장 시 '차감 자물쇠'를 다시 풀어줌
+    initGame(selectedDifficulty, dungeonId); 
 
-  setCurrentScreen('DUNGEON_LOADING');
-  setTimeout(() => setCurrentScreen('GAME_PVE'), 2000);
+    setCurrentScreen('DUNGEON_LOADING');
+    setTimeout(() => setCurrentScreen('GAME_PVE'), 2000);
   };
 
   // 💡 획득한 보상(골드, 아이템)을 모달창에 예쁘게 그려주는 미니 렌더링 함수
@@ -443,6 +448,22 @@ export default function App() {
               <img src="/backkey.png" alt="Exit Portal" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
             </button>
 
+            <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-[4px] drop-shadow-md z-20">
+              {[...Array(MAX_HP)].map((_, i) => (
+                <img 
+                  key={i} 
+                  src="/hpball.jpg" 
+                  alt="HP" 
+                  className={`w-[22px] h-[22px] rounded-full border border-[#4a2c11] transition-all duration-500 ${
+                    i < hpData.hp 
+                      ? 'opacity-100 shadow-[0_0_8px_rgba(220,38,38,0.7)]' // 남아있는 구슬은 선명하게 빛남
+                      : 'opacity-30 grayscale-[0.8] shadow-inner' // 소진된 구슬은 어둡고 흑백 처리
+                  }`} 
+                  draggable="false"
+                />
+              ))}
+            </div>
+
             <div className="w-8 px-2"></div>
           </div>
 
@@ -497,16 +518,18 @@ export default function App() {
                   </button>
                   
                   <button 
-                    onClick={() => initGame()}
-                    className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(234,179,8,0.4)] select-none"
+                    onClick={() => {
+                      if (hpData.hp < 1) {
+                        alert("체력 구슬이 부족합니다! 회복 후 다시 도전하세요.");
+                        return;
+                      }
+                      setHasDeductedHp(false); // 💡 새 게임이므로 자물쇠 해제
+                      initGame();
+                    }}
+                    className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(220,38,38,0.3)] select-none"
                     style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
                   >
-                    <img 
-                      src="/replay.png" 
-                      alt="Replay Game" 
-                      className="w-full h-auto object-contain pointer-events-none"
-                      draggable="false"
-                    />
+                    <img src="/replay.png" alt="Replay Game" className="w-full h-auto object-contain pointer-events-none" draggable="false" />
                   </button>
                   
                 </div>
