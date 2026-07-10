@@ -194,6 +194,12 @@ export default function Knights({ onBack, hp }) {
                 <div className="flex items-center gap-2 mb-1.5">
                 <div 
                   onClick={() => {
+                    const isOwned = selectedKnight === 'knight_main' || unlockedKnights.includes(selectedKnight);
+                    
+                    if (!isOwned) {
+                      alert("소환을 완료한 기사만 레벨업할 수 있습니다!");
+                      return;
+                    }
                     if (selectedKnight !== 'knight_main') setShowLevelUpModal(true);
                   }}
                   className={`flex items-center justify-center bg-black/60 border border-yellow-500/50 px-2 py-0.5 rounded-sm backdrop-blur-sm transition-all
@@ -613,13 +619,21 @@ export default function Knights({ onBack, hp }) {
                     return (
                       <div
                         key={knight.id}
-                        onClick={() => setFocusedIndex(idx)} // 양옆 클릭 시 중앙으로 이동
-                        className={`absolute top-1/2 -translate-y-1/2 transition-all duration-300 ease-out cursor-pointer flex flex-col items-center
-                          ${isCenter ? 'z-30 scale-100 opacity-100' : 'z-20 scale-75 opacity-40 grayscale-[40%] hover:opacity-60'}
+                        // 👇👇👇 핵심 수정: 중앙에 있을 때 한 번 더 누르면 상세 화면으로 이동합니다! 👇👇👇
+                        onClick={() => {
+                          if (isCenter) {
+                            setSelectedKnight(knight.id); // 중앙 기사 클릭 -> 스탯 미리보기 진입
+                          } else {
+                            setFocusedIndex(idx); // 양옆 기사 클릭 -> 중앙으로 포커스 이동
+                          }
+                        }}
+                        // 👆👆👆 수정 끝 👆👆👆
+                        className={`absolute top-1/2 -translate-y-1/2 transition-all duration-300 ease-out flex flex-col items-center
+                          ${isCenter ? 'z-30 scale-100 opacity-100 cursor-pointer' : 'z-20 scale-75 opacity-40 grayscale-[40%] hover:opacity-60 cursor-pointer'}
                           ${isLeft ? '-translate-x-[75%]' : ''}
                           ${isRight ? 'translate-x-[75%]' : ''}
                         `}
-                        style={{ height: '85%' }} // 세로 기준 꽉 차게 조절
+                        style={{ height: '85%' }}
                       >
                         {/* 1:2 비율 기사 프로필 */}
                         <img 
