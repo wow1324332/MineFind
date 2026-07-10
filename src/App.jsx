@@ -448,19 +448,23 @@ export default function App() {
               <img src="/backkey.png" alt="Exit Portal" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
             </button>
 
-            <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-[4px] drop-shadow-md z-20">
+            <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-[4px] drop-shadow-md z-20 pointer-events-none">
               {[...Array(MAX_HP)].map((_, i) => (
-                <img 
-                  key={i} 
-                  src="/hpball.png" 
-                  alt="HP" 
-                  className={`w-[22px] h-[22px] rounded-full border border-[#4a2c11] transition-all duration-500 ${
+                <div
+                  key={i}
+                  className={`w-[22px] h-[22px] rounded-full border border-[#4a2c11] relative overflow-hidden flex items-center justify-center transition-all duration-500 ${
                     i < hpData.hp 
-                      ? 'opacity-100 shadow-[0_0_8px_rgba(220,38,38,0.7)]' // 남아있는 구슬은 선명하게 빛남
-                      : 'opacity-30 grayscale-[0.8] shadow-inner' // 소진된 구슬은 어둡고 흑백 처리
-                  }`} 
-                  draggable="false"
-                />
+                      ? 'opacity-100 shadow-[0_0_10px_rgba(220,38,38,0.85)]' // 구슬 바로 옆에 강한 붉은 후광
+                      : 'opacity-35 grayscale-[0.7]' // 소진 시 투명도 및 흑백
+                  }`}
+                >
+                  <img 
+                    src="/hpball.jpg" 
+                    alt="HP" 
+                    className="w-full h-full object-cover scale-[1.15]" // 💡 핵심: 1.15배 키워서 검은 여백을 밖으로 밀어내 잘라버립니다.
+                    draggable="false"
+                  />
+                </div>
               ))}
             </div>
 
