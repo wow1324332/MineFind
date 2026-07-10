@@ -220,10 +220,27 @@ export default function App() {
     setTimeout(() => setCurrentScreen('DUNGEON_SELECTION'), 2000);
   };
 
+  const handleRetryGame = () => {
+    // 💡 이미 타일을 눌러서 체력을 1 소모한 상태(hasDeductedHp === true)라면, 남은 체력이 있는지 검사!
+    if (hasDeductedHp && hpData.hp < 1) {
+      alert("체력 구슬이 부족합니다! 회복 후 다시 도전하세요.");
+      return; // 체력이 없으면 함수 실행을 강제로 멈춰버림 (게임 시작 불가)
+    }
+    setHasDeductedHp(false); // 새 게임을 시작할 수 있게 차감 자물쇠 해제
+    initGame();
+  };
+
+  const handleBackToSelection = () => {
+    setShowExitPopup(false); // 나가기 팝업 닫기
+    setHasDeductedHp(false); // 자물쇠 초기화
+    initGame(); // 보드판 초기화
+    setCurrentScreen('DUNGEON_SELECTION'); // 던전 선택 창으로 이동
+  };
+
   const handleSelectDungeon = (dungeonId, selectedDifficulty) => {
-    // 💡 체력이 없으면 입장 차단
+    // 여기서 던전을 누를 때 체력이 없으면 입구컷!
     if (hpData.hp < 1) {
-      alert("체력 구슬이 부족합니다! 구슬이 차오를 때까지 기다려주세요.");
+      alert("체력 구슬이 부족합니다! 회복 후 다시 입장하세요.");
       return;
     }
 
@@ -459,7 +476,7 @@ export default function App() {
               backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('${DUNGEON_INFO[currentDungeon]?.boardBg || '/dungeoninsite-bg.jpg'}')` 
             }}
           >
-            <Header minesLeft={minesLeft} gameStatus={gameStatus} timeElapsed={timeElapsed} onReset={() => initGame()} dungeon={currentDungeon} />
+            <Header minesLeft={minesLeft} gameStatus={gameStatus} timeElapsed={timeElapsed} onReset={handleRetryGame} dungeon={currentDungeon} />
             <div className="flex-1 flex flex-col justify-center">
               <Board board={board} onCellClick={handleCellClick} onCellRightClick={toggleFlag} dungeon={currentDungeon} />
             </div>
@@ -485,39 +502,22 @@ export default function App() {
                 {/* 💡 승리 보상 UI 렌더링! */}
                 {renderRewardsUI()}
 
-                <div className="flex justify-center items-center gap-4 px-6 w-full max-w-md mx-auto relative z-10">
-                  
+               <div className="flex justify-center items-center gap-4 px-6 w-full max-w-md mx-auto relative z-10">
                   <button 
-                    onClick={() => {
-                      initGame();
-                      setCurrentScreen('DUNGEON_SELECTION');
-                    }}
+                    onClick={handleBackToSelection} // 💡 로비 이동 방어 적용
                     className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)] select-none"
                     style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
                   >
-                    <img 
-                      src="/back.png" 
-                      alt="Back to Dungeon Selection" 
-                      className="w-full h-auto object-contain pointer-events-none"
-                      draggable="false"
-                    />
+                    <img src="/back.png" alt="Back to Dungeon Selection" className="w-full h-auto object-contain pointer-events-none" draggable="false" />
                   </button>
                   
                   <button 
-                    onClick={() => {
-                      if (hpData.hp < 1) {
-                        alert("체력 구슬이 부족합니다! 회복 후 다시 도전하세요.");
-                        return;
-                      }
-                      setHasDeductedHp(false); // 💡 새 게임이므로 자물쇠 해제
-                      initGame();
-                    }}
-                    className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(220,38,38,0.3)] select-none"
+                    onClick={handleRetryGame} // 💡 리플레이 방어 적용
+                    className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(234,179,8,0.4)] select-none"
                     style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
                   >
                     <img src="/replay.png" alt="Replay Game" className="w-full h-auto object-contain pointer-events-none" draggable="false" />
                   </button>
-                  
                 </div>
                 
                 <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent pointer-events-none z-0"></div>
@@ -546,37 +546,22 @@ export default function App() {
                 {/* 💡 패배 위로 보상 UI 렌더링! */}
                 {renderRewardsUI()}
 
-                <div className="flex justify-center items-center gap-4 px-6 w-full max-w-md mx-auto relative z-10">
-                  
+               <div className="flex justify-center items-center gap-4 px-6 w-full max-w-md mx-auto relative z-10">
                   <button 
-                    onClick={() => {
-                      initGame();
-                      setCurrentScreen('DUNGEON_SELECTION');
-                    }}
+                    onClick={handleBackToSelection} // 💡 로비 이동 방어 적용
                     className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)] select-none"
                     style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
                   >
-                    <img 
-                      src="/back.png" 
-                      alt="Back to Dungeon Selection" 
-                      className="w-full h-auto object-contain pointer-events-none"
-                      draggable="false"
-                    />
+                    <img src="/back.png" alt="Back to Dungeon Selection" className="w-full h-auto object-contain pointer-events-none" draggable="false" />
                   </button>
                   
                   <button 
-                    onClick={() => initGame()}
-                    className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(220,38,38,0.3)] select-none"
+                    onClick={handleRetryGame} // 💡 리플레이 방어 적용
+                    className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(234,179,8,0.4)] select-none"
                     style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
                   >
-                    <img 
-                      src="/replay.png" 
-                      alt="Replay Game" 
-                      className="w-full h-auto object-contain pointer-events-none"
-                      draggable="false"
-                    />
+                    <img src="/replay.png" alt="Replay Game" className="w-full h-auto object-contain pointer-events-none" draggable="false" />
                   </button>
-                  
                 </div>
                 
                 <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent pointer-events-none z-0"></div>
@@ -603,23 +588,13 @@ export default function App() {
                     게임 플레이 기록이 <span className="text-red-400 font-black">저장되지 않습니다</span>.
                   </p>
                   
-                  <div className="flex justify-center items-center gap-1 w-full px-2 relative z-10">
-                    
+                 <div className="flex justify-center items-center gap-1 w-full px-2 relative z-10">
                     <button 
-                      onClick={() => { 
-                        setShowExitPopup(false); 
-                        initGame();
-                        setCurrentScreen('DUNGEON_SELECTION'); 
-                      }}
+                      onClick={handleBackToSelection} // 💡 나갈 때 안전하게 초기화하며 로비로 이동
                       className="w-24 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_0_10px_rgba(0,0,0,0.8)] select-none"
                       style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
                     >
-                      <img 
-                        src="/back.png" 
-                        alt="Confirm Exit" 
-                        className="w-full h-auto object-contain pointer-events-none"
-                        draggable="false"
-                      />
+                      <img src="/back.png" alt="Confirm Exit" className="w-full h-auto object-contain pointer-events-none" draggable="false" />
                     </button>
                     
                     <button 
@@ -630,15 +605,10 @@ export default function App() {
                       className="w-24 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_0_15px_rgba(220,38,38,0.5)] select-none"
                       style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
                     >
-                      <img 
-                        src="/replay.png" 
-                        alt="Cancel Exit" 
-                        className="w-full h-auto object-contain pointer-events-none"
-                        draggable="false"
-                      />
+                      <img src="/replay.png" alt="Cancel Exit" className="w-full h-auto object-contain pointer-events-none" draggable="false" />
                     </button>
-                    
                   </div>
+                  
                 </div>
               </div>
             )}
