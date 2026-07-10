@@ -341,7 +341,7 @@ export default function Knights({ onBack, hp }) {
           </div>
         )}
 
-{/* ========================================= */}
+        {/* ========================================= */}
         {/* 🧪 기사 레벨업 (포션 먹이기) 모달 */}
         {/* ========================================= */}
         {showLevelUpModal && selectedKnight !== 'knight_main' && (
@@ -478,6 +478,22 @@ export default function Knights({ onBack, hp }) {
           <button onClick={onBack} className="transition-all duration-150 active:scale-90 px-2 outline-none">
             <img src="/backkey.png" alt="Back" className="w-6 h-6 object-contain" />
           </button>
+
+          <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-[4px] drop-shadow-md z-20 pointer-events-none">
+            {[...Array(5)].map((_, i) => (
+              <img 
+                key={i} 
+                src="/hpball.png" 
+                alt="HP" 
+                className={`w-[18px] h-[18px] object-contain transition-all duration-500 ${
+                  i < hp 
+                    ? 'opacity-100 drop-shadow-[0_0_5px_rgba(220,38,38,0.95)]' 
+                    : 'opacity-20 grayscale saturate-50'
+                }`} 
+                draggable="false"
+              />
+            ))}
+          </div>
           
           <div className="text-xs bg-[#1a1008] border border-[#5c3e23] px-2 py-1 rounded-sm text-yellow-400 font-bold mr-2 shadow-md flex items-center gap-1">
             🪙 {gold.toLocaleString()}
