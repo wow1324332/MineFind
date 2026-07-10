@@ -42,18 +42,24 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout }) 
       </div>
 
       {/* 💡 던전 선택 버튼 영역 (데이터를 map으로 돌려서 자동 렌더링) */}
-      <div className="relative z-10 w-full max-w-xs -space-y-3 mt-6 mb-auto flex flex-col items-center">
-        {Object.values(DUNGEON_INFO).map((dungeon) => (
-          <button
-            key={dungeon.id}
-            onClick={() => handleDungeonClick(dungeon.id)} 
-            // id에 따라 불(빨강), 물(파랑) 그림자 효과를 줍니다. 던전이 늘어나면 이 부분도 나중에 데이터로 빼면 더 좋습니다!
-            className={`w-full transition-all duration-200 hover:brightness-110 active:scale-[0.96] select-none ${dungeon.id === 'fire' ? 'drop-shadow-[0_4px_15px_rgba(220,38,38,0.3)]' : 'drop-shadow-[0_4px_15px_rgba(37,99,235,0.3)]'}`}
-            style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
-          >
-            <img src={dungeon.buttonImg} alt={dungeon.name} className="w-full h-auto object-contain pointer-events-none" draggable="false" />
-          </button>
-        ))}
+      <div className="relative z-10 w-full max-w-xs gap-3 mt-6 mb-auto flex flex-col items-center">
+        {Object.values(DUNGEON_INFO).map((dungeon) => {
+          // 💡 던전별 고유 그림자 색상을 여기서 각각 지정해 줍니다!
+          let shadowClass = 'drop-shadow-[0_4px_15px_rgba(37,99,235,0.3)]'; // 기본(물) 파란색
+          if (dungeon.id === 'fire') shadowClass = 'drop-shadow-[0_4px_15px_rgba(220,38,38,0.3)]'; // 불(빨강)
+          if (dungeon.id === 'poison') shadowClass = 'drop-shadow-[0_4px_15px_rgba(34,197,94,0.3)]'; // 독(녹색)
+
+          return (
+            <button
+              key={dungeon.id}
+              onClick={() => handleDungeonClick(dungeon.id)} 
+              className={`w-full transition-all duration-200 hover:brightness-110 active:scale-[0.96] select-none ${shadowClass}`}
+              style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+            >
+              <img src={dungeon.buttonImg} alt={dungeon.name} className="w-full h-auto object-contain pointer-events-none" draggable="false" />
+            </button>
+          );
+        })}
       </div>
 
       {/* 💡 최하단: 난이도 선택 버튼 UI (마찬가지로 map으로 자동 렌더링) */}
