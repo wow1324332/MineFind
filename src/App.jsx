@@ -15,6 +15,9 @@ import { DUNGEON_INFO } from './constants/dungeonData';
 import { ITEM_DATABASE } from './constants/itemData';
 import UserProfileCard from './components/UserProfileCard';
 
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { db } from './firebase'; // (파이어베이스 설정 파일 경로)
+
 const SPLASH_CONFIG = {
   INITIAL: {
     message: "Transfer...",
@@ -63,6 +66,79 @@ export default function App() {
   const [currentDungeon, setCurrentDungeon] = useState('fire');
   const [currentDifficulty, setCurrentDifficulty] = useState('Normal');
   const [showExitPopup, setShowExitPopup] = useState(false);
+
+  const MAX_HP = 5;
+  const REGEN_TIME_MS = 3 * 60 * 1000; // 3분 (180,000 밀리초)
+  
+  const [hpData, setHpData] = useState({ hp: MAX_HP, lastUpdate: Date.now() });
+  const [hasDeductedHp, setHasDeductedHp] = useState(false);
+
+  // 1️⃣ 오프라인 체력 회복 동기화
+  useEffect(() => {
+    if (!user) return;
+    const syncHp = async () => {
+      try {
+        const userRef = doc(db, 'users', user.uid);
+        const snap = await getDoc(userRef);
+        if (snap.exists()) {
+          const data = snap.data();
+          let currentHp = data.hp ?? MAX_HP;
+          let lastHpUpdate = data.lastHpUpdate?.toMillis ? data.lastHpUpdate.toMillis() : (data.lastHpUpdate || Date.now());
+          
+          if (currentHp < MAX_HP) {
+            const now = Date.now();
+            const elapsed = now - lastHpUpdate;
+            const recovered = Math.floor(elapsed / REGEN_TIME_MS);
+            
+            if (recovered > 0) {
+              currentHp = Math.min(MAX_HP, currentHp + recovered);
+              lastHpUpdate = currentHp === MAX_HP ? now : lastHpUpdate + (recovered * REGEN_TIME_MS);
+              await updateDoc(userRef, { hp: currentHp, lastHpUpdate });
+            }
+          }
+          setHpData({ hp: currentHp, lastUpdate: lastHpUpdate });
+        }
+      } catch (error) {
+        console.error("체력 정보 동기화 에러:", error);
+      }
+    };
+    syncHp();
+  }, [user]);
+
+  // 2️⃣ 접속 중일 때 실시간 체력 회복 타이머
+  useEffect(() => {
+    if (!user || hpData.hp >= MAX_HP) return;
+    
+    const interval = setInterval(() => {
+      const now = Date.now();
+      const elapsed = now - hpData.lastUpdate;
+      
+      if (elapsed >= REGEN_TIME_MS) {
+        const recovered = Math.floor(elapsed / REGEN_TIME_MS);
+        const newHp = Math.min(MAX_HP, hpData.hp + recovered);
+        const newLastUpdate = newHp === MAX_HP ? now : hpData.lastUpdate + (recovered * REGEN_TIME_MS);
+        
+        setHpData({ hp: newHp, lastUpdate: newLastUpdate });
+        updateDoc(doc(db, 'users', user.uid), { hp: newHp, lastHpUpdate: newLastUpdate });
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [hpData, user]);
+
+  // 3️⃣ 핵심: 타일을 처음 눌러 게임이 'playing'이 되는 순간 체력 차감!
+  useEffect(() => {
+    if (gameStatus === 'playing' && !hasDeductedHp && user) {
+      setHasDeductedHp(true); 
+      
+      const now = Date.now();
+      const newHp = Math.max(0, hpData.hp - 1);
+      const newLastUpdate = hpData.hp === MAX_HP ? now : hpData.lastUpdate;
+      
+      setHpData({ hp: newHp, lastUpdate: newLastUpdate });
+      updateDoc(doc(db, 'users', user.uid), { hp: newHp, lastHpUpdate: newLastUpdate });
+    }
+  }, [gameStatus, hasDeductedHp, hpData, user]);
 
   const startupLoggedOut = useRef(false);
 
