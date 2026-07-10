@@ -41,13 +41,13 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout }) 
         </div>
       </div>
 
-      {/* 💡 던전 선택 버튼 영역 (데이터를 map으로 돌려서 자동 렌더링) */}
-      <div className="relative z-10 w-full max-w-xs gap-3 mt-6 mb-auto flex flex-col items-center">
+      {/* 💡 던전 선택 버튼 영역 */}
+      {/* 💡 gap-4를 주어 버튼들이 일정한 간격을 가지도록 설정하여 쏠림 현상 해결 */}
+      <div className="relative z-10 w-full max-w-xs flex flex-col gap-4 items-center mt-4">
         {Object.values(DUNGEON_INFO).map((dungeon) => {
-          // 💡 던전별 고유 그림자 색상을 여기서 각각 지정해 줍니다!
-          let shadowClass = 'drop-shadow-[0_4px_15px_rgba(37,99,235,0.3)]'; // 기본(물) 파란색
-          if (dungeon.id === 'fire') shadowClass = 'drop-shadow-[0_4px_15px_rgba(220,38,38,0.3)]'; // 불(빨강)
-          if (dungeon.id === 'poison') shadowClass = 'drop-shadow-[0_4px_15px_rgba(34,197,94,0.3)]'; // 독(녹색)
+          let shadowClass = 'drop-shadow-[0_4px_15px_rgba(37,99,235,0.3)]'; 
+          if (dungeon.id === 'fire') shadowClass = 'drop-shadow-[0_4px_15px_rgba(220,38,38,0.3)]'; 
+          if (dungeon.id === 'poison') shadowClass = 'drop-shadow-[0_4px_15px_rgba(34,197,94,0.3)]'; 
 
           return (
             <button
@@ -62,7 +62,7 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout }) 
         })}
       </div>
 
-      {/* 💡 최하단: 난이도 선택 버튼 UI (마찬가지로 map으로 자동 렌더링) */}
+      {/* 💡 최하단: 난이도 선택 버튼 UI */}
       <div className="absolute bottom-6 w-full px-6 z-20">
         <div className="flex justify-between items-center max-w-md mx-auto gap-2">
           {DIFFICULTIES.map((diff) => (
