@@ -8,7 +8,7 @@ import { EQUIP_DATABASE } from '../constants/equipData';
 import { ITEM_DATABASE } from '../constants/itemData'; 
 import { getKnightRequiredExp, processKnightExpGain } from '../utils/expUtils';
 
-export default function Knights({ onBack }) {
+export default function Knights({ onBack, hp }) {
   const { user } = useAuth();
   const [userData, setUserData] = useState(null);
   
@@ -186,6 +186,22 @@ export default function Knights({ onBack }) {
             <button onClick={() => setSelectedKnight(null)} className="transition-all duration-150 active:scale-90 p-1 outline-none">
               <img src="/backkey.png" alt="Back" className="w-6 h-6 object-contain opacity-80" />
             </button>
+          </div>
+
+          <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-[4px] drop-shadow-md z-20 pointer-events-none">
+            {[...Array(5)].map((_, i) => (
+              <img 
+                key={i} 
+                src="/hpball.png" 
+                alt="HP" 
+                className={`w-[18px] h-[18px] object-contain transition-all duration-500 ${
+                  i < hp 
+                    ? 'opacity-100 drop-shadow-[0_0_5px_rgba(220,38,38,0.95)]' 
+                    : 'opacity-20 grayscale saturate-50'
+                }`} 
+                draggable="false"
+              />
+            ))}
           </div>
 
           <div className="flex-1 flex flex-col justify-end p-5 pb-8">
