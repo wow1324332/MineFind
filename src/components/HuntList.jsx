@@ -1,7 +1,7 @@
 import React from 'react';
 
 // 💡 1. 맨 윗줄 오타(rt)를 export로 고치고, onMyPage 프롭스를 추가했습니다.
-export default function HuntList({ onSelectDevilMine, onLogout, onMyPage }) {
+export default function HuntList({ onSelectDevilMine, onLogout, onMyPage, hp }) {
   return (
     // 1. 제일 바깥쪽 뼈대 (배경 설정 및 페이드인)
     <div className="relative min-h-screen text-white flex flex-col items-center px-6 pb-6 pt-0 animate-[fadeIn_0.5s_ease-in-out] overflow-hidden">
@@ -55,6 +55,22 @@ export default function HuntList({ onSelectDevilMine, onLogout, onMyPage }) {
           >
             <img src="/My-icon.png" alt="My Page" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
           </button>
+
+          <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-[4px] drop-shadow-md z-20 pointer-events-none">
+               {[...Array(5)].map((_, i) => (
+                 <img 
+                   key={i} 
+                   src="/hpball.png" 
+                   alt="HP" 
+                   className={`w-[18px] h-[18px] object-contain transition-all duration-500 ${
+                     i < hp 
+                       ? 'opacity-100 drop-shadow-[0_0_5px_rgba(220,38,38,0.95)]' 
+                       : 'opacity-20 grayscale saturate-50'
+                   }`} 
+                   draggable="false"
+                 />
+               ))}
+             </div>
           
           {/* 2. Logout 아이콘 버튼 */}
           <button 
