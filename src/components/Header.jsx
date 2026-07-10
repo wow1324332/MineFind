@@ -5,12 +5,15 @@ import { DUNGEON_INFO } from '../constants/dungeonData';
 export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, dungeon }) {
   // 💡 현재 입장한 던전의 실시간 고유 데이터 확보
   const currentDungeonInfo = DUNGEON_INFO[dungeon];
-  const isFire = dungeon === 'fire';
   
-  // 패널 배경 그림자에 더해서, 글자 자체에서 뿜어져 나오는 네온 효과(drop-shadow)
-  const panelColor = isFire 
-    ? "text-red-600 shadow-[inset_0_0_12px_rgba(220,38,38,0.25)] drop-shadow-[0_0_8px_rgba(220,38,38,0.8)]" 
-    : "text-blue-500 shadow-[inset_0_0_12px_rgba(56,189,248,0.25)] drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]";
+  // 💡 던전 종류에 따른 타이머/카운터 네온 효과(drop-shadow) 동적 할당
+  let panelColor = "text-blue-500 shadow-[inset_0_0_12px_rgba(56,189,248,0.25)] drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]"; // 기본(water) 파란색
+  if (dungeon === 'fire') {
+    panelColor = "text-red-600 shadow-[inset_0_0_12px_rgba(220,38,38,0.25)] drop-shadow-[0_0_8px_rgba(220,38,38,0.8)]";
+  } else if (dungeon === 'poison') {
+    // 💡 독 던전(poison)일 경우 녹색 불빛 적용
+    panelColor = "text-green-500 shadow-[inset_0_0_12px_rgba(34,197,94,0.25)] drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]";
+  }
 
   return (
     <div className={`relative flex justify-between items-center p-4 rounded-xl mb-6 shadow-[0_10px_20px_rgba(0,0,0,0.6)] overflow-hidden`}>
