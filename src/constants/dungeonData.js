@@ -57,7 +57,7 @@ export const DUNGEON_INFO = {
     titleImg: '/dungeons/poison/hellofpoison-title.jpg',
     loadingBg: '/dungeons/poison/hellofpoisonloading-bg.jpg',
     loadingMsg: "독의 심연으로 이동 중...",
-    loadingLogo: "/hellofpoison-bt.png",
+    loadingLogo: "/dungeons/poison/hellofpoison-bt.png",
     loadingOpacity: "opacity-70",
     winBg: '/dungeons/poison/hellofpoisonwin.jpg',
     loseBg: '/dungeons/poison/hellofpoisonlose.jpg',
