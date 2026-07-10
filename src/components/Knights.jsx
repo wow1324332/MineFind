@@ -646,7 +646,12 @@ export default function Knights({ onBack, hp }) {
                         
                             {/* 💡 소환 폰트 버튼 (버그 수정: 항상 활성화하여 부족 알림창이 뜨게 하고, 숨쉬기 고정) */}
                             {isCenter && (
-                              <div className="absolute -bottom-12 w-full flex justify-center z-50">
+                              <div className="absolute -bottom-14 w-full flex justify-center z-50">
+
+                                <span className="text-[#a6845c] font-serif font-bold text-[10px] tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
+                                  {knight.name}
+                                </span>
+                                
                                 {isOwned ? (
                                   <span className="font-serif tracking-widest text-sm font-black text-neutral-500 drop-shadow-[0_2px_5px_rgba(0,0,0,1)]">Owned</span>
                                 ) : (
