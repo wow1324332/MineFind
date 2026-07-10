@@ -641,15 +641,12 @@ export default function App() {
   return (
     <>
       {currentView}
-      {showToast && (
-        <div className="portal-exit-toast">
-          뒤로가기를 한 번 더 누르면 포탈이 닫힙니다.
-        </div>
-      )}
       {showEnergyToast && (
         <div className="fixed top-1/4 left-1/2 -translate-x-1/2 z-[300] flex flex-col items-center justify-center pointer-events-none animate-[fadeIn_0.3s_ease-out]">
-          <div className="bg-black/90 border border-red-900/80 shadow-[0_0_20px_rgba(220,38,38,0.8)] px-8 py-3 rounded-md flex items-center gap-2">
-            <span className="text-red-500 font-serif font-black tracking-widest text-base italic drop-shadow-md">
+          {/* 💡 px, py를 줄여서 상자 두께를 더 날렵하게 만들었습니다. */}
+          <div className="bg-black/90 border border-red-900/80 shadow-[0_0_20px_rgba(220,38,38,0.8)] px-6 py-2 rounded-md flex items-center justify-center">
+            {/* 💡 text-sm으로 크기를 줄이고, whitespace-nowrap으로 줄바꿈을 원천 차단했습니다. */}
+            <span className="text-red-500 font-serif font-black tracking-wider text-sm italic drop-shadow-md whitespace-nowrap">
               Not enough energy..
             </span>
           </div>
