@@ -654,7 +654,7 @@ export default function App() {
           `}</style>
           
           <div 
-            className="fixed top-24 left-1/2 -translate-x-1/2 z-[300] flex flex-col items-center justify-center pointer-events-none"
+            className="fixed top-20 left-1/2 -translate-x-1/2 z-[300] flex flex-col items-center justify-center pointer-events-none"
             style={{ animation: 'toastFadeInOut 2.5s ease-in-out forwards' }}
           >
             {/* 💡 배경 투명도를 90에서 60으로 낮추고, 뒤가 은은하게 비치는 backdrop-blur-md 추가 */}
