@@ -65,7 +65,7 @@ export const DUNGEON_INFO = {
     tileImg: '/dungeons/poison/hellofpoison-tile.png',
     mineImg: '/dungeons/poison/hellofpoison-mine.png',
     mineShadow: 'drop-shadow-[0_0_15px_rgba(37,99,235,1)]',
-    revealedMineBg: 'bg-blue-950/80 shadow-[inset_0_0_20px_rgba(37,99,235,0.8)]',
+    revealedMineBg: 'bg-green-950/80 shadow-[inset_0_0_20px_rgba(37,99,235,0.8)]',
     
     layout: [
       [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
