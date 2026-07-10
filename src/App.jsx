@@ -452,7 +452,7 @@ export default function App() {
               {[...Array(MAX_HP)].map((_, i) => (
                 <img 
                   key={i} 
-                  src="/hpball.jpg" 
+                  src="/hpball.png" 
                   alt="HP" 
                   className={`w-[22px] h-[22px] rounded-full border border-[#4a2c11] transition-all duration-500 ${
                     i < hpData.hp 
