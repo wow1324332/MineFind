@@ -202,5 +202,77 @@ export const KNIGHT_DATABASE = {
       vit: 5,
       luk: 2
     }
+  },
+  // ========================================================
+  // 6. 모드레드 (독의 던전 소환 기사)
+  // ========================================================
+  'knight_poison_mordred': {
+    id: 'knight_poison_mordred',
+    name: 'Mordred',
+    title: 'Assassin of poison',
+    attribute: 'poison',
+    rarity: 'rare',
+    image: '/knights/knight-mordred-profile.png',
+    fullImage: '/knights/knight-mordred.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '독의 던전을 수호하던 고대 기사의 영령.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_3', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 10,
+      agi: 25,
+      int: 10,
+      vit: 15,
+      luk: 10
+    },
+
+    statGrowth: {
+      str: 2,
+      agi: 3,
+      int: 1,
+      vit: 1,
+      luk: 2
+    }
+  },
+  // ========================================================
+  // 7. 가레스 (물의 던전 소환 기사)
+  // ========================================================
+  'knight_poison_gareth': {
+    id: 'knight_poison_gareth',
+    name: 'Gareth',
+    title: 'Assassin of Shadow',
+    attribute: 'poison',
+    rarity: 'rare',
+    image: '/knights/knight-gareth-profile.png',
+    fullImage: '/knights/knight-gareth.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '독의 던전을 수호하던 고대 기사의 그림자.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_3', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 15,
+      agi: 20,
+      int: 10,
+      vit: 10,
+      luk: 15
+    },
+
+    statGrowth: {
+      str: 2,
+      agi: 3,
+      int: 1,
+      vit: 1,
+      luk: 3
+    }
   }
 };
