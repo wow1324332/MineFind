@@ -178,7 +178,7 @@ export const ITEM_DATABASE = {
     desc: '화염의 기사들의 영혼 조각',
     sellPrice: 2000
   },
-    'con_soul_2':{
+  'con_soul_2':{
     id: 'con_soul_2',
     type: 'consumable',
     name: 'soul of water knight',
@@ -187,7 +187,7 @@ export const ITEM_DATABASE = {
     desc: '물의 기사들의 영혼 조각',
     sellPrice: 2000
   },
-      'con_soul_3':{
+  'con_soul_3':{
     id: 'con_soul_3',
     type: 'consumable',
     name: 'soul of poison knight',
