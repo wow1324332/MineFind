@@ -459,7 +459,7 @@ export default function App() {
                   }`}
                 >
                   <img 
-                    src="/hpball.jpg" 
+                    src="/hpball.png" 
                     alt="HP" 
                     className="w-full h-full object-cover scale-[1.15]" // 💡 핵심: 1.15배 키워서 검은 여백을 밖으로 밀어내 잘라버립니다.
                     draggable="false"
