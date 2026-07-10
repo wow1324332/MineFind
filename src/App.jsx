@@ -79,7 +79,7 @@ export default function App() {
   };
   
   const MAX_HP = 5;
-  const REGEN_TIME_MS = 3 * 60 * 1000; // 3분 (180,000 밀리초)
+  const REGEN_TIME_MS = 6 * 60 * 1000; // 6분 (360,000 밀리초)
   
   const [hpData, setHpData] = useState({ hp: MAX_HP, lastUpdate: Date.now() });
   const [hasDeductedHp, setHasDeductedHp] = useState(false);
