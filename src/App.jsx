@@ -372,6 +372,7 @@ export default function App() {
     case 'HUNT_LIST':
       currentView = (
         <HuntList 
+          hp={hpData.hp} // 💡 1. 체력 데이터를 전달합니다!
           onSelectDevilMine={handleSelectDevilMine} 
           onLogout={logout} 
           onMyPage={() => setCurrentScreen('MY_PAGE')} 
@@ -382,6 +383,7 @@ export default function App() {
     case 'MY_PAGE':
       currentView = (
         <MyPage 
+          hp={hpData.hp}
           onBack={() => setCurrentScreen('HUNT_LIST')} 
           onKnights={() => setCurrentScreen('KNIGHTS')} // 💡 기사단 화면으로 이동 신호 연결
         />
@@ -390,7 +392,7 @@ export default function App() {
 
     // 💡 마이페이지 아래에 기사단 전용 독립 화면 라우팅 추가
     case 'KNIGHTS':
-      currentView = <Knights onBack={() => setCurrentScreen('MY_PAGE')} />;
+      currentView = <Knights hp={hpData.hp} onBack={() => setCurrentScreen('MY_PAGE')} />;
       break;
     
     case 'DEVIL_MINE_MODE':
@@ -402,13 +404,13 @@ export default function App() {
               to { opacity: 1; }
             }
           `}</style>
-          <DevilMineMode onSelectPVE={handleSelectPVE} onBack={() => setCurrentScreen('HUNT_LIST')} onLogout={logout} />
+          <DevilMineMode hp={hpData.hp} onSelectPVE={handleSelectPVE} onBack={() => setCurrentScreen('HUNT_LIST')} onLogout={logout} />
         </div>
       );
       break;
 
     case 'DUNGEON_SELECTION':
-      currentView = <DungeonSelection onSelectDungeon={handleSelectDungeon} onBack={() => setCurrentScreen('DEVIL_MINE_MODE')} onLogout={logout} />;
+      currentView = <DungeonSelection hp={hpData.hp} onSelectDungeon={handleSelectDungeon} onBack={() => setCurrentScreen('DEVIL_MINE_MODE')} onLogout={logout} />;
       break;
       
     case 'GAME_PVE':
