@@ -67,6 +67,17 @@ export default function App() {
   const [currentDifficulty, setCurrentDifficulty] = useState('Normal');
   const [showExitPopup, setShowExitPopup] = useState(false);
 
+  const [showEnergyToast, setShowEnergyToast] = useState(false);
+  const energyToastTimer = useRef(null);
+
+  const triggerEnergyToast = () => {
+    setShowEnergyToast(true);
+    if (energyToastTimer.current) clearTimeout(energyToastTimer.current);
+    energyToastTimer.current = setTimeout(() => {
+      setShowEnergyToast(false);
+    }, 2500); // 2.5초 후 자연스럽게 사라짐
+  };
+  
   const MAX_HP = 5;
   const REGEN_TIME_MS = 3 * 60 * 1000; // 3분 (180,000 밀리초)
   
@@ -223,7 +234,7 @@ export default function App() {
   const handleRetryGame = () => {
     // 💡 이미 타일을 눌러서 체력을 1 소모한 상태(hasDeductedHp === true)라면, 남은 체력이 있는지 검사!
     if (hasDeductedHp && hpData.hp < 1) {
-      alert("체력 구슬이 부족합니다! 회복 후 다시 도전하세요.");
+      triggerEnergyToast();
       return; // 체력이 없으면 함수 실행을 강제로 멈춰버림 (게임 시작 불가)
     }
     setHasDeductedHp(false); // 새 게임을 시작할 수 있게 차감 자물쇠 해제
@@ -240,7 +251,7 @@ export default function App() {
   const handleSelectDungeon = (dungeonId, selectedDifficulty) => {
     // 여기서 던전을 누를 때 체력이 없으면 입구컷!
     if (hpData.hp < 1) {
-      alert("체력 구슬이 부족합니다! 회복 후 다시 입장하세요.");
+      triggerEnergyToast();
       return;
     }
 
@@ -633,6 +644,15 @@ export default function App() {
       {showToast && (
         <div className="portal-exit-toast">
           뒤로가기를 한 번 더 누르면 포탈이 닫힙니다.
+        </div>
+      )}
+      {showEnergyToast && (
+        <div className="fixed top-1/4 left-1/2 -translate-x-1/2 z-[300] flex flex-col items-center justify-center pointer-events-none animate-[fadeIn_0.3s_ease-out]">
+          <div className="bg-black/90 border border-red-900/80 shadow-[0_0_20px_rgba(220,38,38,0.8)] px-8 py-3 rounded-md flex items-center gap-2">
+            <span className="text-red-500 font-serif font-black tracking-widest text-base italic drop-shadow-md">
+              Not enough energy..
+            </span>
+          </div>
         </div>
       )}
     </>
