@@ -1,7 +1,7 @@
 import React from 'react';
 
 // 💡 컴포넌트 이름이 지뢰찾기 전용임을 명확히 합니다.
-export default function DevilMineMode({ onSelectPVE, onBack, onLogout }) {
+export default function DevilMineMode({ onSelectPVE, onBack, onLogout, hp }) {
   return (
     // 💡 justify-between을 지우고 justify-start로 변경하여 컨텐츠들을 상단부터 배치합니다.
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-start bg-black text-white pt-10 px-6 select-none">
