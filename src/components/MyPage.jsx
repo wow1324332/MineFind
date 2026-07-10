@@ -14,7 +14,7 @@ const AVAILABLE_AVATARS = [
   { id: 'knight3', src: '/avatars/knight3.jpeg', name: '견습 기사' },
 ];
 
-export default function MyPage({ onBack, onKnights }) {
+export default function MyPage({ onBack, onKnights, hp }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isInventoryOpen, setIsInventoryOpen] = useState(false); 
   const [activeTab, setActiveTab] = useState('profile'); 
@@ -270,6 +270,23 @@ export default function MyPage({ onBack, onKnights }) {
           <button onClick={onBack} className="transition-all duration-150 active:scale-90 px-2 outline-none">
             <img src="/backkey.png" alt="Back" className="w-8 h-8 object-contain" />
           </button>
+
+          <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-[4px] drop-shadow-md z-20 pointer-events-none">
+            {[...Array(5)].map((_, i) => (
+              <img 
+                key={i} 
+                src="/hpball.png" 
+                alt="HP" 
+                className={`w-[18px] h-[18px] object-contain transition-all duration-500 ${
+                  i < hp 
+                    ? 'opacity-100 drop-shadow-[0_0_5px_rgba(220,38,38,0.95)]' 
+                    : 'opacity-20 grayscale saturate-50'
+                }`} 
+                draggable="false"
+              />
+            ))}
+          </div>
+          
           <div className="w-12 px-2"></div>
         </div>
         
