@@ -274,5 +274,77 @@ export const KNIGHT_DATABASE = {
       vit: 1,
       luk: 3
     }
+  },
+  // ========================================================
+  // 8. 트리스탄 (빛의 던전 소환 기사)
+  // ========================================================
+  'knight_light_tristan': {
+    id: 'knight_light_tristan',
+    name: 'Tristan',
+    title: 'Defender of light',
+    attribute: 'light',
+    rarity: 'rare',
+    image: '/knights/knight-tristan-profile.png',
+    fullImage: '/knights/knight-tristan.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '빛을 수호하는 아서왕의 수호 기사.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_4', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 20,
+      agi: 10,
+      int: 10,
+      vit: 15,
+      luk: 15
+    },
+
+    statGrowth: {
+      str: 3,
+      agi: 1,
+      int: 2,
+      vit: 2,
+      luk: 2
+    }
+  },
+  // ========================================================
+  // 9. 카이 (빛의 던전 소환 기사)
+  // ========================================================
+  'knight_light_kay': {
+    id: 'knight_light_kay',
+    name: 'Kay',
+    title: 'Light Saver',
+    attribute: 'light',
+    rarity: 'rare',
+    image: '/knights/knight-kay-profile.png',
+    fullImage: '/knights/knight-kay.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '빛을 수호하는 검.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_4', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 15,
+      agi: 10,
+      int: 15,
+      vit: 15,
+      luk: 15
+    },
+
+    statGrowth: {
+      str: 2,
+      agi: 1,
+      int: 2,
+      vit: 2,
+      luk: 3
+    }
   }
 };
