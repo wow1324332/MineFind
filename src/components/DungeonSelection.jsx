@@ -43,7 +43,7 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout }) 
 
       {/* 💡 던전 선택 버튼 영역 */}
       {/* 💡 gap-4를 주어 버튼들이 일정한 간격을 가지도록 설정하여 쏠림 현상 해결 */}
-      <div className="relative z-10 w-full max-w-xs flex flex-col gap-4 items-center mt-4">
+      <div className="relative z-10 w-full max-w-xs -space-y-3 mt-6 mb-auto flex flex-col items-center">
         {Object.values(DUNGEON_INFO).map((dungeon) => {
           let shadowClass = 'drop-shadow-[0_4px_15px_rgba(37,99,235,0.3)]'; 
           if (dungeon.id === 'fire') shadowClass = 'drop-shadow-[0_4px_15px_rgba(220,38,38,0.3)]'; 
