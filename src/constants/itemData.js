@@ -149,6 +149,55 @@ export const ITEM_DATABASE = {
   },
 
   // ==========================================
+  // 💧 번뇌의 던전 (Hell of poison) 전리품
+  // ==========================================
+  'mat_light_1': {
+    id: 'mat_light_1',
+    type: 'material',
+    name: 'light crystal',
+    icon: '/items/lightcristal.png', 
+    rarity: 'common',
+    desc: '지혜의 악마 기운을 머금고있는 작은 수정.',
+    sellPrice: 100
+  },
+  'mat_light_2': {
+    id: 'mat_light_2',
+    type: 'material',
+    name: 'high light crystal',
+    icon: '/items/highlightcrystal.png',
+    rarity: 'normal',
+    desc: '지혜의 악마의 기운을 가득 머금고 있는 수정.',
+    sellPrice: 200
+  },
+  'mat_light_3': {
+    id: 'mat_light_3',
+    type: 'material',
+    name: 'eye of light devil',
+    icon: '/items/eyeoflightdevil.png',
+    rarity: 'rare',
+    desc: '중급 독연의 악마를 처치하고 나온 독의 기운이 담긴 눈.',
+    sellPrice: 350
+  },
+  'mat_light_4': {
+    id: 'mat_light_4',
+    type: 'material',
+    name: 'core of light',
+    icon: '/items/coreoflight.png',
+    rarity: 'rare',
+    desc: '지혜의 악마들의 빛의 기운을 잔뜩모은 강력한 독의 정수.',
+    sellPrice: 500
+  },
+  'mat_light_5': {
+    id: 'mat_light_5',
+    type: 'material',
+    name: 'liver of lucifer',
+    icon: '/items/liveroflucifer.png',
+    rarity: 'rare',
+    desc: '번뇌의 대악마 루시퍼를 처치하고 얻은 루시퍼의 간.',
+    sellPrice: 2000
+  },
+
+  // ==========================================
   // 🧪 소비품 (Consumables) 및 기타 아이템
   // ==========================================
   'con_potion_1': {
@@ -194,6 +243,15 @@ export const ITEM_DATABASE = {
     icon: '/items/knightsoul-poison-small.png',
     rarity: 'rare',
     desc: '독의 기사들의 영혼 조각',
+    sellPrice: 2000
+  },
+    'con_soul_4':{
+    id: 'con_soul_4',
+    type: 'consumable',
+    name: 'soul of light knight',
+    icon: '/items/knightsoul-light-small.png',
+    rarity: 'rare',
+    desc: '빛의 기사들의 영혼 조각',
     sellPrice: 2000
   },
   'potion_exp_fire_small': {
@@ -267,6 +325,30 @@ export const ITEM_DATABASE = {
     element: 'poison',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 200,       // 올려주는 경험치 량
     icon: '/items/exppotion-poison-large.png'
+  },
+        'potion_exp_light_small': {
+    name: '작은 빛의 포션',
+    description: '빛 속성 기사에게 먹이면 경험치가 20 상승합니다.',
+    type: 'consumable',
+    element: 'light',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
+    expAmount: 20,       // 올려주는 경험치 량
+    icon: '/items/exppotion-light-small.png'
+  },
+  'potion_exp_light_medium': {
+    name: '중급 빛의 포션',
+    description: '빛 속성 기사에게 먹이면 경험치가 50 상승합니다.',
+    type: 'consumable',
+    element: 'light',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
+    expAmount: 50,       // 올려주는 경험치 량
+    icon: '/items/exppotion-light-medium.png'
+  },
+  'potion_exp_light_large': {
+    name: '고급 빛의 포션',
+    description: '빛 속성 기사에게 먹이면 경험치가 200 상승합니다.',
+    type: 'consumable',
+    element: 'light',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
+    expAmount: 200,       // 올려주는 경험치 량
+    icon: '/items/exppotion-light-large.png'
   },
 };
 
