@@ -450,22 +450,6 @@ export default function App() {
               <img src="/backkey.png" alt="Exit Portal" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
             </button>
 
-            <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-[4px] drop-shadow-md z-20 pointer-events-none">
-              {[...Array(MAX_HP)].map((_, i) => (
-                <img 
-                  key={i} 
-                  src="/hpball.png" // 💡 실제 파일 확장자가 .png이면 png로, .jpg인데 누끼가 박힌 거라면 jpg로 맞춰주세요!
-                  alt="HP" 
-                  className={`w-[18px] h-[18px] object-contain transition-all duration-500 ${
-                    i < hpData.hp 
-                      ? 'opacity-100 drop-shadow-[0_0_5px_rgba(220,38,38,0.95)]' // 💡 구슬 곡선을 따라 정밀하게 불빛이 맺힙니다.
-                      : 'opacity-20 grayscale saturate-50' // 소진 시 투명하게 꺼짐
-                  }`} 
-                  draggable="false"
-                />
-              ))}
-            </div>
-
             <div className="w-8 px-2"></div>
           </div>
 
