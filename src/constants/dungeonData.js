@@ -118,17 +118,17 @@ export const DUNGEON_INFO = {
   frozen: {
     id: 'frozen',
     name: 'Hell of frozen',
-    buttonImg: '/dungeons/frozen/hellofafrozen-bt.png',
-    titleImg: '/dungeons/frozen/hellofafrozen-title.jpg',
-    loadingBg: '/dungeons/frozen/hellofafrozenloading-bg.jpg',
+    buttonImg: '/dungeons/frozen/helloffrozen-bt.png',
+    titleImg: '/dungeons/frozen/helloffrozen-title.jpg',
+    loadingBg: '/dungeons/frozen/helloffrozenloading-bg.jpg',
     loadingMsg: "번놔의 심연으로 이동 중...",
-    loadingLogo: "/dungeons/frozen/hellofafrozen-bt.png", // 💡 로고 경로 수정
+    loadingLogo: "/dungeons/frozen/helloffrozen-bt.png", // 💡 로고 경로 수정
     loadingOpacity: "opacity-70",
-    winBg: '/dungeons/frozen/hellofafrozenwin.jpg',
-    loseBg: '/dungeons/frozen/hellofafrozenlose.jpg',
-    boardBg: '/dungeons/frozen/hellofafrozen-board-bg.jpg',
-    tileImg: '/dungeons/frozen/hellofafrozen-tile.png',
-    mineImg: '/dungeons/frozen/hellofafrozen-mine.png',
+    winBg: '/dungeons/frozen/helloffrozenwin.jpg',
+    loseBg: '/dungeons/frozen/helloffrozenlose.jpg',
+    boardBg: '/dungeons/frozen/helloffrozen-board-bg.jpg',
+    tileImg: '/dungeons/frozen/helloffrozen-tile.png',
+    mineImg: '/dungeons/frozen/helloffrozen-mine.png',
     mineShadow: 'drop-shadow-[0_0_15px_rgba(34,197,94,1)]', // 💡 독 던전 전용 녹색 불빛으로 수정
     revealedMineBg: 'bg-slate-900/80 shadow-[inset_0_0_20px_rgba(56,189,248,0.8)]', // 💡 독 던전 전용 녹색 불빛으로 수정
     
