@@ -346,5 +346,77 @@ export const KNIGHT_DATABASE = {
       vit: 2,
       luk: 3
     }
+  },
+  // ========================================================
+  // 10. 가헤리스 (혹한의 던전 소환 기사)
+  // ========================================================
+  'knight_ice_gaheris': {
+    id: 'knight_ice_gaheris',
+    name: 'Gaheris',
+    title: 'Frozen Saver',
+    attribute: 'ice',
+    rarity: 'rare',
+    image: '/knights/knight-gaheris-profile.png',
+    fullImage: '/knights/knight-gaheris.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '혹한의 기운을 다스리는 여제.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_5', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 15,
+      agi: 10,
+      int: 25,
+      vit: 10,
+      luk: 10
+    },
+
+    statGrowth: {
+      str: 2,
+      agi: 1,
+      int: 3,
+      vit: 2,
+      luk: 2
+    }
+  },
+  // ========================================================
+  // 11. 토어 (혹한의 던전 소환 기사)
+  // ========================================================
+  'knight_ice_tor': {
+    id: 'knight_ice_tor',
+    name: 'Tor',
+    title: 'Knight of Frozen',
+    attribute: 'ice',
+    rarity: 'rare',
+    image: '/knights/knight-tor-profile.png',
+    fullImage: '/knights/knight-tor.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '냉기를 수호하는 검.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_5', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 15,
+      agi: 15,
+      int: 20,
+      vit: 15,
+      luk: 5
+    },
+
+    statGrowth: {
+      str: 2,
+      agi: 2,
+      int: 3,
+      vit: 2,
+      luk: 1
+    }
   }
 };
