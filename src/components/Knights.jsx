@@ -1,6 +1,6 @@
 // src/components/Knights.jsx
 import React, { useState, useEffect } from 'react';
-import { doc, onSnapshot, updateDoc, arrayUnion, increment } from 'firebase/firestore';
+import { doc, onSnapshot, updateDoc, arrayUnion, increment, arrayRemove, deleteField } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from '../hooks/useAuth';
 import { KNIGHT_DATABASE } from '../constants/knightData';
@@ -14,6 +14,25 @@ export default function Knights({ onBack, hp }) {
   
   const [selectedKnight, setSelectedKnight] = useState(null);
   const [selectedEquipPart, setSelectedEquipPart] = useState(null);
+
+  const [showDismissPopup, setShowDismissPopup] = useState(false);
+
+  const handleConfirmDismiss = async () => {
+    if (!user || selectedKnight === 'knight_main') return;
+    try {
+      const userDocRef = doc(db, 'users', user.uid);
+      await updateDoc(userDocRef, {
+        // 1. 보유 기사 목록에서 해당 기사 삭제
+        unlockedKnights: arrayRemove(selectedKnight),
+        // 2. 레벨/경험치 데이터 완전 삭제 (나중에 다시 소환하면 1레벨부터 시작하도록)
+        [`knightStats.${selectedKnight}`]: deleteField()
+      });
+      setShowDismissPopup(false);
+      setSelectedKnight(null); // 방출 후 갤러리 화면으로 자동 이동
+    } catch (error) {
+      console.error("기사 방출 오류:", error);
+    }
+  };
 
   // 🔮 소환 시스템용 상태 
   const [showSummonModal, setShowSummonModal] = useState(false);
@@ -127,6 +146,11 @@ export default function Knights({ onBack, hp }) {
     const isOwned = unlockedKnights.includes(knight.id);
     if (isOwned) return;
 
+    if (unlockedKnights.length >= maxSlots) {
+      alert("기사단 슬롯이 가득 찼습니다. 기존 기사를 해제 후 소환해주세요.");
+      return;
+    }
+
     const { itemId, count, gold: costGold } = knight.cost;
     const userItemCount = items[itemId] || 0;
 
@@ -182,10 +206,20 @@ export default function Knights({ onBack, hp }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-0"></div>
 
         <div className="relative z-10 w-full max-w-sm flex flex-col h-screen">
-          <div className="w-full flex justify-between items-center p-4 pt-6 shrink-0">
+           <div className="w-full flex justify-between items-center p-4 pt-6 shrink-0">
             <button onClick={() => setSelectedKnight(null)} className="transition-all duration-150 active:scale-90 p-1 outline-none">
               <img src="/backkey.png" alt="Back" className="w-6 h-6 object-contain opacity-80" />
             </button>
+            
+            {/* 💡 메인 기사가 아닐 경우에만 우측 상단에 소환 해제 버튼 노출 */}
+            {selectedKnight !== 'knight_main' && (
+              <button 
+                onClick={() => setShowDismissPopup(true)}
+                className="bg-red-950/80 border border-red-800 text-red-400 text-[10px] font-black px-2 py-1 rounded-sm shadow-md hover:bg-red-900 transition-colors active:scale-95 tracking-widest"
+              >
+                소환 해제
+              </button>
+            )}
           </div>
 
           <div className="flex-1 flex flex-col justify-end p-5 pb-8">
@@ -421,6 +455,49 @@ export default function Knights({ onBack, hp }) {
           </div>
         )}
 
+{showDismissPopup && (
+          <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-[fadeIn_0.2s_ease-out]">
+            <div className="w-full max-w-xs border-2 border-red-900 rounded-md shadow-[0_10px_40px_rgba(220,38,38,0.4)] relative overflow-hidden flex flex-col">
+              
+              {/* 뒷배경 흑백+붉은톤 필터 적용 */}
+              <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')", filter: 'grayscale(0.8) sepia(0.5) hue-rotate(-50deg)' }}></div>
+              <div className="absolute inset-0 bg-black/70 z-10"></div>
+              
+              <div className="relative z-20 flex flex-col p-6 items-center text-center">
+                <div className="w-12 h-12 bg-black/80 border-[2px] border-red-600 rounded-full flex items-center justify-center mb-3 shadow-[0_0_15px_rgba(220,38,38,0.8)]">
+                  <span className="text-red-500 font-black text-2xl animate-pulse">!</span>
+                </div>
+                
+                <h3 className="text-red-500 font-black text-lg mb-2 drop-shadow-md tracking-widest">방출 경고</h3>
+                <p className="text-[#d8b486] font-bold text-xs mb-2 break-keep leading-relaxed">
+                  선택하신 기사를 기사단에서 방출하시겠습니까?
+                </p>
+                
+                <div className="bg-black/60 border border-red-900/50 px-2 py-1.5 rounded-sm mb-6 w-full">
+                  <p className="text-red-400 font-black text-[10px] tracking-wide">
+                    ※ 소환과 성장에 사용 된 재화는<br/>돌려받을 수 없습니다.
+                  </p>
+                </div>
+                
+                <div className="flex gap-3 w-full">
+                  <button 
+                    onClick={() => setShowDismissPopup(false)}
+                    className="flex-1 bg-neutral-900 hover:bg-neutral-800 text-[#d8b486] font-bold text-xs py-2.5 rounded-sm transition-colors border border-neutral-700 shadow-md active:scale-95"
+                  >
+                    취소
+                  </button>
+                  <button 
+                    onClick={handleConfirmDismiss}
+                    className="flex-1 bg-red-950 hover:bg-red-900 text-red-300 font-bold text-xs py-2.5 rounded-sm transition-colors border border-red-700 shadow-[0_0_10px_rgba(220,38,38,0.4)] active:scale-95"
+                  >
+                    방출 확인
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        
       </div>
     );
   }
