@@ -58,7 +58,7 @@ export const KNIGHT_DATABASE = {
   },
 
   // ========================================================
-  // 🌋 2. 랜슬록 (불의 던전 소환 기사)
+  // 🌋 2. 랜슬롯 (불의 던전 소환 기사)
   // ========================================================
   'knight_fire_lancelot': {
     id: 'knight_fire_lancelot',
@@ -128,6 +128,43 @@ export const KNIGHT_DATABASE = {
       int: 1,
       vit: 1,
       luk: 1
+    }
+  },
+
+  // ========================================================
+  // 4. 라리스 (불의 던전 소환 기사)
+  // ========================================================
+  'knight_fire_laris': {
+    id: 'knight_fire_laris',
+    name: 'Laris',
+    title: 'Sister of Flame King',
+    attribute: 'fire',
+    rarity: 'rare',
+    image: '/knights/knight-laris-profile.png',
+    fullImage: '/knights/knight-laris.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '불의 여제의 첫째 딸.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_2', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 20,
+      agi: 10,
+      int: 10,
+      vit: 15,
+      luk: 15
+    },
+
+    statGrowth: {
+      str: 3,
+      agi: 1,
+      int: 1,
+      vit: 3,
+      luk: 2
     }
   },
   
@@ -203,6 +240,44 @@ export const KNIGHT_DATABASE = {
       luk: 2
     }
   },
+
+  // ========================================================
+  // 5. 우리엔 (물의 던전 소환 기사)
+  // ========================================================
+  'knight_water_urien': {
+    id: 'knight_water_urien',
+    name: 'Urien',
+    title: 'Defender of Water',
+    attribute: 'water',
+    rarity: 'rare',
+    image: '/knights/knight-urien-profile.png',
+    fullImage: '/knights/knight-urien.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '물의 던전을 수호하던 물의 여제의 딸.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_2', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 10,
+      agi: 10,
+      int: 10,
+      vit: 25,
+      luk: 15
+    },
+
+    statGrowth: {
+      str: 1,
+      agi: 2,
+      int: 1,
+      vit: 4,
+      luk: 2
+    }
+  },
+  
   // ========================================================
   // 6. 모드레드 (독의 던전 소환 기사)
   // ========================================================
