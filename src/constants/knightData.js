@@ -146,7 +146,7 @@ export const KNIGHT_DATABASE = {
     
     // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
     cost: {
-      itemId: 'con_soul_2', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      itemId: 'con_soul_1', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
       count: 5,
       gold: 5000
     },
