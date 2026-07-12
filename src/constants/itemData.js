@@ -149,7 +149,7 @@ export const ITEM_DATABASE = {
   },
 
   // ==========================================
-  // 💧 번뇌의 던전 (Hell of poison) 전리품
+  // 💧 번뇌의 던전 (Hell of agony) 전리품
   // ==========================================
   'mat_light_1': {
     id: 'mat_light_1',
@@ -194,6 +194,55 @@ export const ITEM_DATABASE = {
     icon: '/items/liveroflucifer.png',
     rarity: 'rare',
     desc: '번뇌의 대악마 루시퍼를 처치하고 얻은 루시퍼의 간.',
+    sellPrice: 2000
+  },
+  
+  // ==========================================
+  // 💧 빙결의 던전 (Hell of frozen) 전리품
+  // ==========================================
+  'mat_ice_1': {
+    id: 'mat_ice_1',
+    type: 'material',
+    name: 'ice crystal',
+    icon: '/items/icecristal.png', 
+    rarity: 'common',
+    desc: '빙결의 악마 기운을 머금고있는 작은 수정.',
+    sellPrice: 100
+  },
+  'mat_ice_2': {
+    id: 'mat_ice_2',
+    type: 'material',
+    name: 'high ice crystal',
+    icon: '/items/highicecrystal.png',
+    rarity: 'normal',
+    desc: '빙결의 악마의 기운을 가득 머금고 있는 수정.',
+    sellPrice: 200
+  },
+  'mat_ice_3': {
+    id: 'mat_ice_3',
+    type: 'material',
+    name: 'eye of ice devil',
+    icon: '/items/eyeoficedevil.png',
+    rarity: 'rare',
+    desc: '중급 빙결의 악마를 처치하고 나온 극한의 기운이 담긴 눈.',
+    sellPrice: 350
+  },
+  'mat_ice_4': {
+    id: 'mat_ice_4',
+    type: 'material',
+    name: 'core of ice',
+    icon: '/items/coreofice.png',
+    rarity: 'rare',
+    desc: '빙결의 악마들의 극한의 기운을 잔뜩모은 강력한 냉기의 정수.',
+    sellPrice: 500
+  },
+  'mat_ice_5': {
+    id: 'mat_ice_5',
+    type: 'material',
+    name: 'kidney of amon',
+    icon: '/items/kidneyofamon.png',
+    rarity: 'rare',
+    desc: '혹한의 대악마 아몬을 처치하고 얻은 혹한의 기운이 담긴 신장.',
     sellPrice: 2000
   },
 
@@ -252,6 +301,15 @@ export const ITEM_DATABASE = {
     icon: '/items/knightsoul-light-small.png',
     rarity: 'rare',
     desc: '빛의 기사들의 영혼 조각',
+    sellPrice: 2000
+  },
+      'con_soul_5':{
+    id: 'con_soul_5',
+    type: 'consumable',
+    name: 'soul of ice knight',
+    icon: '/items/knightsoul-ice-small.png',
+    rarity: 'rare',
+    desc: '냉기의 기사들의 영혼 조각',
     sellPrice: 2000
   },
   'potion_exp_fire_small': {
@@ -349,6 +407,30 @@ export const ITEM_DATABASE = {
     element: 'light',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 200,       // 올려주는 경험치 량
     icon: '/items/exppotion-light-large.png'
+  },
+  'potion_exp_ice_small': {
+    name: '작은 얼음의 포션',
+    description: '얼음 속성 기사에게 먹이면 경험치가 20 상승합니다.',
+    type: 'consumable',
+    element: 'ice',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
+    expAmount: 20,       // 올려주는 경험치 량
+    icon: '/items/exppotion-ice-small.png'
+  },
+  'potion_exp_ice_medium': {
+    name: '중급 빛의 포션',
+    description: '얼음 속성 기사에게 먹이면 경험치가 50 상승합니다.',
+    type: 'consumable',
+    element: 'ice',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
+    expAmount: 50,       // 올려주는 경험치 량
+    icon: '/items/exppotion-ice-medium.png'
+  },
+  'potion_exp_ice_large': {
+    name: '고급 빛의 포션',
+    description: '얼음 속성 기사에게 먹이면 경험치가 200 상승합니다.',
+    type: 'consumable',
+    element: 'ice',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
+    expAmount: 200,       // 올려주는 경험치 량
+    icon: '/items/exppotion-ice-large.png'
   },
 };
 
