@@ -334,7 +334,7 @@ export const calculateDungeonRewards = (dungeonName, difficulty, isWin) => {
     // ==========================================
   // 🔵 4. 혹한의 던전 (Hell of Frozen)
   // ==========================================
-  else if (dungeonLower.includes('agony')) {
+  else if (dungeonLower.includes('Frozen')) {
     
     // ✨ 혹한의 던전 [승리] 시 보상
     if (isWin) {
