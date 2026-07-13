@@ -281,7 +281,7 @@ export default function MyPage({ onBack, onKnights, hp }) {
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
           <button onClick={onBack} className="transition-all duration-150 active:scale-90 px-2 outline-none">
-            <img src="/backkey.png" alt="Back" className="w-8 h-8 object-contain" />
+            <img src="/header/backkey.webp" alt="Back" className="w-8 h-8 object-contain" />
           </button>
 
           <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-[4px] drop-shadow-md z-20 pointer-events-none">
