@@ -359,7 +359,7 @@ export default function MyPage({ onBack, onKnights, hp }) {
               <div className="absolute right-3 w-1.5 h-1.5 rotate-45 bg-[#7c5432]"></div>
             </div>
 
-            <div className="w-full bg-cover bg-center flex flex-col relative p-4 h-[380px] overflow-hidden" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}>
+            <div className="w-full bg-cover bg-center flex flex-col relative p-4 h-[380px] overflow-hidden" style={{ backgroundImage: "url('/yangpiji-bg.webp')" }}>
               <div className="absolute inset-0 bg-amber-50/40 pointer-events-none"></div>
 
               <div className="relative z-10 h-full flex flex-col">
@@ -605,7 +605,7 @@ export default function MyPage({ onBack, onKnights, hp }) {
             </div>
 
             <div className="w-full flex flex-col relative h-[400px]">
-              <div className="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}></div>
+              <div className="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay" style={{ backgroundImage: "url('/yangpiji-bg.webp')" }}></div>
               <div className="absolute inset-0 bg-[#2a1a10]/40 pointer-events-none"></div>
 
               <div className="relative z-10 h-full flex flex-col p-3">
