@@ -54,11 +54,10 @@ html, body {
   touch-action: manipulation; 
 }
 
-/* 애니메이션이나 모달 팝업 등에 GPU 가속 강제 */
+/* 💡 absolute, fixed 제거! 애니메이션에만 안전하게 GPU 가속 적용 */
 .animate-\[fadeIn_0\.2s_ease-out\],
 .animate-\[fadeIn_0\.3s_ease-in-out\],
-.animate-[fadeIn_0\.5s_ease-out],
-.absolute, .fixed {
+.animate-\[fadeIn_0\.5s_ease-out\] {
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
   will-change: transform, opacity;
