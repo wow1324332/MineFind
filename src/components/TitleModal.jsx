@@ -27,7 +27,8 @@ export default function TitleModal({ user, userData, onClose, onEquip }) {
 
   return (
     <div 
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-[fadeIn_0.2s_ease-out]"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-[fadeIn_0.2s_ease-out] select-none"
+      style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none', WebkitTapHighlightColor: 'transparent' }}
       onClick={onClose} // 💡 1. 모달 바깥 배경을 누르면 닫히게 설정
     >
       <div 
@@ -55,7 +56,8 @@ export default function TitleModal({ user, userData, onClose, onEquip }) {
                 <div 
                   key={title.id}
                   onClick={() => handleEquip(title.id)}
-                  className={`relative p-3 border rounded-sm flex flex-col transition-all duration-200 
+                  style={{ WebkitTapHighlightColor: 'transparent' }}
+                  className={`relative p-3 border rounded-sm flex flex-col transition-all duration-200 active:scale-[0.98] 
                     ${isUnlocked 
                       ? 'bg-black/40 border-[#8c6543]/60 cursor-pointer hover:bg-black/60 hover:border-[#d8b486]' 
                       : 'bg-black/80 border-neutral-800 opacity-60 cursor-not-allowed grayscale-[50%]'
