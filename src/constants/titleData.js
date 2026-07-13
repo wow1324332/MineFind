@@ -10,12 +10,30 @@ export const TITLE_DATABASE = {
   },
   fire_survivor: {
     id: 'fire_survivor',
-    name: '업화의 생존자',
+    name: '화염의 생존자',
     description: '가혹한 불의 시련(Hard)을 이겨낸 자',
     conditionText: '불의 던전 Hard 난이도 최초 클리어',
     textColor: 'text-red-500',
     glow: 'drop-shadow-[0_0_8px_rgba(220,38,38,0.8)]',
     point: 150
+  },
+    flame_survivor: {
+    id: 'flame_survivor',
+    name: '업화의 생존자',
+    description: '지옥불의 시련(Expert)을 이겨낸 자',
+    conditionText: '불의 던전 Expert 난이도 최초 클리어',
+    textColor: 'text-red-500',
+    glow: 'drop-shadow-[0_0_8px_rgba(220,38,38,0.8)]',
+    point: 250
+  },
+    fire_hell_survivor: {
+    id: 'fire_hell_survivor',
+    name: '불 지옥의 생존자',
+    description: '궁극의 불의 시련(Hell)을 이겨낸 자',
+    conditionText: '불의 던전 Hell 난이도 최초 클리어',
+    textColor: 'text-red-500',
+    glow: 'drop-shadow-[0_0_8px_rgba(220,38,38,0.8)]',
+    point: 500
   },
   rich_goblin: {
     id: 'rich_goblin',
