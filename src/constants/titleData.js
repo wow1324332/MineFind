@@ -10,8 +10,8 @@ export const TITLE_DATABASE = {
   fire_survivor: {
     id: 'fire_survivor',
     name: '업화의 생존자',
-    description: '불의 던전을 정복하고 살아남은 자',
-    conditionText: '불의 던전 10회 클리어',
+    description: '가혹한 불의 시련(Hard)을 이겨낸 자', // 💡 설명 변경
+    conditionText: '불의 던전 Hard 난이도 최초 클리어', // 💡 조건 텍스트 변경
     textColor: 'text-red-500',
     glow: 'drop-shadow-[0_0_8px_rgba(220,38,38,0.8)]'
   },
