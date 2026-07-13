@@ -350,7 +350,7 @@ export default function App() {
       <div 
         className="fixed inset-0 z-[200] flex flex-col items-center justify-center select-none bg-black"
         style={{
-          backgroundImage: "url('/gameopening-bg.jpeg')",
+          backgroundImage: "url('/gameopening-bg.webp')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           animation: 'fadeInOpening 2s ease-in-out forwards'
