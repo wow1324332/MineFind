@@ -70,6 +70,15 @@ export default function App() {
   const [showEnergyToast, setShowEnergyToast] = useState(false);
   const energyToastTimer = useRef(null);
 
+  const [activeAchievement, setActiveAchievement] = useState(null);
+
+  // 💡 보상(rewards) 데이터에 신규 칭호가 도착하면 즉시 감지해서 화면에 띄움
+  useEffect(() => {
+    if (rewards && rewards.newTitles && rewards.newTitles.length > 0) {
+      setActiveAchievement(rewards.newTitles[0]);
+    }
+  }, [rewards]);
+
   const triggerEnergyToast = () => {
     setShowEnergyToast(true);
     if (energyToastTimer.current) clearTimeout(energyToastTimer.current);
@@ -271,21 +280,6 @@ export default function App() {
 
     return (
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[16rem] z-10 animate-[fadeIn_0.5s_ease-in-out]">
-        
-        {rewards.newTitles && rewards.newTitles.length > 0 && (
-          <div className="absolute -top-[120px] left-0 w-full flex flex-col items-center justify-center animate-[bounce_2s_infinite] z-20 pointer-events-none">
-            <span className="text-[#d8b486] bg-black/80 px-2 py-0.5 rounded-sm border border-[#a6845c] text-[10px] font-black tracking-widest mb-1 shadow-[0_0_10px_rgba(0,0,0,1)]">
-              🎉 신규 칭호 획득!
-            </span>
-            <div className="flex flex-col gap-1 items-center">
-              {rewards.newTitles.map(title => (
-                <span key={title.id} className={`font-serif font-black text-xl drop-shadow-[0_2px_4px_rgba(0,0,0,1)] ${title.textColor} ${title.glow}`}>
-                  "{title.name}"
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
         
         {rewards.hasLeveledUp && (
           <div className="absolute -top-16 left-0 w-full flex flex-col items-center justify-center animate-bounce z-20 pointer-events-none">
@@ -679,6 +673,40 @@ export default function App() {
             </div>
           </div>
         </>
+)}
+
+      {/* ========================================= */}
+      {/* 🏆 시네마틱 업적 달성 오버레이 (던전 플레이용) */}
+      {/* ========================================= */}
+      {activeAchievement && (
+        <div 
+          className="fixed inset-0 z-[400] flex items-center justify-center bg-black animate-[fadeIn_0.5s_ease-out] select-none cursor-pointer"
+          style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none', WebkitTapHighlightColor: 'transparent' }}
+          onClick={() => setActiveAchievement(null)} 
+        >
+          {/* 배경 이미지 */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: "url('/achievement-bg.jpg')" }}
+          ></div>
+
+          {/* 중앙 텍스트 영역 (동적 데이터 매핑) */}
+          <div className="absolute top-1/2 left-0 w-full -translate-y-[45%] flex flex-col items-center justify-center pointer-events-none">
+            <span className={`font-serif font-black text-4xl tracking-widest mb-3 text-center px-4 leading-tight ${activeAchievement.textColor} ${activeAchievement.glow}`}>
+              {activeAchievement.name}
+            </span>
+            <span className="text-neutral-300 font-bold text-[13px] tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
+              {activeAchievement.description}
+            </span>
+          </div>
+
+          {/* 하단 터치 유도 문구 */}
+          <div className="absolute bottom-12 w-full text-center pointer-events-none">
+            <span className="text-white/60 font-serif tracking-[0.3em] text-[10px] animate-pulse">
+              - 화면을 터치하여 계속 -
+            </span>
+          </div>
+        </div>
       )}
     </>
   );
