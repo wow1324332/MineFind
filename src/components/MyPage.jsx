@@ -311,7 +311,7 @@ export default function MyPage({ onBack, onKnights, hp }) {
             style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
           >
             <img 
-              src="/myprofile-bt.png" 
+              src="/mypage/myprofile-bt.webp" 
               alt="My Profile" 
               className="absolute w-full h-auto pointer-events-none transition-all duration-200 group-hover:brightness-110 group-active:scale-95 drop-shadow-[0_10px_20px_rgba(0,0,0,0.7)]" 
               draggable="false" 
@@ -324,7 +324,7 @@ export default function MyPage({ onBack, onKnights, hp }) {
             style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
           >
             <img 
-              src="/inventory-bt.png" 
+              src="/mypage/inventory-bt.webp" 
               alt="Inventory" 
               className="absolute w-full h-auto pointer-events-none transition-all duration-200 group-hover:brightness-110 group-active:scale-95 drop-shadow-[0_10px_20px_rgba(0,0,0,0.7)]" 
               draggable="false" 
@@ -337,7 +337,7 @@ export default function MyPage({ onBack, onKnights, hp }) {
             style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
           >
             <img 
-              src="/knights-bt.png" 
+              src="/mypage/knights-bt.webp" 
               alt="Knights Order" 
               className="absolute w-full h-auto pointer-events-none transition-all duration-200 group-hover:brightness-110 group-active:scale-95 drop-shadow-[0_10px_20px_rgba(0,0,0,0.7)]" 
               draggable="false" 
