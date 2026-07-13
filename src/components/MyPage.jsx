@@ -380,9 +380,8 @@ export default function MyPage({ onBack, onKnights, hp }) {
                           {/* 1. 칭호 배지 (연필 아이콘 제거, 텍스트 넘침 방지 적용) */}
                           <div 
                             onClick={() => setShowTitleModal(true)}
-                            className="flex items-center gap-1.5 bg-[#1a1008]/80 border border-[#5c3e23] px-3 py-1 rounded-full cursor-pointer hover:bg-[#2a1a0d] hover:border-[#d8b486] transition-all shadow-[0_0_10px_rgba(0,0,0,0.8)] group w-max max-w-full"
+                            className="flex items-center bg-[#1a1008]/80 border border-[#5c3e23] px-3 py-1 rounded-full cursor-pointer hover:bg-[#2a1a0d] hover:border-[#d8b486] transition-all group w-max max-w-full"
                           >
-                            <div className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse shadow-[0_0_5px_rgba(250,204,21,0.8)] shrink-0"></div>
                             <span className={`font-serif font-black text-xs ${currentTitle?.textColor} ${currentTitle?.glow} group-hover:brightness-125 truncate`}>
                               {currentTitle?.name}
                             </span>
