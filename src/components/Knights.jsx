@@ -7,6 +7,7 @@ import { KNIGHT_DATABASE } from '../constants/knightData';
 import { EQUIP_DATABASE } from '../constants/equipData';
 import { ITEM_DATABASE } from '../constants/itemData'; 
 import { getKnightRequiredExp, processKnightExpGain } from '../utils/expUtils';
+import { TITLE_DATABASE } from '../constants/titleData';
 
 export default function Knights({ onBack, hp }) {
   const { user } = useAuth();
@@ -39,6 +40,8 @@ export default function Knights({ onBack, hp }) {
   const [showLevelUpModal, setShowLevelUpModal] = useState(false);
   const [summoningKnight, setSummoningKnight] = useState(null);
   const [showCinematicText, setShowCinematicText] = useState(false);
+  // 💡 업적 달성 시네마틱 화면을 제어할 상태 추가
+  const [newAchievement, setNewAchievement] = useState(null);
   
   // 💡 캐러셀(좌우 스크롤) 중앙 포커싱을 위한 인덱스 상태 및 터치 상태
   const [focusedIndex, setFocusedIndex] = useState(0);
@@ -190,8 +193,8 @@ setTimeout(async () => {
         // 💡 6. 칭호를 새로 얻었다면 유저에게 기분 좋은 알림을 띄워줍니다.
         if (isTitleUnlocked && !alreadyHasTitle) {
           setTimeout(() => {
-            alert("🎉 신규 칭호 [위대한 기사단장]을 획득했습니다!\n마이 프로필에서 장착해 보세요!");
-          }, 600); // 텍스트가 뜨는 연출과 겹치지 않게 0.6초 뒤에 알림 발생
+            setNewAchievement(TITLE_DATABASE['knight_lord']); // DB에서 직접 호출!
+          }, 600); 
         }
       }
     }, 2500);
@@ -851,6 +854,36 @@ setTimeout(async () => {
         </div>
       )}
 
+      {newAchievement && (
+        <div 
+          className="fixed inset-0 z-[200] flex items-center justify-center bg-black animate-[fadeIn_0.5s_ease-out] select-none cursor-pointer"
+          onClick={() => setNewAchievement(null)} // 💡 화면 터치 시 자연스럽게 닫힘
+        >
+          {/* 배경 이미지 */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: "url('/achievement-bg.jpg')" }}
+          ></div>
+
+          {/* 💡 중앙 텍스트 영역 (이미지 가운데 어두운 빈 공간에 딱 맞게 배치) */}
+          <div className="absolute top-1/2 left-0 w-full -translate-y-[45%] flex flex-col items-center justify-center pointer-events-none">
+            <span className={`font-serif font-black text-4xl tracking-widest mb-3 text-center px-4 leading-tight ${newAchievement.textColor} ${newAchievement.glow}`}>
+              {newAchievement.name}
+            </span>
+            <span className="text-neutral-300 font-bold text-[13px] tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
+              {newAchievement.description}
+            </span>
+          </div>
+
+          {/* 하단 터치 유도 문구 */}
+          <div className="absolute bottom-12 w-full text-center pointer-events-none">
+            <span className="text-white/60 font-serif tracking-[0.3em] text-[10px] animate-pulse">
+              - 화면을 터치하여 계속 -
+            </span>
+          </div>
+        </div>
+      )}
+      
     </div>
   );
 }
