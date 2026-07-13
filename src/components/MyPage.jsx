@@ -11,9 +11,9 @@ import TitleModal from './TitleModal';
 const DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%231e140d'/%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z' fill='%238c6543'/%3E%3C/svg%3E";
 
 const AVAILABLE_AVATARS = [
-  { id: 'knight1', src: '/avatars/knight1.jpeg', name: '견습 기사' },
-  { id: 'knight2', src: '/avatars/knight2.jpeg', name: '견습 기사' },
-  { id: 'knight3', src: '/avatars/knight3.jpeg', name: '견습 기사' },
+  { id: 'knight1', src: '/avatars/knight1.webp', name: '견습 기사' },
+  { id: 'knight2', src: '/avatars/knight2.webp', name: '견습 기사' },
+  { id: 'knight3', src: '/avatars/knight3.webp', name: '견습 기사' },
 ];
 
 export default function MyPage({ onBack, onKnights, hp }) {
