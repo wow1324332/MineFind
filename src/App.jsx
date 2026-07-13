@@ -272,7 +272,21 @@ export default function App() {
     return (
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[16rem] z-10 animate-[fadeIn_0.5s_ease-in-out]">
         
-        {/* 💡 레벨업 시 화려한 이펙트 텍스트 띄우기 */}
+        {rewards.newTitles && rewards.newTitles.length > 0 && (
+          <div className="absolute -top-[120px] left-0 w-full flex flex-col items-center justify-center animate-[bounce_2s_infinite] z-20 pointer-events-none">
+            <span className="text-[#d8b486] bg-black/80 px-2 py-0.5 rounded-sm border border-[#a6845c] text-[10px] font-black tracking-widest mb-1 shadow-[0_0_10px_rgba(0,0,0,1)]">
+              🎉 신규 칭호 획득!
+            </span>
+            <div className="flex flex-col gap-1 items-center">
+              {rewards.newTitles.map(title => (
+                <span key={title.id} className={`font-serif font-black text-xl drop-shadow-[0_2px_4px_rgba(0,0,0,1)] ${title.textColor} ${title.glow}`}>
+                  "{title.name}"
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+        
         {rewards.hasLeveledUp && (
           <div className="absolute -top-16 left-0 w-full flex flex-col items-center justify-center animate-bounce z-20 pointer-events-none">
             <span className="text-yellow-400 font-black text-3xl tracking-widest drop-shadow-[0_0_15px_rgba(250,204,21,1)] italic border-black text-stroke-2">
