@@ -57,12 +57,16 @@ const saveGameResult = useCallback(async (isWin, clearTime) => {
 
       // 2. 목표치에 도달했고, 아직 안 가진 칭호라면 '신규 획득 리스트'에 쏙!
       
-      // Hard 난이도 승리
       if (!unlockedTitles.includes('fire_survivor') && isWin && dungeonId === 'fire' && difficultyLevel === 'Hard') {
         newlyUnlocked.push('fire_survivor'); // 불의 던전 Hard 클리어
       }
+      if (!unlockedTitles.includes('flame_survivor') && isWin && dungeonId === 'fire' && difficultyLevel === 'Expert') {
+        newlyUnlocked.push('flame_survivor'); // 불의 던전 Expert 클리어
+      }
+      if (!unlockedTitles.includes('fire_hell_survivor') && isWin && dungeonId === 'fire' && difficultyLevel === 'Hell') {
+        newlyUnlocked.push('fire_hell_survivor'); // 불의 던전 Hell 클리어
+      }
 
-      // 100000 골드 달성
       if (!unlockedTitles.includes('rich_goblin') && currentTotalGold >= 100000) {
         newlyUnlocked.push('rich_goblin'); // 10만 골드 달성
       }
