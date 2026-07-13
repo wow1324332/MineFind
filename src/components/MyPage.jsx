@@ -643,7 +643,7 @@ export default function MyPage({ onBack, onKnights, hp }) {
         <div 
           className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-[fadeIn_0.2s_ease-out] select-none"
           style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none', WebkitTapHighlightColor: 'transparent' }}
-          onClick={() => setSelectedItemDetail(null)} // 💡 바깥 배경 터치 시 스르륵 닫힘
+          onClick={() => setSelectedItemDetail(null)} 
         >
           {/* 테두리 없는 50:50 분할 모달 컨테이너 (안쪽 터치 시 닫힘 방지) */}
           <div 
@@ -695,9 +695,6 @@ export default function MyPage({ onBack, onKnights, hp }) {
         </div>
       )}
 
-      {/* 👇 칭호 장착 모달 추가 👇 */}
-      {showTitleModal && (
-      
       {/* 👇 칭호 장착 모달 추가 👇 */}
       {showTitleModal && (
         <TitleModal 
