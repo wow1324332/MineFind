@@ -9,7 +9,7 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout, hp }) {
       {/* 배경: 고대 석판 이미지 */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
-        style={{ backgroundImage: "url('/devilmineloading-bg.jpg')" }}
+        style={{ backgroundImage: "url('/devilminemode/devilmineloading-bg.webp')" }}
       ></div>
 
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_20%,_#000000_100%)] pointer-events-none"></div>
@@ -28,7 +28,7 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout, hp }) {
             }}
           >
             <img 
-              src="/devilminemode-title.jpg" 
+              src="/devilminemode/devilminemode-title.webp" 
               alt="Devil Mine Title" 
               className="w-full h-auto object-contain drop-shadow-[0_0_20px_rgba(220,38,38,0.2)]"
             />
