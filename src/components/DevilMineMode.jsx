@@ -41,7 +41,7 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout, hp }) {
           <div 
             className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
             style={{ 
-              backgroundImage: "url('/header-bg.jpg')",
+              backgroundImage: "url('/header-bg.webp')",
               WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
               maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)'
             }}
