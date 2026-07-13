@@ -26,15 +26,15 @@ const SPLASH_CONFIG = {
   },
   HUNT_LIST_LOADING: {
     message: "Loading...",
-    logoSrc: "/huntlistloading-logo.png",
-    bgSrc: "/huntlist-bg.jpg",
+    logoSrc: "/huntlistloading-logo.webp",
+    bgSrc: "/huntlist-bg.webp",
     bgOpacity: "opacity-70",
     disablePulse: true,
     useFadeIn: true
   },
   GAME_LOADING: {
     message: "Loading...",
-    logoSrc: "/huntlistloading-logo.png",
+    logoSrc: "/huntlistloading-logo.webp",
     bgSrc: "/devilminemode/devilmineloading-bg.webp",
     bgOpacity: "opacity-70",
     disablePulse: true,
@@ -391,7 +391,7 @@ export default function App() {
       const dungeon = DUNGEON_INFO[currentDungeon];
       config = {
         message: dungeon?.loadingMsg || "던전 입장 중...",
-        logoSrc: dungeon?.loadingLogo || "/huntlistloading-logo.png",
+        logoSrc: dungeon?.loadingLogo || "/huntlistloading-logo.webp",
         bgSrc: dungeon?.loadingBg || "/devilminemode/devilmineloading-bg.webp",
         bgOpacity: dungeon?.loadingOpacity || "opacity-70",
         disablePulse: true,
