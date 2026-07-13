@@ -3,7 +3,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { TITLE_DATABASE } from '../constants/titleData';
 
-export default function TitleModal({ user, userData, onClose }) {
+export default function TitleModal({ user, userData, onClose, onEquip }) {
   // DB에 데이터가 없으면 기본값(novice)으로 처리
   const unlockedTitles = userData?.unlockedTitles || ['novice'];
   const equippedTitle = userData?.equippedTitle || 'novice';
@@ -15,6 +15,7 @@ export default function TitleModal({ user, userData, onClose }) {
       const userRef = doc(db, 'users', user.uid);
       await updateDoc(userRef, { equippedTitle: titleId });
     }
+    onEquip(titleId);
     onClose(); // 장착 후 창 닫기
   };
 
