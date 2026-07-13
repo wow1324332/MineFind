@@ -9,7 +9,7 @@ export default function HuntList({ onSelectDevilMine, onLogout, onMyPage, hp }) 
       {/* 2. 배경 이미지 레이어 */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 z-0 pointer-events-none"
-        style={{ backgroundImage: "url('/Portallist-bg.jpg')" }}
+        style={{ backgroundImage: "url('/huntlist/Portallist-bg.webp')" }}
       ></div>
 
       {/* 3. 내용물 래퍼 */}
