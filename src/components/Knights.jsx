@@ -160,17 +160,39 @@ export default function Knights({ onBack, hp }) {
     setShowSummonModal(false);
     setSummoningKnight(knight); 
 
-    setTimeout(async () => {
+setTimeout(async () => {
       setShowCinematicText(true);
       if (user) {
         const userDocRef = doc(db, 'users', user.uid);
-        await updateDoc(userDocRef, {
+        
+        // 💡 1. 파이어베이스에 업데이트할 기본 데이터 꾸러미를 만듭니다.
+        const updateData = {
           'inventory.gold': increment(-costGold),
           [`inventory.items.${itemId}`]: increment(-count),
           unlockedKnights: arrayUnion(knight.id),
-          // 💡 추가된 부분: 기사를 소환하면 해당 기사의 고유 ID를 키값으로 1레벨/0경험치 데이터를 세팅합니다.
           [`knightStats.${knight.id}`]: { level: 1, exp: 0 }
-        });
+        };
+
+        // 💡 2. 칭호 획득 조건 검사 (기존 보유 기사 수 + 방금 뽑은 1명 >= 6명)
+        const isTitleUnlocked = unlockedKnights.length + 1 >= 6;
+        
+        // 💡 3. 이미 칭호를 가지고 있는지 확인 (중복 알림 방지)
+        const alreadyHasTitle = userData?.unlockedTitles?.includes('knight_lord');
+
+        // 💡 4. 6명을 달성했고 아직 칭호가 없다면, 데이터 꾸러미에 칭호도 몰래 끼워 넣습니다.
+        if (isTitleUnlocked && !alreadyHasTitle) {
+          updateData.unlockedTitles = arrayUnion('knight_lord');
+        }
+
+        // 💡 5. 준비된 데이터를 파이어베이스에 한 번에 슛!
+        await updateDoc(userDocRef, updateData);
+
+        // 💡 6. 칭호를 새로 얻었다면 유저에게 기분 좋은 알림을 띄워줍니다.
+        if (isTitleUnlocked && !alreadyHasTitle) {
+          setTimeout(() => {
+            alert("🎉 신규 칭호 [위대한 기사단장]을 획득했습니다!\n마이 프로필에서 장착해 보세요!");
+          }, 600); // 텍스트가 뜨는 연출과 겹치지 않게 0.6초 뒤에 알림 발생
+        }
       }
     }, 2500);
   };
