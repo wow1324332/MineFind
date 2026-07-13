@@ -53,13 +53,15 @@ const saveGameResult = useCallback(async (isWin, clearTime) => {
       const newlyUnlocked = [];
 
       // 1. 이번 판 결과를 더했을 때의 내 '예상 통계'를 계산해 봅니다.
-      const currentFireClears = (userData.stats?.clearCount_fire || 0) + (isWin && dungeonId === 'fire' ? 1 : 0);
       const currentTotalGold = (userData.inventory?.gold || 0) + generatedRewards.gold;
 
       // 2. 목표치에 도달했고, 아직 안 가진 칭호라면 '신규 획득 리스트'에 쏙!
-      if (!unlockedTitles.includes('fire_survivor') && currentFireClears >= 10) {
-        newlyUnlocked.push('fire_survivor'); // 불의 던전 10회
+      
+      // 👇👇👇 💡 10회 클리어 조건 ➡️ Hard 난이도 승리로 변경 👇👇👇
+      if (!unlockedTitles.includes('fire_survivor') && isWin && dungeonId === 'fire' && difficultyLevel === 'Hard') {
+        newlyUnlocked.push('fire_survivor'); // 불의 던전 Hard 클리어
       }
+
       if (!unlockedTitles.includes('rich_goblin') && currentTotalGold >= 10000) {
         newlyUnlocked.push('rich_goblin'); // 1만 골드 달성
       }
