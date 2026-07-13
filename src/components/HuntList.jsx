@@ -53,7 +53,7 @@ export default function HuntList({ onSelectDevilMine, onLogout, onMyPage, hp }) 
             className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2 select-none"
             style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
           >
-            <img src="/My-icon.png" alt="My Page" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
+            <img src="/huntlist/My-icon.webp" alt="My Page" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
           </button>
 
           <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-[4px] drop-shadow-md z-20 pointer-events-none">
@@ -93,7 +93,7 @@ export default function HuntList({ onSelectDevilMine, onLogout, onMyPage, hp }) 
             style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
           >
             <img 
-              src="/devil-mine-btn.png" 
+              src="/huntlist/devil-mine-btn.webp" 
               alt="Devil Mine" 
               className="w-full h-auto object-contain pointer-events-none" 
               draggable="false"
