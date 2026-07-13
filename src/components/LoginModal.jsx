@@ -58,7 +58,7 @@ export default function LoginModal({ deferredPrompt, handleInstallClick }) {
     <div className="fixed inset-0 w-full h-full z-50 flex items-center justify-center bg-black">
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat animate-bg-breath opacity-70 pointer-events-none animate-[fadeIn_0.5s_ease-in-out]"
-        style={{ backgroundImage: "url('/login-bg.jpg')" }}
+        style={{ backgroundImage: "url('/login-bg.webp')" }}
       ></div>
       
       {deferredPrompt && (
