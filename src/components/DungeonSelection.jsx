@@ -34,7 +34,7 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout, hp
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
           <button onClick={onBack} className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2" style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}>
-            <img src="/backkey.png" alt="Back" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
+            <img src="/header/backkey.webp" alt="Back" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
           </button>
 
           <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-[4px] drop-shadow-md z-20 pointer-events-none">
