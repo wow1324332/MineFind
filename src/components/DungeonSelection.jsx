@@ -10,7 +10,8 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout, hp
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-between bg-black text-white p-6 pb-24 select-none">
+    // 💡 pb-24를 지우고 pb-6으로 변경, overflow-hidden 추가
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-between bg-black text-white pt-6 pb-6 select-none overflow-hidden">
       
       {/* 배경 */}
       <div 
@@ -19,8 +20,8 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout, hp
       ></div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_20%,_#000000_100%)] pointer-events-none"></div>
 
-      {/* 상단 타이틀 및 돌담 헤더 묶음 */}
-      <div className="w-full flex flex-col items-center max-w-md relative z-10 -mt-6">
+      {/* 💡 상단 타이틀 및 돌담 헤더 묶음 (shrink-0으로 화면이 작아져도 찌그러짐 방지) */}
+      <div className="w-full flex flex-col items-center max-w-md relative z-10 -mt-6 shrink-0 px-6">
         <div className="w-full max-w-sm mt-0 mx-auto relative flex justify-center pointer-events-none">
           <div style={{ WebkitMaskImage: 'linear-gradient(to bottom, black 65%, transparent 100%)', maskImage: 'linear-gradient(to bottom, black 65%, transparent 100%)' }}>
             <img src="/dungeonselection-title.jpg" alt="Title" className="w-full h-auto object-contain drop-shadow-[0_0_20px_rgba(220,38,38,0.2)]" />
@@ -28,7 +29,7 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout, hp
         </div>
 
         {/* 돌담 헤더 */}
-        <div className="w-full max-w-sm h-12 -mt-2 mb-6 flex justify-between items-center relative z-10">
+        <div className="w-full max-w-sm h-12 -mt-2 mb-2 flex justify-between items-center relative z-10">
           <div className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10" style={{ backgroundImage: "url('/header-bg.jpg')", WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)', maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)' }}>
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
@@ -58,9 +59,14 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout, hp
         </div>
       </div>
 
-      {/* 💡 던전 선택 버튼 영역 */}
-      {/* 💡 gap-4를 주어 버튼들이 일정한 간격을 가지도록 설정하여 쏠림 현상 해결 */}
-      <div className="relative z-10 w-full max-w-xs -space-y-3 mt-6 mb-auto flex flex-col items-center">
+      {/* 💡 중앙: 던전 선택 버튼 영역 (flex-1 min-h-0을 통해 이곳만 스크롤되도록 설정!) */}
+      <div 
+        className="relative z-10 w-full max-w-xs -space-y-3 mt-2 flex-1 min-h-0 overflow-y-auto custom-scrollbar flex flex-col items-center pb-8 px-2"
+        style={{ 
+          WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)', 
+          maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)' 
+        }}
+      >
         {Object.values(DUNGEON_INFO).map((dungeon) => {
           let shadowClass = 'drop-shadow-[0_4px_15px_rgba(37,99,235,0.3)]'; 
           if (dungeon.id === 'fire') shadowClass = 'drop-shadow-[0_4px_15px_rgba(220,38,38,0.3)]'; 
@@ -71,7 +77,8 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout, hp
             <button
               key={dungeon.id}
               onClick={() => handleDungeonClick(dungeon.id)} 
-              className={`w-full transition-all duration-200 hover:brightness-110 active:scale-[0.96] select-none ${shadowClass}`}
+              // 💡 shrink-0을 추가해 버튼 자체가 납작하게 찌그러지는 것 방지
+              className={`w-full shrink-0 transition-all duration-200 hover:brightness-110 active:scale-[0.96] select-none ${shadowClass}`}
               style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
             >
               <img src={dungeon.buttonImg} alt={dungeon.name} className="w-full h-auto object-contain pointer-events-none" draggable="false" />
@@ -80,8 +87,8 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout, hp
         })}
       </div>
 
-      {/* 💡 최하단: 난이도 선택 버튼 UI */}
-      <div className="absolute bottom-6 w-full px-6 z-20">
+      {/* 💡 최하단: 난이도 선택 버튼 UI (absolute를 풀고 shrink-0으로 바닥에 강제 고정시킴) */}
+      <div className="w-full px-6 z-20 shrink-0 relative mt-2">
         <div className="flex justify-between items-center max-w-md mx-auto gap-2">
           {DIFFICULTIES.map((diff) => (
             <button
