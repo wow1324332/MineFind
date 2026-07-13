@@ -7,6 +7,7 @@ import { useAuth } from '../hooks/useAuth';
 import { calculateDungeonRewards } from '../utils/rewardUtils';
 import { processExpGain } from '../utils/expUtils';
 import { DUNGEON_INFO } from '../constants/dungeonData';
+import { TITLE_DATABASE } from '../constants/titleData';
 
 export const useMinesweeper = () => {
   const auth = useAuth();
@@ -30,7 +31,7 @@ export const useMinesweeper = () => {
     return `${mins}:${secs}`;
   };
 
-  const saveGameResult = useCallback(async (isWin, clearTime) => {
+const saveGameResult = useCallback(async (isWin, clearTime) => {
     if (!user) return;
     
     const fullDungeonName = DUNGEON_INFO[dungeonId]?.name || 'Hell of flame';
@@ -47,11 +48,30 @@ export const useMinesweeper = () => {
 
       const { newLevel, newExp, hasLeveledUp } = processExpGain(currentLevel, currentExp, generatedRewards.exp);
 
+      // 🌟🌟🌟 업적(칭호) 달성 감시 로직 시작 🌟🌟🌟
+      const unlockedTitles = userData.unlockedTitles || ['novice'];
+      const newlyUnlocked = [];
+
+      // 1. 이번 판 결과를 더했을 때의 내 '예상 통계'를 계산해 봅니다.
+      const currentFireClears = (userData.stats?.clearCount_fire || 0) + (isWin && dungeonId === 'fire' ? 1 : 0);
+      const currentTotalGold = (userData.inventory?.gold || 0) + generatedRewards.gold;
+
+      // 2. 목표치에 도달했고, 아직 안 가진 칭호라면 '신규 획득 리스트'에 쏙!
+      if (!unlockedTitles.includes('fire_survivor') && currentFireClears >= 10) {
+        newlyUnlocked.push('fire_survivor'); // 불의 던전 10회
+      }
+      if (!unlockedTitles.includes('rich_goblin') && currentTotalGold >= 10000) {
+        newlyUnlocked.push('rich_goblin'); // 1만 골드 달성
+      }
+      // 🌟🌟🌟 업적 체크 로직 끝 🌟🌟🌟
+
       setRewards({
         ...generatedRewards,
         earnedExp: generatedRewards.exp,
         hasLeveledUp: hasLeveledUp,
-        newLevel: newLevel
+        newLevel: newLevel,
+        // 💡 해금된 칭호들의 전체 데이터를 App.jsx로 보내주어 UI에 띄울 수 있게 합니다.
+        newTitles: newlyUnlocked.map(id => TITLE_DATABASE[id]) 
       });
 
       const newRecord = {
@@ -68,6 +88,16 @@ export const useMinesweeper = () => {
         level: newLevel, 
         exp: newExp      
       };
+
+      // 💡 승리했을 경우, 나중의 업적 체크를 위해 "이 던전 몇 번 깼는지"를 따로 저장!
+      if (isWin) {
+        updateData[`stats.clearCount_${dungeonId}`] = increment(1);
+      }
+
+      // 💡 새롭게 획득한 칭호가 있다면, 파이어베이스 내 칭호 가방에 저장!
+      if (newlyUnlocked.length > 0) {
+        updateData.unlockedTitles = arrayUnion(...newlyUnlocked);
+      }
 
       Object.entries(generatedRewards.items).forEach(([itemId, count]) => {
         updateData[`inventory.items.${itemId}`] = increment(count);
