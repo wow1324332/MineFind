@@ -80,7 +80,7 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout, hp }) {
             className="transition-all duration-150 brightness-90 saturate-90 active:scale-90 active:brightness-75 drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] px-2 select-none"
             style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
           >
-            <img src="/logout.png" alt="Logout" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
+            <img src="/header/logout.webp" alt="Logout" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
           </button>
         </div>
       </div>
