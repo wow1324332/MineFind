@@ -21,8 +21,12 @@ export default function TitleModal({ user, userData, onClose, onEquip }) {
       const userRef = doc(db, 'users', user.uid);
       await updateDoc(userRef, { equippedTitle: titleId });
     }
+    
+    // 💡 부모 컴포넌트(MyPage)에 바뀐 칭호를 즉시 알려주어 리렌더링만 시킵니다.
     if(onEquip) onEquip(titleId);
-    onClose(); 
+    
+    // 모달을 강제로 닫는 onClose(); 코드를 삭제했습니다! 
+    // 이제 칭호를 클릭하면 모달창은 그대로 유지된 채 '장착 중' 표시만 즉시 이동합니다.
   };
 
   return (
