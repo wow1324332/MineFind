@@ -25,7 +25,7 @@ export default function HuntList({ onSelectDevilMine, onLogout, onMyPage, hp }) 
             }}
           >
             <img 
-              src="/demonic-title.jpg" 
+              src="/huntlist/demonic-title.webp" 
               alt="Demonic Portals" 
               className="w-full h-auto object-contain drop-shadow-[0_0_20px_rgba(220,38,38,0.2)]"
             />
