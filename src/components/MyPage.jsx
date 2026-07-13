@@ -361,68 +361,64 @@ export default function MyPage({ onBack, onKnights, hp }) {
                 
                 {activeTab === 'profile' && (
                   <div className="animate-[fadeIn_0.3s_ease-in-out] h-full flex flex-col">
-                    <div className="flex flex-row items-start mb-3">
-                      <div 
-                        className={`relative w-[70px] h-[70px] shrink-0 cursor-pointer group bg-black rounded-sm border-2 ${isSelectAvatarOpen ? 'border-amber-500 shadow-[0_0_8px_rgba(230,150,50,0.5)]' : 'border-[#4a3522]'} shadow-[0_2px_4px_rgba(0,0,0,0.5)] transition-all`}
-                        onClick={() => setIsSelectAvatarOpen(!isSelectAvatarOpen)}
-                      >
-                        <img src={avatarUrl} alt="Avatar" onError={(e) => { e.target.src = DEFAULT_AVATAR; }} className="w-full h-full object-cover p-[2px]" />
-                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                          <svg className="w-5 h-5 text-white animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18"></path></svg>
+                  <div className="flex flex-col mb-4">
+                      {/* 1층: 아바타와 칭호/닉네임 */}
+                      <div className="flex flex-row items-center mb-3">
+                        <div 
+                          className={`relative w-[70px] h-[70px] shrink-0 cursor-pointer group bg-black rounded-sm border-2 ${isSelectAvatarOpen ? 'border-amber-500 shadow-[0_0_8px_rgba(230,150,50,0.5)]' : 'border-[#4a3522]'} shadow-[0_2px_4px_rgba(0,0,0,0.5)] transition-all`}
+                          onClick={() => setIsSelectAvatarOpen(!isSelectAvatarOpen)}
+                        >
+                          <img src={avatarUrl} alt="Avatar" onError={(e) => { e.target.src = DEFAULT_AVATAR; }} className="w-full h-full object-cover p-[2px]" />
+                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <svg className="w-5 h-5 text-white animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18"></path></svg>
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="ml-3 flex flex-col flex-1 mt-0.5 overflow-hidden">
-                        
-                        {/* 💡 가로 정렬(flex-wrap)을 세로 정렬(flex-col)로 바꾸어 줄바꿈을 강제합니다. */}
-                        <div className="flex flex-col items-start gap-y-1 mb-1.5 w-full">
-                          
-                          {/* 1. 칭호 배지 (연필 아이콘 제거, 텍스트 넘침 방지 적용) */}
+                        <div className="ml-4 flex flex-col flex-1 overflow-hidden justify-center">
+                          {/* 칭호 배지 (상단 쏠림 방지: pt-[2px], leading-none 추가) */}
                           <div 
                             onClick={() => setShowTitleModal(true)}
-                            className="flex items-center bg-[#1a1008]/80 border border-[#5c3e23] px-3 py-1 rounded-full cursor-pointer hover:bg-[#2a1a0d] hover:border-[#d8b486] transition-all group w-max max-w-full"
+                            className="flex items-center justify-center bg-[#1a1008]/80 border border-[#5c3e23] px-3 py-1 mb-1.5 rounded-full cursor-pointer hover:bg-[#2a1a0d] hover:border-[#d8b486] transition-all group w-max max-w-full"
                           >
-                            <span className={`font-serif font-black text-xs ${currentTitle?.textColor} ${currentTitle?.glow} group-hover:brightness-125 truncate`}>
+                            <span className={`font-serif font-black text-[11px] leading-none pt-[2px] ${currentTitle?.textColor} ${currentTitle?.glow} group-hover:brightness-125 truncate`}>
                               {currentTitle?.name}
                             </span>
                           </div>
                           
-                          {/* 2. 닉네임 영역 (칭호 바로 아랫줄에 배치) */}
+                          {/* 닉네임 영역 (폰트 크기 대폭 증가 text-[17px]) */}
                           {!isEditingNickname ? (
                             <div className="flex items-center pl-1">
-                              <span className="text-[14px] font-black text-[#2e2016] tracking-tight truncate max-w-[120px]">{nickname}</span>
-                              <button onClick={() => { setTempNickname(nickname); setIsEditingNickname(true); }} className="ml-1 text-[#6b4c33] hover:text-black transition-colors p-1 shrink-0">
-                                <svg className="w-[12px] h-[12px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                              <span className="text-[17px] font-black text-[#2e2016] tracking-tight truncate max-w-[130px] drop-shadow-sm">{nickname}</span>
+                              <button onClick={() => { setTempNickname(nickname); setIsEditingNickname(true); }} className="ml-1.5 text-[#6b4c33] hover:text-black transition-colors p-1 shrink-0">
+                                <svg className="w-[14px] h-[14px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                               </button>
                             </div>
                           ) : (
                             <div className="flex w-full mt-0.5 space-x-1 pl-1">
-                              <input type="text" value={tempNickname} onChange={(e) => setTempNickname(e.target.value)} maxLength={10} className="flex-1 w-0 bg-white/70 border border-[#8c6543] px-1 py-0.5 text-[11px] text-black font-bold focus:outline-none" />
-                              <button onClick={handleSaveNickname} className="bg-[#4a3522] text-white px-1.5 py-0.5 text-[10px] font-bold shrink-0">Save</button>
-                              <button onClick={() => setIsEditingNickname(false)} className="bg-transparent border border-[#4a3522] text-[#4a3522] px-1.5 py-0.5 text-[10px] font-bold shrink-0">취소</button>
+                              <input type="text" value={tempNickname} onChange={(e) => setTempNickname(e.target.value)} maxLength={10} className="flex-1 w-0 bg-white/70 border border-[#8c6543] px-1 py-0.5 text-xs text-black font-bold focus:outline-none" />
+                              <button onClick={handleSaveNickname} className="bg-[#4a3522] text-white px-2 py-0.5 text-[10px] font-bold shrink-0 rounded-sm">Save</button>
+                              <button onClick={() => setIsEditingNickname(false)} className="bg-transparent border border-[#4a3522] text-[#4a3522] px-2 py-0.5 text-[10px] font-bold shrink-0 rounded-sm">취소</button>
                             </div>
                           )}
                         </div>
+                      </div>
 
-                        <div className="mt-2 w-full pr-2">
-                          <div className="text-[#4a2c11] font-serif font-black text-[11px] tracking-wider uppercase mb-1">
-                            Lv.{level}
-                          </div>
-                          {/* 경험치 바 */}
-                          <div className="w-full h-2 bg-[#dcc9b4]/80 rounded-full overflow-hidden border border-[#4a2c11]/20 relative shadow-inner">
-                            <div
-                              className="h-full bg-gradient-to-r from-[#4a2c11] to-[#7c5230] transition-all duration-700 ease-out"
-                              style={{ width: `${expPercent}%` }}
-                            >
-                              <div className="absolute top-0 right-0 bottom-0 w-4 bg-gradient-to-r from-transparent to-white/10 mix-blend-overlay"></div>
-                            </div>
-                          </div>
-                          {/* 경험치 텍스트 */}
-                          <div className="text-right text-[9px] text-[#4a2c11]/80 mt-0.5 font-sans font-bold">
+                      {/* 2층: 경험치 바 (프로필 하단에서 전체 너비 차지) */}
+                      <div className="w-full flex flex-col mt-1 px-1">
+                        <div className="flex justify-between items-end mb-1.5">
+                          <span className="text-[#4a2c11] font-serif font-black text-[12px] tracking-wider uppercase leading-none">Lv.{level}</span>
+                          <span className="text-[#4a2c11]/80 text-[10px] font-sans font-bold leading-none">
                             {exp.toLocaleString()} / {requiredExp.toLocaleString()} EXP
+                          </span>
+                        </div>
+                        <div className="w-full h-2.5 bg-[#dcc9b4]/80 rounded-full overflow-hidden border border-[#4a2c11]/20 relative shadow-inner">
+                          <div
+                            className="h-full bg-gradient-to-r from-[#4a2c11] to-[#7c5230] transition-all duration-700 ease-out"
+                            style={{ width: `${expPercent}%` }}
+                          >
+                            <div className="absolute top-0 right-0 bottom-0 w-4 bg-gradient-to-r from-transparent to-white/10 mix-blend-overlay"></div>
                           </div>
                         </div>
-                        
                       </div>
                     </div>
 
