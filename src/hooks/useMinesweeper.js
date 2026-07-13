@@ -52,23 +52,47 @@ const saveGameResult = useCallback(async (isWin, clearTime) => {
       const unlockedTitles = userData.unlockedTitles || ['novice'];
       const newlyUnlocked = [];
 
-      // 1. 이번 판 결과를 더했을 때의 내 '예상 통계'를 계산해 봅니다.
+      // 1. 골드 목표치 계산
       const currentTotalGold = (userData.inventory?.gold || 0) + generatedRewards.gold;
 
-      // 2. 목표치에 도달했고, 아직 안 가진 칭호라면 '신규 획득 리스트'에 쏙!
-      
-      if (!unlockedTitles.includes('fire_survivor') && isWin && dungeonId === 'fire' && difficultyLevel === 'Hard') {
-        newlyUnlocked.push('fire_survivor'); // 불의 던전 Hard 클리어
-      }
-      if (!unlockedTitles.includes('flame_survivor') && isWin && dungeonId === 'fire' && difficultyLevel === 'Expert') {
-        newlyUnlocked.push('flame_survivor'); // 불의 던전 Expert 클리어
-      }
-      if (!unlockedTitles.includes('fire_hell_survivor') && isWin && dungeonId === 'fire' && difficultyLevel === 'Hell') {
-        newlyUnlocked.push('fire_hell_survivor'); // 불의 던전 Hell 클리어
+      // 2. 던전 클리어 횟수 계산 (DB에 기록된 횟수 + 이번 승리 1회)
+      const currentClearCount = userData.dungeonClears?.[`${dungeonId}_${difficultyLevel}`] || 0;
+      const newClearCount = isWin ? currentClearCount + 1 : currentClearCount;
+
+      // --- 💡 신규 추가: 불의 던전 Easy 난이도 횟수 업적 ---
+      if (isWin && dungeonId === 'fire' && difficultyLevel === 'Easy') {
+        if (newClearCount >= 20 && !unlockedTitles.includes('fire_nol_hunter')) {
+          newlyUnlocked.push('fire_nol_hunter');
+        }
+        if (newClearCount >= 50 && !unlockedTitles.includes('fire_nol_slayer')) {
+          newlyUnlocked.push('fire_nol_slayer');
+        }
       }
 
+      // --- 💡 신규 추가: 불의 던전 Normal 난이도 횟수 업적 ---
+      if (isWin && dungeonId === 'fire' && (difficultyLevel === 'Normal' || difficultyLevel === 'normal')) {
+        if (newClearCount >= 20 && !unlockedTitles.includes('fire_warwolf_hunter')) {
+          newlyUnlocked.push('fire_warwolf_hunter');
+        }
+        if (newClearCount >= 50 && !unlockedTitles.includes('fire_warwolf_slayer')) {
+          newlyUnlocked.push('fire_warwolf_slayer');
+        }
+      }
+
+      // --- 기존: 불의 던전 (Hard, Expert, Hell) 최초 클리어 업적 ---
+      if (!unlockedTitles.includes('fire_survivor') && isWin && dungeonId === 'fire' && difficultyLevel === 'Hard') {
+        newlyUnlocked.push('fire_survivor'); 
+      }
+      if (!unlockedTitles.includes('flame_survivor') && isWin && dungeonId === 'fire' && difficultyLevel === 'Expert') {
+        newlyUnlocked.push('flame_survivor'); 
+      }
+      if (!unlockedTitles.includes('fire_hell_survivor') && isWin && dungeonId === 'fire' && difficultyLevel === 'Hell') {
+        newlyUnlocked.push('fire_hell_survivor'); 
+      }
+
+      // --- 기존: 골드 획득 업적 ---
       if (!unlockedTitles.includes('rich_goblin') && currentTotalGold >= 100000) {
-        newlyUnlocked.push('rich_goblin'); // 10만 골드 달성
+        newlyUnlocked.push('rich_goblin'); 
       }
       // 🌟🌟🌟 업적 체크 로직 끝 🌟🌟🌟
 
@@ -98,7 +122,8 @@ const saveGameResult = useCallback(async (isWin, clearTime) => {
 
       // 💡 승리했을 경우, 나중의 업적 체크를 위해 "이 던전 몇 번 깼는지"를 따로 저장!
       if (isWin) {
-        updateData[`stats.clearCount_${dungeonId}`] = increment(1);
+        updateData[`stats.clearCount_${dungeonId}`] = increment(1); // (기존 로직: 전체 던전 횟수)
+        updateData[`dungeonClears.${dungeonId}_${difficultyLevel}`] = increment(1); // 💡 (신규 추가) 난이도별 클리어 횟수를 저장하여 업적 달성용으로 씁니다!
       }
 
       // 💡 새롭게 획득한 칭호가 있다면, 파이어베이스 내 칭호 가방에 저장!
