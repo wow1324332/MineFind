@@ -619,7 +619,7 @@ export default function MyPage({ onBack, onKnights, hp }) {
               </div>
             </div>
 
-            <div className="flex w-full bg-[#1a1008]/80 border-t-[2px] border-[#000000]/50 text-[12px] font-bold backdrop-blur-sm">
+             <div className="flex w-full bg-[#1a1008]/80 border-t-[2px] border-[#000000]/50 text-[12px] font-bold backdrop-blur-sm">
               <button 
                 onClick={() => setIsInventoryOpen(false)} 
                 className="flex-1 py-3 text-[#d8b486] hover:bg-[#3a2618]/60 hover:text-[#f5d5a9] transition-colors font-serif tracking-[0.2em] shadow-inner"
@@ -630,12 +630,14 @@ export default function MyPage({ onBack, onKnights, hp }) {
 
           </div>
         </div>
+      )} {/* 💡 복구 완료: 인벤토리 모달을 닫아주는 괄호입니다! */}
+
+      {/* 👇 칭호 장착 모달 추가 👇 */}
       {showTitleModal && (
         <TitleModal 
           user={user} 
           userData={userData} 
           onClose={() => setShowTitleModal(false)}
-          // 💡 모달에서 칭호를 바꿨을 때 새로고침 없이 즉시 MyPage 화면에 반영되게 해주는 마법의 코드
           onEquip={(newTitleId) => setUserData(prev => ({ ...prev, equippedTitle: newTitleId }))}
         />
       )}
