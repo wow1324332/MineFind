@@ -141,7 +141,7 @@ export default function LoginModal({ deferredPrompt, handleInstallClick }) {
             aria-label={isLoginTab ? 'Login' : 'Create'}
             className="w-full h-10 rounded-lg shadow-md transition-all active:scale-95 hover:brightness-110"
             style={{ 
-              backgroundImage: "url('/login-button-bg.jpg')", 
+              backgroundImage: "url('/login-button-bg.webp')", 
               backgroundSize: 'cover', 
               backgroundPosition: 'center' 
             }}
