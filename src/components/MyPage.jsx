@@ -5,6 +5,8 @@ import { useAuth } from '../hooks/useAuth';
 // 💡 방금 만든 아이템 백과사전 불러오기
 import { ITEM_DATABASE } from '../constants/itemData'; 
 import { getRequiredExp } from '../utils/expUtils';
+import { TITLE_DATABASE } from '../constants/titleData';
+import TitleModal from './TitleModal';
 
 const DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%231e140d'/%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z' fill='%238c6543'/%3E%3C/svg%3E";
 
@@ -26,6 +28,8 @@ export default function MyPage({ onBack, onKnights, hp }) {
 
   const [nickname, setNickname] = useState(''); 
   const [userTitle, setUserTitle] = useState('무명의 용사'); 
+  const [showTitleModal, setShowTitleModal] = useState(false);
+  const [userData, setUserData] = useState({});
   const [tempNickname, setTempNickname] = useState('');
   const [avatarUrl, setAvatarUrl] = useState(AVAILABLE_AVATARS[0].src);
   
@@ -51,6 +55,9 @@ export default function MyPage({ onBack, onKnights, hp }) {
 
   const { user } = useAuth(); 
 
+  const equippedTitleId = userData?.equippedTitle || 'novice';
+  const currentTitle = TITLE_DATABASE[equippedTitleId] || TITLE_DATABASE['novice'];
+
   useEffect(() => {
     if (!user) return;
     const fetchUserData = async () => {
@@ -60,6 +67,7 @@ export default function MyPage({ onBack, onKnights, hp }) {
         
         if (userDoc.exists()) {
           const data = userDoc.data();
+          setUserData(data);
           if (data.nickname) setNickname(data.nickname);
           if (data.title) setUserTitle(data.title);
           if (data.photoURL) setAvatarUrl(data.photoURL);
@@ -366,8 +374,15 @@ export default function MyPage({ onBack, onKnights, hp }) {
 
                       <div className="ml-3 flex flex-col flex-1 mt-0.5">
                         <div className="flex items-center flex-wrap gap-y-1 mb-1">
-                          <div className="bg-[#633f20] border border-[#a6845c] px-2 py-0.5 rounded-sm shadow-sm flex items-center justify-center">
-                            <span className="text-[#f5d5a9] text-[9px] font-black tracking-wider">{userTitle}</span>
+                          <div 
+                            onClick={() => setShowTitleModal(true)}
+                            className="flex items-center gap-1.5 bg-[#1a1008]/80 border border-[#5c3e23] px-3 py-1 rounded-full mb-1 cursor-pointer hover:bg-[#2a1a0d] hover:border-[#d8b486] transition-all shadow-[0_0_10px_rgba(0,0,0,0.8)] group"
+                          >
+                            <div className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse shadow-[0_0_5px_rgba(250,204,21,0.8)]"></div>
+                            <span className={`font-serif font-black text-xs ${currentTitle?.textColor} ${currentTitle?.glow} group-hover:brightness-125`}>
+                              {currentTitle?.name}
+                            </span>
+                            <svg className="w-3 h-3 text-[#8c6543] ml-0.5 opacity-70 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                           </div>
                           
                           {!isEditingNickname ? (
@@ -615,6 +630,14 @@ export default function MyPage({ onBack, onKnights, hp }) {
 
           </div>
         </div>
+      {showTitleModal && (
+        <TitleModal 
+          user={user} 
+          userData={userData} 
+          onClose={() => setShowTitleModal(false)}
+          // 💡 모달에서 칭호를 바꿨을 때 새로고침 없이 즉시 MyPage 화면에 반영되게 해주는 마법의 코드
+          onEquip={(newTitleId) => setUserData(prev => ({ ...prev, equippedTitle: newTitleId }))}
+        />
       )}
 
       <style>{`
