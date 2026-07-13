@@ -287,7 +287,7 @@ setTimeout(async () => {
             </div>
 
             <div className="w-full border-2 border-[#5c3e23] rounded-md p-4 shadow-[0_10px_30px_rgba(0,0,0,0.8)] animate-[slideUp_0.5s_ease-out] relative overflow-hidden">
-              <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}></div>
+              <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('/yangpiji-bg.webp')" }}></div>
               
               <div className="relative z-10">
                 <div className="flex justify-between items-center border-b-[1.5px] border-[#8c6543]/40 pb-3 mb-3 px-1">
@@ -339,7 +339,7 @@ setTimeout(async () => {
         {selectedEquipPart && (
           <div className="absolute inset-0 z-50 flex items-center justify-center p-6 bg-black/70 backdrop-blur-sm animate-[fadeIn_0.2s_ease-in-out]">
             <div className="w-full max-w-xs border-2 border-[#5c3e23] rounded-md shadow-[0_10px_40px_rgba(0,0,0,1)] relative overflow-hidden flex flex-col">
-              <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}></div>
+              <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('/yangpiji-bg.webp')" }}></div>
               <div className="relative z-10 flex flex-col p-5">
                 <button onClick={() => setSelectedEquipPart(null)} className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center text-[#5c3e23] hover:text-[#3a2210] transition-colors">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -403,7 +403,7 @@ setTimeout(async () => {
               onClick={(e) => e.stopPropagation()} // 💡 모달 내부 클릭 시 닫히는 것 방지
             >
               {/* 💡 X 닫기 버튼 제거됨 */}
-              <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}></div>
+              <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('/yangpiji-bg.webp')" }}></div>
               <div className="relative z-10 flex flex-col p-5">
                 <h3 className="text-[#3a2210] font-black text-lg text-center leading-tight drop-shadow-sm mb-4">
                   Level Up!
@@ -485,7 +485,7 @@ setTimeout(async () => {
             <div className="w-full max-w-xs border-2 border-red-900 rounded-md shadow-[0_10px_40px_rgba(220,38,38,0.4)] relative overflow-hidden flex flex-col">
               
               {/* 뒷배경 흑백+붉은톤 필터 적용 */}
-              <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')", filter: 'grayscale(0.8) sepia(0.5) hue-rotate(-50deg)' }}></div>
+              <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('/yangpiji-bg.webp')", filter: 'grayscale(0.8) sepia(0.5) hue-rotate(-50deg)' }}></div>
               <div className="absolute inset-0 bg-black/70 z-10"></div>
               
               <div className="relative z-20 flex flex-col p-6 items-center text-center">
