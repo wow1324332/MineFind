@@ -566,7 +566,7 @@ setTimeout(async () => {
       <div 
         className="absolute inset-x-0 top-[15%] bottom-0 bg-cover bg-bottom bg-no-repeat opacity-60 z-0 pointer-events-none"
         style={{ 
-          backgroundImage: "url('/mypage-bg.jpeg')",
+          backgroundImage: "url('/mypage/mypage-bg.webp')",
           WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 25%, black 100%)', 
           maskImage: 'linear-gradient(to bottom, transparent 0%, black 25%, black 100%)' 
         }}
