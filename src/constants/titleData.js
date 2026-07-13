@@ -19,7 +19,7 @@ export const TITLE_DATABASE = {
     id: 'rich_goblin',
     name: '황금 고블린',
     description: '재물에 눈이 멀어 광산을 떠도는 영혼',
-    conditionText: '누적 10,000 골드 획득',
+    conditionText: '누적 100,000 골드 획득', // 💡 10,000 -> 100,000 으로 변경
     textColor: 'text-yellow-400',
     glow: 'drop-shadow-[0_0_8px_rgba(250,204,21,0.8)]'
   },
