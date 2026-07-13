@@ -233,7 +233,7 @@ setTimeout(async () => {
         <div className="relative z-10 w-full max-w-sm flex flex-col h-screen">
            <div className="w-full flex justify-between items-center p-4 pt-6 shrink-0">
             <button onClick={() => setSelectedKnight(null)} className="transition-all duration-150 active:scale-90 p-1 outline-none">
-              <img src="/backkey.png" alt="Back" className="w-6 h-6 object-contain opacity-80" />
+              <img src="/header/backkey.webp" alt="Back" className="w-6 h-6 object-contain opacity-80" />
             </button>
             
             {/* 💡 메인 기사가 아닐 경우에만 우측 상단에 소환 해제 버튼 노출 */}
@@ -584,7 +584,7 @@ setTimeout(async () => {
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
           <button onClick={onBack} className="transition-all duration-150 active:scale-90 px-2 outline-none">
-            <img src="/backkey.png" alt="Back" className="w-6 h-6 object-contain" />
+            <img src="/header/backkey.webp" alt="Back" className="w-6 h-6 object-contain" />
           </button>
 
           <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-[4px] drop-shadow-md z-20 pointer-events-none">
