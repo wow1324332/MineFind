@@ -4,8 +4,9 @@ import { db } from '../firebase';
 import { TITLE_DATABASE } from '../constants/titleData';
 
 export default function TitleModal({ user, userData, onClose, onEquip }) {
-  // DB에 데이터가 없으면 기본값(novice)으로 처리
-  const unlockedTitles = userData?.unlockedTitles || ['novice'];
+  // DB에 저장된 칭호 목록을 가져오되, 'novice(무명의 용사)'는 무조건 포함시킵니다.
+  const dbTitles = userData?.unlockedTitles || [];
+  const unlockedTitles = dbTitles.includes('novice') ? dbTitles : ['novice', ...dbTitles];
   const equippedTitle = userData?.equippedTitle || 'novice';
 
   const handleEquip = async (titleId) => {
