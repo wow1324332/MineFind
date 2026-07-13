@@ -24,7 +24,7 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout, hp
       <div className="w-full flex flex-col items-center max-w-md relative z-10 -mt-6 shrink-0 px-6">
         <div className="w-full max-w-sm mt-0 mx-auto relative flex justify-center pointer-events-none">
           <div style={{ WebkitMaskImage: 'linear-gradient(to bottom, black 65%, transparent 100%)', maskImage: 'linear-gradient(to bottom, black 65%, transparent 100%)' }}>
-            <img src="/dungeonselection-title.jpg" alt="Title" className="w-full h-auto object-contain drop-shadow-[0_0_20px_rgba(220,38,38,0.2)]" />
+            <img src="/dungeonselection/dungeonselection-title.webp" alt="Title" className="w-full h-auto object-contain drop-shadow-[0_0_20px_rgba(220,38,38,0.2)]" />
           </div>
         </div>
 
