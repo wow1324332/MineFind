@@ -73,7 +73,7 @@ export default function LoginModal({ deferredPrompt, handleInstallClick }) {
       <div className="relative z-10 w-full max-w-xs mx-4 p-5 bg-black/60 rounded-2xl shadow-2xl backdrop-blur-sm transition-all animate-[fadeIn_0.5s_ease-in-out]">
         <div className="flex justify-center mb-4">
           <img 
-            src="/title-logo.png" 
+            src="/title-logo.webp" 
             alt="Mine Legend" 
             className="w-48 h-auto object-contain drop-shadow-[0_4px_6px_rgba(0,0,0,0.9)]"
           />
