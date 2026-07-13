@@ -35,7 +35,7 @@ const SPLASH_CONFIG = {
   GAME_LOADING: {
     message: "Loading...",
     logoSrc: "/huntlistloading-logo.png",
-    bgSrc: "/devilmineloading-bg.jpg",
+    bgSrc: "/devilminemode/devilmineloading-bg.webp",
     bgOpacity: "opacity-70",
     disablePulse: true,
     useFadeIn: true
@@ -392,7 +392,7 @@ export default function App() {
       config = {
         message: dungeon?.loadingMsg || "던전 입장 중...",
         logoSrc: dungeon?.loadingLogo || "/huntlistloading-logo.png",
-        bgSrc: dungeon?.loadingBg || "/devilmineloading-bg.jpg",
+        bgSrc: dungeon?.loadingBg || "/devilminemode/devilmineloading-bg.webp",
         bgOpacity: dungeon?.loadingOpacity || "opacity-70",
         disablePulse: true,
         useFadeIn: true
