@@ -372,31 +372,35 @@ export default function MyPage({ onBack, onKnights, hp }) {
                         </div>
                       </div>
 
-                      <div className="ml-3 flex flex-col flex-1 mt-0.5">
-                        <div className="flex items-center flex-wrap gap-y-1 mb-1">
+                      <div className="ml-3 flex flex-col flex-1 mt-0.5 overflow-hidden">
+                        
+                        {/* 💡 가로 정렬(flex-wrap)을 세로 정렬(flex-col)로 바꾸어 줄바꿈을 강제합니다. */}
+                        <div className="flex flex-col items-start gap-y-1 mb-1.5 w-full">
+                          
+                          {/* 1. 칭호 배지 (연필 아이콘 제거, 텍스트 넘침 방지 적용) */}
                           <div 
                             onClick={() => setShowTitleModal(true)}
-                            className="flex items-center gap-1.5 bg-[#1a1008]/80 border border-[#5c3e23] px-3 py-1 rounded-full mb-1 cursor-pointer hover:bg-[#2a1a0d] hover:border-[#d8b486] transition-all shadow-[0_0_10px_rgba(0,0,0,0.8)] group"
+                            className="flex items-center gap-1.5 bg-[#1a1008]/80 border border-[#5c3e23] px-3 py-1 rounded-full cursor-pointer hover:bg-[#2a1a0d] hover:border-[#d8b486] transition-all shadow-[0_0_10px_rgba(0,0,0,0.8)] group w-max max-w-full"
                           >
-                            <div className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse shadow-[0_0_5px_rgba(250,204,21,0.8)]"></div>
-                            <span className={`font-serif font-black text-xs ${currentTitle?.textColor} ${currentTitle?.glow} group-hover:brightness-125`}>
+                            <div className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse shadow-[0_0_5px_rgba(250,204,21,0.8)] shrink-0"></div>
+                            <span className={`font-serif font-black text-xs ${currentTitle?.textColor} ${currentTitle?.glow} group-hover:brightness-125 truncate`}>
                               {currentTitle?.name}
                             </span>
-                            <svg className="w-3 h-3 text-[#8c6543] ml-0.5 opacity-70 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                           </div>
                           
+                          {/* 2. 닉네임 영역 (칭호 바로 아랫줄에 배치) */}
                           {!isEditingNickname ? (
-                            <div className="flex items-center ml-2">
-                              <span className="text-[14px] font-black text-[#2e2016] tracking-tight">{nickname}</span>
-                              <button onClick={() => { setTempNickname(nickname); setIsEditingNickname(true); }} className="ml-1 text-[#6b4c33] hover:text-black transition-colors p-1">
+                            <div className="flex items-center pl-1">
+                              <span className="text-[14px] font-black text-[#2e2016] tracking-tight truncate max-w-[120px]">{nickname}</span>
+                              <button onClick={() => { setTempNickname(nickname); setIsEditingNickname(true); }} className="ml-1 text-[#6b4c33] hover:text-black transition-colors p-1 shrink-0">
                                 <svg className="w-[12px] h-[12px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                               </button>
                             </div>
                           ) : (
-                            <div className="flex w-full mt-1.5 space-x-1">
-                              <input type="text" value={tempNickname} onChange={(e) => setTempNickname(e.target.value)} maxLength={10} className="flex-1 bg-white/70 border border-[#8c6543] px-1 py-0.5 text-[11px] text-black font-bold focus:outline-none" />
-                              <button onClick={handleSaveNickname} className="bg-[#4a3522] text-white px-1.5 py-0.5 text-[10px] font-bold">Save</button>
-                              <button onClick={() => setIsEditingNickname(false)} className="bg-transparent border border-[#4a3522] text-[#4a3522] px-1.5 py-0.5 text-[10px] font-bold">취소</button>
+                            <div className="flex w-full mt-0.5 space-x-1 pl-1">
+                              <input type="text" value={tempNickname} onChange={(e) => setTempNickname(e.target.value)} maxLength={10} className="flex-1 w-0 bg-white/70 border border-[#8c6543] px-1 py-0.5 text-[11px] text-black font-bold focus:outline-none" />
+                              <button onClick={handleSaveNickname} className="bg-[#4a3522] text-white px-1.5 py-0.5 text-[10px] font-bold shrink-0">Save</button>
+                              <button onClick={() => setIsEditingNickname(false)} className="bg-transparent border border-[#4a3522] text-[#4a3522] px-1.5 py-0.5 text-[10px] font-bold shrink-0">취소</button>
                             </div>
                           )}
                         </div>
