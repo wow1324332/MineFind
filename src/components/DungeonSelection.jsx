@@ -16,7 +16,7 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout, hp
       {/* 배경 */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 grayscale-[0.5]"
-        style={{ backgroundImage: "url('/devilmineloading-bg.jpg')" }}
+        style={{ backgroundImage: "url('/devilminemode/devilmineloading-bg.webp')" }}
       ></div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_20%,_#000000_100%)] pointer-events-none"></div>
 
