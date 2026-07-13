@@ -41,8 +41,11 @@ export default function TitleModal({ user, userData, onClose, onEquip }) {
       >
         <div className="absolute inset-0 bg-cover bg-center z-0 opacity-40" style={{ backgroundImage: "url('/yangpiji-bg.jpeg')" }}></div>
         
-        <div className="relative z-10 flex flex-col h-full p-4">
-          <div className="flex justify-between items-center border-b border-[#8c6543]/40 pb-3 mb-4">
+       {/* 💡 부모 박스를 넘어가지 못하게 overflow-hidden 추가 */}
+        <div className="relative z-10 flex flex-col h-full max-h-full p-4 overflow-hidden">
+          
+          {/* 💡 상단 헤더가 스크롤에 밀려 찌그러지지 않게 shrink-0 추가 */}
+          <div className="flex justify-between items-center border-b border-[#8c6543]/40 pb-3 mb-4 shrink-0">
             <h2 className="text-[#f5d5a9] font-serif font-black text-lg drop-shadow-md">칭호 장착</h2>
             
             {/* 💡 3. X 닫기 버튼을 지우고 칭호 포인트(TP)를 표시 */}
@@ -51,7 +54,8 @@ export default function TitleModal({ user, userData, onClose, onEquip }) {
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-3 pr-1">
+          {/* 💡 목록이 길어지면 내부에서만 스크롤 되도록 min-h-0 추가, 우측 패딩(pr-2) 살짝 늘림 */}
+          <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar flex flex-col gap-3 pr-2 pb-2">
             {Object.values(TITLE_DATABASE).map((title) => {
               const isUnlocked = unlockedTitles.includes(title.id);
               const isEquipped = equippedTitle === title.id;
