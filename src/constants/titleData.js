@@ -8,6 +8,42 @@ export const TITLE_DATABASE = {
     glow: '',
     point: 50
   },
+    fire_nol_hunter: {
+    id: 'fire_nol_hunter',
+    name: '화염놀 잔혹사',
+    description: '초보 화염 던전의 놀 사냥꾼',
+    conditionText: '불의 던전 Easy 난이도 20회 클리어',
+    textColor: 'text-red-500',
+    glow: 'drop-shadow-[0_0_8px_rgba(220,38,38,0.8)]',
+    point: 100
+  },
+    fire_nol_slayer: {
+    id: 'fire_nol_slayer',
+    name: '화염놀 학살자',
+    description: '초보 화염 던전의 놀 학살자',
+    conditionText: '불의 던전 Easy 난이도 50회 클리어',
+    textColor: 'text-red-500',
+    glow: 'drop-shadow-[0_0_8px_rgba(220,38,38,0.8)]',
+    point: 200
+  },
+    fire_warwolf_hunter: {
+    id: 'fire_warwolf_hunter',
+    name: '화염 워울프 도살자',
+    description: '노말 화염 던전의 워울프 사냥꾼',
+    conditionText: '불의 던전 normal 난이도 20회 클리어',
+    textColor: 'text-red-500',
+    glow: 'drop-shadow-[0_0_8px_rgba(220,38,38,0.8)]',
+    point: 200
+  },
+    fire_warwolf_slayer: {
+    id: 'fire_warwolf_slayer',
+    name: '화염 워울프 학살자',
+    description: '노말 화염 던전의 워울프 학살자',
+    conditionText: '불의 던전 normal 난이도 50회 클리어',
+    textColor: 'text-red-500',
+    glow: 'drop-shadow-[0_0_8px_rgba(220,38,38,0.8)]',
+    point: 300
+  },
   fire_survivor: {
     id: 'fire_survivor',
     name: '화염의 생존자',
