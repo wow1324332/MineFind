@@ -45,3 +45,21 @@ html, body {
   pointer-events: none; /* 터치 방해 금지 */
   animation: slideUpFade 0.3s ease-out forwards;
 }
+
+/* iOS 사파리 하드웨어 가속 강제 활성화 및 터치 딜레이 제거 */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* 터치 시 300ms 지연 없애기 */
+  touch-action: manipulation; 
+}
+
+/* 애니메이션이나 모달 팝업 등에 GPU 가속 강제 */
+.animate-\[fadeIn_0\.2s_ease-out\],
+.animate-\[fadeIn_0\.3s_ease-in-out\],
+.animate-[fadeIn_0\.5s_ease-out],
+.absolute, .fixed {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
