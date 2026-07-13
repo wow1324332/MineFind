@@ -703,7 +703,7 @@ export default function App() {
           {/* 하단 터치 유도 문구 */}
           <div className="absolute bottom-12 w-full text-center pointer-events-none">
             <span className="text-white/60 font-serif tracking-[0.3em] text-[10px] animate-pulse">
-              - 화면을 터치하여 계속 -
+              - Touch -
             </span>
           </div>
         </div>
