@@ -591,7 +591,7 @@ setTimeout(async () => {
             {[...Array(5)].map((_, i) => (
               <img 
                 key={i} 
-                src="/hpball.png" 
+                src="/header/hpball.webp" 
                 alt="HP" 
                 className={`w-[18px] h-[18px] object-contain transition-all duration-500 ${
                   i < hp 
