@@ -24,7 +24,7 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
       {/* 돌담 배경 이미지 추가 */}
       <div 
         className="absolute inset-0 bg-cover bg-center pointer-events-none opacity-90"
-        style={{ backgroundImage: "url('/header-bg.jpg')" }}
+        style={{ backgroundImage: "url('/header-bg.webp')" }}
       >
         <div className="absolute inset-0 bg-black/40"></div>
       </div>
