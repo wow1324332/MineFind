@@ -97,7 +97,7 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout, hp }) {
           style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
         >
           <img 
-            src="/hunting-bt.png"
+            src="/devilminemode/hunting-bt.webp"
             alt="PVE Hunting Mode" 
             className="w-full h-auto object-contain pointer-events-none" 
             draggable="false"
@@ -107,7 +107,7 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout, hp }) {
         {/* PVP 모드 (Battle - 준비중) */}
         <div className="w-full relative opacity-50 grayscale-[0.8] cursor-not-allowed select-none">
           <img 
-            src="/battle-bt.png"
+            src="/devilminemode/battle-bt.webp"
             alt="PVP Battle Mode (준비 중)" 
             className="w-full h-auto object-contain pointer-events-none drop-shadow-md" 
             draggable="false"
