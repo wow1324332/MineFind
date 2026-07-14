@@ -46,7 +46,7 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
           {gameStatus === 'lost' ? (
             <img 
               // 💡 하드코딩된 옛날 경로 대신, dungeonData에 정의된 동적 mineImg 경로를 매핑하여 이미지 깨짐 해결
-              src={currentDungeonInfo?.mineImg || "/dungeon/hellofflame-mine.webp"} 
+              src={currentDungeonInfo?.mineImg || "/dungeons/hellofflame-mine.webp"} 
               alt="Game Over - Dungeon Mine" 
               // 💡 패배했을 때 번쩍이는 네온 후광 효과(drop-shadow)도 던전 테마에 맞춰 변경
               className={`w-10 h-10 object-contain animate-pulse ${currentDungeonInfo?.mineShadow || 'drop-shadow-[0_0_10px_rgba(220,38,38,0.8)]'}`} 
@@ -55,7 +55,7 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
             <span className="text-4xl">👑</span> 
           ) : (
             <img 
-              src="/dungeon/holyshield-icon.webp" 
+              src="/dungeons/holyshield-icon.webp" 
               alt="🛡️" 
               className="w-10 h-10 object-contain drop-shadow-[0_0_8px_rgba(250,204,21,0.6)]" 
             />
