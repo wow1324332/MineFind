@@ -53,17 +53,17 @@ export const DUNGEON_INFO = {
   poison: {
     id: 'poison',
     name: 'Hell of poison',
-    buttonImg: '/dungeons/poison/hellofpoison-bt.png',
-    titleImg: '/dungeons/poison/hellofpoison-title.jpg',
-    loadingBg: '/dungeons/poison/hellofpoisonloading-bg.jpg',
+    buttonImg: '/dungeons/poison/hellofpoison-bt.webp',
+    titleImg: '/dungeons/poison/hellofpoison-title.webp',
+    loadingBg: '/dungeons/poison/hellofpoisonloading-bg.webp',
     loadingMsg: "독의 심연으로 이동 중...",
-    loadingLogo: "/dungeons/poison/hellofpoison-bt.png", // 💡 로고 경로 수정
+    loadingLogo: "/dungeons/poison/hellofpoison-bt.webp", // 💡 로고 경로 수정
     loadingOpacity: "opacity-70",
-    winBg: '/dungeons/poison/hellofpoisonwin.jpg',
-    loseBg: '/dungeons/poison/hellofpoisonlose.jpg',
-    boardBg: '/dungeons/poison/hellofpoison-board-bg.jpg',
-    tileImg: '/dungeons/poison/hellofpoison-tile.png',
-    mineImg: '/dungeons/poison/hellofpoison-mine.png',
+    winBg: '/dungeons/poison/hellofpoisonwin.webp',
+    loseBg: '/dungeons/poison/hellofpoisonlose.webp',
+    boardBg: '/dungeons/poison/hellofpoison-board-bg.webp',
+    tileImg: '/dungeons/poison/hellofpoison-tile.webp',
+    mineImg: '/dungeons/poison/hellofpoison-mine.webp',
     mineShadow: 'drop-shadow-[0_0_15px_rgba(34,197,94,1)]', // 💡 독 던전 전용 녹색 불빛으로 수정
     revealedMineBg: 'bg-green-950/80 shadow-[inset_0_0_20px_rgba(34,197,94,0.8)]', // 💡 독 던전 전용 녹색 불빛으로 수정
     
