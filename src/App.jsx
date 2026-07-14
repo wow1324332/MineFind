@@ -62,6 +62,7 @@ export default function App() {
 
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showOpening, setShowOpening] = useState(true);
+  const [isFadingOut, setIsFadingOut] = useState(false);
   const [currentScreen, setCurrentScreen] = useState('HUNT_LIST_LOADING');
   const [currentDungeon, setCurrentDungeon] = useState('fire');
   const [currentDifficulty, setCurrentDifficulty] = useState('Normal');
@@ -348,7 +349,8 @@ export default function App() {
   if (showOpening) {
     return (
       <div 
-        className="fixed inset-0 z-[200] flex flex-col items-center justify-center select-none bg-black"
+        // 💡 1. transition-opacity를 추가하여 서서히 투명해지도록 합니다.
+        className={`fixed inset-0 z-[200] flex flex-col items-center justify-center select-none bg-black transition-opacity duration-700 ease-in-out ${isFadingOut ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
         style={{
           backgroundImage: "url('/gameopening-bg.webp')",
           backgroundSize: 'cover',
@@ -365,7 +367,9 @@ export default function App() {
 
         <button
           onClick={() => {
-            setShowOpening(false); 
+            // 💡 2. 즉시 화면을 없애지 않고, 스르륵 투명해지게 만든 후 0.7초 뒤에 완전히 닫습니다.
+            setIsFadingOut(true);
+            setTimeout(() => setShowOpening(false), 700); 
           }}
           className="animate-pulse transition-all duration-300 active:scale-90 text-yellow-600/90 font-serif text-xl tracking-[0.4em] drop-shadow-[0_0_10px_rgba(202,138,4,0.6)]"
           style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
@@ -377,13 +381,17 @@ export default function App() {
   }
 
   if (loading) {
-    // 💡 파이어베이스 로그인 상태 확인 중에는 로딩창 대신 검은 화면을 유지하여
-    // 오프닝 화면에서 로그인 모달로 깜빡임 없이 매끄럽게 넘어가도록 처리합니다.
+    // 💡 3. 파이어베이스가 정보를 읽는 찰나의 순간에는 완벽한 검은 화면을 유지합니다.
     return <div className="fixed inset-0 bg-black z-[500]"></div>;
   }
 
   if (!user) {
-    return <LoginModal deferredPrompt={deferredPrompt} handleInstallClick={handleInstallClick} />;
+    // 💡 4. 로그인 화면이 나타날 때 검은 어둠 속에서 서서히 밝아지며 나타나게 감싸줍니다.
+    return (
+      <div className="fixed inset-0 z-[100] bg-black animate-[fadeIn_0.8s_ease-in-out]">
+        <LoginModal deferredPrompt={deferredPrompt} handleInstallClick={handleInstallClick} />
+      </div>
+    );
   }
 
   if (currentScreen.endsWith('_LOADING')) {
