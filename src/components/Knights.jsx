@@ -678,7 +678,7 @@ setTimeout(async () => {
             <div className="w-full h-full rounded-xl overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,1)]">
               
               {/* 배경 이미지 적용 */}
-              <img src="/summon-bg.jpg" alt="Summon Altar" className="absolute inset-0 w-full h-full object-cover z-0" />
+              <img src="/knights/summon-bg.webp" alt="Summon Altar" className="absolute inset-0 w-full h-full object-cover z-0" />
               
               {/* 하단부 텍스트 가독성을 위한 그라데이션 오버레이 */}
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent z-10 pointer-events-none"></div>
