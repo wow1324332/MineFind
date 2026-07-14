@@ -349,13 +349,13 @@ export default function App() {
   if (showOpening) {
     return (
       <div 
-        // 💡 1. transition-opacity를 추가하여 서서히 투명해지도록 합니다.
-        className={`fixed inset-0 z-[200] flex flex-col items-center justify-center select-none bg-black transition-opacity duration-700 ease-in-out ${isFadingOut ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+        className="fixed inset-0 z-[200] flex flex-col items-center justify-center select-none bg-black"
         style={{
           backgroundImage: "url('/gameopening-bg.webp')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          animation: 'fadeInOpening 2s ease-in-out forwards'
+          // 💡 핵심: 버튼을 누르면 서서히 사라지는 애니메이션(fadeOutOpening)으로 즉시 교체합니다!
+          animation: isFadingOut ? 'fadeOutOpening 0.7s ease-in-out forwards' : 'fadeInOpening 2s ease-in-out forwards'
         }}
       >
         <style>{`
@@ -363,15 +363,20 @@ export default function App() {
             from { opacity: 0; }
             to { opacity: 1; }
           }
+          /* 💡 서서히 사라지는 전용 애니메이션 추가 */
+          @keyframes fadeOutOpening {
+            from { opacity: 1; }
+            to { opacity: 0; }
+          }
         `}</style>
 
         <button
           onClick={() => {
-            // 💡 2. 즉시 화면을 없애지 않고, 스르륵 투명해지게 만든 후 0.7초 뒤에 완전히 닫습니다.
             setIsFadingOut(true);
             setTimeout(() => setShowOpening(false), 700); 
           }}
-          className="animate-pulse transition-all duration-300 active:scale-90 text-yellow-600/90 font-serif text-xl tracking-[0.4em] drop-shadow-[0_0_10px_rgba(202,138,4,0.6)]"
+          // 💡 버튼을 누른 직후에는 또 못 누르도록 pointer-events-none을 추가했습니다.
+          className={`animate-pulse transition-all duration-300 text-yellow-600/90 font-serif text-xl tracking-[0.4em] drop-shadow-[0_0_10px_rgba(202,138,4,0.6)] ${isFadingOut ? 'pointer-events-none' : 'active:scale-90'}`}
           style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
         >
           GAME START
