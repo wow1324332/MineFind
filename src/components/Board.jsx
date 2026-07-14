@@ -129,8 +129,8 @@ return (
                 `}
                 style={{
                   backgroundImage: !cell.isRevealed 
-                    ? `url('${currentDungeonInfo?.tileImg || "/hellofflame-tile.png"}')` 
-                    : (cell.isMine ? 'none' : `url('/tile${cell.neighborMines}.png')`)
+                    ? `url('${currentDungeonInfo?.tileImg || "/hellofflame-tile.webp"}')` 
+                    : (cell.isMine ? 'none' : `url('/dungeons/tile${cell.neighborMines}.webp')`)
                 }}
               >
                 {renderCellContent(cell)}
