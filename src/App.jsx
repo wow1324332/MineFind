@@ -21,7 +21,7 @@ import { db } from './firebase'; // (파이어베이스 설정 파일 경로)
 const SPLASH_CONFIG = {
   INITIAL: {
     message: "Transfer...",
-    logoSrc: "/Splash-logo.jpg",
+    logoSrc: "/Splash-logo.webp",
     bgSrc: null
   },
   HUNT_LIST_LOADING: {
