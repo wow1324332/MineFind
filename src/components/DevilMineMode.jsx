@@ -19,7 +19,7 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout, hp }) {
         
         {/* 1. 데빌마인 타이틀 이미지 */}
         {/* 💡 mb-2를 주어 타이틀과 헤더 사이의 간격을 조금 벌려줍니다. */}
-        <div className="w-full max-w-[16rem] mx-auto relative flex justify-center pointer-events-none mb-2">
+        <div className="w-full max-w-sm mx-auto relative flex justify-center pointer-events-none mb-2">
           <div 
             className="w-full"
             style={{ 
