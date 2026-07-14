@@ -377,7 +377,9 @@ export default function App() {
   }
 
   if (loading) {
-    return <SplashScreen {...SPLASH_CONFIG.INITIAL} />;
+    // 💡 파이어베이스 로그인 상태 확인 중에는 로딩창 대신 검은 화면을 유지하여
+    // 오프닝 화면에서 로그인 모달로 깜빡임 없이 매끄럽게 넘어가도록 처리합니다.
+    return <div className="fixed inset-0 bg-black z-[500]"></div>;
   }
 
   if (!user) {
