@@ -4,7 +4,7 @@ import React from 'react';
 export default function DevilMineMode({ onSelectPVE, onBack, onLogout, hp }) {
   return (
     // 💡 justify-between을 지우고 justify-start로 변경하여 컨텐츠들을 상단부터 배치합니다.
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-start bg-black text-white pt-10 px-6 select-none">
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-start bg-black text-white pt-6 px-6 select-none">
       
       {/* 배경: 고대 석판 이미지 */}
       <div 
@@ -15,7 +15,7 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout, hp }) {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_20%,_#000000_100%)] pointer-events-none"></div>
 
       {/* 상단 타이틀 이미지와 돌담 헤더 묶음 */}
-      <div className="w-full flex flex-col items-center max-w-md relative z-10">
+      <div className="w-full flex flex-col items-center max-w-md relative z-10 -mt-6 shrink-0">
         
         {/* 1. 데빌마인 타이틀 이미지 */}
         {/* 💡 mb-2를 주어 타이틀과 헤더 사이의 간격을 조금 벌려줍니다. */}
