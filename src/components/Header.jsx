@@ -55,7 +55,7 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
             <span className="text-4xl">👑</span> 
           ) : (
             <img 
-              src="/holyshield-icon.png" 
+              src="/dungeon/holyshield-icon.webp" 
               alt="🛡️" 
               className="w-10 h-10 object-contain drop-shadow-[0_0_8px_rgba(250,204,21,0.6)]" 
             />
