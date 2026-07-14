@@ -62,7 +62,7 @@ export default function Board({ board, onCellClick, onCellRightClick, dungeon })
     if (cell.isFlagged) {
       return (
         <img 
-          src="/holyshield-icon.png" 
+          src="/dungeons/holyshield-icon.webp" 
           alt="Holy Shield Flag" 
           className="w-4/5 h-4/5 object-contain drop-shadow-[0_0_10px_rgba(250,204,21,0.8)] animate-pulse" 
         />
