@@ -35,7 +35,7 @@ export const ITEM_DATABASE = {
     id: 'mat_fire_4',
     type: 'material',
     name: 'core of flame',
-    icon: '/items/coreofflame.png',
+    icon: '/items/coreofflame.webp',
     rarity: 'rare',
     desc: '중급 불의 악마들의 화염의 기운을 모은 불의 정수.',
     sellPrice: 500
@@ -84,7 +84,7 @@ export const ITEM_DATABASE = {
     id: 'mat_water_4',
     type: 'material',
     name: 'core of aqua',
-    icon: '/items/coreofaqua.png',
+    icon: '/items/coreofaqua.webp',
     rarity: 'rare',
     desc: '심해 악마들의 물의 기운을 잔뜩모은 강력한 물의 정수.',
     sellPrice: 500
@@ -133,7 +133,7 @@ export const ITEM_DATABASE = {
     id: 'mat_poison_4',
     type: 'material',
     name: 'core of poison',
-    icon: '/items/coreofpoison.png',
+    icon: '/items/coreofpoison.webp',
     rarity: 'rare',
     desc: '독연 악마들의 독의 기운을 잔뜩모은 강력한 독의 정수.',
     sellPrice: 500
@@ -182,7 +182,7 @@ export const ITEM_DATABASE = {
     id: 'mat_light_4',
     type: 'material',
     name: 'core of light',
-    icon: '/items/coreoflight.png',
+    icon: '/items/coreoflight.webp',
     rarity: 'rare',
     desc: '지혜의 악마들의 빛의 기운을 잔뜩모은 강력한 독의 정수.',
     sellPrice: 500
@@ -231,7 +231,7 @@ export const ITEM_DATABASE = {
     id: 'mat_ice_4',
     type: 'material',
     name: 'core of ice',
-    icon: '/items/coreofice.png',
+    icon: '/items/coreofice.webp',
     rarity: 'rare',
     desc: '빙결의 악마들의 극한의 기운을 잔뜩모은 강력한 냉기의 정수.',
     sellPrice: 500
@@ -318,7 +318,7 @@ export const ITEM_DATABASE = {
     type: 'consumable',
     element: 'fire',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 20,       // 올려주는 경험치 량
-    icon: '/items/exppotion-fire-small.png'
+    icon: '/items/exppotion-fire-small.webp'
   },
   'potion_exp_fire_medium': {
     name: '중급 불꽃 포션',
@@ -326,7 +326,7 @@ export const ITEM_DATABASE = {
     type: 'consumable',
     element: 'fire',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 50,       // 올려주는 경험치 량
-    icon: '/items/exppotion-fire-medium.png'
+    icon: '/items/exppotion-fire-medium.webp'
   },
   'potion_exp_fire_large': {
     name: '고급 불꽃 포션',
@@ -334,7 +334,7 @@ export const ITEM_DATABASE = {
     type: 'consumable',
     element: 'fire',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 200,       // 올려주는 경험치 량
-    icon: '/items/exppotion-fire-large.png'
+    icon: '/items/exppotion-fire-large.webp'
   },
     'potion_exp_water_small': {
     name: '작은 물방울 포션',
@@ -342,7 +342,7 @@ export const ITEM_DATABASE = {
     type: 'consumable',
     element: 'water',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 20,       // 올려주는 경험치 량
-    icon: '/items/exppotion-water-small.png'
+    icon: '/items/exppotion-water-small.webp'
   },
   'potion_exp_water_medium': {
     name: '중급 물방울 포션',
@@ -350,7 +350,7 @@ export const ITEM_DATABASE = {
     type: 'consumable',
     element: 'water',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 50,       // 올려주는 경험치 량
-    icon: '/items/exppotion-water-medium.png'
+    icon: '/items/exppotion-water-medium.webp'
   },
   'potion_exp_water_large': {
     name: '고급 물방울 포션',
@@ -358,7 +358,7 @@ export const ITEM_DATABASE = {
     type: 'consumable',
     element: 'water',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 200,       // 올려주는 경험치 량
-    icon: '/items/exppotion-water-large.png'
+    icon: '/items/exppotion-water-large.webp'
   },
       'potion_exp_poison_small': {
     name: '작은 독액 포션',
@@ -366,7 +366,7 @@ export const ITEM_DATABASE = {
     type: 'consumable',
     element: 'poison',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 20,       // 올려주는 경험치 량
-    icon: '/items/exppotion-poison-small.png'
+    icon: '/items/exppotion-poison-small.webp'
   },
   'potion_exp_poison_medium': {
     name: '중급 독액 포션',
@@ -374,7 +374,7 @@ export const ITEM_DATABASE = {
     type: 'consumable',
     element: 'poison',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 50,       // 올려주는 경험치 량
-    icon: '/items/exppotion-poison-medium.png'
+    icon: '/items/exppotion-poison-medium.webp'
   },
   'potion_exp_poison_large': {
     name: '고급 독액 포션',
@@ -382,7 +382,7 @@ export const ITEM_DATABASE = {
     type: 'consumable',
     element: 'poison',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 200,       // 올려주는 경험치 량
-    icon: '/items/exppotion-poison-large.png'
+    icon: '/items/exppotion-poison-large.webp'
   },
         'potion_exp_light_small': {
     name: '작은 빛의 포션',
@@ -390,7 +390,7 @@ export const ITEM_DATABASE = {
     type: 'consumable',
     element: 'light',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 20,       // 올려주는 경험치 량
-    icon: '/items/exppotion-light-small.png'
+    icon: '/items/exppotion-light-small.webp'
   },
   'potion_exp_light_medium': {
     name: '중급 빛의 포션',
@@ -398,7 +398,7 @@ export const ITEM_DATABASE = {
     type: 'consumable',
     element: 'light',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 50,       // 올려주는 경험치 량
-    icon: '/items/exppotion-light-medium.png'
+    icon: '/items/exppotion-light-medium.webp'
   },
   'potion_exp_light_large': {
     name: '고급 빛의 포션',
@@ -406,7 +406,7 @@ export const ITEM_DATABASE = {
     type: 'consumable',
     element: 'light',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 200,       // 올려주는 경험치 량
-    icon: '/items/exppotion-light-large.png'
+    icon: '/items/exppotion-light-large.webp'
   },
   'potion_exp_ice_small': {
     name: '작은 얼음의 포션',
@@ -414,7 +414,7 @@ export const ITEM_DATABASE = {
     type: 'consumable',
     element: 'ice',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 20,       // 올려주는 경험치 량
-    icon: '/items/exppotion-ice-small.png'
+    icon: '/items/exppotion-ice-small.webp'
   },
   'potion_exp_ice_medium': {
     name: '중급 빛의 포션',
@@ -422,7 +422,7 @@ export const ITEM_DATABASE = {
     type: 'consumable',
     element: 'ice',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 50,       // 올려주는 경험치 량
-    icon: '/items/exppotion-ice-medium.png'
+    icon: '/items/exppotion-ice-medium.webp'
   },
   'potion_exp_ice_large': {
     name: '고급 빛의 포션',
@@ -430,7 +430,7 @@ export const ITEM_DATABASE = {
     type: 'consumable',
     element: 'ice',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 200,       // 올려주는 경험치 량
-    icon: '/items/exppotion-ice-large.png'
+    icon: '/items/exppotion-ice-large.webp'
   },
 };
 
