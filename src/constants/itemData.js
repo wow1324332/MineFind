@@ -17,7 +17,7 @@ export const ITEM_DATABASE = {
     id: 'mat_fire_2',
     type: 'material',
     name: 'high flame crystal',
-    icon: '/items/highflamecrystal.png',
+    icon: '/items/highflamecrystal.webp',
     rarity: 'common',
     desc: '중급 불의 악마 피를 굳혀 만든 작은 강력한 불꽃의 기운을 담은 수정.',
     sellPrice: 200
@@ -66,7 +66,7 @@ export const ITEM_DATABASE = {
     id: 'mat_water_2',
     type: 'material',
     name: 'high aqua crystal',
-    icon: '/items/highaquacrystal.png',
+    icon: '/items/highaquacrystal.webp',
     rarity: 'normal',
     desc: '물의 악마의 기운을 가득 머금고 있는 수정.',
     sellPrice: 200
@@ -115,7 +115,7 @@ export const ITEM_DATABASE = {
     id: 'mat_poison_2',
     type: 'material',
     name: 'high poison crystal',
-    icon: '/items/highpoisoncrystal.png',
+    icon: '/items/highpoisoncrystal.webp',
     rarity: 'normal',
     desc: '독의 악마의 기운을 가득 머금고 있는 수정.',
     sellPrice: 200
@@ -164,7 +164,7 @@ export const ITEM_DATABASE = {
     id: 'mat_light_2',
     type: 'material',
     name: 'high light crystal',
-    icon: '/items/highlightcrystal.png',
+    icon: '/items/highlightcrystal.webp',
     rarity: 'normal',
     desc: '지혜의 악마의 기운을 가득 머금고 있는 수정.',
     sellPrice: 200
@@ -213,7 +213,7 @@ export const ITEM_DATABASE = {
     id: 'mat_ice_2',
     type: 'material',
     name: 'high ice crystal',
-    icon: '/items/highicecrystal.png',
+    icon: '/items/highicecrystal.webp',
     rarity: 'normal',
     desc: '빙결의 악마의 기운을 가득 머금고 있는 수정.',
     sellPrice: 200
