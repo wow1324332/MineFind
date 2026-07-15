@@ -26,7 +26,7 @@ export const ITEM_DATABASE = {
     id: 'mat_fire_3',
     type: 'material',
     name: 'eye of flame devil',
-    icon: '/items/eyeofflamedevil.png',
+    icon: '/items/eyeofflamedevil.webp',
     rarity: 'rare',
     desc: '불의 악마 제3의 눈.',
     sellPrice: 350
@@ -75,7 +75,7 @@ export const ITEM_DATABASE = {
     id: 'mat_water_3',
     type: 'material',
     name: 'eye of aqua devil',
-    icon: '/items/eyeofaquadevil.png',
+    icon: '/items/eyeofaquadevil.webp',
     rarity: 'rare',
     desc: '중급 심해의 악마를 처치하고 나온 물의 기운이 담긴 눈.',
     sellPrice: 350
@@ -124,7 +124,7 @@ export const ITEM_DATABASE = {
     id: 'mat_poison_3',
     type: 'material',
     name: 'eye of poison devil',
-    icon: '/items/eyeofpoisondevil.png',
+    icon: '/items/eyeofpoisondevil.webp',
     rarity: 'rare',
     desc: '중급 독연의 악마를 처치하고 나온 독의 기운이 담긴 눈.',
     sellPrice: 350
@@ -173,7 +173,7 @@ export const ITEM_DATABASE = {
     id: 'mat_light_3',
     type: 'material',
     name: 'eye of light devil',
-    icon: '/items/eyeoflightdevil.png',
+    icon: '/items/eyeoflightdevil.webp',
     rarity: 'rare',
     desc: '중급 독연의 악마를 처치하고 나온 독의 기운이 담긴 눈.',
     sellPrice: 350
@@ -222,7 +222,7 @@ export const ITEM_DATABASE = {
     id: 'mat_ice_3',
     type: 'material',
     name: 'eye of ice devil',
-    icon: '/items/eyeoficedevil.png',
+    icon: '/items/eyeoficedevil.webp',
     rarity: 'rare',
     desc: '중급 빙결의 악마를 처치하고 나온 극한의 기운이 담긴 눈.',
     sellPrice: 350
