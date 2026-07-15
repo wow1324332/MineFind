@@ -8,7 +8,7 @@ export const ITEM_DATABASE = {
     id: 'mat_fire_1',
     type: 'material',
     name: 'flame crystal',
-    icon: '/items/flamecrystal.png',
+    icon: '/items/flamecrystal.webp',
     rarity: 'common',
     desc: '불의 악마들의 피를 굳혀 만든 작은 불꽃의 기운을 담은 수정.',
     sellPrice: 100
@@ -57,7 +57,7 @@ export const ITEM_DATABASE = {
     id: 'mat_water_1',
     type: 'material',
     name: 'aqua crystal',
-    icon: '/items/aquacristal.png', 
+    icon: '/items/aquacristal.webp', 
     rarity: 'common',
     desc: '물의 악마의 기운을 머금고있는 작은 수정.',
     sellPrice: 100
@@ -106,7 +106,7 @@ export const ITEM_DATABASE = {
     id: 'mat_poison_1',
     type: 'material',
     name: 'poison crystal',
-    icon: '/items/poisoncristal.png', 
+    icon: '/items/poisoncristal.webp', 
     rarity: 'common',
     desc: '독의 악마 기운을 머금고있는 작은 수정.',
     sellPrice: 100
@@ -155,7 +155,7 @@ export const ITEM_DATABASE = {
     id: 'mat_light_1',
     type: 'material',
     name: 'light crystal',
-    icon: '/items/lightcristal.png', 
+    icon: '/items/lightcristal.webp', 
     rarity: 'common',
     desc: '지혜의 악마 기운을 머금고있는 작은 수정.',
     sellPrice: 100
@@ -204,7 +204,7 @@ export const ITEM_DATABASE = {
     id: 'mat_ice_1',
     type: 'material',
     name: 'ice crystal',
-    icon: '/items/icecristal.png', 
+    icon: '/items/icecristal.webp', 
     rarity: 'common',
     desc: '빙결의 악마 기운을 머금고있는 작은 수정.',
     sellPrice: 100
