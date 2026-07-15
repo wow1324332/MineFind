@@ -10,19 +10,19 @@ export const EQUIP_DATABASE = {
       // [티어 0] 무속성 (디폴트)
       'tier_0_neutral': {
         name: 'wooden sword',
-        image: '/equips/woodensword.png',
+        image: '/equips/woodensword.webp',
         baseStat: { str: 3, agi: 0, int: 0, vit: 0, luk: 0 },
       },
       // [티어 1] 불 속성
       'tier_1_flame': {
         name: 'wooden sword',
-        image: '/equips/woodensword.png', // 추후 이미지 파일명에 맞게 변경
+        image: '/equips/woodensword.webp', // 추후 이미지 파일명에 맞게 변경
         baseStat: { str: 25, agi: 5, int: 0, vit: 0, luk: 0 },
       },
       // [티어 2] 불 속성
       'tier_2_flame': {
         name: '업화의 대검',
-        image: '/equip-weapon-flame-2.png',
+        image: '/equip-weapon-flame-2.webp',
         baseStat: { str: 55, agi: 10, int: 0, vit: 0, luk: 0 },
       },
       // [티어 1] 어둠 속성 (예시: 극단적인 공격력)
@@ -43,7 +43,7 @@ export const EQUIP_DATABASE = {
     evolutions: {
       'tier_0_neutral': {
         name: 'leather helmet',
-        image: '/equips/leatherhelmet.png',
+        image: '/equips/leatherhelmet.webp',
         baseStat: { str: 0, agi: 0, int: 0, vit: 5, luk: 0 },
       },
       'tier_1_flame': {
@@ -68,7 +68,7 @@ export const EQUIP_DATABASE = {
     evolutions: {
       'tier_0_neutral': {
         name: 'leather shield',
-        image: '/equips/leathershield.png',
+        image: '/equips/leathershield.webp',
         baseStat: { str: 0, agi: 0, int: 0, vit: 4, luk: 1 },
       },
       'tier_1_aqua': {
@@ -93,7 +93,7 @@ export const EQUIP_DATABASE = {
     evolutions: {
       'tier_0_neutral': {
         name: 'leather armor',
-        image: '/equips/leatherarmor.png',
+        image: '/equips/leatherarmor.webp',
         baseStat: { str: 0, agi: 2, int: 0, vit: 10, luk: 2 },
       },
       'tier_1_dark': {
