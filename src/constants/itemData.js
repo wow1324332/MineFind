@@ -44,7 +44,7 @@ export const ITEM_DATABASE = {
     id: 'mat_fire_5',
     type: 'material',
     name: 'heart of mephisto',
-    icon: '/items/heartofmephisto.png',
+    icon: '/items/heartofmephisto.webp',
     rarity: 'rare',
     desc: '불꽃의 대악마 메피스토의 심장 파편.',
     sellPrice: 2000
@@ -93,7 +93,7 @@ export const ITEM_DATABASE = {
     id: 'mat_water_5',
     type: 'material',
     name: 'lung of baal',
-    icon: '/items/lungofbaal.png',
+    icon: '/items/lungofbaal.webp',
     rarity: 'rare',
     desc: '물의 대악마 바알을 처치하고 얻은 바알의 폐.',
     sellPrice: 2000
@@ -142,7 +142,7 @@ export const ITEM_DATABASE = {
     id: 'mat_poison_5',
     type: 'material',
     name: 'brain of belial',
-    icon: '/items/brainofbelial.png',
+    icon: '/items/brainofbelial.webp',
     rarity: 'rare',
     desc: '독의 대악마 벨리알을 처치하고 얻은 벨리알의 뇌.',
     sellPrice: 2000
@@ -191,7 +191,7 @@ export const ITEM_DATABASE = {
     id: 'mat_light_5',
     type: 'material',
     name: 'liver of lucifer',
-    icon: '/items/liveroflucifer.png',
+    icon: '/items/liveroflucifer.webp',
     rarity: 'rare',
     desc: '번뇌의 대악마 루시퍼를 처치하고 얻은 루시퍼의 간.',
     sellPrice: 2000
@@ -240,7 +240,7 @@ export const ITEM_DATABASE = {
     id: 'mat_ice_5',
     type: 'material',
     name: 'kidney of amon',
-    icon: '/items/kidneyofamon.png',
+    icon: '/items/kidneyofamon.webp',
     rarity: 'rare',
     desc: '혹한의 대악마 아몬을 처치하고 얻은 혹한의 기운이 담긴 신장.',
     sellPrice: 2000
