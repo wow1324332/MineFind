@@ -51,7 +51,7 @@ export default function Board({ board, onCellClick, onCellRightClick, dungeon })
       if (cell.isMine) {
         return (
           <img 
-            src={currentDungeonInfo?.mineImg || "/hellofflame-mine.png"} 
+            src={currentDungeonInfo?.mineImg || "/dungeons/fire/hellofflame-mine.webp"} 
             alt="Dungeon Mine" 
             className={`w-[85%] h-[85%] object-contain animate-pulse ${currentDungeonInfo?.mineShadow || 'drop-shadow-[0_0_15px_rgba(220,38,38,1)]'}`} 
           />
