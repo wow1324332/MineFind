@@ -60,11 +60,12 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout, hp
       </div>
 
       {/* 💡 중앙: 던전 선택 버튼 영역 (flex-1 min-h-0을 통해 이곳만 스크롤되도록 설정!) */}
-      <div 
+     <div 
         className="relative z-10 w-full max-w-xs -space-y-3 mt-2 flex-1 min-h-0 overflow-y-auto custom-scrollbar flex flex-col items-center pb-8 px-2"
         style={{ 
-          WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)', 
-          maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)' 
+          // 💡 투명(0%) -> 검정(10%) -> 검정(85%) -> 투명(100%) 으로 상하단 모두 안개 효과 적용!
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 10%, black 85%, transparent 100%)', 
+          maskImage: 'linear-gradient(to bottom, transparent 0%, black 10%, black 85%, transparent 100%)' 
         }}
       >
         {Object.values(DUNGEON_INFO).map((dungeon) => {
