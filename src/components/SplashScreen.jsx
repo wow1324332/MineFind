@@ -33,7 +33,7 @@ export default function SplashScreen({
 
         {/* 💡 [수정] 누끼 딴 투명 폰트 이미지 적용 */}
         <img
-          src="/loading-font.png" // 🚨 누끼 딴 투명 PNG 파일명
+          src="/loading-font.webp" // 🚨 누끼 딴 투명 PNG 파일명
           alt="Loading..."
           // 💡 mix-blend-screen을 제거하여 사각형 번쩍임을 없앴습니다.
           // 대신 drop-shadow를 옅게 깔아주어 폰트 자체만 배경에 자연스럽게 묻어가며 깜빡이게(pulse) 만듭니다.
@@ -47,7 +47,7 @@ export default function SplashScreen({
               <div 
                 className="w-full h-full"
                 style={{ 
-                  backgroundImage: "url('/splashloadingbar.png')", 
+                  backgroundImage: "url('/splashloadingbar.webp')", 
                   backgroundSize: '130% 1200%', 
                   backgroundPosition: 'center center',
                   backgroundRepeat: 'no-repeat'
