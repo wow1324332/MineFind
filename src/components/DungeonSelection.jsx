@@ -104,7 +104,7 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout, hp
               style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
             >
               <img 
-                src={`/${diff.toLowerCase()}.png`} 
+                src={`/dungeons/${diff.toLowerCase()}.webp`} 
                 alt={`${diff} Difficulty`} 
                 className="w-full h-auto object-contain pointer-events-none"
                 draggable="false"
