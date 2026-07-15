@@ -271,50 +271,50 @@ export const ITEM_DATABASE = {
     id: 'con_soul_1',
     type: 'consumable',
     name: 'soul of fire knight',
-    icon: '/items/knightsoul-fire-small.png',
+    icon: '/items/knightsoul-fire-small.webp',
     rarity: 'rare',
-    desc: '화염의 기사들의 영혼 조각',
+    desc: '화염의 기사 영혼의 작은 파편',
     sellPrice: 2000
   },
   'con_soul_2':{
     id: 'con_soul_2',
     type: 'consumable',
     name: 'soul of water knight',
-    icon: '/items/knightsoul-water-small.png',
+    icon: '/items/knightsoul-water-small.webp',
     rarity: 'rare',
-    desc: '물의 기사들의 영혼 조각',
+    desc: '물의 기사 영혼의 작은 파편',
     sellPrice: 2000
   },
   'con_soul_3':{
     id: 'con_soul_3',
     type: 'consumable',
     name: 'soul of poison knight',
-    icon: '/items/knightsoul-poison-small.png',
+    icon: '/items/knightsoul-poison-small.webp',
     rarity: 'rare',
-    desc: '독의 기사들의 영혼 조각',
+    desc: '증오의 기사 영혼의 작은 파편',
     sellPrice: 2000
   },
     'con_soul_4':{
     id: 'con_soul_4',
     type: 'consumable',
     name: 'soul of light knight',
-    icon: '/items/knightsoul-light-small.png',
+    icon: '/items/knightsoul-light-small.webp',
     rarity: 'rare',
-    desc: '빛의 기사들의 영혼 조각',
+    desc: '빛의 기사 영혼의 작은 파편',
     sellPrice: 2000
   },
       'con_soul_5':{
     id: 'con_soul_5',
     type: 'consumable',
     name: 'soul of ice knight',
-    icon: '/items/knightsoul-ice-small.png',
+    icon: '/items/knightsoul-ice-small.webp',
     rarity: 'rare',
-    desc: '냉기의 기사들의 영혼 조각',
+    desc: '냉기의 기사 영혼의 작은 파편',
     sellPrice: 2000
   },
   'potion_exp_fire_small': {
     name: '작은 불꽃 포션',
-    description: '불 속성 기사에게 먹이면 경험치가 20 상승합니다.',
+    description: '작은 불꽃을 담은 포션 (경험치 20 상승)',
     type: 'consumable',
     element: 'fire',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 20,       // 올려주는 경험치 량
@@ -322,7 +322,7 @@ export const ITEM_DATABASE = {
   },
   'potion_exp_fire_medium': {
     name: '중급 불꽃 포션',
-    description: '불 속성 기사에게 먹이면 경험치가 50 상승합니다.',
+    description: '조금 큰 불꽃을 담은 포션 (경험치 50 상승)',
     type: 'consumable',
     element: 'fire',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 50,       // 올려주는 경험치 량
@@ -330,7 +330,7 @@ export const ITEM_DATABASE = {
   },
   'potion_exp_fire_large': {
     name: '고급 불꽃 포션',
-    description: '불 속성 기사에게 먹이면 경험치가 200 상승합니다.',
+    description: '강력한 불의 기운을 담은 포션 (경험치 200 상승)',
     type: 'consumable',
     element: 'fire',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 200,       // 올려주는 경험치 량
@@ -338,7 +338,7 @@ export const ITEM_DATABASE = {
   },
     'potion_exp_water_small': {
     name: '작은 물방울 포션',
-    description: '물 속성 기사에게 먹이면 경험치가 20 상승합니다.',
+    description: '작은 물방울을 담은 포션 (경험치 20 상승)',
     type: 'consumable',
     element: 'water',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 20,       // 올려주는 경험치 량
@@ -346,7 +346,7 @@ export const ITEM_DATABASE = {
   },
   'potion_exp_water_medium': {
     name: '중급 물방울 포션',
-    description: '물 속성 기사에게 먹이면 경험치가 50 상승합니다.',
+    description: '조금 큰 물방울을 담은 포션 (경험치 50 상승)',
     type: 'consumable',
     element: 'water',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 50,       // 올려주는 경험치 량
@@ -354,7 +354,7 @@ export const ITEM_DATABASE = {
   },
   'potion_exp_water_large': {
     name: '고급 물방울 포션',
-    description: '물 속성 기사에게 먹이면 경험치가 200 상승합니다.',
+    description: '강력한 수기를 담은 포션 (경험치 200 상승)',
     type: 'consumable',
     element: 'water',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 200,       // 올려주는 경험치 량
@@ -362,7 +362,7 @@ export const ITEM_DATABASE = {
   },
       'potion_exp_poison_small': {
     name: '작은 독액 포션',
-    description: '독 속성 기사에게 먹이면 경험치가 20 상승합니다.',
+    description: '소량의 독물을 담은 포션 (경험치 20 상승)',
     type: 'consumable',
     element: 'poison',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 20,       // 올려주는 경험치 량
@@ -370,7 +370,7 @@ export const ITEM_DATABASE = {
   },
   'potion_exp_poison_medium': {
     name: '중급 독액 포션',
-    description: '독 속성 기사에게 먹이면 경험치가 50 상승합니다.',
+    description: '중급의 독극물을 담은 포션 (경험치 50 상승)'',
     type: 'consumable',
     element: 'poison',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 50,       // 올려주는 경험치 량
@@ -378,7 +378,7 @@ export const ITEM_DATABASE = {
   },
   'potion_exp_poison_large': {
     name: '고급 독액 포션',
-    description: '독 속성 기사에게 먹이면 경험치가 200 상승합니다.',
+    description: '맹독을 담은 포션 (경험치 200 상승)',
     type: 'consumable',
     element: 'poison',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 200,       // 올려주는 경험치 량
@@ -386,7 +386,7 @@ export const ITEM_DATABASE = {
   },
         'potion_exp_light_small': {
     name: '작은 빛의 포션',
-    description: '빛 속성 기사에게 먹이면 경험치가 20 상승합니다.',
+    description: '소량의 빛의 기운을 담은 포션 (경험치 20 상승)',
     type: 'consumable',
     element: 'light',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 20,       // 올려주는 경험치 량
@@ -394,7 +394,7 @@ export const ITEM_DATABASE = {
   },
   'potion_exp_light_medium': {
     name: '중급 빛의 포션',
-    description: '빛 속성 기사에게 먹이면 경험치가 50 상승합니다.',
+    description: '여신의 눈물을 담은 포션 (경험치 50 상승)',
     type: 'consumable',
     element: 'light',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 50,       // 올려주는 경험치 량
@@ -402,7 +402,7 @@ export const ITEM_DATABASE = {
   },
   'potion_exp_light_large': {
     name: '고급 빛의 포션',
-    description: '빛 속성 기사에게 먹이면 경험치가 200 상승합니다.',
+    description: '여신의 강력한 신성을 담은 포션 (경험치 200 상승)',
     type: 'consumable',
     element: 'light',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 200,       // 올려주는 경험치 량
@@ -410,7 +410,7 @@ export const ITEM_DATABASE = {
   },
   'potion_exp_ice_small': {
     name: '작은 얼음의 포션',
-    description: '얼음 속성 기사에게 먹이면 경험치가 20 상승합니다.',
+    description: '작은 북극의 얼음을 담은 포션 (경험치 20 상승)',
     type: 'consumable',
     element: 'ice',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 20,       // 올려주는 경험치 량
@@ -418,7 +418,7 @@ export const ITEM_DATABASE = {
   },
   'potion_exp_ice_medium': {
     name: '중급 빛의 포션',
-    description: '얼음 속성 기사에게 먹이면 경험치가 50 상승합니다.',
+    description: '만년설의 냉기를 담은 포션 (경험치 50 상승)',
     type: 'consumable',
     element: 'ice',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 50,       // 올려주는 경험치 량
@@ -426,7 +426,7 @@ export const ITEM_DATABASE = {
   },
   'potion_exp_ice_large': {
     name: '고급 빛의 포션',
-    description: '얼음 속성 기사에게 먹이면 경험치가 200 상승합니다.',
+    description: '극한의 한기를 농축한 포션 (경험치 200 상승)',
     type: 'consumable',
     element: 'ice',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 200,       // 올려주는 경험치 량
