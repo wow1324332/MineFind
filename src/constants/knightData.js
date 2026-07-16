@@ -66,8 +66,8 @@ export const KNIGHT_DATABASE = {
     title: 'Knight of Flame',
     attribute: 'fire',
     rarity: 'rare',
-    image: '/knights/knight-lencelot-profile.png',    // 갤러리/목록용 미니 프로필
-    fullImage: '/knights/knight-lancelot.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    image: '/knights/fire/knight-lencelot-profile.webp',    // 갤러리/목록용 미니 프로필
+    fullImage: '/knights/fire/knight-lancelot.webp',   // 🎬 시네마틱 연출용 전신 일러스트
     description: '지옥불 던전 깊은 곳에서 계약을 맺은 화염의 기사입니다.',
     
     // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
@@ -103,8 +103,8 @@ export const KNIGHT_DATABASE = {
     title: 'Knight of Fire',
     attribute: 'fire',
     rarity: 'rare',
-    image: '/knights/knight-gawain-profile.png',
-    fullImage: '/knights/knight-gawain.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    image: '/knights/fire/knight-gawain-profile.webp',
+    fullImage: '/knights/fire/knight-gawain.webp',   // 🎬 시네마틱 연출용 전신 일러스트
     description: '불의 던전에서 구출된 후 당신에게 충성을 맹세한 기사입니다.',
     
     // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
@@ -140,8 +140,8 @@ export const KNIGHT_DATABASE = {
     title: 'Sister of Flame King',
     attribute: 'fire',
     rarity: 'rare',
-    image: '/knights/knight-laris-profile.png',
-    fullImage: '/knights/knight-laris.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    image: '/knights/fire/knight-laris-profile.webp',
+    fullImage: '/knights/fire/knight-laris.webp',   // 🎬 시네마틱 연출용 전신 일러스트
     description: '불의 여제의 첫째 딸.',
     
     // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
