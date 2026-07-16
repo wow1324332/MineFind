@@ -287,8 +287,8 @@ export const KNIGHT_DATABASE = {
     title: 'Assassin of poison',
     attribute: 'poison',
     rarity: 'rare',
-    image: '/knights/knight-mordred-profile.png',
-    fullImage: '/knights/knight-mordred.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    image: '/knights/poison/knight-mordred-profile.webp',
+    fullImage: '/knights/poison/knight-mordred.webp',   // 🎬 시네마틱 연출용 전신 일러스트
     description: '독의 던전을 수호하던 고대 기사의 영령.',
     
     // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
@@ -315,7 +315,7 @@ export const KNIGHT_DATABASE = {
     }
   },
   // ========================================================
-  // 7. 가레스 (물의 던전 소환 기사)
+  // 7. 가레스 (독의 던전 소환 기사)
   // ========================================================
   'knight_poison_gareth': {
     id: 'knight_poison_gareth',
@@ -323,8 +323,8 @@ export const KNIGHT_DATABASE = {
     title: 'Assassin of Shadow',
     attribute: 'poison',
     rarity: 'rare',
-    image: '/knights/knight-gareth-profile.png',
-    fullImage: '/knights/knight-gareth.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    image: '/knights/poison/knight-gareth-profile.webp',
+    fullImage: '/knights/poison/knight-gareth.webp',   // 🎬 시네마틱 연출용 전신 일러스트
     description: '독의 던전을 수호하던 고대 기사의 그림자.',
     
     // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
