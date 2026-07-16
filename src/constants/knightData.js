@@ -177,8 +177,8 @@ export const KNIGHT_DATABASE = {
     title: 'Defender of Water',
     attribute: 'water',
     rarity: 'rare',
-    image: '/knights/knight-galahad-profile.png',
-    fullImage: '/knights/knight-galahad.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    image: '/knights/water/knight-galahad-profile.webp',
+    fullImage: '/knights/water/knight-galahad.webp',   // 🎬 시네마틱 연출용 전신 일러스트
     description: '물의 던전을 수호하던 고대 기사의 영령.',
     
     // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
@@ -213,8 +213,8 @@ export const KNIGHT_DATABASE = {
     title: 'Defender of Water',
     attribute: 'water',
     rarity: 'rare',
-    image: '/knights/knight-percival-profile.png',
-    fullImage: '/knights/knight-percival.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    image: '/knights/water/knight-percival-profile.webp',
+    fullImage: '/knights/water/knight-percival.webp',   // 🎬 시네마틱 연출용 전신 일러스트
     description: '물의 던전을 수호하던 고대 기사의 영령.',
     
     // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
@@ -250,8 +250,8 @@ export const KNIGHT_DATABASE = {
     title: 'Defender of Water',
     attribute: 'water',
     rarity: 'rare',
-    image: '/knights/knight-urien-profile.png',
-    fullImage: '/knights/knight-urien.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    image: '/knights/water/knight-urien-profile.webp',
+    fullImage: '/knights/water/knight-urien.webp',   // 🎬 시네마틱 연출용 전신 일러스트
     description: '물의 던전을 수호하던 물의 여제의 딸.',
     
     // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
