@@ -370,7 +370,7 @@ export const ITEM_DATABASE = {
   },
   'potion_exp_poison_medium': {
     name: '중급 독액 포션',
-    description: '중급의 독극물을 담은 포션 (경험치 50 상승)'',
+    description: '중급의 독극물을 담은 포션 (경험치 50 상승)',
     type: 'consumable',
     element: 'poison',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 50,       // 올려주는 경험치 량
@@ -417,7 +417,7 @@ export const ITEM_DATABASE = {
     icon: '/items/exppotion-ice-small.webp'
   },
   'potion_exp_ice_medium': {
-    name: '중급 빛의 포션',
+    name: '중급 얼음의 포션',
     description: '만년설의 냉기를 담은 포션 (경험치 50 상승)',
     type: 'consumable',
     element: 'ice',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
@@ -425,7 +425,7 @@ export const ITEM_DATABASE = {
     icon: '/items/exppotion-ice-medium.webp'
   },
   'potion_exp_ice_large': {
-    name: '고급 빛의 포션',
+    name: '고급 얼음의 포션',
     description: '극한의 한기를 농축한 포션 (경험치 200 상승)',
     type: 'consumable',
     element: 'ice',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
