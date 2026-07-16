@@ -10,8 +10,8 @@ export const KNIGHT_DATABASE = {
     title: '견습 기사',
     attribute: 'neutral', 
     rarity: 'player', 
-    image: '/knights/mainknight-profile.png',
-    bgImage: '/knights/mainknight.jpg', 
+    image: '/knights/main/mainknight-profile.webp',
+    bgImage: '/knights/main/mainknight.webp', 
     description: '기사단의 단장인 당신 자신입니다. 끝없는 잠재력을 지니고 있습니다.',
     
     baseStats: {
