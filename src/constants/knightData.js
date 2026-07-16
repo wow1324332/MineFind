@@ -431,8 +431,8 @@ export const KNIGHT_DATABASE = {
     title: 'Frozen Saver',
     attribute: 'ice',
     rarity: 'rare',
-    image: '/knights/knight-gaheris-profile.png',
-    fullImage: '/knights/knight-gaheris.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    image: '/knights/ice/knight-gaheris-profile.webp',
+    fullImage: '/knights/ice/knight-gaheris.webp',   // 🎬 시네마틱 연출용 전신 일러스트
     description: '혹한의 기운을 다스리는 여제.',
     
     // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
@@ -467,8 +467,8 @@ export const KNIGHT_DATABASE = {
     title: 'Knight of Frozen',
     attribute: 'ice',
     rarity: 'rare',
-    image: '/knights/knight-tor-profile.png',
-    fullImage: '/knights/knight-tor.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    image: '/knights/ice/knight-tor-profile.webp',
+    fullImage: '/knights/ice/knight-tor.webp',   // 🎬 시네마틱 연출용 전신 일러스트
     description: '냉기를 수호하는 검.',
     
     // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
