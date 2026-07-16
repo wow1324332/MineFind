@@ -702,7 +702,7 @@ export default function App() {
           {/* 배경 이미지 */}
           <div 
             className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: "url('/achievement-bg.jpg')" }}
+            style={{ backgroundImage: "url('/achievement-bg.webp')" }}
           ></div>
 
           {/* 중앙 텍스트 영역 (동적 데이터 매핑) */}
