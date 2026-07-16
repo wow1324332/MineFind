@@ -359,8 +359,8 @@ export const KNIGHT_DATABASE = {
     title: 'Defender of light',
     attribute: 'light',
     rarity: 'rare',
-    image: '/knights/knight-tristan-profile.png',
-    fullImage: '/knights/knight-tristan.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    image: '/knights/light/knight-tristan-profile.webp',
+    fullImage: '/knights/light/knight-tristan.webp',   // 🎬 시네마틱 연출용 전신 일러스트
     description: '빛을 수호하는 아서왕의 수호 기사.',
     
     // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
@@ -395,8 +395,8 @@ export const KNIGHT_DATABASE = {
     title: 'Light Saver',
     attribute: 'light',
     rarity: 'rare',
-    image: '/knights/knight-kay-profile.png',
-    fullImage: '/knights/knight-kay.jpg',   // 🎬 시네마틱 연출용 전신 일러스트
+    image: '/knights/light/knight-kay-profile.webp',
+    fullImage: '/knights/light/knight-kay.webp',   // 🎬 시네마틱 연출용 전신 일러스트
     description: '빛을 수호하는 검.',
     
     // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
