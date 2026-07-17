@@ -390,7 +390,7 @@ export const KNIGHT_DATABASE = {
   },
   
   // ========================================================
-  // 6. 모드레드 (독의 던전 소환 기사)
+  // 11. 모드레드 (독의 던전 소환 기사)
   // ========================================================
   'knight_poison_mordred': {
     id: 'knight_poison_mordred',
@@ -425,8 +425,9 @@ export const KNIGHT_DATABASE = {
       luk: 2
     }
   },
+  
   // ========================================================
-  // 7. 가레스 (독의 던전 소환 기사)
+  // 12. 가레스 (독의 던전 소환 기사)
   // ========================================================
   'knight_poison_gareth': {
     id: 'knight_poison_gareth',
@@ -461,8 +462,46 @@ export const KNIGHT_DATABASE = {
       luk: 3
     }
   },
+
   // ========================================================
-  // 8. 트리스탄 (빛의 던전 소환 기사)
+  // 13. 사피르 (독의 던전 소환 기사)
+  // ========================================================
+  'knight_poison_safir': {
+    id: 'knight_poison_safir',
+    name: 'Safir',
+    title: 'Assassin of Shadow',
+    attribute: 'poison',
+    rarity: 'rare',
+    image: '/knights/poison/knight-safir-profile.webp',
+    fullImage: '/knights/poison/knight-safir.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '그림자 기사단의 마지막 후예.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_3', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 15,
+      agi: 25,
+      int: 10,
+      vit: 5,
+      luk: 15
+    },
+
+    statGrowth: {
+      str: 2,
+      agi: 4,
+      int: 1,
+      vit: 1,
+      luk: 2
+    }
+  },
+  
+  // ========================================================
+  // 14. 트리스탄 (빛의 던전 소환 기사)
   // ========================================================
   'knight_light_tristan': {
     id: 'knight_light_tristan',
@@ -498,7 +537,7 @@ export const KNIGHT_DATABASE = {
     }
   },
   // ========================================================
-  // 9. 카이 (빛의 던전 소환 기사)
+  // 15. 카이 (빛의 던전 소환 기사)
   // ========================================================
   'knight_light_kay': {
     id: 'knight_light_kay',
