@@ -6,27 +6,23 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
   // 💡 현재 입장한 던전의 실시간 고유 데이터 확보
   const currentDungeonInfo = DUNGEON_INFO[dungeon];
   
-  // 💡 원장님 아이디어 완벽 적용! 
-  // 허옇게 뜨던 기존 drop-shadow를 완전히 제거했습니다.
-  // 1. 박스 바깥엔 강력한 검은 그림자: shadow-[0_0_15px_rgba(0,0,0,0.9)] 
-  // 2. 글자 자체에만 네온 불빛 효과: [text-shadow:0_0_8px_rgba(...)]
-  let panelColor = "text-blue-500 shadow-[0_0_15px_rgba(0,0,0,0.9),inset_0_0_12px_rgba(56,189,248,0.25)] [text-shadow:0_0_8px_rgba(56,189,248,0.8)]"; 
-  
+  // 💡 망쳐놨던 숫자 텍스트 그림자는 싹 지우고, 원래 원하시던 영롱한 카운터 박스 네온 불빛으로 원상복구 했습니다!
+  let panelColor = "text-blue-500 shadow-[inset_0_0_12px_rgba(56,189,248,0.25)] drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]"; 
   if (dungeon === 'fire') {
-    panelColor = "text-red-600 shadow-[0_0_15px_rgba(0,0,0,0.9),inset_0_0_12px_rgba(220,38,38,0.25)] [text-shadow:0_0_8px_rgba(220,38,38,0.8)]";
+    panelColor = "text-red-600 shadow-[inset_0_0_12px_rgba(220,38,38,0.25)] drop-shadow-[0_0_8px_rgba(220,38,38,0.8)]";
   } else if (dungeon === 'poison') {
-    panelColor = "text-green-500 shadow-[0_0_15px_rgba(0,0,0,0.9),inset_0_0_12px_rgba(34,197,94,0.25)] [text-shadow:0_0_8px_rgba(34,197,94,0.8)]";
+    panelColor = "text-green-500 shadow-[inset_0_0_12px_rgba(34,197,94,0.25)] drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]";
   } else if (dungeon === 'light') {
-    panelColor = "text-yellow-500 shadow-[0_0_15px_rgba(0,0,0,0.9),inset_0_0_12px_rgba(234,179,8,0.25)] [text-shadow:0_0_8px_rgba(234,179,8,0.8)]";
+    panelColor = "text-yellow-500 shadow-[inset_0_0_12px_rgba(234,179,8,0.25)] drop-shadow-[0_0_8px_rgba(234,179,8,0.8)]";
   } else if (dungeon === 'ice') {
-    // ❄️ 아이스 던전도 허연 안개 없이 딥블랙 그림자 위에서 폰트만 영롱하게 빛납니다!
-    panelColor = "text-cyan-400 shadow-[0_0_15px_rgba(0,0,0,0.9),inset_0_0_12px_rgba(34,211,238,0.25)] [text-shadow:0_0_8px_rgba(34,211,238,0.8)]";
+    panelColor = "text-cyan-300 shadow-[inset_0_0_12px_rgba(34,211,238,0.3)] drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]";
   } else if (dungeon === 'cure') {
-    panelColor = "text-emerald-400 shadow-[0_0_15px_rgba(0,0,0,0.9),inset_0_0_12px_rgba(52,211,153,0.25)] [text-shadow:0_0_8px_rgba(52,211,153,0.8)]";
+    panelColor = "text-emerald-400 shadow-[inset_0_0_12px_rgba(34,197,94,0.25)] drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]";
   }
 
   return (
-    <div className={`relative flex justify-between items-center p-4 rounded-xl mb-6 shadow-[0_10px_20px_rgba(0,0,0,0.6)] overflow-hidden`}>
+    {/* 💡 핵심 수정: 헤더 컨테이너 뒤쪽에 'shadow-[0_20px_40px_rgba(0,0,0,0.95)]'를 주어 밝은 얼음 배경에서도 돌담이 묵직하게 분리되도록 엄청나게 진한 그림자를 쫙 깔았습니다! */}
+    <div className={`relative flex justify-between items-center p-4 rounded-xl mb-6 shadow-[0_20px_40px_rgba(0,0,0,0.95),_0_0_20px_rgba(0,0,0,0.8)] overflow-hidden`}>
       
       {/* 돌담 배경 이미지 추가 */}
       <div 
@@ -39,7 +35,7 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
       {/* 내용물 묶음 */}
       <div className="relative z-10 flex w-full justify-between items-center">
         
-        {/* 남은 지뢰 개수 */}
+        {/* 남은 지뢰 개수 (led-font, tabular-nums 적용 및 크기를 4xl로 키움) */}
         <div className={`bg-black/90 led-font tabular-nums font-black text-4xl px-3 py-1 rounded-lg tracking-widest min-w-[4.5rem] text-center select-none ${panelColor}`}>
           {String(Math.max(0, minesLeft)).padStart(3, '0')}
         </div>
@@ -67,7 +63,7 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
           )}
         </button>
         
-        {/* 경과 시간 */}
+        {/* 경과 시간 (led-font, tabular-nums 적용 및 크기를 4xl로 키움) */}
         <div className={`bg-black/90 led-font tabular-nums font-black text-4xl px-3 py-1 rounded-lg tracking-widest min-w-[4.5rem] text-center select-none ${panelColor}`}>
           {String(timeElapsed).padStart(3, '0')}
         </div>
