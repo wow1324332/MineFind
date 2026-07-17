@@ -16,7 +16,9 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
   } else if (dungeon === 'light') {
     panelColor = "text-yellow-500 shadow-[inset_0_0_12px_rgba(234,179,8,0.25)] drop-shadow-[0_0_8px_rgba(234,179,8,0.8)]";
   } else if (dungeon === 'ice') {
-    panelColor = "text-cyan-300 shadow-[inset_0_0_12px_rgba(103,232,249,0.25)] drop-shadow-[0_0_8px_rgba(234,179,8,0.8)]"; // 👈 여기 234,179,8 (노란색)이 범인입니다!
+    // ❄️ 폰트 밝기를 500으로 묵직하게 낮추고, 
+    // 안쪽/바깥쪽 그림자를 모두 얼음에 맞는 딥 시안(Cyan) 색상으로 완벽하게 깔맞춤했습니다.
+    panelColor = "text-cyan-500 shadow-[inset_0_0_12px_rgba(6,182,212,0.25)] drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]";
   } else if (dungeon === 'cure') {
     panelColor = "text-emerald-400 shadow-[inset_0_0_12px_rgba(34,197,94,0.25)] drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]";
   }
