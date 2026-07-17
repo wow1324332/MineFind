@@ -536,6 +536,7 @@ export const KNIGHT_DATABASE = {
       luk: 2
     }
   },
+  
   // ========================================================
   // 15. 카이 (빛의 던전 소환 기사)
   // ========================================================
@@ -572,6 +573,44 @@ export const KNIGHT_DATABASE = {
       luk: 3
     }
   },
+
+    // ========================================================
+  // 16. 베다비어 (빛의 던전 소환 기사)
+  // ========================================================
+  'knight_light_bedivere': {
+    id: 'knight_light_bedivere',
+    name: 'Bedivere',
+    title: 'knight of light',
+    attribute: 'light',
+    rarity: 'rare',
+    image: '/knights/light/knight-bedivere-profile.webp',
+    fullImage: '/knights/light/knight-bedivere.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '빛의 성전에서 파견 나온 상급 빛의 성기사.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_4', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 20,
+      agi: 15,
+      int: 15,
+      vit: 10,
+      luk: 10
+    },
+
+    statGrowth: {
+      str: 3,
+      agi: 2,
+      int: 3,
+      vit: 1,
+      luk: 1
+    }
+  },
+  
   // ========================================================
   // 10. 가헤리스 (혹한의 던전 소환 기사)
   // ========================================================
