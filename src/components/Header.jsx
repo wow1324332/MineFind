@@ -22,8 +22,7 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
   // 💡 빌드 에러 원인 해결: 주석을 return 밖으로 뺐습니다.
   // 헤더 컨테이너(돌담)에 'shadow-[0_20px_40px_rgba(0,0,0,0.95)]'를 주어 밝은 얼음 배경에서도 묵직하게 분리되도록 했습니다.
   return (
-    <div className={`relative flex justify-between items-center p-4 rounded-xl mb-6 shadow-[0_20px_40px_rgba(0,0,0,0.95),_0_0_20px_rgba(0,0,0,0.8)] overflow-hidden`}>
-      
+      <div className={`relative flex justify-between items-center p-4 rounded-xl mb-6 shadow-[0_0_50px_25px_rgba(0,0,0,1)] overflow-hidden`}>      
       {/* 돌담 배경 이미지 추가 */}
       <div 
         className="absolute inset-0 bg-cover bg-center pointer-events-none opacity-90"
