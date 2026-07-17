@@ -246,6 +246,55 @@ export const ITEM_DATABASE = {
     sellPrice: 2000
   },
 
+    // ==========================================
+  // 💧 역병의 던전 (Hell of plague) 전리품
+  // ==========================================
+  'mat_cure_1': {
+    id: 'mat_cure_1',
+    type: 'material',
+    name: 'plague crystal',
+    icon: '/items/plaguecristal.webp', 
+    rarity: 'common',
+    desc: '치유의 기운을 머금고있는 작은 수정.',
+    sellPrice: 100
+  },
+  'mat_cure_2': {
+    id: 'mat_cure_2',
+    type: 'material',
+    name: 'high plague crystal',
+    icon: '/items/highplaguecrystal.webp',
+    rarity: 'normal',
+    desc: '치유의 기운을 가득 머금고 있는 수정.',
+    sellPrice: 200
+  },
+  'mat_cure_3': {
+    id: 'mat_cure_3',
+    type: 'material',
+    name: 'eye of plague devil',
+    icon: '/items/eyeofplaguedevil.webp',
+    rarity: 'rare',
+    desc: '역병의 악마를 처치하고 나온 치유의 기운이 담긴 눈.',
+    sellPrice: 350
+  },
+  'mat_cure_4': {
+    id: 'mat_cure_4',
+    type: 'material',
+    name: 'core of plague',
+    icon: '/items/coreofplague.webp',
+    rarity: 'rare',
+    desc: '역병의 악마들의 역병의 기운을 잔뜩 모은 강력한 정수.',
+    sellPrice: 500
+  },
+  'mat_cure_5': {
+    id: 'mat_cure_5',
+    type: 'material',
+    name: 'spine of marbas',
+    icon: '/items/spineofmarbas.webp',
+    rarity: 'rare',
+    desc: '역병의 대악마 마르바스를 처치하고 얻은 강력한 치유의 기운이 담긴 척추뼈.',
+    sellPrice: 2000
+  },
+
   // ==========================================
   // 🧪 소비품 (Consumables) 및 기타 아이템
   // ==========================================
@@ -294,7 +343,7 @@ export const ITEM_DATABASE = {
     desc: '증오의 기사 영혼의 작은 파편',
     sellPrice: 2000
   },
-    'con_soul_4':{
+  'con_soul_4':{
     id: 'con_soul_4',
     type: 'consumable',
     name: 'soul of light knight',
@@ -303,13 +352,22 @@ export const ITEM_DATABASE = {
     desc: '빛의 기사 영혼의 작은 파편',
     sellPrice: 2000
   },
-      'con_soul_5':{
+  'con_soul_5':{
     id: 'con_soul_5',
     type: 'consumable',
     name: 'soul of ice knight',
     icon: '/items/knightsoul-ice-small.webp',
     rarity: 'rare',
     desc: '냉기의 기사 영혼의 작은 파편',
+    sellPrice: 2000
+  },
+  'con_soul_6':{
+    id: 'con_soul_6',
+    type: 'consumable',
+    name: 'soul of cure knight',
+    icon: '/items/knightsoul-plague-small.webp',
+    rarity: 'rare',
+    desc: '치유의 기사 영혼의 작은 파편',
     sellPrice: 2000
   },
   'potion_exp_fire_small': {
@@ -431,6 +489,30 @@ export const ITEM_DATABASE = {
     element: 'ice',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
     expAmount: 200,       // 올려주는 경험치 량
     icon: '/items/exppotion-ice-large.webp'
+  },
+  'potion_exp_cure_small': {
+    name: '작은 치유의 포션',
+    description: '역병의 작은 기운을 정화해 담은 포션 (경험치 20 상승)',
+    type: 'consumable',
+    element: 'cure',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
+    expAmount: 20,       // 올려주는 경험치 량
+    icon: '/items/exppotion-cure-small.webp'
+  },
+  'potion_exp_cure_medium': {
+    name: '중급 치유의 포션',
+    description: '역병의 기운을 정화해 담은 포션 (경험치 50 상승)',
+    type: 'consumable',
+    element: 'cure',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
+    expAmount: 50,       // 올려주는 경험치 량
+    icon: '/items/exppotion-cure-medium.webp'
+  },
+  'potion_exp_cure_large': {
+    name: '고급 치유의 포션',
+    description: '역병의 강력한 기운을 정화한 포션 (경험치 200 상승)',
+    type: 'consumable',
+    element: 'cure',      // 이 속성이 불(fire) 속성 기사와 일치해야 먹일 수 있음
+    expAmount: 200,       // 올려주는 경험치 량
+    icon: '/items/exppotion-cure-large.webp'
   },
 };
 
