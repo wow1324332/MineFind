@@ -150,6 +150,42 @@ export const DUNGEON_INFO = {
       [0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0],
       [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
     ],
+  },
+    cure: {
+    id: 'cure',
+    name: 'Hell of plague',
+    buttonImg: '/dungeons/plague/hellofplague-bt.webp',
+    titleImg: '/dungeons/plague/hellofplague-title.webp',
+    loadingBg: '/dungeons/plague/hellofplagueloading-bg.webp',
+    loadingMsg: "번놔의 심연으로 이동 중...",
+    loadingLogo: "/dungeons/plague/hellofplague-bt.webp", // 💡 로고 경로 수정
+    loadingOpacity: "opacity-70",
+    winBg: '/dungeons/plague/hellofplaguewin.webp',
+    loseBg: '/dungeons/plague/hellofplaguelose.webp',
+    boardBg: '/dungeons/plague/hellofplague-board-bg.webp',
+    tileImg: '/dungeons/plague/hellofplague-tile.webp',
+    mineImg: '/dungeons/plague/hellofplague-mine.webp',
+    mineShadow: 'drop-shadow-[0_0_15px_rgba(34,197,94,1)]', // 💡 독 던전 전용 녹색 불빛으로 수정
+    revealedMineBg: 'bg-slate-900/80 shadow-[inset_0_0_20px_rgba(52,211,153,0.8)]', // 💡 독 던전 전용 녹색 불빛으로 수정
+    
+    layout: [
+      [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+    ],
   }
 };
 
