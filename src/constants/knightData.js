@@ -243,7 +243,7 @@ export const KNIGHT_DATABASE = {
   },
   
   // ========================================================
-  // 4. 겔러해드 (물의 던전 소환 기사)
+  // 7. 겔러해드 (물의 던전 소환 기사)
   // ========================================================
   'knight_water_galahad': {
     id: 'knight_water_galahad',
@@ -279,7 +279,7 @@ export const KNIGHT_DATABASE = {
     }
   },
   // ========================================================
-  // 5. 퍼시벌 (물의 던전 소환 기사)
+  // 8. 퍼시벌 (물의 던전 소환 기사)
   // ========================================================
   'knight_water_percival': {
     id: 'knight_water_percival',
@@ -316,7 +316,7 @@ export const KNIGHT_DATABASE = {
   },
 
   // ========================================================
-  // 5. 우리엔 (물의 던전 소환 기사)
+  // 9. 우리엔 (물의 던전 소환 기사)
   // ========================================================
   'knight_water_urien': {
     id: 'knight_water_urien',
@@ -349,6 +349,43 @@ export const KNIGHT_DATABASE = {
       int: 1,
       vit: 4,
       luk: 2
+    }
+  },
+
+  // ========================================================
+  // 10. 헬리오나 (물의 던전 소환 기사)
+  // ========================================================
+  'knight_water_heliona': {
+    id: 'knight_water_heliona',
+    name: 'Heliona',
+    title: 'knight of Water',
+    attribute: 'water',
+    rarity: 'rare',
+    image: '/knights/water/knight-heliona-profile.webp',
+    fullImage: '/knights/water/knight-heliona.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '물의 던전에 갇혀버린 물의 여신의 둘째 딸.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_2', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 15,
+      agi: 10,
+      int: 5,
+      vit: 20,
+      luk: 20
+    },
+
+    statGrowth: {
+      str: 2,
+      agi: 1,
+      int: 1,
+      vit: 3,
+      luk: 3
     }
   },
   
