@@ -612,7 +612,7 @@ export const KNIGHT_DATABASE = {
   },
   
   // ========================================================
-  // 10. 가헤리스 (혹한의 던전 소환 기사)
+  // 17. 가헤리스 (혹한의 던전 소환 기사)
   // ========================================================
   'knight_ice_gaheris': {
     id: 'knight_ice_gaheris',
@@ -647,8 +647,9 @@ export const KNIGHT_DATABASE = {
       luk: 2
     }
   },
+  
   // ========================================================
-  // 11. 토어 (혹한의 던전 소환 기사)
+  // 18. 토어 (혹한의 던전 소환 기사)
   // ========================================================
   'knight_ice_tor': {
     id: 'knight_ice_tor',
@@ -680,6 +681,80 @@ export const KNIGHT_DATABASE = {
       agi: 2,
       int: 3,
       vit: 2,
+      luk: 1
+    }
+  },
+
+  // ========================================================
+  // 19. 엠마 (역병의 던전 소환 기사)
+  // ========================================================
+  'knight_cure_amma': {
+    id: 'knight_cure_amma',
+    name: 'Amma',
+    title: 'Priest of Cure',
+    attribute: 'cure',
+    rarity: 'rare',
+    image: '/knights/plague/knight-amma-profile.webp',
+    fullImage: '/knights/plague/knight-amma.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '빛의 기운으로 악을 정화하는 여사제.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_6', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 10,
+      agi: 10,
+      int: 30,
+      vit: 10,
+      luk: 10
+    },
+
+    statGrowth: {
+      str: 1,
+      agi: 1,
+      int: 4,
+      vit: 2,
+      luk: 2
+    }
+  },
+
+  // ========================================================
+  // 20. 티에라 (역병의 던전 소환 기사)
+  // ========================================================
+  'knight_cure_tierra': {
+    id: 'knight_cure_tierra',
+    name: 'Tierra',
+    title: 'Knight of Cure',
+    attribute: 'cure',
+    rarity: 'rare',
+    image: '/knights/plague/knight-tierra-profile.webp',
+    fullImage: '/knights/plague/knight-tierra.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '치유의 기운으로 악을 정화하는 여전.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_6', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 20,
+      agi: 10,
+      int: 20,
+      vit: 15,
+      luk: 5
+    },
+
+    statGrowth: {
+      str: 3,
+      agi: 2,
+      int: 3,
+      vit: 1,
       luk: 1
     }
   }
