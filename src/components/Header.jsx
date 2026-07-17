@@ -6,21 +6,23 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
   // 💡 현재 입장한 던전의 실시간 고유 데이터 확보
   const currentDungeonInfo = DUNGEON_INFO[dungeon];
   
-  // 💡 던전 종류에 따른 타이머/카운터 네온 효과(drop-shadow) 동적 할당
-  let panelColor = "text-blue-500 shadow-[inset_0_0_12px_rgba(56,189,248,0.25)] drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]"; // 기본(water) 파란색
+  // 💡 원장님 아이디어 완벽 적용! 
+  // 허옇게 뜨던 기존 drop-shadow를 완전히 제거했습니다.
+  // 1. 박스 바깥엔 강력한 검은 그림자: shadow-[0_0_15px_rgba(0,0,0,0.9)] 
+  // 2. 글자 자체에만 네온 불빛 효과: [text-shadow:0_0_8px_rgba(...)]
+  let panelColor = "text-blue-500 shadow-[0_0_15px_rgba(0,0,0,0.9),inset_0_0_12px_rgba(56,189,248,0.25)] [text-shadow:0_0_8px_rgba(56,189,248,0.8)]"; 
+  
   if (dungeon === 'fire') {
-    panelColor = "text-red-600 shadow-[inset_0_0_12px_rgba(220,38,38,0.25)] drop-shadow-[0_0_8px_rgba(220,38,38,0.8)]";
+    panelColor = "text-red-600 shadow-[0_0_15px_rgba(0,0,0,0.9),inset_0_0_12px_rgba(220,38,38,0.25)] [text-shadow:0_0_8px_rgba(220,38,38,0.8)]";
   } else if (dungeon === 'poison') {
-    // 💡 독 던전(poison)일 경우 녹색 불빛 적용
-    panelColor = "text-green-500 shadow-[inset_0_0_12px_rgba(34,197,94,0.25)] drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]";
+    panelColor = "text-green-500 shadow-[0_0_15px_rgba(0,0,0,0.9),inset_0_0_12px_rgba(34,197,94,0.25)] [text-shadow:0_0_8px_rgba(34,197,94,0.8)]";
   } else if (dungeon === 'light') {
-    panelColor = "text-yellow-500 shadow-[inset_0_0_12px_rgba(234,179,8,0.25)] drop-shadow-[0_0_8px_rgba(234,179,8,0.8)]";
+    panelColor = "text-yellow-500 shadow-[0_0_15px_rgba(0,0,0,0.9),inset_0_0_12px_rgba(234,179,8,0.25)] [text-shadow:0_0_8px_rgba(234,179,8,0.8)]";
   } else if (dungeon === 'ice') {
-    // ❄️ 얼음 던전(ice) 수정완료: 하얗게 뜨는 현상을 잡기 위해 그림자를 깊고 무거운 청록색(Cyan-700)으로 억눌러 자연스럽게 스며들게 했습니다.
-    // 글자는 영롱한 400톤으로 유지하여 가독성을 확보했습니다.
-    panelColor = "text-cyan-400 shadow-[inset_0_0_12px_rgba(14,116,144,0.4)] drop-shadow-[0_0_10px_rgba(8,145,178,0.4)]";
+    // ❄️ 아이스 던전도 허연 안개 없이 딥블랙 그림자 위에서 폰트만 영롱하게 빛납니다!
+    panelColor = "text-cyan-400 shadow-[0_0_15px_rgba(0,0,0,0.9),inset_0_0_12px_rgba(34,211,238,0.25)] [text-shadow:0_0_8px_rgba(34,211,238,0.8)]";
   } else if (dungeon === 'cure') {
-    panelColor = "text-emerald-400 shadow-[inset_0_0_12px_rgba(34,197,94,0.25)] drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]";
+    panelColor = "text-emerald-400 shadow-[0_0_15px_rgba(0,0,0,0.9),inset_0_0_12px_rgba(52,211,153,0.25)] [text-shadow:0_0_8px_rgba(52,211,153,0.8)]";
   }
 
   return (
@@ -37,7 +39,7 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
       {/* 내용물 묶음 */}
       <div className="relative z-10 flex w-full justify-between items-center">
         
-        {/* 남은 지뢰 개수 (led-font, tabular-nums 적용 및 크기를 4xl로 키움) */}
+        {/* 남은 지뢰 개수 */}
         <div className={`bg-black/90 led-font tabular-nums font-black text-4xl px-3 py-1 rounded-lg tracking-widest min-w-[4.5rem] text-center select-none ${panelColor}`}>
           {String(Math.max(0, minesLeft)).padStart(3, '0')}
         </div>
@@ -50,10 +52,8 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
         >
           {gameStatus === 'lost' ? (
             <img 
-              // 💡 하드코딩된 옛날 경로 대신, dungeonData에 정의된 동적 mineImg 경로를 매핑하여 이미지 깨짐 해결
               src={currentDungeonInfo?.mineImg || "/dungeons/hellofflame-mine.webp"} 
               alt="Game Over - Dungeon Mine" 
-              // 💡 패배했을 때 번쩍이는 네온 후광 효과(drop-shadow)도 던전 테마에 맞춰 변경
               className={`w-10 h-10 object-contain animate-pulse ${currentDungeonInfo?.mineShadow || 'drop-shadow-[0_0_10px_rgba(220,38,38,0.8)]'}`} 
             />
           ) : gameStatus === 'won' ? (
@@ -67,7 +67,7 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
           )}
         </button>
         
-        {/* 경과 시간 (led-font, tabular-nums 적용 및 크기를 4xl로 키움) */}
+        {/* 경과 시간 */}
         <div className={`bg-black/90 led-font tabular-nums font-black text-4xl px-3 py-1 rounded-lg tracking-widest min-w-[4.5rem] text-center select-none ${panelColor}`}>
           {String(timeElapsed).padStart(3, '0')}
         </div>
