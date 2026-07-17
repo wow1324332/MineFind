@@ -16,9 +16,9 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
   } else if (dungeon === 'light') {
     panelColor = "text-yellow-500 shadow-[inset_0_0_12px_rgba(234,179,8,0.25)] drop-shadow-[0_0_8px_rgba(234,179,8,0.8)]";
   } else if (dungeon === 'ice') {
-    // ❄️ 폰트 밝기를 500으로 묵직하게 낮추고, 
-    // 안쪽/바깥쪽 그림자를 모두 얼음에 맞는 딥 시안(Cyan) 색상으로 완벽하게 깔맞춤했습니다.
-    panelColor = "text-cyan-500 shadow-[inset_0_0_12px_rgba(6,182,212,0.15)] drop-shadow-[0_0_8px_rgba(6,182,212,0.3)]";
+    // ❄️ 얼음 던전(ice) 수정완료: 하얗게 뜨는 현상을 잡기 위해 그림자를 깊고 무거운 청록색(Cyan-700)으로 억눌러 자연스럽게 스며들게 했습니다.
+    // 글자는 영롱한 400톤으로 유지하여 가독성을 확보했습니다.
+    panelColor = "text-cyan-400 shadow-[inset_0_0_12px_rgba(14,116,144,0.4)] drop-shadow-[0_0_10px_rgba(8,145,178,0.4)]";
   } else if (dungeon === 'cure') {
     panelColor = "text-emerald-400 shadow-[inset_0_0_12px_rgba(34,197,94,0.25)] drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]";
   }
