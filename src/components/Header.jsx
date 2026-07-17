@@ -16,7 +16,7 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
   } else if (dungeon === 'light') {
     panelColor = "text-yellow-500 shadow-[inset_0_0_12px_rgba(234,179,8,0.25)] drop-shadow-[0_0_8px_rgba(234,179,8,0.8)]";
   } else if (dungeon === 'ice') {
-    panelColor = "text-cyan-300 shadow-[inset_0_0_12px_rgba(103,232,249,0.25)] drop-shadow-[0_0_8px_rgba(103,232,249,0.8)]";
+    panelColor = "text-cyan-300 shadow-[inset_0_0_12px_rgba(103,232,249,0.25)] drop-shadow-[0_0_8px_rgba(234,179,8,0.8)]";
   } else if (dungeon === 'cure') {
     panelColor = "text-emerald-400 shadow-[inset_0_0_12px_rgba(34,197,94,0.25)] drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]";
   }
