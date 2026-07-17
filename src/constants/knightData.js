@@ -167,6 +167,80 @@ export const KNIGHT_DATABASE = {
       luk: 2
     }
   },
+
+    // ========================================================
+  // 🌋 5. 이그니트 (불의 던전 소환 기사)
+  // ========================================================
+  'knight_fire_ignit': {
+    id: 'knight_fire_ignit',
+    name: 'Ignit',
+    title: 'Knight of Flame',
+    attribute: 'fire',
+    rarity: 'rare',
+    image: '/knights/fire/knight-ignit-profile.webp',    // 갤러리/목록용 미니 프로필
+    fullImage: '/knights/fire/knight-ignit.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '어려서 부터 화염의 기운을 갖고 태어난 화염의 성기사.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_1', // 불의 던전 난이도별 확률 드랍템 (지옥염룡의 역린 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 15,
+      agi: 15,
+      int: 10,
+      vit: 15,
+      luk: 15
+    },
+
+    statGrowth: {
+      str: 3,
+      agi: 2,
+      int: 1,
+      vit: 2,
+      luk: 2
+    }
+  },
+
+    // ========================================================
+  // 🌋 6. 파라미르 (불의 던전 소환 기사)
+  // ========================================================
+  'knight_fire_paramir': {
+    id: 'knight_fire_paramir',
+    name: 'Paramir',
+    title: 'Knight of Flame',
+    attribute: 'fire',
+    rarity: 'rare',
+    image: '/knights/fire/knight-paramir-profile.webp',    // 갤러리/목록용 미니 프로필
+    fullImage: '/knights/fire/knight-paramir.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '화염의 정령의 선택을 받은 불의 성기사.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_1', // 불의 던전 난이도별 확률 드랍템 (지옥염룡의 역린 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 20,
+      agi: 15,
+      int: 5,
+      vit: 20,
+      luk: 10
+    },
+
+    statGrowth: {
+      str: 3,
+      agi: 1,
+      int: 1,
+      vit: 3,
+      luk: 2
+    }
+  },
   
   // ========================================================
   // 4. 겔러해드 (물의 던전 소환 기사)
