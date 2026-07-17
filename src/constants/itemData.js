@@ -253,7 +253,7 @@ export const ITEM_DATABASE = {
     id: 'mat_cure_1',
     type: 'material',
     name: 'plague crystal',
-    icon: '/items/plaguecristal.webp', 
+    icon: '/items/plaguecrystal.webp', 
     rarity: 'common',
     desc: '치유의 기운을 머금고있는 작은 수정.',
     sellPrice: 100
