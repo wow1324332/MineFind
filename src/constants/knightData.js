@@ -171,14 +171,14 @@ export const KNIGHT_DATABASE = {
     // ========================================================
   // 🌋 5. 이그니트 (불의 던전 소환 기사)
   // ========================================================
-  'knight_fire_ignit': {
-    id: 'knight_fire_ignit',
-    name: 'Ignit',
+  'knight_fire_ignite': {
+    id: 'knight_fire_ignite',
+    name: 'Ignite',
     title: 'Knight of Flame',
     attribute: 'fire',
     rarity: 'rare',
-    image: '/knights/fire/knight-ignit-profile.webp',    // 갤러리/목록용 미니 프로필
-    fullImage: '/knights/fire/knight-ignit.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    image: '/knights/fire/knight-ignite-profile.webp',    // 갤러리/목록용 미니 프로필
+    fullImage: '/knights/fire/knight-ignite.webp',   // 🎬 시네마틱 연출용 전신 일러스트
     description: '어려서 부터 화염의 기운을 갖고 태어난 화염의 성기사.',
     
     // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
