@@ -628,7 +628,7 @@ export default function App() {
                       className="w-24 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_0_10px_rgba(0,0,0,0.8)] select-none"
                       style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
                     >
-                      <img src="/back.png" alt="Confirm Exit" className="w-full h-auto object-contain pointer-events-none" draggable="false" />
+                      <img src="/outkey.webp" alt="Confirm Exit" className="w-full h-auto object-contain pointer-events-none" draggable="false" />
                     </button>
                     
                     <button 
@@ -639,7 +639,7 @@ export default function App() {
                       className="w-24 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_0_15px_rgba(220,38,38,0.5)] select-none"
                       style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
                     >
-                      <img src="/replay.png" alt="Cancel Exit" className="w-full h-auto object-contain pointer-events-none" draggable="false" />
+                      <img src="/continuekey.webp" alt="Cancel Exit" className="w-full h-auto object-contain pointer-events-none" draggable="false" />
                     </button>
                   </div>
                   
