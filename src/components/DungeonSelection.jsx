@@ -61,7 +61,7 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout, hp
 
       {/* 💡 중앙: 던전 선택 버튼 영역 (flex-1 min-h-0을 통해 이곳만 스크롤되도록 설정!) */}
       <div 
-        className="relative z-10 w-full max-w-xs space-y-1 mt-2 flex-1 min-h-0 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden flex flex-col items-center pb-8 px-2"
+        className="relative z-10 w-full max-w-xs space-y-4 mt-2 flex-1 min-h-0 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden flex flex-col items-center pb-8 px-2"
         style={{ 
           WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 10%, black 85%, transparent 100%)', 
           maskImage: 'linear-gradient(to bottom, transparent 0%, black 10%, black 85%, transparent 100%)' 
