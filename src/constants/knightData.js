@@ -184,7 +184,7 @@ export const KNIGHT_DATABASE = {
     // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
     cost: {
       itemId: 'con_soul_1', // 불의 던전 난이도별 확률 드랍템 (지옥염룡의 역린 등)
-      count: 5,
+      count: 10,
       gold: 5000
     },
 
@@ -197,15 +197,15 @@ export const KNIGHT_DATABASE = {
     },
 
     statGrowth: {
-      str: 3,
-      agi: 2,
+      str: 5,
+      agi: 4,
       int: 1,
-      vit: 2,
+      vit: 3,
       luk: 2
     }
   },
 
-    // ========================================================
+  // ========================================================
   // 🌋 6. 파라미르 (불의 던전 소환 기사)
   // ========================================================
   'knight_fire_paramir': {
@@ -221,7 +221,7 @@ export const KNIGHT_DATABASE = {
     // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
     cost: {
       itemId: 'con_soul_1', // 불의 던전 난이도별 확률 드랍템 (지옥염룡의 역린 등)
-      count: 5,
+      count: 10,
       gold: 5000
     },
 
@@ -234,11 +234,11 @@ export const KNIGHT_DATABASE = {
     },
 
     statGrowth: {
-      str: 3,
-      agi: 1,
+      str: 5,
+      agi: 2,
       int: 1,
-      vit: 3,
-      luk: 2
+      vit: 4,
+      luk: 3
     }
   },
   
@@ -368,7 +368,7 @@ export const KNIGHT_DATABASE = {
     // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
     cost: {
       itemId: 'con_soul_2', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
-      count: 5,
+      count: 10,
       gold: 5000
     },
 
@@ -381,16 +381,53 @@ export const KNIGHT_DATABASE = {
     },
 
     statGrowth: {
-      str: 2,
-      agi: 1,
+      str: 3,
+      agi: 2,
       int: 1,
-      vit: 3,
-      luk: 3
+      vit: 5,
+      luk: 4
     }
   },
+
+  // ========================================================
+  // 11. 팔라메데스 (물의 던전 소환 기사)
+  // ========================================================
+  'knight_water_palamedes': {
+    id: 'knight_water_palamedes',
+    name: 'Palamedes',
+    title: 'knight of Water',
+    attribute: 'water',
+    rarity: 'rare',
+    image: '/knights/water/knight-palamedes-profile.webp',
+    fullImage: '/knights/water/knight-palamedes.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '물의 던전을 수호하는 포세이돈이 인간계에 남긴 아들.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_2', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 10,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 15,
+      agi: 10,
+      int: 5,
+      vit: 20,
+      luk: 20
+    },
+
+    statGrowth: {
+      str: 3,
+      agi: 2,
+      int: 1,
+      vit: 5,
+      luk: 4
+    }
+  }, 
   
   // ========================================================
-  // 11. 모드레드 (독의 던전 소환 기사)
+  // 12. 모드레드 (독의 던전 소환 기사)
   // ========================================================
   'knight_poison_mordred': {
     id: 'knight_poison_mordred',
@@ -427,7 +464,7 @@ export const KNIGHT_DATABASE = {
   },
   
   // ========================================================
-  // 12. 가레스 (독의 던전 소환 기사)
+  // 13. 가레스 (독의 던전 소환 기사)
   // ========================================================
   'knight_poison_gareth': {
     id: 'knight_poison_gareth',
@@ -464,7 +501,7 @@ export const KNIGHT_DATABASE = {
   },
 
   // ========================================================
-  // 13. 사피르 (독의 던전 소환 기사)
+  // 14. 사피르 (독의 던전 소환 기사)
   // ========================================================
   'knight_poison_safir': {
     id: 'knight_poison_safir',
@@ -499,9 +536,83 @@ export const KNIGHT_DATABASE = {
       luk: 2
     }
   },
+
+  // ========================================================
+  // 15. 보어스 (독의 던전 소환 기사)
+  // ========================================================
+  'knight_poison_bors': {
+    id: 'knight_poison_bors',
+    name: 'Bors',
+    title: 'knight of poison',
+    attribute: 'poison',
+    rarity: 'rare',
+    image: '/knights/poison/knight-bors-profile.webp',
+    fullImage: '/knights/poison/knight-bors.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '독의 던전에 갇혀버린 기사이자, 증오의 여신의 아들.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_3', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 10,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 20,
+      agi: 20,
+      int: 10,
+      vit: 10,
+      luk: 20
+    },
+
+    statGrowth: {
+      str: 3,
+      agi: 5,
+      int: 2,
+      vit: 2,
+      luk: 3
+    }
+  },
+
+  // ========================================================
+  // 16. 칼레그로난트 (독의 던전 소환 기사)
+  // ========================================================
+  'knight_water_calogrenant': {
+    id: 'knight_poison_calogrenant',
+    name: 'Calogrenant',
+    title: 'knight of poison',
+    attribute: 'poison',
+    rarity: 'rare',
+    image: '/knights/poison/knight-calogrenant-profile.webp',
+    fullImage: '/knights/poison/knight-calogrenant.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '맹독의 던전을 정화하는 증오의 여신의 딸.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_3', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 10,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 10,
+      agi: 25,
+      int: 20,
+      vit: 10,
+      luk: 15
+    },
+
+    statGrowth: {
+      str: 2,
+      agi: 5,
+      int: 4,
+      vit: 2,
+      luk: 2
+    }
+  },
   
   // ========================================================
-  // 14. 트리스탄 (빛의 던전 소환 기사)
+  // 17. 트리스탄 (빛의 던전 소환 기사)
   // ========================================================
   'knight_light_tristan': {
     id: 'knight_light_tristan',
@@ -538,7 +649,7 @@ export const KNIGHT_DATABASE = {
   },
   
   // ========================================================
-  // 15. 카이 (빛의 던전 소환 기사)
+  // 18. 카이 (빛의 던전 소환 기사)
   // ========================================================
   'knight_light_kay': {
     id: 'knight_light_kay',
@@ -574,8 +685,8 @@ export const KNIGHT_DATABASE = {
     }
   },
 
-    // ========================================================
-  // 16. 베다비어 (빛의 던전 소환 기사)
+  // ========================================================
+  // 19. 베다비어 (빛의 던전 소환 기사)
   // ========================================================
   'knight_light_bedivere': {
     id: 'knight_light_bedivere',
@@ -610,9 +721,83 @@ export const KNIGHT_DATABASE = {
       luk: 1
     }
   },
+
+  // ========================================================
+  // 20. 디고어 (빛의 던전 소환 기사)
+  // ========================================================
+  'knight_light_degore': {
+    id: 'knight_light_degore',
+    name: 'Degore',
+    title: 'Son of Jesus',
+    attribute: 'light',
+    rarity: 'rare',
+    image: '/knights/light/knight-degore-profile.webp',
+    fullImage: '/knights/light/knight-degore.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '악의 정화를 위해 제우스가 남긴 반신 아들.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_4', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 10,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 20,
+      agi: 15,
+      int: 20,
+      vit: 15,
+      luk: 10
+    },
+
+    statGrowth: {
+      str: 5,
+      agi: 2,
+      int: 5,
+      vit: 2,
+      luk: 1
+    }
+  },
+
+  // ========================================================
+  // 21. 그리플렛 (빛의 던전 소환 기사)
+  // ========================================================
+  'knight_light_griflet': {
+    id: 'knight_light_griflet',
+    name: 'Griflet',
+    title: 'knight of light',
+    attribute: 'light',
+    rarity: 'rare',
+    image: '/knights/light/knight-griflet-profile.webp',
+    fullImage: '/knights/light/knight-griflet.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '빛의 성전 제1기사단의 기사단장.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_4', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 10,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 20,
+      agi: 15,
+      int: 20,
+      vit: 15,
+      luk: 10
+    },
+
+    statGrowth: {
+      str: 4,
+      agi: 3,
+      int: 5,
+      vit: 2,
+      luk: 1
+    }
+  },
   
   // ========================================================
-  // 17. 가헤리스 (혹한의 던전 소환 기사)
+  // 22. 가헤리스 (혹한의 던전 소환 기사)
   // ========================================================
   'knight_ice_gaheris': {
     id: 'knight_ice_gaheris',
@@ -649,7 +834,7 @@ export const KNIGHT_DATABASE = {
   },
   
   // ========================================================
-  // 18. 토어 (혹한의 던전 소환 기사)
+  // 23. 토어 (혹한의 던전 소환 기사)
   // ========================================================
   'knight_ice_tor': {
     id: 'knight_ice_tor',
@@ -686,7 +871,118 @@ export const KNIGHT_DATABASE = {
   },
 
   // ========================================================
-  // 19. 엠마 (역병의 던전 소환 기사)
+  // 24. 라모락 (혹한의 던전 소환 기사)
+  // ========================================================
+  'knight_ice_lamorak': {
+    id: 'knight_ice_lamorak',
+    name: 'Lamorak',
+    title: 'Knight of Frozen',
+    attribute: 'ice',
+    rarity: 'rare',
+    image: '/knights/ice/knight-lamorak-profile.webp',
+    fullImage: '/knights/ice/knight-lamorak.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '혹한의 나라 아이스릴 국왕의 둘쨰 아들.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_5', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 10,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 20,
+      agi: 15,
+      int: 20,
+      vit: 15,
+      luk: 10
+    },
+
+    statGrowth: {
+      str: 4,
+      agi: 3,
+      int: 3,
+      vit: 4,
+      luk: 1
+    }
+  },
+
+  // ========================================================
+  // 25. 리오넬 (혹한의 던전 소환 기사)
+  // ========================================================
+  'knight_ice_lionel': {
+    id: 'knight_ice_lionel',
+    name: 'Lionel',
+    title: 'Knight of Frozen',
+    attribute: 'ice',
+    rarity: 'rare',
+    image: '/knights/ice/knight-lionel-profile.webp',
+    fullImage: '/knights/ice/knight-lionel.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '혹한의 왕국 아이스릴의 황태자.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_5', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 10,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 15,
+      agi: 20,
+      int: 20,
+      vit: 15,
+      luk: 10
+    },
+
+    statGrowth: {
+      str: 2,
+      agi: 4,
+      int: 4,
+      vit: 2,
+      luk: 3
+    }
+  },
+
+  // ========================================================
+  // 26. 다고넷 (혹한의 던전 소환 기사)
+  // ========================================================
+  'knight_ice_dagonet': {
+    id: 'knight_ice_dagonet',
+    name: 'Dagonet',
+    title: 'Knight of Frozen',
+    attribute: 'ice',
+    rarity: 'rare',
+    image: '/knights/ice/knight-dagonet-profile.webp',
+    fullImage: '/knights/ice/knight-dagonet.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '혹한의 왕국 아이스릴의 왕국 기사단장.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_5', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 10,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 20,
+      agi: 20,
+      int: 20,
+      vit: 15,
+      luk: 5
+    },
+
+    statGrowth: {
+      str: 4,
+      agi: 4,
+      int: 4,
+      vit: 2,
+      luk: 1
+    }
+  },
+
+  // ========================================================
+  // 27. 엠마 (역병의 던전 소환 기사)
   // ========================================================
   'knight_cure_amma': {
     id: 'knight_cure_amma',
@@ -723,7 +1019,7 @@ export const KNIGHT_DATABASE = {
   },
 
   // ========================================================
-  // 20. 티에라 (역병의 던전 소환 기사)
+  // 28. 티에라 (역병의 던전 소환 기사)
   // ========================================================
   'knight_cure_tierra': {
     id: 'knight_cure_tierra',
@@ -757,5 +1053,293 @@ export const KNIGHT_DATABASE = {
       vit: 1,
       luk: 1
     }
-  }
+  },
+    // ========================================================
+  // 29. 도나 (역병의 던전 소환 기사)
+  // ========================================================
+  'knight_cure_dornar': {
+    id: 'knight_cure_dornar',
+    name: 'Dornar',
+    title: 'Knight of Cure',
+    attribute: 'cure',
+    rarity: 'rare',
+    image: '/knights/plague/knight-dornar-profile.webp',
+    fullImage: '/knights/plague/knight-dornar.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '신성제국 함멜의 왕실 기사단 부단장.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_6', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 25,
+      agi: 5,
+      int: 20,
+      vit: 15,
+      luk: 5
+    },
+
+    statGrowth: {
+      str: 4,
+      agi: 1,
+      int: 3,
+      vit: 1,
+      luk: 1
+    }
+  },
+  // ========================================================
+  // 30. 그윈 (역병의 던전 소환 기사)
+  // ========================================================
+  'knight_cure_gwin': {
+    id: 'knight_cure_gwin',
+    name: 'Gwin',
+    title: 'Knight of Cure',
+    attribute: 'cure',
+    rarity: 'rare',
+    image: '/knights/plague/knight-gwin-profile.webp',
+    fullImage: '/knights/plague/knight-gwin.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '함멜의 제2기사단인 큐오브릭의 단장.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_6', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 10,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 20,
+      agi: 20,
+      int: 20,
+      vit: 15,
+      luk: 5
+    },
+
+    statGrowth: {
+      str: 4,
+      agi: 4,
+      int: 5,
+      vit: 1,
+      luk: 1
+    }
+  },
+  // ========================================================
+  // 31. 도디넬 (역병의 던전 소환 기사)
+  // ========================================================
+  'knight_cure_dodinel': {
+    id: 'knight_cure_dodinel',
+    name: 'Dodinel',
+    title: 'Knight of Cure',
+    attribute: 'cure',
+    rarity: 'rare',
+    image: '/knights/plague/knight-dodinel-profile.webp',
+    fullImage: '/knights/plague/knight-dodinel.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '신성제국 함멜의 성녀.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_6', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 10,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 10,
+      agi: 20,
+      int: 30,
+      vit: 15,
+      luk: 5
+    },
+
+    statGrowth: {
+      str: 2,
+      agi: 3,
+      int: 5,
+      vit: 2,
+      luk: 3
+    }
+  },
+  // ========================================================
+  // 32. 오웨인 (공허의 던전 소환 기사)
+  // ========================================================
+  'knight_vain_owain': {
+    id: 'knight_vain_owain',
+    name: 'Owain',
+    title: 'Knight of vain',
+    attribute: 'vain',
+    rarity: 'rare',
+    image: '/knights/vain/knight-owain-profile.webp',
+    fullImage: '/knights/vain/knight-owain.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '제국 카르마스 국왕의 첫째 아들, 공허의 던전을 정화하는 임무를 맡고있다.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_7', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 10,
+      agi: 15,
+      int: 25,
+      vit: 10,
+      luk: 10
+    },
+
+    statGrowth: {
+      str: 1,
+      agi: 3,
+      int: 3,
+      vit: 2,
+      luk: 1
+    }
+  },
+  // ========================================================
+  // 33. 이웨인 (공허의 던전 소환 기사)
+  // ========================================================
+  'knight_vain_ywain': {
+    id: 'knight_vain_ywain',
+    name: 'Ywain',
+    title: 'Knight of vain',
+    attribute: 'vain',
+    rarity: 'rare',
+    image: '/knights/vain/knight-ywain-profile.webp',
+    fullImage: '/knights/vain/knight-ywain.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '제국 카르마스 국왕의 둘째 아들, 공허의 던전을 정화하는 임무를 맡고있다.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_7', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 10,
+      agi: 10,
+      int: 25,
+      vit: 15,
+      luk: 10
+    },
+
+    statGrowth: {
+      str: 1,
+      agi: 1,
+      int: 3,
+      vit: 3,
+      luk: 2
+    }
+  },
+  // ========================================================
+  // 34. 이베인 (공허의 던전 소환 기사)
+  // ========================================================
+  'knight_vain_yvain': {
+    id: 'knight_vain_yvain',
+    name: 'Yvain',
+    title: 'Knight of vain',
+    attribute: 'vain',
+    rarity: 'rare',
+    image: '/knights/vain/knight-yvain-profile.webp',
+    fullImage: '/knights/vain/knight-yvain.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '제국 카르마스 국왕의 막내 아들, 공허의 던전을 정화하는 임무를 맡고있다.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_7', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 5,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 15,
+      agi: 10,
+      int: 20,
+      vit: 15,
+      luk: 10
+    },
+
+    statGrowth: {
+      str: 2,
+      agi: 1,
+      int: 2,
+      vit: 3,
+      luk: 2
+    }
+  },
+  // ========================================================
+  // 35. 멀린 (공허의 던전 소환 기사)
+  // ========================================================
+  'knight_vain_merlin': {
+    id: 'knight_vain_merlin',
+    name: 'Merlin',
+    title: 'Knight of vain',
+    attribute: 'vain',
+    rarity: 'rare',
+    image: '/knights/vain/knight-merlin-profile.webp',
+    fullImage: '/knights/vain/knight-merlin.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '악에 대항하는 비밀 결사단 크롬마스의 대현자.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_7', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 10,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 10,
+      agi: 20,
+      int: 30,
+      vit: 10,
+      luk: 10
+    },
+
+    statGrowth: {
+      str: 1,
+      agi: 4,
+      int: 5,
+      vit: 3,
+      luk: 2
+    }
+  },
+  // ========================================================
+  // 36. 아그로베일 (공허의 던전 소환 기사)
+  // ========================================================
+  'knight_vain_aglovale': {
+    id: 'knight_vain_aglovale',
+    name: 'Aglovale',
+    title: 'Knight of vain',
+    attribute: 'vain',
+    rarity: 'rare',
+    image: '/knights/vain/knight-aglovale-profile.webp',
+    fullImage: '/knights/vain/knight-aglovale.webp',   // 🎬 시네마틱 연출용 전신 일러스트
+    description: '악에 대항하는 비밀 결사단 크롬마스의 대현자.',
+    
+    // 💡 Knights.jsx 시네마틱 소환에 연동되는 비용 데이터
+    cost: {
+      itemId: 'con_soul_7', // 물의 던전 난이도별 확률 드랍템 (포세이돈의 눈물 등)
+      count: 10,
+      gold: 5000
+    },
+
+    baseStats: {
+      str: 10,
+      agi: 20,
+      int: 30,
+      vit: 10,
+      luk: 10
+    },
+
+    statGrowth: {
+      str: 1,
+      agi: 5,
+      int: 6,
+      vit: 1,
+      luk: 2
+    }
+  },
 };
