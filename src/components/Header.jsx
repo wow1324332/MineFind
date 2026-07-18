@@ -19,6 +19,7 @@ export default function Header({ minesLeft, gameStatus, timeElapsed, onReset, du
     panelColor = "text-emerald-400 shadow-[inset_0_0_12px_rgba(34,197,94,0.25)] drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]";
   } else if (dungeon === 'vain') {
     panelColor = "text-emerald-400 shadow-[inset_0_0_12px_rgba(168,85,247,0.25)] drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]";
+  }
 
   // 💡 빌드 에러 원인 해결: 주석을 return 밖으로 뺐습니다.
   // 헤더 컨테이너(돌담)에 'shadow-[0_20px_40px_rgba(0,0,0,0.95)]'를 주어 밝은 얼음 배경에서도 묵직하게 분리되도록 했습니다.
