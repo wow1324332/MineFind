@@ -73,6 +73,7 @@ export default function DungeonSelection({ onSelectDungeon, onBack, onLogout, hp
           if (dungeon.id === 'poison') shadowClass = 'drop-shadow-[0_4px_15px_rgba(34,197,94,0.3)]'; 
           if (dungeon.id === 'light') shadowClass = 'drop-shadow-[0_4px_15px_rgba(234,179,8,0.3)]'; 
           if (dungeon.id === 'cure') shadowClass = 'drop-shadow-[0_4px_15px_rgba(52,211,153,0.3)]'; 
+          if (dungeon.id === 'vain') shadowClass = 'drop-shadow-[0_4px_15px_rgba(168,85,247,0.3)]'; 
 
           return (
             <button
