@@ -332,7 +332,7 @@ export const calculateDungeonRewards = (dungeonName, difficulty, isWin) => {
     }
   }
     // ==========================================
-  // 🔵 4. 혹한의 던전 (Hell of Frozen)
+  // 🔵 5. 혹한의 던전 (Hell of Frozen)
   // ==========================================
   else if (dungeonLower.includes('frozen')) {
     
@@ -487,6 +487,85 @@ export const calculateDungeonRewards = (dungeonName, difficulty, isWin) => {
       }
     }
   }
+  // ==========================================
+  // 🔵 7. 공허의 던전 (Hell of vain)
+  // ==========================================
+  else if (dungeonLower.includes('vain')) {
+    
+    // ✨ 역병의 던전 [승리] 시 보상
+    if (isWin) {
+      let rareDropsToRoll = []; 
+
+      switch (difficulty) {
+        case 'Easy':
+          exp = 20;
+          gold = 100;
+          droppedItems['mat_vain_1'] = getRandomCount(1, 2);
+          droppedItems['potion_exp_vain_small'] = getRandomCount(0, 2);
+          rareDropsToRoll.push({ id: 'con_soul_7', chance: 0.30 });
+          break;
+        case 'Normal':
+          exp = 50;
+          gold = 200;
+          droppedItems['mat_vain_1'] = getRandomCount(0, 2); 
+          droppedItems['mat_vain_2'] = getRandomCount(1, 2); 
+          droppedItems['potion_exp_vain_small'] = getRandomCount(0, 2);
+          droppedItems['potion_exp_vain_medium'] = getRandomCount(0, 1);
+          break;
+        case 'Hard':
+          exp = 150;
+          gold = 500;
+          droppedItems['mat_vain_1'] = getRandomCount(0, 2);
+          droppedItems['mat_vain_2'] = getRandomCount(0, 2);
+          droppedItems['potion_exp_vain_small'] = getRandomCount(0, 2);
+          droppedItems['potion_exp_vain_medium'] = getRandomCount(0, 2);
+          droppedItems['mat_vain_3'] = 1;
+          break;
+        case 'Expert':
+          exp = 300;
+          gold = 800;
+          droppedItems['mat_vain_2'] = getRandomCount(0, 2);
+          droppedItems['mat_vain_3'] = getRandomCount(0, 2);
+          droppedItems['potion_exp_vain_medium'] = getRandomCount(0, 3);
+          droppedItems['potion_exp_vain_large'] = getRandomCount(0, 2);
+          droppedItems['mat_vain_4'] = 1;
+          break;
+        case 'Hell':
+          exp = 1000;
+          gold = 1500;
+          droppedItems['mat_vain_2'] = getRandomCount(0, 2);
+          droppedItems['mat_vain_3'] = getRandomCount(0, 2);
+          droppedItems['mat_vain_4'] = getRandomCount(1, 2);
+          droppedItems['mat_vain_5'] = 1; 
+          droppedItems['potion_exp_vain_medium'] = getRandomCount(0, 3);
+          droppedItems['potion_exp_vain_large'] = getRandomCount(0, 3);
+          break;
+        default:
+          exp = 30;
+          gold = 50;
+      }
+
+      // 💡 설정된 주사위 목록(rareDropsToRoll)을 하나씩 꺼내서 굴립니다.
+      rareDropsToRoll.forEach(drop => {
+        if (Math.random() < drop.chance) {
+          droppedItems[drop.id] = (droppedItems[drop.id] || 0) + 1;
+        }
+      });
+
+    }
+    // 💀 역병의 던전 [패배] 시 위로 보상
+    else {
+      switch (difficulty) {
+        case 'Easy': exp = 10; gold = 10; break;
+        case 'Normal': exp = 10; gold = 50; break;
+        case 'Hard': exp = 10; gold = 50; break;
+        case 'Expert': exp = 10; gold = 100; break;
+        case 'Hell': exp = 10; gold = 100; break;
+        default: exp = 5; gold = 10;
+      }
+    }
+  }
+
 
   const finalItems = {};
   for (const itemId in droppedItems) {
