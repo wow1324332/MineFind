@@ -577,7 +577,7 @@ export const KNIGHT_DATABASE = {
   // ========================================================
   // 16. 칼레그로난트 (독의 던전 소환 기사)
   // ========================================================
-  'knight_water_calogrenant': {
+  'knight_poison_calogrenant': {
     id: 'knight_poison_calogrenant',
     name: 'Calogrenant',
     title: 'knight of poison',
