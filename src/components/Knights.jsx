@@ -625,12 +625,11 @@ setTimeout(async () => {
           <div className="flex flex-col items-end mr-3 z-20 select-none">
             <button 
               onClick={() => setShowAnalysis(true)}
-              className="bg-neutral-900/80 border border-amber-500/50 text-amber-500 text-[11px] tracking-widest font-black px-3 py-1.5 rounded-sm active:scale-95 transition-all shadow-[0_0_10px_rgba(250,204,21,0.2)] cursor-pointer hover:bg-neutral-800"
+              className="text-[#d8b486] font-serif font-black text-[13px] tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,1)] hover:text-amber-400 hover:drop-shadow-[0_0_8px_rgba(250,204,21,0.6)] active:scale-95 transition-all outline-none cursor-pointer"
             >
               STATUS
             </button>
           </div>
-        </div>
         
         <div className="w-full max-w-sm flex-1 overflow-y-auto custom-scrollbar animate-[fadeIn_0.3s_ease-in-out]">
           <div className="grid grid-cols-3 gap-3 p-1">
