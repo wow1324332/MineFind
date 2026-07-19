@@ -630,6 +630,7 @@ setTimeout(async () => {
               STATUS
             </button>
           </div>
+        </div>
         
         <div className="w-full max-w-sm flex-1 overflow-y-auto custom-scrollbar animate-[fadeIn_0.3s_ease-in-out]">
           <div className="grid grid-cols-3 gap-3 p-1">
