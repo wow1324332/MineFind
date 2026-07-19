@@ -929,26 +929,26 @@ setTimeout(async () => {
 
               <div className="grid grid-cols-2 gap-2 mb-5">
                 <div className="bg-black/60 border border-[#5c3e23]/50 rounded-md p-2 flex flex-col items-center">
-                  <span className="text-[#a6845c] text-[10px] font-bold mb-0.5">총 체력 (HP)</span>
+                  <span className="text-[#a6845c] text-[10px] font-bold mb-0.5">Total HP</span>
                   <span className="text-red-400 font-black text-base">{partyStats.maxHp.toLocaleString()}</span>
                 </div>
                 <div className="bg-black/60 border border-[#5c3e23]/50 rounded-md p-2 flex flex-col items-center">
-                  <span className="text-[#a6845c] text-[10px] font-bold mb-0.5">총 마나 (MP)</span>
+                  <span className="text-[#a6845c] text-[10px] font-bold mb-0.5">Total MP</span>
                   <span className="text-blue-400 font-black text-base">{partyStats.maxMp.toLocaleString()}</span>
                 </div>
                 <div className="bg-black/60 border border-[#5c3e23]/50 rounded-md p-2 flex flex-col items-center">
-                  <span className="text-[#a6845c] text-[10px] font-bold mb-0.5">방어력 (DEF)</span>
+                  <span className="text-[#a6845c] text-[10px] font-bold mb-0.5">DEF</span>
                   <span className="text-neutral-200 font-black text-base">{partyStats.defense.toLocaleString()}</span>
                 </div>
                 <div className="bg-black/60 border border-[#5c3e23]/50 rounded-md p-2 flex flex-col items-center">
-                  <span className="text-[#a6845c] text-[10px] font-bold mb-0.5">회피 / 크리</span>
+                  <span className="text-[#a6845c] text-[10px] font-bold mb-0.5">AVR / CRI</span>
                   <span className="text-yellow-400 font-black text-base">{partyStats.evasionRate}% / {partyStats.critRate}%</span>
                 </div>
               </div>
 
               <div className="bg-black/40 border border-[#4a2c11] rounded-md p-3">
                 <h3 className="text-center text-[#d8b486] font-bold text-xs tracking-widest mb-3">
-                  ⚔️ 보스 속성별 예상 타격력 ⚔️
+                  ATK by Attribute
                 </h3>
                 
                 <div className="space-y-1.5 h-40 overflow-y-auto custom-scrollbar pr-1">
