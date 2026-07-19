@@ -917,7 +917,7 @@ setTimeout(async () => {
           onClick={() => setShowAnalysis(false)}
         >
           <div 
-            className="w-full max-w-sm bg-neutral-950 border-2 border-[#5c3e23] rounded-xl p-5 shadow-[0_0_40px_rgba(0,0,0,1)] relative overflow-hidden flex flex-col"
+            className="w-full max-w-sm bg-neutral-950 rounded-xl p-5 shadow-[0_0_40px_rgba(0,0,0,1)] relative overflow-hidden flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="absolute inset-0 bg-cover bg-center z-0 opacity-20" style={{ backgroundImage: "url('/yangpiji-bg.webp')" }}></div>
