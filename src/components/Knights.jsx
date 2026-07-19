@@ -8,9 +8,11 @@ import { EQUIP_DATABASE } from '../constants/equipData';
 import { ITEM_DATABASE } from '../constants/itemData'; 
 import { getKnightRequiredExp, processKnightExpGain } from '../utils/expUtils';
 import { TITLE_DATABASE } from '../constants/titleData';
+import { calculatePartyStats, getAllElementsBP } from '../utils/combatUtils';
 
 export default function Knights({ onBack, hp }) {
   const { user } = useAuth();
+  const [showAnalysis, setShowAnalysis] = useState(false);
   const [userData, setUserData] = useState(null);
   
   const [selectedKnight, setSelectedKnight] = useState(null);
@@ -527,21 +529,38 @@ setTimeout(async () => {
     );
   }
 
-  let totalCombatPower = 0;
-  unlockedKnights.forEach(id => {
+// 💡 옛날 계산식을 지우고 새 엔진 연산으로 교체!
+  const myPartyKnights = unlockedKnights.map(id => {
     const kBase = KNIGHT_DATABASE[id];
-    if (kBase) {
-      const kLevel = id === 'knight_main' ? userLevel : (userData.knightStats?.[id]?.level || 1);
-      const kStr = kBase.baseStats.str + kBase.statGrowth.str * (kLevel - 1) + equipBonus.str;
-      const kAgi = kBase.baseStats.agi + kBase.statGrowth.agi * (kLevel - 1) + equipBonus.agi;
-      const kInt = kBase.baseStats.int + kBase.statGrowth.int * (kLevel - 1) + equipBonus.int;
-      const kVit = kBase.baseStats.vit + kBase.statGrowth.vit * (kLevel - 1) + equipBonus.vit;
-      const kLuk = kBase.baseStats.luk + kBase.statGrowth.luk * (kLevel - 1) + equipBonus.luk;
-      
-      const cp = (kStr * 10) + (kAgi * 8) + (kVit * 6) + (kInt * 4) + (kLuk * 2);
-      totalCombatPower += cp;
-    }
-  });
+    if (!kBase) return null;
+    const kLevel = id === 'knight_main' ? userLevel : (userData.knightStats?.[id]?.level || 1);
+    return {
+      id,
+      name: id === 'knight_main' ? userNickname : kBase.name,
+      element: kBase.attribute, 
+      str: kBase.baseStats.str + (kBase.statGrowth.str * (kLevel - 1)) + equipBonus.str,
+      agi: kBase.baseStats.agi + (kBase.statGrowth.agi * (kLevel - 1)) + equipBonus.agi,
+      int: kBase.baseStats.int + (kBase.statGrowth.int * (kLevel - 1)) + equipBonus.int,
+      vit: kBase.baseStats.vit + (kBase.statGrowth.vit * (kLevel - 1)) + equipBonus.vit,
+      luk: kBase.baseStats.luk + (kBase.statGrowth.luk * (kLevel - 1)) + equipBonus.luk,
+      skillBonus: 0
+    };
+  }).filter(Boolean);
+
+  const partyStats = calculatePartyStats(myPartyKnights);
+  const elementalBP = getAllElementsBP(myPartyKnights);
+  const totalCombatPower = partyStats.baseAttackPower + (partyStats.defense * 2);
+
+  const elementDisplay = {
+    fire: { name: '불 (Fire)', color: 'text-red-500' },
+    water: { name: '물 (Water)', color: 'text-blue-500' },
+    ice: { name: '얼음 (Ice)', color: 'text-cyan-400' },
+    poison: { name: '독 (Poison)', color: 'text-green-500' },
+    cure: { name: '치유 (Cure)', color: 'text-emerald-400' },
+    vain: { name: '공허 (Void)', color: 'text-purple-400' }, // 💡 공허 던전 속성명(vain) 매핑
+    light: { name: '빛 (Light)', color: 'text-yellow-500' },
+    neutral: { name: '무속성', color: 'text-neutral-400' }
+  };
 
   // =========================================
   // ⚔️ 화면 1. 기사단 목록(갤러리) 화면 
@@ -603,8 +622,17 @@ setTimeout(async () => {
             ))}
           </div>
           
-          <div className="text-amber-400 font-serif font-black text-sm tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,1)] mr-3 z-20 select-none">
-            BP {totalCombatPower.toLocaleString()}
+          <div className="flex flex-col items-end mr-3 z-20 select-none">
+            <div className="text-amber-400 font-serif font-black text-sm tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
+              BP {totalCombatPower.toLocaleString()}
+            </div>
+            {/* 💡 여기에 분석 버튼을 추가합니다 */}
+            <button 
+              onClick={() => setShowAnalysis(true)}
+              className="mt-1 bg-neutral-900/80 border border-amber-500/50 text-amber-500 text-[10px] font-bold px-2 py-1 rounded-sm active:scale-95 transition-all shadow-[0_0_10px_rgba(250,204,21,0.2)] cursor-pointer"
+            >
+              📊 전투력 분석
+            </button>
           </div>
         </div>
         
@@ -880,6 +908,70 @@ setTimeout(async () => {
             <span className="text-white/60 font-serif tracking-[0.3em] text-[10px] animate-pulse">
               - 화면을 터치하여 계속 -
             </span>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================== */}
+      {/* 🏆 전투력 분석 팝업 (여기에 통째로 추가) */}
+      {/* ========================================== */}
+      {showAnalysis && (
+        <div 
+          className="fixed inset-0 z-[300] flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 animate-[fadeIn_0.2s_ease-out]"
+          onClick={() => setShowAnalysis(false)}
+        >
+          <div 
+            className="w-full max-w-sm bg-neutral-950 border-2 border-[#5c3e23] rounded-xl p-5 shadow-[0_0_40px_rgba(0,0,0,1)] relative overflow-hidden flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="absolute inset-0 bg-cover bg-center z-0 opacity-20" style={{ backgroundImage: "url('/yangpiji-bg.webp')" }}></div>
+            
+            <div className="relative z-10">
+              <h2 className="text-xl text-center text-[#f5d5a9] font-black font-serif tracking-widest mb-5 drop-shadow-md border-b border-[#5c3e23] pb-3">
+                KNIGHTS STATS
+              </h2>
+
+              <div className="grid grid-cols-2 gap-2 mb-5">
+                <div className="bg-black/60 border border-[#5c3e23]/50 rounded-md p-2 flex flex-col items-center">
+                  <span className="text-[#a6845c] text-[10px] font-bold mb-0.5">총 체력 (HP)</span>
+                  <span className="text-red-400 font-black text-base">{partyStats.maxHp.toLocaleString()}</span>
+                </div>
+                <div className="bg-black/60 border border-[#5c3e23]/50 rounded-md p-2 flex flex-col items-center">
+                  <span className="text-[#a6845c] text-[10px] font-bold mb-0.5">총 마나 (MP)</span>
+                  <span className="text-blue-400 font-black text-base">{partyStats.maxMp.toLocaleString()}</span>
+                </div>
+                <div className="bg-black/60 border border-[#5c3e23]/50 rounded-md p-2 flex flex-col items-center">
+                  <span className="text-[#a6845c] text-[10px] font-bold mb-0.5">방어력 (DEF)</span>
+                  <span className="text-neutral-200 font-black text-base">{partyStats.defense.toLocaleString()}</span>
+                </div>
+                <div className="bg-black/60 border border-[#5c3e23]/50 rounded-md p-2 flex flex-col items-center">
+                  <span className="text-[#a6845c] text-[10px] font-bold mb-0.5">회피 / 크리</span>
+                  <span className="text-yellow-400 font-black text-base">{partyStats.evasionRate}% / {partyStats.critRate}%</span>
+                </div>
+              </div>
+
+              <div className="bg-black/40 border border-[#4a2c11] rounded-md p-3">
+                <h3 className="text-center text-[#d8b486] font-bold text-xs tracking-widest mb-3">
+                  ⚔️ 보스 속성별 예상 타격력 ⚔️
+                </h3>
+                
+                <div className="space-y-1.5 h-40 overflow-y-auto custom-scrollbar pr-1">
+                  {Object.entries(elementalBP).map(([element, bp]) => {
+                    const display = elementDisplay[element] || elementDisplay['neutral'];
+                    return (
+                      <div key={element} className="flex justify-between items-center bg-black/60 border border-neutral-800/50 rounded px-3 py-1.5">
+                        <span className={`font-black tracking-wider text-[11px] ${display.color}`}>
+                          {display.name}
+                        </span>
+                        <span className="text-white font-black tabular-nums tracking-wider text-sm">
+                          {bp.toLocaleString()}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
