@@ -623,15 +623,11 @@ setTimeout(async () => {
           </div>
           
           <div className="flex flex-col items-end mr-3 z-20 select-none">
-            <div className="text-amber-400 font-serif font-black text-sm tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
-              BP {totalCombatPower.toLocaleString()}
-            </div>
-            {/* 💡 여기에 분석 버튼을 추가합니다 */}
             <button 
               onClick={() => setShowAnalysis(true)}
-              className="mt-1 bg-neutral-900/80 border border-amber-500/50 text-amber-500 text-[10px] font-bold px-2 py-1 rounded-sm active:scale-95 transition-all shadow-[0_0_10px_rgba(250,204,21,0.2)] cursor-pointer"
+              className="bg-neutral-900/80 border border-amber-500/50 text-amber-500 text-[11px] tracking-widest font-black px-3 py-1.5 rounded-sm active:scale-95 transition-all shadow-[0_0_10px_rgba(250,204,21,0.2)] cursor-pointer hover:bg-neutral-800"
             >
-              📊 전투력 분석
+              STATUS
             </button>
           </div>
         </div>
