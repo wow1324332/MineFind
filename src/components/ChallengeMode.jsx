@@ -99,7 +99,7 @@ export default function ChallengeMode({ onSelectBossRaid, onSelectTowerRaid, onB
       </div>
 
       {/* 💡 챌린지 모드 선택 버튼 영역 */}
-      <div className="relative z-10 w-full max-w-[18rem] space-y-4 -mt-4">
+      <div className="relative z-10 w-full max-w-[18rem] space-y-4 mt-4">
         
         {/* 1. 보스 레이드 (Boss Raid) 버튼 */}
         <button
