@@ -121,7 +121,7 @@ export const DUNGEON_INFO = {
     buttonImg: '/dungeons/frozen/helloffrozen-bt.webp',
     titleImg: '/dungeons/frozen/helloffrozen-title.webp',
     loadingBg: '/dungeons/frozen/helloffrozenloading-bg.webp',
-    loadingMsg: "번뇌와 나태의 지옥\n...",
+    loadingMsg: "얼음과 혹한의 지옥\n'탐욕의 대악마 아몬'...",
     loadingLogo: "/dungeons/frozen/helloffrozen-bt.webp", // 💡 로고 경로 수정
     loadingOpacity: "opacity-70",
     winBg: '/dungeons/frozen/helloffrozenwin.webp',
@@ -157,7 +157,7 @@ export const DUNGEON_INFO = {
     buttonImg: '/dungeons/plague/hellofplague-bt.webp',
     titleImg: '/dungeons/plague/hellofplague-title.webp',
     loadingBg: '/dungeons/plague/hellofplagueloading-bg.webp',
-    loadingMsg: "번뇌의 심연으로 이동 중...",
+    loadingMsg: "역병과 죽음의 지옥\n",
     loadingLogo: "/dungeons/plague/hellofplague-bt.webp", // 💡 로고 경로 수정
     loadingOpacity: "opacity-70",
     winBg: '/dungeons/plague/hellofplaguewin.webp',
