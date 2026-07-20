@@ -83,8 +83,8 @@ export default function DevilMineMode({ onSelectPVE, onSelectChallenge, onBack, 
         </div>
       </div>
 
-      {/* 💡 모드 선택 버튼 영역 (-space-y-4 간격 유지) */}
-      <div className="relative z-10 w-full max-w-[14rem] -space-y-4">
+      {/* 💡 모드 선택 버튼 영역 (크기 확대 및 간격 넉넉하게 수정) */}
+      <div className="relative z-10 w-full max-w-xs space-y-5 mt-4">
         
         {/* 1. PVE 모드 (Hunting) */}
         <button
