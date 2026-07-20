@@ -16,6 +16,7 @@ import { ITEM_DATABASE } from './constants/itemData';
 import UserProfileCard from './components/UserProfileCard';
 import ChallengeMode from './components/ChallengeMode';
 import LoadingScreen from './components/LoadingScreen';
+import BossRaid from './components/BossRaid';
 
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from './firebase'; // (파이어베이스 설정 파일 경로)
@@ -422,7 +423,8 @@ export default function App() {
   if (
     currentScreen === 'CHALLENGE_LOADING' || 
     currentScreen === 'DUNGEON_SELECT_LOADING' || 
-    currentScreen === 'DUNGEON_LOADING'
+    currentScreen === 'DUNGEON_LOADING' ||
+    currentScreen === 'BOSS_RAID_LOADING'
   ) {
     return <LoadingScreen type={currentScreen} dungeonId={currentDungeon} />;
   }
@@ -501,22 +503,36 @@ export default function App() {
     case 'CHALLENGE_MODE':
       currentView = (
         <div style={{ animation: 'fadeInSmooth 0.8s ease-in-out forwards' }}>
-          {/* 💡 스르륵 나타나는 전용 애니메이션 추가 */}
-          <style>{`
-            @keyframes fadeInSmooth {
-              from { opacity: 0; }
-              to { opacity: 1; }
-            }
-          `}</style>
           <ChallengeMode 
             hp={hpData.hp}
             onBack={() => setCurrentScreen('DEVIL_MINE_MODE')} 
             onLogout={logout}
             onSelectBossRaid={() => {
-              console.log("보스 레이드 입장!");
+              // 💡 로딩 화면을 띄우고 2초 뒤 보스 레이드로 넘어갑니다!
+              setCurrentScreen('BOSS_RAID_LOADING');
+              setTimeout(() => setCurrentScreen('BOSS_RAID'), 2000);
             }}
             onSelectTowerRaid={() => {
               console.log("타워 레이드 입장!");
+            }}
+          />
+        </div>
+      );
+      break;
+
+    // =========================================
+    // 💡 새로 추가된 보스 레이드 화면 라우팅
+    // =========================================
+    case 'BOSS_RAID':
+      currentView = (
+        <div style={{ animation: 'fadeInSmooth 0.8s ease-in-out forwards' }}>
+          <BossRaid 
+            hp={hpData.hp}
+            onBack={() => setCurrentScreen('CHALLENGE_MODE')} 
+            onLogout={logout}
+            onSelectBoss={(bossId) => {
+              console.log(`${bossId} 보스 선택됨!`);
+              // 나중에 실제 보스 전투 화면으로 넘기는 로직 추가
             }}
           />
         </div>
