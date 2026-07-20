@@ -44,7 +44,7 @@ export default function LoadingScreen({ type, dungeonId }) {
             }
           `}</style>
           <div className="text-white/90 font-serif font-black text-center tracking-[0.2em] leading-loose drop-shadow-[0_2px_10px_rgba(0,0,0,1)] text-base sm:text-base mb-10">
-            악마들의 던전이 깨어났다,<br/>성스러운 기사들이여!!<br/>나아가 악을 정화하고 승리하라!
+            악마왕들의 던전이 깨어났다,<br/>성스러운 기사들이여!!<br/>악을 정화하고 승리를 쟁취하라..
           </div>
           <img src="/loading-icon.webp" alt="Hunting Logo" className="w-28 h-auto object-contain" style={{ animation: 'mysticBreathe 2.5s ease-in-out infinite' }} draggable="false"/>
         </div>
