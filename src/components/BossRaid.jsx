@@ -12,7 +12,7 @@ export default function BossRaid({ hp, onBack, onLogout, onSelectBoss }) {
       ></div>
 
       {/* ========================================= */}
-      {/* 💡 2️⃣ 딥 다크 그라데이션 레이어 (챌린지 화면과 동일) */}
+      {/* 💡 2️⃣ 딥 다크 그라데이션 레이어 */}
       {/* ========================================= */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_20%,_#000000_100%)] pointer-events-none z-0"></div>
       
@@ -93,7 +93,7 @@ export default function BossRaid({ hp, onBack, onLogout, onSelectBoss }) {
         </div>
       </div>
 
-      {/* 💡 7대 던전 버튼 리스트 영역 (스크롤 가능하도록 구성) */}
+      {/* 💡 7대 던전 버튼 리스트 영역 */}
       <div className="relative z-10 w-full max-w-sm flex-1 overflow-y-auto pb-10 space-y-4 px-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
         <style>{`::-webkit-scrollbar { display: none; }`}</style>
         
@@ -104,8 +104,8 @@ export default function BossRaid({ hp, onBack, onLogout, onSelectBoss }) {
             className="w-full relative group transition-all duration-200 active:scale-[0.98] select-none"
             style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
           >
-            {/* 버튼 껍데기 (던전 선택 창의 버튼 이미지 사용) */}
-            <div className="relative w-full aspect-[4/1] bg-black/60 border border-neutral-700/50 rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.8)] flex items-center justify-between px-4">
+            {/* 💡 변경점 1: border 클래스를 완전히 제거했습니다! */}
+            <div className="relative w-full aspect-[4/1] bg-black/60 rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.8)] flex items-center justify-between px-4">
               
               {/* 던전 배경 희미하게 깔기 */}
               <div 
@@ -120,10 +120,16 @@ export default function BossRaid({ hp, onBack, onLogout, onSelectBoss }) {
                 <span className="text-lg font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,1)] tracking-widest font-serif">{info.name || `${id} Boss`}</span>
               </div>
 
-              {/* 입장 아이콘 (예시) */}
-              <div className="relative z-10 w-10 h-10 bg-red-900/40 border border-red-500/30 rounded-full flex items-center justify-center drop-shadow-[0_0_10px_rgba(220,38,38,0.3)]">
-                <span className="text-red-500 text-xl">⚔️</span>
+              {/* 💡 변경점 2: ⚔️ 이모지 대신 눈동자 로고 이미지로 변경! */}
+              <div className="relative z-10 w-12 h-12 flex items-center justify-center drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
+                <img 
+                  src="/loading-icon.webp" 
+                  alt="Enter Boss Raid" 
+                  className="w-full h-full object-contain opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300"
+                  draggable="false"
+                />
               </div>
+
             </div>
           </button>
         ))}
