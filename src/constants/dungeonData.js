@@ -7,7 +7,7 @@ export const DUNGEON_INFO = {
     buttonImg: '/dungeons/fire/hellofflame-bt.webp',
     titleImg: '/dungeons/fire/hellofflame-title.webp',
     loadingBg: '/dungeons/fire/hellofflameloading-bg.webp',
-    loadingMsg: "함펠의 봉인 된 유적에서/n악의화신, 화염의 대악마 메피스토가 깨어났다/n함펠의 높다른 성벽이 무너지나니...",
+    loadingMsg: "함펠의 봉인 된 유적에서\n화염의 대악마\n메피스토가 깨어났다\n그의 사악한 불길에\n맞서야만 한다..",
     loadingLogo: "/dungeons/fire/hellofflame-bt.webp",
     loadingOpacity: "opacity-70",
     winBg: '/dungeons/fire/hellofflamewin.webp',
