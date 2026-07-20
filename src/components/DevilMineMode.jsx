@@ -1,9 +1,8 @@
 import React from 'react';
 
-// 💡 컴포넌트 이름이 지뢰찾기 전용임을 명확히 합니다.
-export default function DevilMineMode({ onSelectPVE, onBack, onLogout, hp }) {
+// 💡 세 번째 버튼 동작을 위한 'onSelectChallenge' 속성을 추가했습니다.
+export default function DevilMineMode({ onSelectPVE, onSelectChallenge, onBack, onLogout, hp }) {
   return (
-    // 💡 justify-between을 지우고 justify-start로 변경하여 컨텐츠들을 상단부터 배치합니다.
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-start bg-black text-white pt-6 px-6 select-none">
       
       {/* 배경: 고대 석판 이미지 */}
@@ -18,7 +17,6 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout, hp }) {
       <div className="w-full flex flex-col items-center max-w-md relative z-10 -mt-6 shrink-0">
         
         {/* 1. 데빌마인 타이틀 이미지 */}
-        {/* 💡 mb-2를 주어 타이틀과 헤더 사이의 간격을 조금 벌려줍니다. */}
         <div className="w-full max-w-sm mx-auto relative flex justify-center pointer-events-none mb-2">
           <div 
             className="w-full"
@@ -36,7 +34,6 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout, hp }) {
         </div>
 
         {/* 2. 돌담 헤더 */}
-        {/* 💡 헤더 아래 여백을 mb-6에서 mb-12로 늘려서 버튼 영역과 띄워줍니다. */}
         <div className="w-full max-w-sm h-12 mb-12 flex justify-between items-center relative z-10">
           <div 
             className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
@@ -58,21 +55,22 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout, hp }) {
             <img src="/header/backkey.webp" alt="Back" className="w-8 h-8 object-contain pointer-events-none" draggable="false" />
           </button>
 
+          {/* 체력(HP) 구슬 */}
           <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-[4px] drop-shadow-md z-20 pointer-events-none">
-               {[...Array(5)].map((_, i) => (
-                 <img 
-                   key={i} 
-                   src="/header/hpball.webp" 
-                   alt="HP" 
-                   className={`w-[18px] h-[18px] object-contain transition-all duration-500 ${
-                     i < hp 
-                       ? 'opacity-100 drop-shadow-[0_0_5px_rgba(220,38,38,0.95)]' 
-                       : 'opacity-20 grayscale saturate-50'
-                   }`} 
-                   draggable="false"
-                 />
-               ))}
-             </div>
+            {[...Array(5)].map((_, i) => (
+              <img 
+                key={i} 
+                src="/header/hpball.webp" 
+                alt="HP" 
+                className={`w-[18px] h-[18px] object-contain transition-all duration-500 ${
+                  i < hp 
+                    ? 'opacity-100 drop-shadow-[0_0_5px_rgba(220,38,38,0.95)]' 
+                    : 'opacity-20 grayscale saturate-50'
+                }`} 
+                draggable="false"
+              />
+            ))}
+          </div>
           
           {/* 오른쪽 로그아웃 버튼 */}
           <button 
@@ -85,15 +83,13 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout, hp }) {
         </div>
       </div>
 
-      {/* 💡 모드 선택 버튼 영역 */}
-      {/* 💡 너비를 기존 max-w-xs에서 max-w-[14rem](약 224px)으로 확 줄여서 날렵하게 만들었습니다. */}
-      {/* 💡 mb-20을 지워서 굳이 공간을 차지하지 않도록 정리했습니다. */}
+      {/* 💡 모드 선택 버튼 영역 (-space-y-4 간격 유지) */}
       <div className="relative z-10 w-full max-w-[14rem] -space-y-4">
         
-        {/* PVE 모드 (Hunting) */}
+        {/* 1. PVE 모드 (Hunting) */}
         <button
           onClick={onSelectPVE}
-          className="w-full transition-all duration-200 hover:brightness-110 active:scale-[0.96] drop-shadow-[0_4px_15px_rgba(200,50,0,0.3)] select-none"
+          className="w-full transition-all duration-200 hover:brightness-110 active:scale-[0.96] drop-shadow-[0_4px_15px_rgba(200,50,0,0.3)] select-none relative z-30"
           style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
         >
           <img 
@@ -104,8 +100,8 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout, hp }) {
           />
         </button>
 
-        {/* PVP 모드 (Battle - 준비중) */}
-        <div className="w-full relative opacity-50 grayscale-[0.8] cursor-not-allowed select-none">
+        {/* 2. PVP 모드 (Battle - 준비중) */}
+        <div className="w-full relative opacity-50 grayscale-[0.8] cursor-not-allowed select-none z-20">
           <img 
             src="/devilminemode/battle-bt.webp"
             alt="PVP Battle Mode (준비 중)" 
@@ -114,8 +110,22 @@ export default function DevilMineMode({ onSelectPVE, onBack, onLogout, hp }) {
           />
         </div>
 
-      </div>
+        {/* 💡 3. 신규 챌린지 모드 (Challenge) */}
+        <button
+          onClick={onSelectChallenge}
+          className="w-full transition-all duration-200 hover:brightness-110 active:scale-[0.96] drop-shadow-[0_4px_15px_rgba(220,100,0,0.3)] select-none relative z-10"
+          style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+        >
+          <img 
+            // 💡 파일명과 확장자가 실제 저장하신 이름과 같은지 확인해 주세요!
+            src="/devilminemode/challenge-bt.webp" 
+            alt="Challenge Mode" 
+            className="w-full h-auto object-contain pointer-events-none" 
+            draggable="false"
+          />
+        </button>
 
+      </div>
     </div>
   );
 }
