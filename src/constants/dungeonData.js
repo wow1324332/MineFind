@@ -193,7 +193,7 @@ export const DUNGEON_INFO = {
     buttonImg: '/dungeons/vain/hellofvain-bt.webp',
     titleImg: '/dungeons/vain/hellofvain-title.webp',
     loadingBg: '/dungeons/vain/hellofvainloading-bg.webp',
-    loadingMsg: "공허의 심연으로 이동 중...",
+    loadingMsg: "공허와 허무의 지옥\n'공허의 대악마 디아블로'",
     loadingLogo: "/dungeons/vain/hellofvain-bt.webp", // 💡 로고 경로 수정
     loadingOpacity: "opacity-70",
     winBg: '/dungeons/vain/hellofvainwin.webp',
