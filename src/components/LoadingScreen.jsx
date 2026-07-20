@@ -1,6 +1,7 @@
 import React from 'react';
+// 💡 던전 데이터를 가져오기 위해 import 추가!
+import { DUNGEON_INFO } from '../constants/dungeonData'; 
 
-// 💡 로딩 화면만 전담하여 관리하는 컴포넌트입니다.
 export default function LoadingScreen({ type, dungeonId }) {
   
   // =========================================
@@ -9,16 +10,66 @@ export default function LoadingScreen({ type, dungeonId }) {
   if (type === 'CHALLENGE_LOADING') {
     return (
       <div className="fixed inset-0 z-[500] flex flex-col items-center justify-center bg-black select-none animate-[fadeInSmooth_0.5s_ease-in-out]">
-        {/* 희미한 챌린지 배경 */}
+        <div className="absolute inset-0 bg-cover bg-center opacity-30" style={{ backgroundImage: "url('/challenge/challenge-bg.webp')" }}></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_10%,_#000000_100%)] pointer-events-none"></div>
+        <div className="relative z-10 flex flex-col items-center justify-center w-full px-6">
+          <style>{`
+            @keyframes mysticBreathe {
+              0%, 100% { transform: scale(1); opacity: 0.5; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
+              50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 25px rgba(255,255,255,0.9)); }
+            }
+          `}</style>
+          <div className="text-white/90 font-serif font-black text-center tracking-[0.2em] leading-loose drop-shadow-[0_2px_10px_rgba(0,0,0,1)] text-base sm:text-base mb-10">
+            악마성에 도전하고<br/>더 높은 곳을 향해 나아가라
+          </div>
+          <img src="/loading-icon.webp" alt="Challenge Logo" className="w-28 h-auto object-contain" style={{ animation: 'mysticBreathe 2.5s ease-in-out infinite' }} draggable="false"/>
+        </div>
+      </div>
+    );
+  }
+
+  // =========================================
+  // 2️⃣ 던전 선택(헌팅) 진입 로딩
+  // =========================================
+  if (type === 'DUNGEON_SELECT_LOADING') {
+    return (
+      <div className="fixed inset-0 z-[500] flex flex-col items-center justify-center bg-black select-none animate-[fadeInSmooth_0.5s_ease-in-out]">
+        <div className="absolute inset-0 bg-cover bg-center opacity-30" style={{ backgroundImage: "url('/dungeonselection/dungeonselectionloading-bg.webp')" }}></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_10%,_#000000_100%)] pointer-events-none"></div>
+        <div className="relative z-10 flex flex-col items-center justify-center w-full px-6">
+          <style>{`
+            @keyframes mysticBreathe {
+              0%, 100% { transform: scale(1); opacity: 0.5; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
+              50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 25px rgba(255,255,255,0.9)); }
+            }
+          `}</style>
+          <div className="text-white/90 font-serif font-black text-center tracking-[0.2em] leading-loose drop-shadow-[0_2px_10px_rgba(0,0,0,1)] text-base sm:text-base mb-10">
+            악마들의 던전이 깨어났다,<br/>성스러운 기사들이여!!<br/>나아가 악을 정화하고 승리하라!
+          </div>
+          <img src="/loading-icon.webp" alt="Hunting Logo" className="w-28 h-auto object-contain" style={{ animation: 'mysticBreathe 2.5s ease-in-out infinite' }} draggable="false"/>
+        </div>
+      </div>
+    );
+  }
+
+  // =========================================
+  // 3️⃣ 개별 던전 입장 로딩 (✨ 핵심 구현부)
+  // =========================================
+  if (type === 'DUNGEON_LOADING') {
+    // 💡 넘어온 던전 ID(예: 'fire', 'ice')를 바탕으로 던전 정보를 꺼내옵니다.
+    const dungeon = DUNGEON_INFO[dungeonId];
+
+    return (
+      <div className="fixed inset-0 z-[500] flex flex-col items-center justify-center bg-black select-none animate-[fadeInSmooth_0.5s_ease-in-out]">
+        
+        {/* 💡 배경 이미지: dungeonData.js에 있는 loadingBg 사용! */}
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-30"
-          style={{ backgroundImage: "url('/challenge/challenge-bg.webp')" }}
+          className="absolute inset-0 bg-cover bg-center opacity-30" 
+          style={{ backgroundImage: `url('${dungeon?.loadingBg || '/dungeonselection/dungeonselectionloading-bg.webp'}')` }}
         ></div>
         
-        {/* 딥 다크 비네팅 */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_10%,_#000000_100%)] pointer-events-none"></div>
-
-        {/* 중앙 컨텐츠 (서사 문구 & 로고) */}
+        
         <div className="relative z-10 flex flex-col items-center justify-center w-full px-6">
           <style>{`
             @keyframes mysticBreathe {
@@ -27,15 +78,19 @@ export default function LoadingScreen({ type, dungeonId }) {
             }
           `}</style>
           
-          <div className="text-white/90 font-serif font-black text-center tracking-[0.2em] leading-loose drop-shadow-[0_2px_10px_rgba(0,0,0,1)] text-base sm:text-base mb-10">
-            악마성에 도전하고<br/>더 높은 곳을 향해 나아가리라...
+          {/* 💡 로딩 문구: dungeonData.js에 있는 loadingMsg 사용! (줄바꿈 허용) */}
+          <div 
+            className="text-white/90 font-serif font-black text-center tracking-[0.2em] leading-loose drop-shadow-[0_2px_10px_rgba(0,0,0,1)] text-base sm:text-base mb-10 whitespace-pre-line"
+          >
+            {dungeon?.loadingMsg || "미지의 구역으로 진입 중..."}
           </div>
 
+          {/* 💡 눈동자 로고는 그대로 사용! */}
           <img 
             src="/loading-icon.webp" 
-            alt="Challenge Mystic Logo" 
-            className="w-28 h-auto object-contain"
-            style={{ animation: 'mysticBreathe 2.5s ease-in-out infinite' }}
+            alt="Dungeon Enter Logo" 
+            className="w-28 h-auto object-contain" 
+            style={{ animation: 'mysticBreathe 2.5s ease-in-out infinite' }} 
             draggable="false"
           />
         </div>
@@ -43,46 +98,5 @@ export default function LoadingScreen({ type, dungeonId }) {
     );
   }
 
-  // =========================================
-  // 2️⃣ 던전 선택(헌팅) 진입 로딩 (새로 추가!)
-  // =========================================
-  if (type === 'DUNGEON_SELECT_LOADING') {
-    return (
-      <div className="fixed inset-0 z-[500] flex flex-col items-center justify-center bg-black select-none animate-[fadeInSmooth_0.5s_ease-in-out]">
-        {/* 💡 기존 헌팅 로딩용 배경 이미지 사용 */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center opacity-30"
-          style={{ backgroundImage: "url('/dungeonselection/dungeonselectionloading-bg.webp')" }}
-        ></div>
-        
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_10%,_#000000_100%)] pointer-events-none"></div>
-
-        <div className="relative z-10 flex flex-col items-center justify-center w-full px-6">
-          {/* 동일한 애니메이션 스타일을 사용하지만 클래스로 이미 주입되었으므로 재사용됩니다 */}
-          <style>{`
-            @keyframes mysticBreathe {
-              0%, 100% { transform: scale(1); opacity: 0.5; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
-              50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 25px rgba(255,255,255,0.9)); }
-            }
-          `}</style>
-
-          {/* 💡 사냥에 어울리는 명조체 문구 */}
-          <div className="text-white/90 font-serif font-black text-center tracking-[0.2em] leading-loose drop-shadow-[0_2px_10px_rgba(0,0,0,1)] text-base sm:text-base mb-10">
-            악의 던전이 꿈틀거린다,<br/>기사들이여 가라!<br/>악을 정화하고 세상을 구하라..
-          </div>
-
-          <img 
-            src="/loading-icon.webp" 
-            alt="Hunting Mystic Logo" 
-            className="w-28 h-auto object-contain"
-            style={{ animation: 'mysticBreathe 2.5s ease-in-out infinite' }}
-            draggable="false"
-          />
-        </div>
-      </div>
-    );
-  }
-
-  // 조건에 안 맞으면 빈 화면 반환 (안전 장치)
   return null;
 }
