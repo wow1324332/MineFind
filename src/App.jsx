@@ -488,21 +488,23 @@ export default function App() {
     // =========================================
     case 'CHALLENGE_MODE':
       currentView = (
-        <div style={{ animation: 'fadeInMode 0.4s ease-in-out forwards' }}>
+        <div style={{ animation: 'fadeInSmooth 0.8s ease-in-out forwards' }}>
+          {/* 💡 스르륵 나타나는 전용 애니메이션 추가 */}
+          <style>{`
+            @keyframes fadeInSmooth {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+          `}</style>
           <ChallengeMode 
             hp={hpData.hp}
-            // 뒤로가기 누르면 다시 데빌마인 선택 창으로 복귀!
             onBack={() => setCurrentScreen('DEVIL_MINE_MODE')} 
             onLogout={logout}
-            // 💡 임시 연결: 보스 레이드 클릭 시
             onSelectBossRaid={() => {
               console.log("보스 레이드 입장!");
-              // setCurrentScreen('BOSS_RAID'); // 나중에 보스레이드 화면 만들면 주석 해제
             }}
-            // 💡 임시 연결: 타워 레이드 클릭 시
             onSelectTowerRaid={() => {
               console.log("타워 레이드 입장!");
-              // setCurrentScreen('TOWER_RAID'); // 나중에 타워레이드 화면 만들면 주석 해제
             }}
           />
         </div>
@@ -510,7 +512,16 @@ export default function App() {
       break;
 
     case 'DUNGEON_SELECTION':
-      currentView = <DungeonSelection hp={hpData.hp} onSelectDungeon={handleSelectDungeon} onBack={() => setCurrentScreen('DEVIL_MINE_MODE')} onLogout={logout} />;
+      currentView = (
+        <div style={{ animation: 'fadeInSmooth 0.8s ease-in-out forwards' }}>
+          <DungeonSelection 
+            hp={hpData.hp} 
+            onSelectDungeon={handleSelectDungeon} 
+            onBack={() => setCurrentScreen('DEVIL_MINE_MODE')} 
+            onLogout={logout} 
+          />
+        </div>
+      );
       break;
       
     case 'GAME_PVE':
