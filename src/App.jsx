@@ -15,6 +15,7 @@ import { DUNGEON_INFO } from './constants/dungeonData';
 import { ITEM_DATABASE } from './constants/itemData';
 import UserProfileCard from './components/UserProfileCard';
 import ChallengeMode from './components/ChallengeMode';
+import LoadingScreen from './components/LoadingScreen';
 
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from './firebase'; // (파이어베이스 설정 파일 경로)
@@ -413,6 +414,13 @@ export default function App() {
         <LoginModal deferredPrompt={deferredPrompt} handleInstallClick={handleInstallClick} />
       </div>
     );
+  }
+
+  // =========================================
+  // 💡 구형 로딩이 채가기 전에 챌린지 전용 커스텀 로딩 먼저 띄우기!
+  // =========================================
+  if (currentScreen === 'CHALLENGE_LOADING') {
+    return <LoadingScreen type={currentScreen} />;
   }
 
   if (currentScreen.endsWith('_LOADING')) {
