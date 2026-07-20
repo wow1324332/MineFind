@@ -11,15 +11,19 @@ export default function ChallengeMode({ onSelectBossRaid, onSelectTowerRaid, onB
       ></div>
 
       {/* ========================================= */}
-      {/* 💡 2️⃣ 딥 다크 그라데이션 레이어 3종 세트 추가! */}
+      {/* 💡 2️⃣ 딥 다크 그라데이션 5중 레이어 (화면 전체를 감싸는 비네팅) */}
       {/* ========================================= */}
-      {/* 1. 중앙을 제외한 테두리를 까맣게 눌러주는 방사형 그라데이션 */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_10%,_#000000_100%)] pointer-events-none z-0"></div>
+      {/* 1. 중앙 방사형 비네팅 (기존 데빌마인과 동일하게 투명 반경 20% 적용) */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_20%,_#000000_100%)] pointer-events-none z-0"></div>
       
-      {/* 2. 상단 돌담 헤더 쪽이 자연스럽게 묻히도록 위에서 아래로 내려오는 검은색 그라데이션 */}
+      {/* 💡 2. 양옆(좌/우) 그라데이션 (새로 추가됨!) */}
+      <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-black via-black/80 to-transparent pointer-events-none z-0"></div>
+      <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black via-black/80 to-transparent pointer-events-none z-0"></div>
+
+      {/* 3. 상단 그라데이션 */}
       <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-black via-black/80 to-transparent pointer-events-none z-0"></div>
       
-      {/* 3. 하단 버튼 쪽이 어둠 속에서 떠오르도록 아래에서 위로 올라오는 검은색 그라데이션 */}
+      {/* 4. 하단 그라데이션 */}
       <div className="absolute bottom-0 inset-x-0 h-48 bg-gradient-to-t from-black via-black/90 to-transparent pointer-events-none z-0"></div>
       {/* ========================================= */}
 
@@ -49,8 +53,9 @@ export default function ChallengeMode({ onSelectBossRaid, onSelectTowerRaid, onB
             className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
             style={{ 
               backgroundImage: "url('/header/header-bg.webp')",
-              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
-              maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)'
+              // 💡 헤더 하단이 배경과 훨씬 부드럽게 섞이도록 그라데이션 범위를(85% -> 60%) 조절했습니다!
+              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 60%, transparent 100%)',
+              maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 60%, transparent 100%)'
             }}
           >
             <div className="absolute inset-0 bg-black/40"></div>
@@ -94,7 +99,7 @@ export default function ChallengeMode({ onSelectBossRaid, onSelectTowerRaid, onB
       </div>
 
       {/* 💡 챌린지 모드 선택 버튼 영역 */}
-      <div className="relative z-10 w-full max-w-[18rem] space-y-4 mt-4">
+      <div className="relative z-10 w-full max-w-[18rem] space-y-4 -mt-4">
         
         {/* 1. 보스 레이드 (Boss Raid) 버튼 */}
         <button
