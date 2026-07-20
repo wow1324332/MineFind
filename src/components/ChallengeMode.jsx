@@ -1,18 +1,27 @@
 import React from 'react';
 
-// 💡 챌린지 모드 전용 컴포넌트입니다.
 export default function ChallengeMode({ onSelectBossRaid, onSelectTowerRaid, onBack, onLogout, hp }) {
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-start bg-black text-white pt-6 px-6 select-none">
       
-      {/* 배경: 챌린지 배경 이미지 */}
+      {/* 1️⃣ 배경: 챌린지 배경 이미지 */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
-        // 💡 public/challenge/ 폴더에 넣은 배경 이미지 경로
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 z-0"
         style={{ backgroundImage: "url('/challenge/challenge-bg.webp')" }}
       ></div>
 
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_20%,_#000000_100%)] pointer-events-none"></div>
+      {/* ========================================= */}
+      {/* 💡 2️⃣ 딥 다크 그라데이션 레이어 3종 세트 추가! */}
+      {/* ========================================= */}
+      {/* 1. 중앙을 제외한 테두리를 까맣게 눌러주는 방사형 그라데이션 */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_10%,_#000000_100%)] pointer-events-none z-0"></div>
+      
+      {/* 2. 상단 돌담 헤더 쪽이 자연스럽게 묻히도록 위에서 아래로 내려오는 검은색 그라데이션 */}
+      <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-black via-black/80 to-transparent pointer-events-none z-0"></div>
+      
+      {/* 3. 하단 버튼 쪽이 어둠 속에서 떠오르도록 아래에서 위로 올라오는 검은색 그라데이션 */}
+      <div className="absolute bottom-0 inset-x-0 h-48 bg-gradient-to-t from-black via-black/90 to-transparent pointer-events-none z-0"></div>
+      {/* ========================================= */}
 
       {/* 상단 타이틀 이미지와 돌담 헤더 묶음 */}
       <div className="w-full flex flex-col items-center max-w-md relative z-10 -mt-6 shrink-0">
@@ -27,7 +36,6 @@ export default function ChallengeMode({ onSelectBossRaid, onSelectTowerRaid, onB
             }}
           >
             <img 
-              // 💡 public/challenge/ 폴더에 넣은 타이틀 이미지 경로
               src="/challenge/challenge-title.webp" 
               alt="Challenge Title" 
               className="w-full h-auto object-contain drop-shadow-[0_0_20px_rgba(220,38,38,0.2)]"
@@ -35,7 +43,7 @@ export default function ChallengeMode({ onSelectBossRaid, onSelectTowerRaid, onB
           </div>
         </div>
 
-        {/* 2. 돌담 헤더 (데빌마인 모드와 완벽 동일) */}
+        {/* 2. 돌담 헤더 */}
         <div className="w-full max-w-sm h-12 mb-12 flex justify-between items-center relative z-10">
           <div 
             className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
@@ -85,8 +93,8 @@ export default function ChallengeMode({ onSelectBossRaid, onSelectTowerRaid, onB
         </div>
       </div>
 
-      {/* 💡 챌린지 모드 선택 버튼 영역 (넓은 간격과 크기 적용) */}
-      <div className="relative z-10 w-full max-w-xs space-y-5 mt-4">
+      {/* 💡 챌린지 모드 선택 버튼 영역 */}
+      <div className="relative z-10 w-full max-w-[18rem] space-y-4 mt-4">
         
         {/* 1. 보스 레이드 (Boss Raid) 버튼 */}
         <button
