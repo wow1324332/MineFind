@@ -121,7 +121,7 @@ export const DUNGEON_INFO = {
     buttonImg: '/dungeons/frozen/helloffrozen-bt.webp',
     titleImg: '/dungeons/frozen/helloffrozen-title.webp',
     loadingBg: '/dungeons/frozen/helloffrozenloading-bg.webp',
-    loadingMsg: "번놔의 심연으로 이동 중...",
+    loadingMsg: "번뇌와 나태의 지옥\n...",
     loadingLogo: "/dungeons/frozen/helloffrozen-bt.webp", // 💡 로고 경로 수정
     loadingOpacity: "opacity-70",
     winBg: '/dungeons/frozen/helloffrozenwin.webp',
