@@ -417,9 +417,9 @@ export default function App() {
   }
 
   // =========================================
-  // 💡 구형 로딩이 채가기 전에 챌린지 전용 커스텀 로딩 먼저 띄우기!
+  // 💡 구형 로딩이 채가기 전에 커스텀 로딩(챌린지 & 헌팅) 먼저 띄우기!
   // =========================================
-  if (currentScreen === 'CHALLENGE_LOADING') {
+  if (currentScreen === 'CHALLENGE_LOADING' || currentScreen === 'DUNGEON_SELECT_LOADING') {
     return <LoadingScreen type={currentScreen} />;
   }
 
