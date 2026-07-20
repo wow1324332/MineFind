@@ -30,8 +30,8 @@ export default function LoadingScreen({ type, dungeonId }) {
           `}</style>
           
           {/* 1. 서사적인 명조체 문구 (위로 배치 및 아래 간격 mb-10 추가) */}
-          <div className="text-white/90 font-serif font-black text-center tracking-[0.2em] leading-loose drop-shadow-[0_2px_10px_rgba(0,0,0,1)] text-sm sm:text-base mb-10">
-            "악마성에 도전하고<br/>더 높은 곳을 향해 나아가리라..."
+          <div className="text-white/90 font-serif font-black text-center tracking-[0.2em] leading-loose drop-shadow-[0_2px_10px_rgba(0,0,0,1)] text-base sm:text-base mb-10">
+            악마성에 도전하고<br/>더 높은 곳을 향해 나아가리라...
           </div>
 
           {/* 2. 첨부해주신 로고 (크기를 w-36 -> w-28로 줄이고 아래로 배치) */}
