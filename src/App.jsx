@@ -251,6 +251,12 @@ export default function App() {
     setTimeout(() => setCurrentScreen('DUNGEON_SELECTION'), 2000);
   };
 
+  // 💡 여기에 챌린지 로딩을 2초 띄우고 화면을 넘기는 함수 추가!
+  const handleSelectChallenge = () => {
+    setCurrentScreen('CHALLENGE_LOADING');
+    setTimeout(() => setCurrentScreen('CHALLENGE_MODE'), 2000);
+  };
+  
   const handleRetryGame = () => {
     // 💡 이미 타일을 눌러서 체력을 1 소모한 상태(hasDeductedHp === true)라면, 남은 체력이 있는지 검사!
     if (hasDeductedHp && hpData.hp < 1) {
