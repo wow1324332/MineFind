@@ -157,7 +157,7 @@ export const DUNGEON_INFO = {
     buttonImg: '/dungeons/plague/hellofplague-bt.webp',
     titleImg: '/dungeons/plague/hellofplague-title.webp',
     loadingBg: '/dungeons/plague/hellofplagueloading-bg.webp',
-    loadingMsg: "역병과 죽음의 지옥\n",
+    loadingMsg: "역병과 죽음의 지옥\n'질병과 대악마 마르바스'",
     loadingLogo: "/dungeons/plague/hellofplague-bt.webp", // 💡 로고 경로 수정
     loadingOpacity: "opacity-70",
     winBg: '/dungeons/plague/hellofplaguewin.webp',
