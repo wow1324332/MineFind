@@ -93,8 +93,17 @@ export default function BossRaid({ hp, onBack, onLogout, onSelectBoss }) {
         </div>
       </div>
 
-      {/* 💡 7대 던전 버튼 리스트 영역 */}
-      <div className="relative z-10 w-full max-w-sm flex-1 overflow-y-auto pb-10 space-y-4 px-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+      {/* 💡 7대 던전 버튼 리스트 영역 (상하단 강력한 페이드아웃 효과 적용) */}
+      <div 
+        className="relative z-10 w-full max-w-sm flex-1 overflow-y-auto pb-10 space-y-4 px-2 pt-4" 
+        style={{ 
+          scrollbarWidth: 'none', 
+          msOverflowStyle: 'none',
+          // 💡 핵심: 리스트의 상단 15%, 하단 15% 영역의 버튼을 스르륵 투명하게 날려버립니다!
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
+          maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)'
+        }}
+      >
         <style>{`::-webkit-scrollbar { display: none; }`}</style>
         
         {Object.entries(DUNGEON_INFO).map(([id, info]) => (
