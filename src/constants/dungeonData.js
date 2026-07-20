@@ -27,7 +27,7 @@ export const DUNGEON_INFO = {
     buttonImg: '/dungeons/water/hellofaqua-bt.webp',
     titleImg: '/dungeons/water/hellofaqua-title.webp',
     loadingBg: '/dungeons/water/hellofaqualoading-bg.webp',
-    loadingMsg: "물의 던전으로 잠수 중...",
+    loadingMsg: "심해의 차갑고 깊은 어둠\n'심연의 지배자 바알'",
     loadingLogo: "/dungeons/water/hellofaqua-bt.webp",
     loadingOpacity: "opacity-70",
     winBg: '/dungeons/water/hellofaquawin.webp',
@@ -56,7 +56,7 @@ export const DUNGEON_INFO = {
     buttonImg: '/dungeons/poison/hellofpoison-bt.webp',
     titleImg: '/dungeons/poison/hellofpoison-title.webp',
     loadingBg: '/dungeons/poison/hellofpoisonloading-bg.webp',
-    loadingMsg: "독의 심연으로 이동 중...",
+    loadingMsg: "심연의 자욱한 독연\n극독의 대악마 ",
     loadingLogo: "/dungeons/poison/hellofpoison-bt.webp", // 💡 로고 경로 수정
     loadingOpacity: "opacity-70",
     winBg: '/dungeons/poison/hellofpoisonwin.webp',
