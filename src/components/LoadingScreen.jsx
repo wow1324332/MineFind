@@ -68,7 +68,7 @@ export default function LoadingScreen({ type, dungeonId }) {
 
           {/* 💡 사냥에 어울리는 명조체 문구 */}
           <div className="text-white/90 font-serif font-black text-center tracking-[0.2em] leading-loose drop-shadow-[0_2px_10px_rgba(0,0,0,1)] text-base sm:text-base mb-10">
-            악의 던전이 움직인다,<br/>기사들이여 악을 정화하라...
+            악의 던전이 꿈틀거린다,<br/>기사들이여 가라!<br/>악을 정화하고 세상을 구하라..
           </div>
 
           <img 
