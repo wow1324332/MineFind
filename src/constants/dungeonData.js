@@ -56,7 +56,7 @@ export const DUNGEON_INFO = {
     buttonImg: '/dungeons/poison/hellofpoison-bt.webp',
     titleImg: '/dungeons/poison/hellofpoison-title.webp',
     loadingBg: '/dungeons/poison/hellofpoisonloading-bg.webp',
-    loadingMsg: "심연의 자욱한 독연\n극독의 대악마 ",
+    loadingMsg: "심연의 자욱한 독연\n극독의 대악마 벨리알'",
     loadingLogo: "/dungeons/poison/hellofpoison-bt.webp", // 💡 로고 경로 수정
     loadingOpacity: "opacity-70",
     winBg: '/dungeons/poison/hellofpoisonwin.webp',
