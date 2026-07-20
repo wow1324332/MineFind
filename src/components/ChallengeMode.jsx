@@ -17,8 +17,8 @@ export default function ChallengeMode({ onSelectBossRaid, onSelectTowerRaid, onB
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_20%,_#000000_100%)] pointer-events-none z-0"></div>
       
       {/* 💡 2. 양옆(좌/우) 그라데이션 (새로 추가됨!) */}
-      <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-black via-black/80 to-transparent pointer-events-none z-0"></div>
-      <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black via-black/80 to-transparent pointer-events-none z-0"></div>
+      <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-black/70 via-black/30 to-transparent pointer-events-none z-0"></div>
+      <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black/70 via-black/30 to-transparent pointer-events-none z-0"></div>
 
       {/* 3. 상단 그라데이션 */}
       <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-black via-black/80 to-transparent pointer-events-none z-0"></div>
