@@ -49,13 +49,16 @@ export default function ChallengeMode({ onSelectBossRaid, onSelectTowerRaid, onB
 
         {/* 2. 돌담 헤더 */}
         <div className="w-full max-w-sm h-12 mb-12 flex justify-between items-center relative z-10">
+          
+          {/* 💡 바로 이 부분! 헤더 하단에서부터 아래로 스르륵 퍼지는 짙은 블랙 그라데이션 */}
+          <div className="absolute top-full left-1/2 -translate-x-1/2 w-[100vw] h-24 bg-gradient-to-b from-black/90 via-black/50 to-transparent pointer-events-none -z-10"></div>
+
           <div 
             className="absolute top-0 w-[100vw] left-1/2 -translate-x-1/2 h-full bg-cover bg-center pointer-events-none -z-10"
             style={{ 
               backgroundImage: "url('/header/header-bg.webp')",
-              // 💡 헤더 하단이 배경과 훨씬 부드럽게 섞이도록 그라데이션 범위를(85% -> 60%) 조절했습니다!
-              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 60%, transparent 100%)',
-              maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 60%, transparent 100%)'
+              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
+              maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)'
             }}
           >
             <div className="absolute inset-0 bg-black/40"></div>
@@ -99,7 +102,7 @@ export default function ChallengeMode({ onSelectBossRaid, onSelectTowerRaid, onB
       </div>
 
       {/* 💡 챌린지 모드 선택 버튼 영역 */}
-      <div className="relative z-10 w-full max-w-[18rem] space-y-4 mt-4">
+      <div className="relative z-10 w-full max-w-[18rem] space-y-4 mt-5">
         
         {/* 1. 보스 레이드 (Boss Raid) 버튼 */}
         <button
