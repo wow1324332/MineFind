@@ -3,6 +3,38 @@ import React from 'react';
 import { DUNGEON_INFO } from '../constants/dungeonData'; 
 
 export default function LoadingScreen({ type, dungeonId }) {
+
+  // =========================================
+  // 💡 보스 레이드 진입 로딩 (새로 추가)
+  // =========================================
+  if (type === 'BOSS_RAID_LOADING') {
+    return (
+      <div className="fixed inset-0 z-[500] flex flex-col items-center justify-center bg-black select-none animate-[fadeInSmooth_0.5s_ease-in-out]">
+        <div className="absolute inset-0 bg-cover bg-center opacity-30" style={{ backgroundImage: "url('/bossraid/bossraid-bg.webp')" }}></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_10%,_#000000_100%)] pointer-events-none"></div>
+        <div className="relative z-10 flex flex-col items-center justify-center w-full px-6">
+          <style>{`
+            @keyframes mysticBreathe {
+              0%, 100% { transform: scale(1); opacity: 0.5; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
+              50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 25px rgba(255,255,255,0.9)); }
+            }
+          `}</style>
+          
+          <div className="text-red-500/90 font-serif font-black text-center tracking-[0.2em] leading-loose drop-shadow-[0_2px_10px_rgba(220,38,38,0.8)] text-base sm:text-lg mb-10">
+            태고의 악이 깨어났다...<br/>대악마를 마주하고 저지하라.
+          </div>
+
+          <img 
+            src="/loading-icon.webp" 
+            alt="Boss Raid Logo" 
+            className="w-28 h-auto object-contain"
+            style={{ animation: 'mysticBreathe 2.5s ease-in-out infinite' }}
+            draggable="false"
+          />
+        </div>
+      </div>
+    );
+  }
   
   // =========================================
   // 1️⃣ 챌린지 모드 진입 로딩
