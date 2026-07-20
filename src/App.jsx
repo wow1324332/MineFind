@@ -14,6 +14,7 @@ import { DUNGEON_INFO } from './constants/dungeonData';
 // 💡 보상 아이템의 아이콘과 이름을 가져오기 위해 도감 호출
 import { ITEM_DATABASE } from './constants/itemData';
 import UserProfileCard from './components/UserProfileCard';
+import ChallengeMode from './components/ChallengeMode';
 
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from './firebase'; // (파이어베이스 설정 파일 경로)
@@ -455,7 +456,40 @@ export default function App() {
               to { opacity: 1; }
             }
           `}</style>
-          <DevilMineMode hp={hpData.hp} onSelectPVE={handleSelectPVE} onBack={() => setCurrentScreen('HUNT_LIST')} onLogout={logout} />
+          <DevilMineMode 
+            hp={hpData.hp} 
+            onSelectPVE={handleSelectPVE} 
+            onBack={() => setCurrentScreen('HUNT_LIST')} 
+            onLogout={logout} 
+            // 💡 추가된 부분: 챌린지 버튼을 누르면 화면 상태를 'CHALLENGE_MODE'로 바꿉니다!
+            onSelectChallenge={() => setCurrentScreen('CHALLENGE_MODE')} 
+          />
+        </div>
+      );
+      break;
+
+    // =========================================
+    // 💡 새로 추가된 챌린지 모드 화면 라우팅
+    // =========================================
+    case 'CHALLENGE_MODE':
+      currentView = (
+        <div style={{ animation: 'fadeInMode 0.4s ease-in-out forwards' }}>
+          <ChallengeMode 
+            hp={hpData.hp}
+            // 뒤로가기 누르면 다시 데빌마인 선택 창으로 복귀!
+            onBack={() => setCurrentScreen('DEVIL_MINE_MODE')} 
+            onLogout={logout}
+            // 💡 임시 연결: 보스 레이드 클릭 시
+            onSelectBossRaid={() => {
+              console.log("보스 레이드 입장!");
+              // setCurrentScreen('BOSS_RAID'); // 나중에 보스레이드 화면 만들면 주석 해제
+            }}
+            // 💡 임시 연결: 타워 레이드 클릭 시
+            onSelectTowerRaid={() => {
+              console.log("타워 레이드 입장!");
+              // setCurrentScreen('TOWER_RAID'); // 나중에 타워레이드 화면 만들면 주석 해제
+            }}
+          />
         </div>
       );
       break;
