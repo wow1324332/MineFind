@@ -417,10 +417,14 @@ export default function App() {
   }
 
   // =========================================
-  // 💡 구형 로딩이 채가기 전에 커스텀 로딩(챌린지 & 헌팅) 먼저 띄우기!
+  // 💡 구형 로딩이 채가기 전에 모든 커스텀 로딩(챌린지, 헌팅, 개별 던전) 가로채기!
   // =========================================
-  if (currentScreen === 'CHALLENGE_LOADING' || currentScreen === 'DUNGEON_SELECT_LOADING') {
-    return <LoadingScreen type={currentScreen} />;
+  if (
+    currentScreen === 'CHALLENGE_LOADING' || 
+    currentScreen === 'DUNGEON_SELECT_LOADING' || 
+    currentScreen === 'DUNGEON_LOADING'
+  ) {
+    return <LoadingScreen type={currentScreen} dungeonId={currentDungeon} />;
   }
 
   if (currentScreen.endsWith('_LOADING')) {
