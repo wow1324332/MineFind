@@ -86,7 +86,7 @@ export const DUNGEON_INFO = {
     buttonImg: '/dungeons/agony/hellofagony-bt.webp',
     titleImg: '/dungeons/agony/hellofagony-title.webp',
     loadingBg: '/dungeons/agony/hellofagonyloading-bg.webp',
-    loadingMsg: "번놔의 심연으로 이동 중...",
+    loadingMsg: "번뇌와 나태의 지옥\n'타락한 대천사 루시퍼'",
     loadingLogo: "/dungeons/agony/hellofagony-bt.webp", // 💡 로고 경로 수정
     loadingOpacity: "opacity-70",
     winBg: '/dungeons/agony/hellofagonywin.webp',
