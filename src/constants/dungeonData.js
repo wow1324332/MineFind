@@ -226,3 +226,12 @@ export const DUNGEON_INFO = {
 };
 
 export const DIFFICULTIES = ['Easy', 'Normal', 'Hard', 'Expert', 'Hell'];
+
+export const BOSS_DUNGEON_INFO = {
+  hell_of_flame: {
+    loadingMsg: "작열하는 지옥의 심장부...\n화염의 군주가 눈을 뜹니다.",
+    loadingBg: "/bossraid/hellofflame-loading.webp",
+    boardBg: "/bossraid/hellofflame-bg.webp",
+    titleImg: "/bossraid/hellofflame-title.webp",
+  }
+};
