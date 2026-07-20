@@ -17,6 +17,7 @@ import UserProfileCard from './components/UserProfileCard';
 import ChallengeMode from './components/ChallengeMode';
 import LoadingScreen from './components/LoadingScreen';
 import BossRaid from './components/BossRaid';
+import BossDungeon from './components/BossDungeon';
 
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from './firebase'; // (파이어베이스 설정 파일 경로)
@@ -77,6 +78,7 @@ export default function App() {
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [currentScreen, setCurrentScreen] = useState('HUNT_LIST_LOADING');
   const [currentDungeon, setCurrentDungeon] = useState('fire');
+  const [currentBossDungeon, setCurrentBossDungeon] = useState('hell_of_flame');
   const [currentDifficulty, setCurrentDifficulty] = useState('Normal');
   const [showExitPopup, setShowExitPopup] = useState(false);
 
@@ -424,7 +426,8 @@ export default function App() {
     currentScreen === 'CHALLENGE_LOADING' || 
     currentScreen === 'DUNGEON_SELECT_LOADING' || 
     currentScreen === 'DUNGEON_LOADING' ||
-    currentScreen === 'BOSS_RAID_LOADING'
+    currentScreen === 'BOSS_RAID_LOADING' ||
+    currentScreen === 'BOSS_DUNGEON_LOADING'
   ) {
     return <LoadingScreen type={currentScreen} dungeonId={currentDungeon} />;
   }
@@ -530,10 +533,24 @@ export default function App() {
             hp={hpData.hp}
             onBack={() => setCurrentScreen('CHALLENGE_MODE')} 
             onLogout={logout}
-            onSelectBoss={(bossId) => {
-              console.log(`${bossId} 보스 선택됨!`);
-              // 나중에 실제 보스 전투 화면으로 넘기는 로직 추가
+            onSelectBoss={(id) => {
+              setCurrentBossDungeon(id); // 예: 'hell_of_flame'
+              setCurrentScreen('BOSS_DUNGEON_LOADING');
+              setTimeout(() => setCurrentScreen('BOSS_DUNGEON'), 2000);
             }}
+          />
+        </div>
+      );
+      break;
+
+    case 'BOSS_DUNGEON':
+      currentView = (
+        <div style={{ animation: 'fadeInSmooth 0.8s ease-in-out forwards' }}>
+          <BossDungeon 
+            hp={hpData.hp}
+            bossId={currentBossDungeon} 
+            onBack={() => setCurrentScreen('BOSS_RAID')} 
+            onLogout={logout}
           />
         </div>
       );
