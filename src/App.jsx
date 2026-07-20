@@ -476,8 +476,8 @@ export default function App() {
             onSelectPVE={handleSelectPVE} 
             onBack={() => setCurrentScreen('HUNT_LIST')} 
             onLogout={logout} 
-            // 💡 추가된 부분: 챌린지 버튼을 누르면 화면 상태를 'CHALLENGE_MODE'로 바꿉니다!
-            onSelectChallenge={() => setCurrentScreen('CHALLENGE_MODE')} 
+            // 💡 즉시 넘기지 않고 로딩 함수를 타도록 수정!
+            onSelectChallenge={handleSelectChallenge} 
           />
         </div>
       );
