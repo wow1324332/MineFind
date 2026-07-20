@@ -52,7 +52,7 @@ const SPLASH_CONFIG = {
   // 💡 여기에 챌린지 모드 진입용 로딩 설정 추가!
   CHALLENGE_LOADING: {
     message: "보스의 방 개방 중...",
-    logoSrc: "/challenge/challenge-title.webp", // 로딩 중앙에 챌린지 타이틀 띄우기
+    logoSrc: "/devilminemode/challenge-bt.webp", // 로딩 중앙에 챌린지 타이틀 띄우기
     bgSrc: "/challenge/challenge-bg.webp",      // 배경은 챌린지 배경 사용
     bgOpacity: "opacity-70",
     disablePulse: true,
