@@ -7,7 +7,7 @@ export const DUNGEON_INFO = {
     buttonImg: '/dungeons/fire/hellofflame-bt.webp',
     titleImg: '/dungeons/fire/hellofflame-title.webp',
     loadingBg: '/dungeons/fire/hellofflameloading-bg.webp',
-    loadingMsg: "지옥의 겁화속\n화염의 대악마 메피스토...",
+    loadingMsg: "영원히 타오르는 지옥의 겁화\n'화염의 대악마 메피스토'",
     loadingLogo: "/dungeons/fire/hellofflame-bt.webp",
     loadingOpacity: "opacity-70",
     winBg: '/dungeons/fire/hellofflamewin.webp',
