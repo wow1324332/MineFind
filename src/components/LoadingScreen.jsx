@@ -20,7 +20,7 @@ export default function LoadingScreen({ type, dungeonId }) {
         {/* 딥 다크 비네팅 */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_10%,_#000000_100%)] pointer-events-none"></div>
 
-        {/* 중앙 컨텐츠 (로고 & 서사 문구) */}
+{/* 중앙 컨텐츠 (서사 문구 & 로고) */}
         <div className="relative z-10 flex flex-col items-center justify-center w-full px-6">
           <style>{`
             @keyframes mysticBreathe {
@@ -29,17 +29,19 @@ export default function LoadingScreen({ type, dungeonId }) {
             }
           `}</style>
           
+          {/* 1. 서사적인 명조체 문구 (위로 배치 및 아래 간격 mb-10 추가) */}
+          <div className="text-white/90 font-serif font-black text-center tracking-[0.2em] leading-loose drop-shadow-[0_2px_10px_rgba(0,0,0,1)] text-sm sm:text-base mb-10">
+            "악마성에 도전하고<br/>더 높은 곳을 향해 나아가리라..."
+          </div>
+
+          {/* 2. 첨부해주신 로고 (크기를 w-36 -> w-28로 줄이고 아래로 배치) */}
           <img 
             src="/loading-icon.webp" 
             alt="Challenge Mystic Logo" 
-            className="w-36 h-auto object-contain mb-10"
+            className="w-28 h-auto object-contain"
             style={{ animation: 'mysticBreathe 2.5s ease-in-out infinite' }}
             draggable="false"
           />
-
-          <div className="text-white/90 font-serif font-black text-center tracking-[0.2em] leading-loose drop-shadow-[0_2px_5px_rgba(0,0,0,1)] text-sm sm:text-base">
-            "악마성에 도전하고<br/>더 높은 곳을 향해 나아가리라..."
-          </div>
         </div>
       </div>
     );
