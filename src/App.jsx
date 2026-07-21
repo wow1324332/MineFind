@@ -78,7 +78,7 @@ export default function App() {
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [currentScreen, setCurrentScreen] = useState('HUNT_LIST_LOADING');
   const [currentDungeon, setCurrentDungeon] = useState('fire');
-  const [currentBossDungeon, setCurrentBossDungeon] = useState('hell_of_flame');
+  const [currentBossDungeon, setCurrentBossDungeon] = useState('fire'); // 💡 'hell_of_flame'을 'fire'로 수정!
   const [currentDifficulty, setCurrentDifficulty] = useState('Normal');
   const [showExitPopup, setShowExitPopup] = useState(false);
 
