@@ -637,23 +637,23 @@ export default function MyPage({ onBack, onKnights, hp }) {
       )} {/* 💡 복구 완료: 인벤토리 모달을 닫아주는 괄호입니다! */}
 
       =========================================
-      🔍 아이템 상세 팝업 모달
-      =========================================
+{/* ========================================= */}
+      {/* 🔍 아이템 상세 팝업 모달 */}
+      {/* ========================================= */}
       {selectedItemDetail && (
         <div 
           className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-[fadeIn_0.2s_ease-out] select-none"
           style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none', WebkitTapHighlightColor: 'transparent' }}
           onClick={() => setSelectedItemDetail(null)} 
         >
-          {/* 💡 1. 팝업과 버튼을 묶어주는 껍데기 추가 (relative 부여, 클릭 방지 이동) */}
+          {/* 💡 새로 씌운 껍데기 (이 녀석의 닫는 괄호가 빠져서 에러가 났습니다) */}
           <div className="relative w-full max-w-[280px]" onClick={(e) => e.stopPropagation()}>
             
-            {/* ✨ 2. SELL 텍스트 버튼 (모달 우측 상단 바깥쪽으로 배치) */}
+            {/* ✨ SELL 버튼 */}
             <button 
               onClick={() => {
                 const sellAmount = selectedItemDetail.sellPrice || 0;
                 if (window.confirm(`[${selectedItemDetail.name}] 아이템을 ${sellAmount}G에 판매하시겠습니까?`)) {
-                  // TODO: 파이어베이스 아이템 차감 및 골드 증가 로직 작성
                   console.log("판매 로직 실행 대기중!");
                 }
               }}
@@ -663,50 +663,52 @@ export default function MyPage({ onBack, onKnights, hp }) {
               SELL
             </button>
 
-            {/* 💡 3. 기존 50:50 분할 모달 컨테이너 (w-full max-w-[280px]와 onClick은 위 껍데기로 옮겼습니다) */}
+            {/* 기존 50:50 분할 모달 컨테이너 */}
             <div className="w-full aspect-[4/5] flex flex-col bg-transparent shadow-[0_10px_40px_rgba(0,0,0,0.9)] rounded-lg overflow-hidden">
-              {/* 👑 상단 50%: 아이템 이미지 영역 (은은한 그라데이션) */}
-            <div className="flex-1 relative flex justify-center items-center bg-gradient-to-b from-[#2a1a10] to-[#1a1008]">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_100%)] opacity-80 pointer-events-none"></div>
               
-              <div className="relative z-10 w-24 h-24 flex items-center justify-center">
-                {selectedItemDetail.icon.startsWith('/') ? (
-                  <img 
-                    src={selectedItemDetail.icon} 
-                    alt={selectedItemDetail.name} 
-                    className="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(255,255,255,0.15)] animate-pulse" 
-                    draggable="false" 
-                  />
-                ) : (
-                  <span className="text-6xl drop-shadow-[0_0_20px_rgba(255,255,255,0.15)] select-none animate-pulse">
-                    {selectedItemDetail.icon}
-                  </span>
-                )}
+              {/* 👑 상단 50%: 아이템 이미지 영역 */}
+              <div className="flex-1 relative flex justify-center items-center bg-gradient-to-b from-[#2a1a10] to-[#1a1008]">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_100%)] opacity-80 pointer-events-none"></div>
+                
+                <div className="relative z-10 w-24 h-24 flex items-center justify-center">
+                  {selectedItemDetail.icon.startsWith('/') ? (
+                    <img 
+                      src={selectedItemDetail.icon} 
+                      alt={selectedItemDetail.name} 
+                      className="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(255,255,255,0.15)] animate-pulse" 
+                      draggable="false" 
+                    />
+                  ) : (
+                    <span className="text-6xl drop-shadow-[0_0_20px_rgba(255,255,255,0.15)] select-none animate-pulse">
+                      {selectedItemDetail.icon}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* 📜 하단 50%: 아이템 설명 영역 */}
+              <div className="flex-1 bg-[#150d08] p-5 flex flex-col items-center text-center relative border-t border-[#a6845c]/30">
+                <span className="text-[#f5d5a9] font-serif font-black text-lg tracking-widest drop-shadow-md mb-1.5 uppercase leading-tight">
+                  {selectedItemDetail.name}
+                </span>
+                
+                <span className={`text-[9px] font-bold tracking-widest mb-3 px-2 py-0.5 rounded-sm border uppercase ${getRarityColor(selectedItemDetail.rarity)} bg-black/40`}>
+                  {selectedItemDetail.rarity || 'normal'}
+                </span>
+                
+                <p className="text-[#d8b486] text-[11px] font-medium leading-relaxed break-keep mt-1 opacity-90">
+                  {selectedItemDetail.desc || selectedItemDetail.description || "설명이 존재하지 않습니다."}
+                </p>
+                
+                {/* 하단 가격표 */}
+                <div className="mt-auto flex items-center gap-2 opacity-80 pt-4 border-t border-dashed border-[#5c3e23]/50 w-full justify-center">
+                  <span className="text-[#a6845c] text-[9px] font-bold tracking-widest uppercase">Sell Price</span>
+                  <span className="text-yellow-500 font-black text-[11px]">{selectedItemDetail.sellPrice || 0} G</span>
+                </div>
               </div>
             </div>
 
-            {/* 📜 하단 50%: 아이템 설명 영역 */}
-            <div className="flex-1 bg-[#150d08] p-5 flex flex-col items-center text-center relative border-t border-[#a6845c]/30">
-              <span className="text-[#f5d5a9] font-serif font-black text-lg tracking-widest drop-shadow-md mb-1.5 uppercase leading-tight">
-                {selectedItemDetail.name}
-              </span>
-              
-              <span className={`text-[9px] font-bold tracking-widest mb-3 px-2 py-0.5 rounded-sm border uppercase ${getRarityColor(selectedItemDetail.rarity)} bg-black/40`}>
-                {selectedItemDetail.rarity || 'normal'}
-              </span>
-              
-              <p className="text-[#d8b486] text-[11px] font-medium leading-relaxed break-keep mt-1 opacity-90">
-                {/* 💡 포션류의 description과 일반템의 desc를 모두 커버합니다 */}
-                {selectedItemDetail.desc || selectedItemDetail.description || "설명이 존재하지 않습니다."}
-              </p>
-              
-              {/* 하단 가격표 (sellPrice가 없는 포션 등은 0G로 출력) */}
-              <div className="mt-auto flex items-center gap-2 opacity-80 pt-4 border-t border-dashed border-[#5c3e23]/50 w-full justify-center">
-                <span className="text-[#a6845c] text-[9px] font-bold tracking-widest uppercase">Sell Price</span>
-                <span className="text-yellow-500 font-black text-[11px]">{selectedItemDetail.sellPrice || 0} G</span>
-              </div>
-            </div>
-          </div>
+          </div> {/* 💡 누락되었던 닫는 껍데기 태그 복구 완료 */}
         </div>
       )}
 
