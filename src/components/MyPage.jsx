@@ -648,7 +648,7 @@ export default function MyPage({ onBack, onKnights, hp }) {
           {/* 💡 새로 씌운 껍데기 (이 녀석의 닫는 괄호가 빠져서 에러가 났습니다) */}
           <div className="relative w-full max-w-[280px]" onClick={(e) => e.stopPropagation()}>
             
-            {/* ✨ SELL 버튼 */}
+          {/* ✨ SELL 버튼 (색상, 폰트, 사이즈 수정 완료) */}
             <button 
               onClick={() => {
                 const sellAmount = selectedItemDetail.sellPrice || 0;
@@ -656,7 +656,7 @@ export default function MyPage({ onBack, onKnights, hp }) {
                   console.log("판매 로직 실행 대기중!");
                 }
               }}
-              className="absolute -top-8 -right-2 z-20 text-yellow-500 font-serif font-black text-base tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,1)] hover:text-yellow-300 hover:scale-105 active:scale-95 transition-all outline-none"
+              className="absolute -top-6 -right-1 z-20 text-[#a6845c] text-[11px] font-bold tracking-widest uppercase drop-shadow-md hover:text-[#d8b486] hover:scale-105 active:scale-95 transition-all outline-none"
               style={{ WebkitTapHighlightColor: 'transparent' }}
             >
               SELL
