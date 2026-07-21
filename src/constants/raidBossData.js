@@ -16,7 +16,7 @@ export const RAID_BOSS_DATABASE = {
     stats: {
       hp: 2500,           // 보스 현재 체력
       maxHp: 2500,        // 보스 최대 체력
-      minAtk: 150,         // 최소 평타 공격력
+      minAtk: 250,         // 최소 평타 공격력
       maxAtk: 350,         // 최대 평타 공격력
       defense: 40,         // 보스 방어력
       spd: 30,             // 턴 속도 판정용 민첩
