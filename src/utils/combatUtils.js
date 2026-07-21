@@ -16,7 +16,7 @@ const DISADVANTAGE_MAP = {
   'poison': 'ice',
   'cure': 'poison',
   'void': 'cure',
-  'light': 'void',
+  'light': 'vain',
   'water': 'light'
 };
 
