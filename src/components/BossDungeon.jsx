@@ -57,7 +57,7 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId }) {
           className="w-full relative group transition-all duration-200 active:scale-[0.98] select-none" 
           style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
         >
-          <div className="relative w-full aspect-[4/1] bg-black/60 rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.8)] flex items-center justify-between px-4 border border-red-900/30">
+          <div className="relative w-full aspect-[4/1] bg-black/60 rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.8)] flex items-center justify-between px-4">
             
             {/* 💡 핵심 포인트: backgroundPosition: "center 20%"로 이미지 상단의 얼굴과 뿔이 정확히 앵글에 잡히도록 크롭했습니다. */}
             <div 
@@ -74,7 +74,7 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId }) {
             {/* 텍스트 영역 */}
             <div className="relative z-10 flex flex-col text-left">
               <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest drop-shadow-md">Hell of Flame</span>
-              <span className="text-xl font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,1)] tracking-widest font-serif mt-0.5">단탈리온</span>
+              <span className="text-xl font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,1)] tracking-widest font-serif mt-0.5">Dantalion</span>
             </div>
             
             {/* 눈동자 로고 아이콘 */}
