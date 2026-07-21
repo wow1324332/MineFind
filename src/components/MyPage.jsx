@@ -648,12 +648,52 @@ export default function MyPage({ onBack, onKnights, hp }) {
           {/* 💡 새로 씌운 껍데기 (이 녀석의 닫는 괄호가 빠져서 에러가 났습니다) */}
           <div className="relative w-full max-w-[280px]" onClick={(e) => e.stopPropagation()}>
             
-          {/* ✨ SELL 버튼 (색상, 폰트, 사이즈 수정 완료) */}
+          {/* ✨ SELL 버튼 (실제 판매 로직 적용 완료) */}
             <button 
-              onClick={() => {
+              onClick={async () => {
+                if (!user) return;
                 const sellAmount = selectedItemDetail.sellPrice || 0;
-                if (window.confirm(`[${selectedItemDetail.name}] 아이템을 ${sellAmount}G에 판매하시겠습니까?`)) {
-                  console.log("판매 로직 실행 대기중!");
+                
+                // 💡 아이템 ID 찾기 방어 코드 (도감의 key값 매칭)
+                const itemId = selectedItemDetail.id || Object.keys(ITEM_DATABASE).find(key => ITEM_DATABASE[key].name === selectedItemDetail.name);
+                
+                if (!itemId) {
+                  alert("아이템 정보를 찾을 수 없습니다.");
+                  return;
+                }
+
+                if (window.confirm(`[${selectedItemDetail.name}] 1개를 ${sellAmount}G에 판매하시겠습니까?`)) {
+                  try {
+                    // 1. 현재 인벤토리 깊은 복사
+                    const newItems = { ...inventory.items };
+                    
+                    // 2. 아이템 수량 1개 차감
+                    if (newItems[itemId] > 0) {
+                      newItems[itemId] -= 1;
+                    } else {
+                      alert("아이템이 부족합니다.");
+                      return;
+                    }
+
+                    // 3. 골드 증가 계산
+                    const newGold = (inventory.gold || 0) + sellAmount;
+                    const updatedInventory = { ...inventory, gold: newGold, items: newItems };
+
+                    // 4. 파이어베이스 DB 업데이트 (덮어쓰기)
+                    const userDocRef = doc(db, 'users', user.uid);
+                    await setDoc(userDocRef, { inventory: updatedInventory }, { merge: true });
+
+                    // 5. 로컬 상태(내 화면) 즉시 반영
+                    setInventory(updatedInventory);
+                    
+                    // 6. 성공 알림 및 상세 팝업 닫기
+                    alert(`판매 완료! ${sellAmount}G를 획득했습니다.`);
+                    setSelectedItemDetail(null);
+
+                  } catch (error) {
+                    console.error("아이템 판매 실패:", error);
+                    alert("판매 처리 중 오류가 발생했습니다.");
+                  }
                 }
               }}
               className="absolute -top-6 -right-1 z-20 text-[#a6845c] text-[11px] font-bold tracking-widest uppercase drop-shadow-md hover:text-[#d8b486] hover:scale-105 active:scale-95 transition-all outline-none"
