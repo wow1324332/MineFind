@@ -103,3 +103,78 @@ export const getAllElementsBP = (knights) => {
   // 예: { water: 5000, fire: 6500, light: 4200 ... } 형태로 반환됩니다.
   return bpAnalysis;
 };
+
+// ========================================================
+// ⚔️ 레이드 전투 (턴제 데미지 교환) 핵심 연산 공식
+// ========================================================
+
+// 6️⃣ 명중/회피 판정 (주사위를 굴려 회피율보다 높아야 명중)
+export const checkHit = (evasionRate) => {
+  const roll = Math.random() * 100;
+  return roll > evasionRate; 
+};
+
+// 7️⃣ 크리티컬 판정 (주사위를 굴려 크리율 이하여야 발동)
+export const checkCritical = (critRate) => {
+  const roll = Math.random() * 100;
+  return roll <= critRate; 
+};
+
+// 8️⃣ 최소/최대 공격력 사이의 랜덤 타격력 생성
+export const getRandomAttackPower = (minAtk, maxAtk) => {
+  return Math.floor(Math.random() * (maxAtk - minAtk + 1)) + minAtk;
+};
+
+// 9️⃣ 방어력 % 감소 공식 (LoL, 워크래프트 등에서 쓰이는 점감 공식)
+// 방어력이 높아질수록 깎아내는 %가 늘어나지만, 절대 100% 방어는 불가능하게 만듦
+export const calculateDamageMitigation = (attackDamage, defense) => {
+  // 방어력 100일 때 데미지 50% 감소, 방어력 300일 때 75% 감소
+  const mitigationRate = defense / (defense + 100); 
+  const finalDamage = attackDamage * (1 - mitigationRate);
+  
+  // 방어력이 아무리 높아도 최소 10%의 데미지는 무조건 들어가게 (관통 데미지)
+  const minDamage = attackDamage * 0.1;
+  return Math.floor(Math.max(finalDamage, minDamage));
+};
+
+// 🔟 최종 전투 턴 데미지 연산 (기사단이 때릴 때 & 보스가 때릴 때 완벽 공용)
+export const calculateTurnDamage = (attacker, defender, isAttackerKnight = true) => {
+  
+  // 1. 회피 판정
+  const isHit = checkHit(defender.evasionRate || 0);
+  if (!isHit) {
+    return { damage: 0, isCrit: false, isMiss: true };
+  }
+
+  // 2. 공격력 산출
+  let atkPower = 0;
+  if (attacker.minAtk !== undefined && attacker.maxAtk !== undefined) {
+    // 보스의 경우 (minAtk ~ maxAtk 사이 랜덤)
+    atkPower = getRandomAttackPower(attacker.minAtk, attacker.maxAtk);
+  } else {
+    // 기사단의 경우 (총공격력 baseAttackPower 기준 ±10% 변동폭 부여)
+    const baseAtk = attacker.baseAttackPower || 0;
+    const min = Math.floor(baseAtk * 0.9);
+    const max = Math.floor(baseAtk * 1.1);
+    atkPower = getRandomAttackPower(min, max);
+  }
+
+  // 3. 속성 상성 적용 (기사단이 때릴 때만 적용하거나, 원한다면 쌍방 적용)
+  if (isAttackerKnight && defender.element) {
+    // 기사단은 여러 명이라 속성이 섞여있으므로, combatUtils에 있던 calculateEffectiveBP를 활용해
+    // 아예 처음부터 속성이 반영된 총공격력을 넘겨받는 것이 효율적입니다.
+    // 여기서는 1.0(기본값)으로 처리하고 컴포넌트단에서 적용하는 것을 권장합니다.
+  }
+
+  // 4. 방어력 계산 적용 (단순 빼기가 아닌 % 방어 공식)
+  let finalDamage = calculateDamageMitigation(atkPower, defender.defense || 0);
+
+  // 5. 크리티컬 판정 및 배율 적용
+  const isCrit = checkCritical(attacker.critRate || 0);
+  if (isCrit) {
+    const critMultiplier = attacker.critDmg || 1.5; // 보스 크리배율이 없으면 기본 1.5배
+    finalDamage = Math.floor(finalDamage * critMultiplier);
+  }
+
+  return { damage: finalDamage, isCrit, isMiss: false };
+};
