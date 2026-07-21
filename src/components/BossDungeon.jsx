@@ -1,20 +1,19 @@
 import React from 'react';
-import { DUNGEON_INFO } from '../constants/dungeonData'; // 💡 원본 던전 데이터 사용
+import { DUNGEON_INFO } from '../constants/dungeonData'; 
 
 export default function BossDungeon({ hp, onBack, onLogout, bossId }) {
-  // bossId('fire')를 받아 기존 Hell of Flame 던전 정보와 100% 동일한 배경과 타이틀을 불러옵니다.
   const dungeon = DUNGEON_INFO[bossId]; 
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-start bg-black text-white pt-6 px-4 select-none touch-manipulation">
       
-      {/* 1️⃣ 배경 & 그라데이션 (기존 게임 진행 화면과 동일) */}
+      {/* 1️⃣ 배경 & 그라데이션 */}
       <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 z-0" style={{ backgroundImage: `url('${dungeon?.boardBg}')` }}></div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_20%,_#000000_100%)] pointer-events-none z-0"></div>
       <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-black via-black/80 to-transparent pointer-events-none z-0"></div>
       <div className="absolute bottom-0 inset-x-0 h-48 bg-gradient-to-t from-black via-black/90 to-transparent pointer-events-none z-0"></div>
 
-      {/* 2️⃣ 상단 타이틀 (기존 게임 진행 화면과 동일) */}
+      {/* 2️⃣ 상단 타이틀 */}
       <div className="w-full max-w-sm flex justify-center relative z-10 mb-2">
         <div className="w-full" style={{ WebkitMaskImage: 'linear-gradient(to bottom, black 65%, transparent 100%)', maskImage: 'linear-gradient(to bottom, black 65%, transparent 100%)' }}>
           <img src={dungeon?.titleImg} alt="Title" className="w-full h-auto object-contain drop-shadow-[0_0_20px_rgba(220,38,38,0.5)] block" draggable="false" />
@@ -40,9 +39,52 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId }) {
         </button>
       </div>
 
-      {/* 4️⃣ 추후 사용될 빈 껍데기 공간 */}
-      <div className="relative z-10 w-full max-w-sm flex-1 flex items-center justify-center">
-        <span className="text-white/20 tracking-widest font-serif text-sm">보스 리스트 대기중...</span>
+      {/* 4️⃣ 세부 보스 선택 리스트 (단탈리온 추가!) */}
+      <div 
+        className="relative z-10 w-full max-w-sm flex-1 overflow-y-auto pb-10 space-y-4 px-2 pt-4" 
+        style={{ 
+          scrollbarWidth: 'none', 
+          msOverflowStyle: 'none', 
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)', 
+          maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)' 
+        }}
+      >
+        <style>{`::-webkit-scrollbar { display: none; }`}</style>
+        
+        {/* 🔥 단탈리온 버튼 */}
+        <button 
+          onClick={() => console.log('단탈리온 전투 진입 대기!')} 
+          className="w-full relative group transition-all duration-200 active:scale-[0.98] select-none" 
+          style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+        >
+          <div className="relative w-full aspect-[4/1] bg-black/60 rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.8)] flex items-center justify-between px-4 border border-red-900/30">
+            
+            {/* 💡 핵심 포인트: backgroundPosition: "center 20%"로 이미지 상단의 얼굴과 뿔이 정확히 앵글에 잡히도록 크롭했습니다. */}
+            <div 
+              className="absolute inset-0 bg-cover opacity-60 group-hover:opacity-90 transition-opacity duration-300" 
+              style={{ 
+                backgroundImage: "url('/bossraid/raidboss-dantalion.webp')",
+                backgroundPosition: "center 20%" 
+              }}
+            ></div>
+            
+            {/* 가독성을 위한 검은색 그라데이션 (왼쪽을 짙게) */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
+            
+            {/* 텍스트 영역 */}
+            <div className="relative z-10 flex flex-col text-left">
+              <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest drop-shadow-md">Hell of Flame</span>
+              <span className="text-xl font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,1)] tracking-widest font-serif mt-0.5">단탈리온</span>
+            </div>
+            
+            {/* 눈동자 로고 아이콘 */}
+            <div className="relative z-10 w-12 h-12 flex items-center justify-center drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
+              <img src="/loading-icon.webp" alt="Enter" className="w-full h-full object-contain opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" draggable="false"/>
+            </div>
+
+          </div>
+        </button>
+
       </div>
 
     </div>
