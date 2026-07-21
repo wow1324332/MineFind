@@ -5,7 +5,7 @@ const ADVANTAGE_MAP = {
   'fire': 'ice',
   'ice': 'poison',
   'poison': 'cure',
-  'cure': 'void',
+  'cure': 'vain',
   'void': 'light',
   'light': 'water'
 };
