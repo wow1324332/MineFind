@@ -636,21 +636,36 @@ export default function MyPage({ onBack, onKnights, hp }) {
         </div>
       )} {/* 💡 복구 완료: 인벤토리 모달을 닫아주는 괄호입니다! */}
 
-      {/* ========================================= */}
-      {/* 🔍 아이템 상세 팝업 모달 */}
-      {/* ========================================= */}
+      =========================================
+      🔍 아이템 상세 팝업 모달
+      =========================================
       {selectedItemDetail && (
         <div 
           className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-[fadeIn_0.2s_ease-out] select-none"
           style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none', WebkitTapHighlightColor: 'transparent' }}
           onClick={() => setSelectedItemDetail(null)} 
         >
-          {/* 테두리 없는 50:50 분할 모달 컨테이너 (안쪽 터치 시 닫힘 방지) */}
-          <div 
-            className="w-full max-w-[280px] aspect-[4/5] flex flex-col bg-transparent shadow-[0_10px_40px_rgba(0,0,0,0.9)] rounded-lg overflow-hidden"
-            onClick={(e) => e.stopPropagation()} 
-          >
-            {/* 👑 상단 50%: 아이템 이미지 영역 (은은한 그라데이션) */}
+          {/* 💡 1. 팝업과 버튼을 묶어주는 껍데기 추가 (relative 부여, 클릭 방지 이동) */}
+          <div className="relative w-full max-w-[280px]" onClick={(e) => e.stopPropagation()}>
+            
+            {/* ✨ 2. SELL 텍스트 버튼 (모달 우측 상단 바깥쪽으로 배치) */}
+            <button 
+              onClick={() => {
+                const sellAmount = selectedItemDetail.sellPrice || 0;
+                if (window.confirm(`[${selectedItemDetail.name}] 아이템을 ${sellAmount}G에 판매하시겠습니까?`)) {
+                  // TODO: 파이어베이스 아이템 차감 및 골드 증가 로직 작성
+                  console.log("판매 로직 실행 대기중!");
+                }
+              }}
+              className="absolute -top-8 -right-2 z-20 text-yellow-500 font-serif font-black text-xl tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,1)] hover:text-yellow-300 hover:scale-105 active:scale-95 transition-all outline-none"
+              style={{ WebkitTapHighlightColor: 'transparent' }}
+            >
+              SELL
+            </button>
+
+            {/* 💡 3. 기존 50:50 분할 모달 컨테이너 (w-full max-w-[280px]와 onClick은 위 껍데기로 옮겼습니다) */}
+            <div className="w-full aspect-[4/5] flex flex-col bg-transparent shadow-[0_10px_40px_rgba(0,0,0,0.9)] rounded-lg overflow-hidden">
+              {/* 👑 상단 50%: 아이템 이미지 영역 (은은한 그라데이션) */}
             <div className="flex-1 relative flex justify-center items-center bg-gradient-to-b from-[#2a1a10] to-[#1a1008]">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_100%)] opacity-80 pointer-events-none"></div>
               
