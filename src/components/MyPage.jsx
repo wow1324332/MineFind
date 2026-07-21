@@ -21,6 +21,8 @@ export default function MyPage({ onBack, onKnights, hp }) {
   const [isInventoryOpen, setIsInventoryOpen] = useState(false); 
   const [selectedItemDetail, setSelectedItemDetail] = useState(null);
   const [activeTab, setActiveTab] = useState('profile'); 
+  const [isSellModalOpen, setIsSellModalOpen] = useState(false);
+  const [sellQuantity, setSellQuantity] = useState(1);
 
   const [isEditingNickname, setIsEditingNickname] = useState(false);
   const [isSelectAvatarOpen, setIsSelectAvatarOpen] = useState(false);
@@ -132,6 +134,46 @@ export default function MyPage({ onBack, onKnights, hp }) {
       setAvatarUrl(src);
     } catch (error) {
       console.error("아바타 저장 실패:", error);
+    }
+  };
+
+  // 💡 다중 수량 판매 처리 로직
+  const handleSellConfirm = async () => {
+    if (!user || !selectedItemDetail) return;
+    
+    const unitPrice = selectedItemDetail.sellPrice || 0;
+    const totalEarned = unitPrice * sellQuantity;
+    const itemId = selectedItemDetail.id || Object.keys(ITEM_DATABASE).find(key => ITEM_DATABASE[key].name === selectedItemDetail.name);
+    
+    if (!itemId) {
+      alert("아이템 정보를 찾을 수 없습니다.");
+      return;
+    }
+
+    try {
+      const newItems = { ...inventory.items };
+      
+      if (newItems[itemId] >= sellQuantity) {
+        newItems[itemId] -= sellQuantity;
+      } else {
+        alert("아이템이 부족합니다.");
+        return;
+      }
+
+      const newGold = (inventory.gold || 0) + totalEarned;
+      const updatedInventory = { ...inventory, gold: newGold, items: newItems };
+
+      const userDocRef = doc(db, 'users', user.uid);
+      await setDoc(userDocRef, { inventory: updatedInventory }, { merge: true });
+
+      setInventory(updatedInventory);
+      
+      // 모달 전부 닫기 및 초기화
+      setIsSellModalOpen(false);
+      setSelectedItemDetail(null);
+    } catch (error) {
+      console.error("아이템 판매 실패:", error);
+      alert("판매 처리 중 오류가 발생했습니다.");
     }
   };
 
@@ -648,53 +690,11 @@ export default function MyPage({ onBack, onKnights, hp }) {
           {/* 💡 새로 씌운 껍데기 (이 녀석의 닫는 괄호가 빠져서 에러가 났습니다) */}
           <div className="relative w-full max-w-[280px]" onClick={(e) => e.stopPropagation()}>
             
-          {/* ✨ SELL 버튼 (실제 판매 로직 적용 완료) */}
+          {/* ✨ SELL 버튼 (수량 조절 팝업 띄우기) */}
             <button 
-              onClick={async () => {
-                if (!user) return;
-                const sellAmount = selectedItemDetail.sellPrice || 0;
-                
-                // 💡 아이템 ID 찾기 방어 코드 (도감의 key값 매칭)
-                const itemId = selectedItemDetail.id || Object.keys(ITEM_DATABASE).find(key => ITEM_DATABASE[key].name === selectedItemDetail.name);
-                
-                if (!itemId) {
-                  alert("아이템 정보를 찾을 수 없습니다.");
-                  return;
-                }
-
-                if (window.confirm(`[${selectedItemDetail.name}] 1개를 ${sellAmount}G에 판매하시겠습니까?`)) {
-                  try {
-                    // 1. 현재 인벤토리 깊은 복사
-                    const newItems = { ...inventory.items };
-                    
-                    // 2. 아이템 수량 1개 차감
-                    if (newItems[itemId] > 0) {
-                      newItems[itemId] -= 1;
-                    } else {
-                      alert("아이템이 부족합니다.");
-                      return;
-                    }
-
-                    // 3. 골드 증가 계산
-                    const newGold = (inventory.gold || 0) + sellAmount;
-                    const updatedInventory = { ...inventory, gold: newGold, items: newItems };
-
-                    // 4. 파이어베이스 DB 업데이트 (덮어쓰기)
-                    const userDocRef = doc(db, 'users', user.uid);
-                    await setDoc(userDocRef, { inventory: updatedInventory }, { merge: true });
-
-                    // 5. 로컬 상태(내 화면) 즉시 반영
-                    setInventory(updatedInventory);
-                    
-                    // 6. 성공 알림 및 상세 팝업 닫기
-                    alert(`판매 완료! ${sellAmount}G를 획득했습니다.`);
-                    setSelectedItemDetail(null);
-
-                  } catch (error) {
-                    console.error("아이템 판매 실패:", error);
-                    alert("판매 처리 중 오류가 발생했습니다.");
-                  }
-                }
+              onClick={() => {
+                setSellQuantity(1);
+                setIsSellModalOpen(true);
               }}
               className="absolute -top-6 -right-1 z-20 text-[#a6845c] text-[11px] font-bold tracking-widest uppercase drop-shadow-md hover:text-[#d8b486] hover:scale-105 active:scale-95 transition-all outline-none"
               style={{ WebkitTapHighlightColor: 'transparent' }}
@@ -748,6 +748,98 @@ export default function MyPage({ onBack, onKnights, hp }) {
             </div>
 
           </div> {/* 💡 누락되었던 닫는 껍데기 태그 복구 완료 */}
+        </div>
+      )}
+
+      {/* ========================================= */}
+      {/* 💰 수량 선택형 커스텀 판매 모달 */}
+      {/* ========================================= */}
+      {isSellModalOpen && selectedItemDetail && (
+        <div 
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-[fadeIn_0.2s_ease-out] select-none"
+          style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none', WebkitTapHighlightColor: 'transparent' }}
+        >
+          {/* 어두운 배경 클릭 시 닫기 위한 껍데기 */}
+          <div className="absolute inset-0" onClick={() => setIsSellModalOpen(false)}></div>
+
+          <div 
+            className="w-full max-w-[260px] bg-[#150d08] border-[1.5px] border-[#8c6543] rounded-lg shadow-[0_15px_50px_rgba(0,0,0,1)] flex flex-col items-center p-5 relative overflow-hidden z-10"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* 상단 장식 그라데이션 */}
+            <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-transparent via-[#d8b486] to-transparent opacity-40"></div>
+
+            <h3 className="text-[#f5d5a9] font-serif font-black text-lg tracking-widest drop-shadow-md mb-4 uppercase">
+              Sell Item
+            </h3>
+
+            {/* 판매할 아이템 미니 정보 */}
+            <div className="flex items-center gap-3 mb-5 bg-[#2a1a10]/50 p-2.5 border border-[#5c3e23]/60 rounded-sm w-full justify-center shadow-inner">
+              <div className="w-10 h-10 flex items-center justify-center">
+                {selectedItemDetail.icon.startsWith('/') ? (
+                  <img src={selectedItemDetail.icon} alt="item" className="w-full h-full object-contain drop-shadow-md" draggable="false" />
+                ) : (
+                  <span className="text-3xl drop-shadow-md">{selectedItemDetail.icon}</span>
+                )}
+              </div>
+              <div className="flex flex-col text-left">
+                 <span className="text-[#f5d5a9] text-sm font-bold truncate max-w-[120px]">{selectedItemDetail.name}</span>
+                 <span className="text-[#a6845c] text-[10px] font-bold mt-0.5">보유량: {selectedItemDetail.count}개</span>
+              </div>
+            </div>
+
+            {/* 수량 조절 컨트롤러 */}
+            <div className="flex items-center justify-between w-full mb-3 px-2">
+              <button 
+                onClick={() => setSellQuantity(prev => Math.max(1, prev - 1))}
+                className="w-9 h-9 flex items-center justify-center bg-[#2a1a10] border border-[#7c5432] text-[#d8b486] rounded-sm hover:bg-[#3a2618] active:scale-95 transition-all font-black text-xl"
+              >-</button>
+              
+              <div className="flex flex-col items-center">
+                <span className="text-white font-black text-2xl w-16 text-center drop-shadow-md">{sellQuantity}</span>
+              </div>
+              
+              <button 
+                onClick={() => setSellQuantity(prev => Math.min(selectedItemDetail.count, prev + 1))}
+                className="w-9 h-9 flex items-center justify-center bg-[#2a1a10] border border-[#7c5432] text-[#d8b486] rounded-sm hover:bg-[#3a2618] active:scale-95 transition-all font-black text-xl"
+              >+</button>
+            </div>
+            
+            <button 
+              onClick={() => setSellQuantity(selectedItemDetail.count)}
+              className="mb-6 text-[10px] font-bold text-[#a6845c] border border-[#5c3e23] px-4 py-1 rounded-sm hover:text-[#f5d5a9] hover:border-[#a6845c] hover:bg-[#2a1a10]/50 transition-all shadow-sm"
+            >
+              MAX (전체 선택)
+            </button>
+
+            {/* 총 획득 골드 표시 */}
+            <div className="w-full border-t border-dashed border-[#5c3e23]/70 pt-3 pb-4 flex justify-between items-center">
+              <span className="text-[#a6845c] text-[11px] font-bold tracking-widest uppercase">Total Price</span>
+              <div className="flex items-center gap-1">
+                <span className="text-yellow-500 font-black text-xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                  {((selectedItemDetail.sellPrice || 0) * sellQuantity).toLocaleString()}
+                </span>
+                <span className="text-yellow-600 font-bold text-xs">G</span>
+              </div>
+            </div>
+
+            {/* 취소 / 판매 버튼 */}
+            <div className="flex w-full gap-2 mt-1">
+              <button 
+                onClick={() => setIsSellModalOpen(false)}
+                className="flex-1 py-2.5 bg-transparent border border-[#5c3e23] text-[#8c6543] font-bold text-xs hover:bg-[#2a1a10] hover:text-[#a6845c] transition-colors rounded-sm"
+              >
+                취소
+              </button>
+              <button 
+                onClick={handleSellConfirm}
+                className="flex-1 py-2.5 bg-gradient-to-b from-[#5c3e23] to-[#3a2618] border border-[#8c6543] text-[#f5d5a9] font-bold text-xs hover:brightness-110 active:scale-[0.98] transition-all shadow-[inset_0_1px_3px_rgba(255,255,255,0.1)] rounded-sm"
+              >
+                판매하기
+              </button>
+            </div>
+
+          </div>
         </div>
       )}
 
