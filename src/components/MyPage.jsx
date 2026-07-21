@@ -636,8 +636,7 @@ export default function MyPage({ onBack, onKnights, hp }) {
         </div>
       )} {/* 💡 복구 완료: 인벤토리 모달을 닫아주는 괄호입니다! */}
 
-      =========================================
-{/* ========================================= */}
+      {/* ========================================= */}
       {/* 🔍 아이템 상세 팝업 모달 */}
       {/* ========================================= */}
       {selectedItemDetail && (
@@ -657,7 +656,7 @@ export default function MyPage({ onBack, onKnights, hp }) {
                   console.log("판매 로직 실행 대기중!");
                 }
               }}
-              className="absolute -top-8 -right-2 z-20 text-yellow-500 font-serif font-black text-xl tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,1)] hover:text-yellow-300 hover:scale-105 active:scale-95 transition-all outline-none"
+              className="absolute -top-8 -right-2 z-20 text-yellow-500 font-serif font-black text-base tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,1)] hover:text-yellow-300 hover:scale-105 active:scale-95 transition-all outline-none"
               style={{ WebkitTapHighlightColor: 'transparent' }}
             >
               SELL
