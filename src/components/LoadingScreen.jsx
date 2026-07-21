@@ -85,9 +85,9 @@ export default function LoadingScreen({ type, dungeonId }) {
   }
 
   // =========================================
-  // 3️⃣ 개별 던전 입장 로딩 (✨ 핵심 구현부)
+  // 3️⃣ 개별 던전 & 보스방 입장 로딩 (일반/보스 100% 동일하게 출력)
   // =========================================
-  if (type === 'DUNGEON_LOADING') {
+  if (type === 'DUNGEON_LOADING' || type === 'BOSS_DUNGEON_LOADING') {
     // 💡 넘어온 던전 ID(예: 'fire', 'ice')를 바탕으로 던전 정보를 꺼내옵니다.
     const dungeon = DUNGEON_INFO[dungeonId];
 
