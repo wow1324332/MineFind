@@ -550,7 +550,7 @@ export default function App() {
         <div key="dungeon" style={{ animation: 'fadeInSmooth 0.8s ease-in-out forwards' }}>
           <BossDungeon 
             hp={hpData.hp}
-            bossId={currentBattleBoss} 
+            bossId={currentBossDungeon} // ✨ 다시 원래대로 currentBossDungeon 으로 복구!!
             onBack={() => setCurrentScreen('BOSS_RAID')} 
             onLogout={logout}
             // 💡 팝업에서 Challenge 클릭 시 실행될 함수 추가!
