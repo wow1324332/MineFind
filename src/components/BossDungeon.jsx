@@ -88,7 +88,17 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId }) {
 
   const pBoss = previewBossId ? RAID_BOSS_DATABASE[previewBossId] : null;
   const myEffectiveAtk = pBoss && partyData ? calculateEffectiveBP(partyData.knights, pBoss.attribute || pBoss.element || 'fire') : 0;
-  const previewRewards = pBoss?.rewards || { gold: 5000, exp: 1200, dropItems: ['con_soul_1'] };
+  
+  // 💡 전투 공식에 따른 기사단 최소/최대 데미지 계산 (90% ~ 110%)
+  const minAtk = Math.floor(myEffectiveAtk * 0.9).toLocaleString();
+  const maxAtk = Math.floor(myEffectiveAtk * 1.1).toLocaleString();
+
+  // 💡 드랍 아이템이 비어있을 경우를 대비해 4종류의 기본 보상 세팅
+  const previewRewards = pBoss?.rewards || { 
+    gold: 5000, 
+    exp: 1200, 
+    dropItems: ['con_soul_1', 'con_soul_2', 'potion_exp_fire_small', 'potion_exp_fire_medium'] 
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-start bg-black text-white pt-6 px-4 select-none touch-manipulation">
@@ -162,39 +172,43 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId }) {
       </div>
 
       {/* ========================================= */}
-      {/* 📜 심플 & 세련된 레이드 프리뷰 모달 (리뉴얼) */}
+      {/* 📜 심플 & 세련된 레이드 프리뷰 모달 (수정 완료) */}
       {/* ========================================= */}
       {previewBossId && pBoss && partyData && (
         <div 
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-[fadeIn_0.2s_ease-out]"
-          onClick={() => setPreviewBossId(null)} // 💡 바깥 영역 터치 시 닫기
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-[fadeIn_0.2s_ease-out]" // 💡 배경 딤 처리 약하게 (bg-black/40)
+          onClick={() => setPreviewBossId(null)} // 바깥 영역 터치 시 닫기
         >
-          {/* 테두리 없는 미니멀한 컨테이너 (너비 260px 정도로 작게) */}
+          <style>{`
+            @keyframes modalBreathe {
+              0%, 100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.05), 0 10px 40px rgba(0, 0, 0, 1); }
+              50% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.25), 0 10px 40px rgba(0, 0, 0, 1); }
+            }
+          `}</style>
+          
           <div 
-            className="w-full max-w-[260px] bg-[#0a0705] shadow-[0_10px_50px_rgba(0,0,0,1)] relative overflow-hidden flex flex-col rounded-sm" 
-            onClick={(e) => e.stopPropagation()} // 💡 내부 터치 시 안 닫히게 방어
+            className="w-full max-w-[260px] bg-[#0a0705] relative overflow-hidden flex flex-col rounded-sm" 
+            onClick={(e) => e.stopPropagation()} 
+            style={{ animation: 'modalBreathe 3s ease-in-out infinite' }} // 💡 하얀 숨쉬기 애니메이션 적용
           >
             
-            {/* 1. 보스 크롭 배너 영역 (우측 치우침) */}
-            <div className="relative w-full h-24 bg-black flex items-center">
+            {/* 1. 보스 크롭 배너 영역 */}
+            <div className="relative w-full h-24 bg-black flex items-end"> {/* 💡 바닥 정렬(items-end) 적용 */}
               <div 
-                className="absolute inset-0 bg-cover opacity-80"
+                className="absolute inset-0 bg-cover opacity-100" // 💡 이미지 어두운 현상 개선 (opacity-100)
                 style={{ 
                   backgroundImage: `url('${pBoss.image}')`, 
-                  backgroundPosition: 'right 20%', // 💡 우측 얼굴 위주로 크롭
-                  backgroundSize: '150%' // 💡 줌인 효과
+                  backgroundPosition: 'right 20%', // 우측 얼굴 위주로 크롭
+                  backgroundSize: '150%' 
                 }}
               />
-              {/* 좌측 여백을 확보하기 위한 강력한 그라데이션 */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent" />
+              {/* 💡 하단부 그라데이션만 남겨 이미지를 훨씬 밝고 또렷하게 표시 */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
               
-              {/* 2. 보스 영문 이름 (좌측 빈 공간) */}
-              <div className="relative z-10 px-5 flex flex-col">
-                <span className="text-red-500/80 font-bold text-[8px] tracking-[0.3em] uppercase mb-0.5">
-                  Boss
-                </span>
-                <span className="text-[#f5d5a9] font-serif font-black text-lg tracking-[0.2em] uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
-                  {pBoss.id || pBoss.name}
+              {/* 2. 보스 영문 이름 (좌측 하단 빈 공간) */}
+              <div className="relative z-10 px-3 pb-2 w-full">
+                <span className="text-[#f5d5a9] font-serif font-black text-[15px] tracking-[0.2em] uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
+                  {pBoss.id || pBoss.name} {/* 💡 BOSS 텍스트 제거 및 폰트 축소 */}
                 </span>
               </div>
             </div>
@@ -209,12 +223,12 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId }) {
                 <div className="flex justify-between items-center border-b border-white/5 pb-1.5">
                   <span className="text-[#a6845c] text-[9px] font-bold tracking-widest uppercase">Knights</span>
                   <div className="flex gap-3 text-[10px] font-black tracking-wider">
-                    <span className="text-[#d8b486]">ATK {myEffectiveAtk.toLocaleString()}</span>
+                    <span className="text-[#d8b486]">ATK {minAtk}~{maxAtk}</span> {/* 💡 데미지 범위 표기 */}
                     <span className="text-green-500/80">HP {partyData.stats.maxHp.toLocaleString()}</span>
                   </div>
                 </div>
 
-                {/* 보스 스탯 (데미지 범위 지원) */}
+                {/* 보스 스탯 */}
                 <div className="flex justify-between items-center border-b border-white/5 pb-1.5">
                   <span className="text-red-600/80 text-[9px] font-bold tracking-widest uppercase">Boss</span>
                   <div className="flex gap-3 text-[10px] font-black tracking-wider">
@@ -243,21 +257,22 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId }) {
                    </div>
                 </div>
 
-                {/* 5. 아이템 아이콘 일렬 나열 (이모지 완벽 지원) */}
+                {/* 5. 아이템 아이콘 일렬 나열 */}
                 {previewRewards.dropItems && previewRewards.dropItems.length > 0 && (
                   <div className="flex justify-center gap-1.5">
-                    {previewRewards.dropItems.map((itemId, idx) => {
+                    {previewRewards.dropItems.map((itemObj, idx) => {
+                      // 💡 배열의 값이 객체이든 문자열이든 유연하게 처리
+                      const itemId = typeof itemObj === 'string' ? itemObj : (itemObj.id || itemObj.itemId);
                       const item = ITEM_DATABASE[itemId];
                       if (!item) return null; 
                       
-                      // 이미지 파일이 있으면 이미지, 없으면 icon(이모지) 렌더링
                       const isImageFile = item.image || (item.icon && item.icon.startsWith('/'));
                       const imgSrc = item.image || item.icon;
 
                       return (
                         <div key={idx} className="w-7 h-7 bg-black/80 rounded-sm border border-[#5c3e23]/30 flex items-center justify-center p-0.5">
                           {isImageFile ? (
-                            <img src={imgSrc} alt={item.name} className="w-full h-full object-contain opacity-90 drop-shadow-md" />
+                            <img src={imgSrc} alt={item.name} className="w-full h-full object-contain opacity-90 drop-shadow-md" draggable="false" />
                           ) : (
                             <span className="text-[13px] drop-shadow-md">{item.icon || '❓'}</span>
                           )}
@@ -274,7 +289,7 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId }) {
                   setBattleBossId(previewBossId); 
                   setPreviewBossId(null);
                 }}
-                className="mt-2 w-full bg-[#110a08] hover:bg-red-950/40 text-red-500/70 font-serif font-black text-[10px] py-2.5 rounded-sm transition-colors border border-red-900/30 shadow-inner active:scale-95 uppercase tracking-[0.3em]"
+                className="mt-2 w-full bg-[#110a08] hover:bg-red-950/40 text-red-500/70 font-serif font-black text-[10px] py-2.5 rounded-sm transition-colors shadow-inner active:scale-95 uppercase tracking-[0.3em]" // 💡 테두리(border) 제거
               >
                 Challenge
               </button>
