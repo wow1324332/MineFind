@@ -18,6 +18,7 @@ import ChallengeMode from './components/ChallengeMode';
 import LoadingScreen from './components/LoadingScreen';
 import BossRaid from './components/BossRaid';
 import BossDungeon from './components/BossDungeon';
+import BossBattle from './components/BossBattle';
 
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from './firebase'; // (파이어베이스 설정 파일 경로)
@@ -426,7 +427,8 @@ export default function App() {
     currentScreen === 'CHALLENGE_LOADING' || 
     currentScreen === 'DUNGEON_SELECT_LOADING' || 
     currentScreen === 'DUNGEON_LOADING' ||
-    currentScreen === 'BOSS_RAID_LOADING'
+    currentScreen === 'BOSS_RAID_LOADING' ||
+    currentScreen === 'BOSS_BATTLE_LOADING'
   ) {
     return <LoadingScreen type={currentScreen} dungeonId={currentDungeon} />;
   }
@@ -542,15 +544,20 @@ export default function App() {
       );
       break;
 
-    case 'BOSS_DUNGEON':
+      case 'BOSS_DUNGEON':
       currentView = (
-        // ✨ 고유 key="dungeon"만 추가하고, 원장님의 기존 style 애니메이션 복구!
         <div key="dungeon" style={{ animation: 'fadeInSmooth 0.8s ease-in-out forwards' }}>
           <BossDungeon 
             hp={hpData.hp}
             bossId={currentBossDungeon} 
             onBack={() => setCurrentScreen('BOSS_RAID')} 
             onLogout={logout}
+            // 💡 팝업에서 Challenge 클릭 시 실행될 함수 추가!
+            onSelectBattle={(bossId) => {
+              setCurrentBossDungeon(bossId); 
+              setCurrentScreen('BOSS_BATTLE_LOADING'); // 로딩 화면 호출
+              setTimeout(() => setCurrentScreen('BOSS_BATTLE'), 2500); // 2.5초 후 진짜 전투 돌입
+            }}
           />
         </div>
       );
