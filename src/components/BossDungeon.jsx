@@ -286,7 +286,7 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId, onSelectBatt
               {/* 6. 심플한 챌린지 버튼 */}
               <button 
                 onClick={() => {
-                  setBattleBossId(previewBossId); 
+                  onSelectBattle(previewBossId); 
                   setPreviewBossId(null);
                 }}
                 className="mt-2 w-full bg-[#110a08] hover:bg-red-950/40 text-red-500/70 font-serif font-black text-[10px] py-2.5 rounded-sm transition-colors shadow-inner active:scale-95 uppercase tracking-[0.3em]" // 💡 테두리(border) 제거
