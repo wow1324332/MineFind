@@ -12,7 +12,7 @@ import { calculatePartyStats, calculateEffectiveBP } from '../utils/combatUtils'
 
 import BossBattle from './BossBattle';
 
-export default function BossDungeon({ hp, onBack, onLogout, bossId }) {
+export default function BossDungeon({ hp, onBack, onLogout, bossId, onSelectBattle }) {
   const dungeon = DUNGEON_INFO[bossId]; 
   const { user } = useAuth();
 
