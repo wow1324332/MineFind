@@ -526,8 +526,8 @@ export default function App() {
     // =========================================
     case 'BOSS_RAID':
       currentView = (
-        // 💡 key="boss_raid" 추가, style 대신 원장님이 주로 쓰시는 확실한 Tailwind 애니메이션 사용
-        <div key="boss_raid" className="animate-[fadeIn_0.5s_ease-in-out] w-full h-full">
+        // ✨ 고유 key="raid"만 추가하고, 원장님의 기존 style 애니메이션은 그대로 복구했습니다!
+        <div key="raid" style={{ animation: 'fadeInSmooth 0.8s ease-in-out forwards' }}>
           <BossRaid 
             hp={hpData.hp}
             onBack={() => setCurrentScreen('CHALLENGE_MODE')} 
@@ -543,8 +543,8 @@ export default function App() {
 
     case 'BOSS_DUNGEON':
       currentView = (
-        // 💡 key="boss_dungeon" 추가
-        <div key="boss_dungeon" className="animate-[fadeIn_0.5s_ease-in-out] w-full h-full">
+        // ✨ 고유 key="dungeon"만 추가하고, 원장님의 기존 style 애니메이션 복구!
+        <div key="dungeon" style={{ animation: 'fadeInSmooth 0.8s ease-in-out forwards' }}>
           <BossDungeon 
             hp={hpData.hp}
             bossId={currentBossDungeon} 
