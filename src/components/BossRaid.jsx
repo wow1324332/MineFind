@@ -106,12 +106,11 @@ export default function BossRaid({ hp, onBack, onLogout, onSelectBoss }) {
       >
         <style>{`::-webkit-scrollbar { display: none; }`}</style>
         
-        {Object.entries(DUNGEON_INFO).map(([id, info]) => (
+      {Object.entries(DUNGEON_INFO).map(([id, info]) => (
           <button
             key={id}
-            onClick={() => onSelectBoss(id)}
+            onClick={() => onSelectBoss(id)} // ✨ 깔끔하게 진짜 던전 ID(fire, water 등)만 App.jsx로 쏩니다!
             className="w-full relative group transition-all duration-200 active:scale-[0.98] select-none"
-            style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
           >
             {/* 💡 변경점 1: border 클래스를 완전히 제거했습니다! */}
             <div className="relative w-full aspect-[4/1] bg-black/60 rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.8)] flex items-center justify-between px-4">
