@@ -17,6 +17,7 @@ import UserProfileCard from './components/UserProfileCard';
 import ChallengeMode from './components/ChallengeMode';
 import LoadingScreen from './components/LoadingScreen';
 import BossRaid from './components/BossRaid';
+import BossDungeon from './components/BossDungeon';
 
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from './firebase'; // (파이어베이스 설정 파일 경로)
