@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { DUNGEON_INFO } from '../constants/dungeonData'; 
+import BossBattle from './BossBattle'; // ✨ 전투 화면 컴포넌트 불러오기
 
 export default function BossDungeon({ hp, onBack, onLogout, bossId }) {
   const dungeon = DUNGEON_INFO[bossId]; 
+
+  // ✨ 선택된 보스의 ID를 저장할 상태 (null이면 리스트, ID가 있으면 전투 화면 띄움)
+  const [selectedRaidBossId, setSelectedRaidBossId] = useState(null);
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-start bg-black text-white pt-6 px-4 select-none touch-manipulation">
@@ -39,7 +43,7 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId }) {
         </button>
       </div>
 
-      {/* 4️⃣ 세부 보스 선택 리스트 (단탈리온 추가!) */}
+      {/* 4️⃣ 세부 보스 선택 리스트 (단탈리온) */}
       <div 
         className="relative z-10 w-full max-w-sm flex-1 overflow-y-auto pb-10 space-y-4 px-2 pt-4" 
         style={{ 
@@ -53,13 +57,12 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId }) {
         
         {/* 🔥 단탈리온 버튼 */}
         <button 
-          onClick={() => console.log('단탈리온 전투 진입 대기!')} 
+          onClick={() => setSelectedRaidBossId('dantalion')} // ✨ 클릭 시 단탈리온 전투로 진입!
           className="w-full relative group transition-all duration-200 active:scale-[0.98] select-none" 
           style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
         >
           <div className="relative w-full aspect-[4/1] bg-black/60 rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.8)] flex items-center justify-between px-4">
             
-            {/* 💡 핵심 포인트: backgroundPosition: "center 20%"로 이미지 상단의 얼굴과 뿔이 정확히 앵글에 잡히도록 크롭했습니다. */}
             <div 
               className="absolute inset-0 bg-cover opacity-60 group-hover:opacity-90 transition-opacity duration-300" 
               style={{ 
@@ -68,16 +71,13 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId }) {
               }}
             ></div>
             
-            {/* 가독성을 위한 검은색 그라데이션 (왼쪽을 짙게) */}
             <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
             
-            {/* 텍스트 영역 */}
             <div className="relative z-10 flex flex-col text-left">
               <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest drop-shadow-md">Hell of Flame</span>
               <span className="text-xl font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,1)] tracking-widest font-serif mt-0.5">Dantalion</span>
             </div>
             
-            {/* 눈동자 로고 아이콘 */}
             <div className="relative z-10 w-12 h-12 flex items-center justify-center drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
               <img src="/loading-icon.webp" alt="Enter" className="w-full h-full object-contain opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" draggable="false"/>
             </div>
@@ -86,6 +86,16 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId }) {
         </button>
 
       </div>
+
+      {/* ========================================= */}
+      {/* ⚔️ 단탈리온 선택 시, BossBattle 화면 덮어씌우기 */}
+      {/* ========================================= */}
+      {selectedRaidBossId && (
+        <BossBattle 
+          bossId={selectedRaidBossId} 
+          onBack={() => setSelectedRaidBossId(null)} // 뒤로가기 시 이 팝업 닫기
+        />
+      )}
 
     </div>
   );
