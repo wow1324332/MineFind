@@ -79,7 +79,8 @@ export default function App() {
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [currentScreen, setCurrentScreen] = useState('HUNT_LIST_LOADING');
   const [currentDungeon, setCurrentDungeon] = useState('fire');
-  const [currentBossDungeon, setCurrentBossDungeon] = useState('fire'); // 💡 'hell_of_flame'을 'fire'로 수정!
+  const [currentBossDungeon, setCurrentBossDungeon] = useState('fire');
+  const [currentBattleBoss, setCurrentBattleBoss] = useState(null);
   const [currentDifficulty, setCurrentDifficulty] = useState('Normal');
   const [showExitPopup, setShowExitPopup] = useState(false);
 
@@ -549,12 +550,12 @@ export default function App() {
         <div key="dungeon" style={{ animation: 'fadeInSmooth 0.8s ease-in-out forwards' }}>
           <BossDungeon 
             hp={hpData.hp}
-            bossId={currentBossDungeon} 
+            bossId={currentBattleBoss} 
             onBack={() => setCurrentScreen('BOSS_RAID')} 
             onLogout={logout}
             // 💡 팝업에서 Challenge 클릭 시 실행될 함수 추가!
             onSelectBattle={(bossId) => {
-              setCurrentBossDungeon(bossId); 
+              setCurrentBattleBoss(bossId); 
               setCurrentScreen('BOSS_BATTLE_LOADING'); // 로딩 화면 호출
               setTimeout(() => setCurrentScreen('BOSS_BATTLE'), 2500); // 2.5초 후 진짜 전투 돌입
             }}
