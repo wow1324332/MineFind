@@ -17,7 +17,6 @@ import UserProfileCard from './components/UserProfileCard';
 import ChallengeMode from './components/ChallengeMode';
 import LoadingScreen from './components/LoadingScreen';
 import BossRaid from './components/BossRaid';
-import BossDungeon from './components/BossDungeon';
 
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from './firebase'; // (파이어베이스 설정 파일 경로)
@@ -426,8 +425,7 @@ export default function App() {
     currentScreen === 'CHALLENGE_LOADING' || 
     currentScreen === 'DUNGEON_SELECT_LOADING' || 
     currentScreen === 'DUNGEON_LOADING' ||
-    currentScreen === 'BOSS_RAID_LOADING' ||
-    currentScreen === 'BOSS_DUNGEON_LOADING'
+    currentScreen === 'BOSS_RAID_LOADING'
   ) {
     return <LoadingScreen type={currentScreen} dungeonId={currentDungeon} />;
   }
