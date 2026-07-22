@@ -3,7 +3,6 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from '../hooks/useAuth';
 
-// 💡 1. 우리가 만든 실제 데이터베이스와 전투 공식 불러오기
 import { RAID_BOSS_DATABASE } from '../constants/raidBossData';
 import { KNIGHT_DATABASE } from '../constants/knightData';
 import { calculatePartyStats } from '../utils/combatUtils';
@@ -11,17 +10,14 @@ import { calculatePartyStats } from '../utils/combatUtils';
 export default function BossBattle({ bossId = 'dantalion', onBack }) {
   const { user } = useAuth();
 
-  // 💡 2. 보스 데이터 세팅 (보스 데이터베이스에서 bossId로 조회)
   const bossData = RAID_BOSS_DATABASE[bossId];
   const [bossHp, setBossHp] = useState(bossData?.stats?.maxHp || 100);
 
-  // 💡 3. 기사단 상태 세팅 (6칸 고정 배열, 빈 칸은 null)
   const [partyKnights, setPartyKnights] = useState(Array(6).fill(null));
   const [partyStats, setPartyStats] = useState(null);
   const [partyHp, setPartyHp] = useState(0);
   const [partyMp, setPartyMp] = useState(0);
 
-  // 💡 4. 파이어베이스에서 내 기사단 정보 불러와서 6칸에 배치 및 스탯 계산
   useEffect(() => {
     if (!user) return;
     const fetchBattleData = async () => {
@@ -30,13 +26,15 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
         if (userDoc.exists()) {
           const data = userDoc.data();
           
-          // 유저가 설정한 파티 배열이 있다면 가져오고, 없다면 주인공만 기본 배치
-          const myPartyIds = data.party || ['knight_main'];
+          // 💡 수정 완료: 'party' 대신 실제 파이어베이스 필드명인 'unlockedKnights' 사용
+          let myPartyIds = data.unlockedKnights || ['knight_main'];
+          if (!myPartyIds.includes('knight_main')) {
+            myPartyIds = ['knight_main', ...myPartyIds];
+          }
           
-          const slots = Array(6).fill(null); // 6칸 빈 배열 생성
-          const activeKnights = []; // 스탯 계산을 위해 꽉 찬 기사만 모을 배열
+          const slots = Array(6).fill(null);
+          const activeKnights = [];
 
-          // 내 파티 ID를 순회하며 데이터베이스의 실제 기사 객체와 매칭
           myPartyIds.forEach((id, index) => {
             if (index < 6 && KNIGHT_DATABASE[id]) {
               const knightObj = KNIGHT_DATABASE[id];
@@ -47,11 +45,10 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
 
           setPartyKnights(slots);
 
-          // ✨ combatUtils의 공식으로 실제 기사단 총합 스탯 계산!
           const stats = calculatePartyStats(activeKnights);
           setPartyStats(stats);
-          setPartyHp(stats.maxHp);  // 내 기사단의 진짜 총 HP
-          setPartyMp(stats.maxMp);  // 내 기사단의 진짜 총 MP
+          setPartyHp(stats.maxHp);
+          setPartyMp(stats.maxMp);
         }
       } catch (error) {
         console.error("전투 데이터 로딩 실패:", error);
@@ -60,7 +57,6 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
     fetchBattleData();
   }, [user]);
 
-  // 로딩 중 방어 처리
   if (!bossData || !partyStats) return <div className="fixed inset-0 bg-black z-50"></div>;
 
   return (
@@ -155,7 +151,7 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
           </button>
         </div>
 
-        {/* 3. 기사단 종합 HP & MP 바 (실제 계산된 수치 연동) */}
+        {/* 3. 기사단 종합 HP & MP 바 */}
         <div className="w-full px-1 flex flex-col gap-1.5">
           <div className="w-full h-3.5 bg-black/80 border border-[#4a2c11] rounded-sm overflow-hidden relative">
             <div 
