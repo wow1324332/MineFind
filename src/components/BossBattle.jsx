@@ -5,7 +5,8 @@ import { useAuth } from '../hooks/useAuth';
 
 import { RAID_BOSS_DATABASE } from '../constants/raidBossData';
 import { KNIGHT_DATABASE } from '../constants/knightData';
-import { calculatePartyStats } from '../utils/combatUtils';
+// ✨ 전투 공식 모두 가져오기!
+import { calculatePartyStats, calculateTurnDamage } from '../utils/combatUtils';
 
 export default function BossBattle({ bossId = 'dantalion', onBack }) {
   const { user } = useAuth();
@@ -16,7 +17,10 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
   const [partyKnights, setPartyKnights] = useState(Array(6).fill(null));
   const [partyStats, setPartyStats] = useState(null);
   const [partyHp, setPartyHp] = useState(0);
-  const [partyMp, setPartyMp] = useState(0);
+  const [partyMp, setPartyMp] = useState(0); // ✨ 마나는 0부터 시작!
+
+  // ✨ 화면 가운데에 데미지를 보여줄 전투 로그
+  const [combatLog, setCombatLog] = useState('전투 준비 완료! 보스를 공격하세요.');
 
   useEffect(() => {
     if (!user) return;
@@ -26,20 +30,35 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
         if (userDoc.exists()) {
           const data = userDoc.data();
           
-          // 💡 수정 완료: 'party' 대신 실제 파이어베이스 필드명인 'unlockedKnights' 사용
           let myPartyIds = data.unlockedKnights || ['knight_main'];
           if (!myPartyIds.includes('knight_main')) {
             myPartyIds = ['knight_main', ...myPartyIds];
           }
           
+          // 💡 유저의 기사단 레벨 데이터 (없으면 1레벨 기준)
+          const userKnightStats = data.knightStats || {};
+
           const slots = Array(6).fill(null);
           const activeKnights = [];
 
           myPartyIds.forEach((id, index) => {
             if (index < 6 && KNIGHT_DATABASE[id]) {
-              const knightObj = KNIGHT_DATABASE[id];
-              slots[index] = knightObj; 
-              activeKnights.push(knightObj);
+              const kDb = KNIGHT_DATABASE[id];
+              const kLevel = userKnightStats[id]?.level || 1;
+              const lvMultiplier = kLevel - 1;
+
+              // ✨ 핵심: baseStats와 statGrowth를 레벨에 맞춰 합산! (이게 빠져서 HP가 0이었습니다)
+              const flatKnight = {
+                ...kDb,
+                str: kDb.baseStats.str + (kDb.statGrowth.str * lvMultiplier),
+                agi: kDb.baseStats.agi + (kDb.statGrowth.agi * lvMultiplier),
+                int: kDb.baseStats.int + (kDb.statGrowth.int * lvMultiplier),
+                vit: kDb.baseStats.vit + (kDb.statGrowth.vit * lvMultiplier),
+                luk: kDb.baseStats.luk + (kDb.statGrowth.luk * lvMultiplier),
+              };
+
+              slots[index] = flatKnight; 
+              activeKnights.push(flatKnight);
             }
           });
 
@@ -48,7 +67,7 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
           const stats = calculatePartyStats(activeKnights);
           setPartyStats(stats);
           setPartyHp(stats.maxHp);
-          setPartyMp(stats.maxMp);
+          setPartyMp(0); // ✨ 마나는 무조건 0으로 텅 빈 채 시작
         }
       } catch (error) {
         console.error("전투 데이터 로딩 실패:", error);
@@ -56,6 +75,50 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
     };
     fetchBattleData();
   }, [user]);
+
+  // ==========================================================
+  // ⚔️ [Attack] 버튼을 눌렀을 때 실행되는 진짜 전투 로직!
+  // ==========================================================
+  const handleAttack = () => {
+    if (bossHp <= 0 || partyHp <= 0) return; // 죽었으면 작동안함
+
+    let logText = "";
+
+    // 1️⃣ 아군의 턴 (기사단 -> 보스 공격)
+    const knightAttack = calculateTurnDamage(partyStats, bossData.stats, true);
+    let currentBossHp = bossHp - knightAttack.damage;
+    
+    logText += `⚔️ 기사단 공격! [${knightAttack.damage}] 데미지! ${knightAttack.isCrit ? '(크리티컬!)' : ''}\n`;
+
+    // 보스가 죽었는지 체크
+    if (currentBossHp <= 0) {
+      setBossHp(0);
+      setCombatLog(logText + `🎉 [${bossData.name}] 처치 완료! 승리했습니다!`);
+      // 추후 여기에 승리 보상 로직 연동
+      return;
+    }
+    setBossHp(currentBossHp);
+
+    // 2️⃣ 보스의 턴 (보스 -> 기사단 반격)
+    const bossAttack = calculateTurnDamage(bossData.stats, partyStats, false);
+    let currentPartyHp = partyHp - bossAttack.damage;
+
+    logText += `💀 보스의 반격! [${bossAttack.damage}] 피해를 입었습니다. ${bossAttack.isCrit ? '(치명상!)' : ''}`;
+
+    // 기사단이 죽었는지 체크
+    if (currentPartyHp <= 0) {
+      setPartyHp(0);
+      setCombatLog(logText + `\n☠️ 기사단 전멸... 패배했습니다.`);
+      return;
+    }
+    setPartyHp(currentPartyHp);
+
+    // 3️⃣ 턴 종료 후 마나 회복 (mpRegen 만큼 증가, 최대치 안 넘게)
+    setPartyMp(prevMp => Math.min(partyStats.maxMp, prevMp + partyStats.mpRegen));
+    
+    // 로그 화면에 출력
+    setCombatLog(logText);
+  };
 
   if (!bossData || !partyStats) return <div className="fixed inset-0 bg-black z-50"></div>;
 
@@ -71,9 +134,7 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
       <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-black/90 via-black/40 to-transparent z-0 pointer-events-none"></div>
       <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black via-black/80 to-transparent z-0 pointer-events-none"></div>
 
-      {/* ========================================= */}
       {/* 👑 상단 영역: 실제 보스 체력바 & 스킬 */}
-      {/* ========================================= */}
       <div className="relative z-10 w-full px-4 pt-8 flex flex-col items-center gap-2">
         <button onClick={onBack} className="absolute left-4 top-8 w-8 h-8 flex items-center justify-center bg-black/50 border border-neutral-700 rounded-full text-white active:scale-90 transition-all">
           ✕
@@ -101,12 +162,16 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
         </div>
       </div>
 
-      {/* 👁️ 중간 영역 (시야 확보) */}
-      <div className="flex-1 w-full relative z-10"></div>
+      {/* 👁️ 중간 영역: 전투 로그 텍스트 박스 */}
+      <div className="flex-1 w-full relative z-10 flex flex-col items-center justify-center px-4">
+        <div className="w-full max-w-sm bg-black/50 border border-yellow-900/30 rounded-md p-3 text-center backdrop-blur-sm min-h-[60px] flex items-center justify-center">
+          <p className="text-[#f5d5a9] text-xs font-bold whitespace-pre-line leading-relaxed drop-shadow-md">
+            {combatLog}
+          </p>
+        </div>
+      </div>
 
-      {/* ========================================= */}
       {/* 🛡️ 하단 영역: 기사단 UI */}
-      {/* ========================================= */}
       <div className="relative z-10 w-full px-2 pb-6 flex flex-col gap-3">
         
         {/* 1. 기사단 스킬 & 프로필 (6칸 고정) */}
@@ -115,7 +180,6 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
             <div key={idx} className="flex-1 flex flex-col items-center gap-1">
               
               {knight ? (
-                /* ✨ 기사가 배치된 자리 */
                 <>
                   <button className="w-7 h-7 bg-[#1a1008]/80 border border-[#a6845c]/50 rounded-md shadow-inner flex items-center justify-center active:scale-95 transition-all">
                     <span className="text-[#f5d5a9] text-[9px] font-bold">S</span>
@@ -126,7 +190,6 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
                   </div>
                 </>
               ) : (
-                /* 💀 빈 자리 비활성 처리 */
                 <>
                   <div className="w-7 h-7 bg-black/40 border border-[#3c2a1a]/30 rounded-md"></div>
                   <div className="w-full aspect-[1/2] bg-black/40 border border-[#3c2a1a]/30 rounded-sm flex items-center justify-center overflow-hidden">
@@ -139,10 +202,10 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
           ))}
         </div>
 
-        {/* 2. Attack (평타) 버튼 */}
+        {/* 2. Attack (평타) 버튼 -> ✨ 전투 로직 연결 완료! */}
         <div className="px-1">
           <button 
-            onClick={() => console.log('전투 로직 실행!')}
+            onClick={handleAttack}
             className="w-full py-3 bg-gradient-to-b from-[#5c3e23] to-[#3a2618] border-[1.5px] border-[#a6845c] rounded-md shadow-[0_0_15px_rgba(0,0,0,0.8)] flex items-center justify-center active:scale-[0.98] transition-all"
           >
             <span className="text-[#f5d5a9] font-serif font-black text-xl tracking-[0.3em] uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
