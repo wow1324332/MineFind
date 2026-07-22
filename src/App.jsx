@@ -534,9 +534,8 @@ export default function App() {
             onBack={() => setCurrentScreen('CHALLENGE_MODE')} 
             onLogout={logout}
             onSelectBoss={(id) => {
-              setCurrentBossDungeon(id); // 예: 'hell_of_flame'
-              setCurrentScreen('BOSS_DUNGEON_LOADING');
-              setTimeout(() => setCurrentScreen('BOSS_DUNGEON'), 2000);
+              setCurrentBossDungeon(id); 
+              setCurrentScreen('BOSS_DUNGEON'); // ✨ 로딩 없이 스르륵 바로 넘기기!
             }}
           />
         </div>
