@@ -87,7 +87,7 @@ export default function LoadingScreen({ type, dungeonId }) {
   // =========================================
   // 3️⃣ 개별 던전 & 보스방 입장 로딩 (일반/보스 100% 동일하게 출력)
   // =========================================
-  if (type === 'DUNGEON_LOADING' || type === 'BOSS_DUNGEON_LOADING') {
+  if (type === 'DUNGEON_LOADING') {
     // 💡 넘어온 던전 ID(예: 'fire', 'ice')를 바탕으로 던전 정보를 꺼내옵니다.
     const dungeon = DUNGEON_INFO[dungeonId];
 
@@ -125,28 +125,6 @@ export default function LoadingScreen({ type, dungeonId }) {
             style={{ animation: 'mysticBreathe 2.5s ease-in-out infinite' }} 
             draggable="false"
           />
-        </div>
-      </div>
-    );
-  }
-
-  if (type === 'BOSS_DUNGEON_LOADING') {
-    const dungeon = BOSS_DUNGEON_INFO[dungeonId];
-    return (
-      <div className="fixed inset-0 z-[500] flex flex-col items-center justify-center bg-black select-none animate-[fadeInSmooth_0.5s_ease-in-out]">
-        <div className="absolute inset-0 bg-cover bg-center opacity-40" style={{ backgroundImage: `url('${dungeon?.loadingBg}')` }}></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_10%,_#000000_100%)] pointer-events-none"></div>
-        <div className="relative z-10 flex flex-col items-center justify-center w-full px-6">
-          <style>{`
-            @keyframes mysticBreathe {
-              0%, 100% { transform: scale(1); opacity: 0.5; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
-              50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 25px rgba(255,255,255,0.9)); }
-            }
-          `}</style>
-          <div className="text-red-500/90 font-serif font-black text-center tracking-[0.2em] leading-loose drop-shadow-[0_2px_10px_rgba(220,38,38,0.8)] text-base sm:text-lg mb-10 whitespace-pre-line">
-            {dungeon?.loadingMsg}
-          </div>
-          <img src="/loading-icon.webp" alt="Loading" className="w-28 h-auto object-contain" style={{ animation: 'mysticBreathe 2.5s ease-in-out infinite' }} draggable="false"/>
         </div>
       </div>
     );
