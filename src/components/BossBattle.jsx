@@ -19,16 +19,18 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
   const [partyHp, setPartyHp] = useState(0);
   const [partyMp, setPartyMp] = useState(0);
 
-  // ✨ 1. 인트로 애니메이션 상태
+  // 인트로 애니메이션 상태
   const [introStage, setIntroStage] = useState('loading'); 
 
-  // ✨ 2. 전투 이펙트 상태
+  // 전투 이펙트 상태
   const [isAnimating, setIsAnimating] = useState(false); 
   const [bossEffect, setBossEffect] = useState(null);    
   const [partyEffect, setPartyEffect] = useState(null);  
   const [battleResult, setBattleResult] = useState(null); 
 
-  // 🎬 데이터 로딩 후 인트로 타이머 실행
+  // ✨ 이탈 확인 팝업 상태 추가
+  const [showExitPopup, setShowExitPopup] = useState(false);
+
   useEffect(() => {
     if (partyStats && bossData) {
       setIntroStage('text'); 
@@ -38,7 +40,6 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
     }
   }, [partyStats, bossData]);
 
-  // 📊 파이어베이스 데이터 세팅
   useEffect(() => {
     if (!user) return;
     const fetchBattleData = async () => {
@@ -116,11 +117,7 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
     fetchBattleData();
   }, [user]);
 
-  // ==========================================================
-  // ⚔️ [완벽한 턴제] 기사단 타격 -> 1초 딜레이 -> 보스 반격
-  // ==========================================================
   const handleAttack = () => {
-    // 인트로 중이거나 전투 종료 시 클릭 방지
     if (bossHp <= 0 || partyHp <= 0 || isAnimating || battleResult || introStage !== 'done') return; 
     setIsAnimating(true); 
 
@@ -170,14 +167,12 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
   };
 
   if (!bossData) return <div className="fixed inset-0 bg-black z-50 flex items-center justify-center text-red-500 font-bold">보스 데이터 로딩 실패 ({bossId})</div>;
-  if (!partyStats) return <div className="fixed inset-0 bg-black z-50"></div>; // 부드러운 검은 화면 대기
+  if (!partyStats) return <div className="fixed inset-0 bg-black z-50"></div>; 
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-black select-none touch-manipulation overflow-hidden">
       
-      {/* ⚔️ 통합 애니메이션 스타일 (인트로 + 배틀 타격) */}
       <style>{`
-        /* 인트로 애니메이션 */
         @keyframes textPunch { 0% { transform: scale(2.5); opacity: 0; filter: blur(5px); } 40% { transform: scale(0.9); opacity: 1; filter: blur(0); } 60% { transform: scale(1.05); } 100% { transform: scale(1); } }
         @keyframes flash { 0% { opacity: 0; } 30% { opacity: 1; } 100% { opacity: 0; } }
         .split-top { clip-path: polygon(0 0, 100% 0, 100% 45%, 0 55%); transition: transform 0.5s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.5s; }
@@ -186,13 +181,12 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
         .slash-line.active { transform: rotate(-5deg) scaleX(1); opacity: 1; }
         .slash-line.fade { opacity: 0; transform: rotate(-5deg) scaleX(1) scaleY(10); transition: transform 0.3s ease-out, opacity 0.3s ease-out; }
         
-        /* 타격 애니메이션 */
         @keyframes floatUpDamage { 0% { transform: translateY(0) scale(0.5); opacity: 0; } 20% { transform: translateY(-20px) scale(1.3); opacity: 1; } 40% { transform: translateY(-30px) scale(1); opacity: 1; } 100% { transform: translateY(-70px) scale(1); opacity: 0; } }
         @keyframes slashHit { 0% { transform: rotate(-15deg) scaleX(0); opacity: 1; } 50% { transform: rotate(-15deg) scaleX(1); opacity: 1; } 100% { transform: rotate(-15deg) scaleX(1.5) scaleY(4); opacity: 0; } }
         @keyframes shakeHit { 0%, 100% { transform: translate(0, 0); } 20% { transform: translate(-8px, 6px); } 40% { transform: translate(6px, -8px); } 60% { transform: translate(-6px, -6px); } 80% { transform: translate(8px, 8px); } }
       `}</style>
 
-      {/* 🎬 1. BATTLE START 사선 인트로 */}
+      {/* BATTLE START 인트로 */}
       {introStage !== 'done' && introStage !== 'loading' && (
         <div className="absolute inset-0 z-[200] pointer-events-none overflow-hidden">
           <div className={`absolute inset-0 bg-black flex items-center justify-center split-top ${introStage === 'split' ? '-translate-x-8 -translate-y-12 opacity-0' : ''}`}>
@@ -206,7 +200,7 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
         </div>
       )}
 
-      {/* 🏆 전투 종료 팝업 */}
+      {/* 전투 종료 팝업 */}
       {battleResult && (
         <div className="absolute inset-0 z-[100] bg-black/80 flex flex-col items-center justify-center animate-[fadeIn_0.5s_ease-out]">
           <span className={`font-serif font-black text-5xl tracking-widest uppercase drop-shadow-[0_0_20px_rgba(0,0,0,1)] ${battleResult === 'win' ? 'text-yellow-400' : 'text-red-600'}`}>
@@ -218,22 +212,39 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
         </div>
       )}
 
-      {/* 배경: 보스 이미지 */}
-      <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80 z-0" style={{ backgroundImage: `url('${bossData.image}')` }}></div>
+      {/* ✨ 4. 배경: 보스 이미지도 피격 시 흔들리게 적용! */}
+      <div 
+        className={`absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80 z-0 ${bossEffect ? 'animate-[shakeHit_0.3s_ease-in-out]' : ''}`} 
+        style={{ backgroundImage: `url('${bossData.image}')` }}
+      ></div>
+      
       <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-black/90 via-black/40 to-transparent z-0 pointer-events-none"></div>
       <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black via-black/80 to-transparent z-0 pointer-events-none"></div>
 
-      {/* 👑 상단: 보스 영역 (타격 시 화면 흔들림 효과) */}
-      <div className={`relative z-10 w-full px-4 pt-8 flex flex-col items-center gap-2 ${bossEffect ? 'animate-[shakeHit_0.3s_ease-in-out]' : ''}`}>
-        <button onClick={onBack} className="absolute left-4 top-8 w-8 h-8 flex items-center justify-center bg-black/50 border border-neutral-700 rounded-full text-white active:scale-90 transition-all">✕</button>
-        <span className="text-red-500 font-black text-xl tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,1)] uppercase">{bossData.name}</span>
+      {/* 상단 UI (보스 영역) */}
+      <div className={`relative z-10 w-full px-4 pt-8 flex flex-col items-center gap-3 ${bossEffect ? 'animate-[shakeHit_0.3s_ease-in-out]' : ''}`}>
         
-        <div className="w-full max-w-sm h-4 bg-black/80 border-[1.5px] border-red-900/50 rounded-sm overflow-hidden relative shadow-[0_0_10px_rgba(220,38,38,0.3)]">
+        {/* ✨ 1. 구린 X버튼 대신 돌담 백키 적용 */}
+        <button 
+          onClick={() => setShowExitPopup(true)} 
+          className="absolute left-4 top-8 transition-all duration-150 active:scale-90 outline-none" 
+          style={{ WebkitTapHighlightColor: 'transparent' }}
+        >
+          <img src="/header/backkey.webp" alt="Exit" className="w-8 h-8 object-contain drop-shadow-md" draggable="false" />
+        </button>
+
+        {/* ✨ 2. 보스 이름 멋진 영문 그라데이션 적용 */}
+        <span className="text-transparent bg-clip-text bg-gradient-to-b from-red-400 to-red-800 font-serif font-black text-2xl tracking-[0.4em] uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,1)] italic">
+          {bossId}
+        </span>
+        
+        {/* ✨ 3. 각진 체력바를 둥근(pill) 모양으로 라운딩 처리 (rounded-full) */}
+        <div className="w-full max-w-sm h-4 bg-black/80 border-[1.5px] border-red-900/50 rounded-full overflow-hidden relative shadow-[0_0_15px_rgba(220,38,38,0.3)]">
           <div className="h-full bg-gradient-to-r from-red-900 to-red-500 transition-all duration-300" style={{ width: `${Math.max(0, (bossHp / bossData.stats.maxHp) * 100)}%` }}></div>
           <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white drop-shadow-md">{bossHp} / {bossData.stats.maxHp}</span>
         </div>
 
-        {/* 💥 보스 피격 사선 & 데미지 팝업 */}
+        {/* 보스 피격 데미지 팝업 */}
         {bossEffect && (
           <div key={`boss-${bossEffect.id}`} className="absolute inset-0 flex items-center justify-center pointer-events-none z-50 translate-y-16">
             {!bossEffect.isMiss && <div className="absolute w-[150%] h-3 bg-white rounded-full shadow-[0_0_20px_#fff,0_0_40px_#ef4444] animate-[slashHit_0.3s_ease-out_forwards]"></div>}
@@ -246,10 +257,10 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
 
       <div className="flex-1 w-full relative z-10 flex flex-col items-center justify-center px-4"></div>
 
-      {/* 🛡️ 하단: 기사단 영역 (타격 시 화면 흔들림 효과) */}
+      {/* 하단 UI (기사단 영역) */}
       <div className={`relative z-10 w-full px-2 pb-6 flex flex-col gap-3 ${partyEffect ? 'animate-[shakeHit_0.3s_ease-in-out]' : ''}`}>
         
-        {/* 💥 기사단 피격 사선 & 데미지 팝업 */}
+        {/* 기사단 피격 데미지 팝업 */}
         {partyEffect && (
           <div key={`party-${partyEffect.id}`} className="absolute inset-0 flex items-center justify-center pointer-events-none z-50 -translate-y-24">
             {!partyEffect.isMiss && <div className="absolute w-[120%] h-3 bg-red-600 rounded-full shadow-[0_0_20px_#ef4444,0_0_40px_#991b1b] animate-[slashHit_0.3s_ease-out_forwards]"></div>}
@@ -307,6 +318,48 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
         </div>
 
       </div>
+
+      {/* ✨ 1. 이탈 확인 팝업 UI (데빌마인 던전과 동일한 컨셉) */}
+      {showExitPopup && (
+        <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <div 
+            className="relative px-6 w-full max-w-[22rem] aspect-[1.3/1] flex flex-col items-center justify-center drop-shadow-[0_0_30px_rgba(0,0,0,1)]"
+            style={{ 
+              backgroundImage: "url('/popup-bg.png')",
+              backgroundSize: '100% 100%', 
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat'
+            }}
+          >
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black/50 via-black/10 to-transparent pointer-events-none z-0 rounded-3xl"></div>
+
+            <h3 className="text-xl font-black text-red-500 mb-2 drop-shadow-[0_2px_5px_rgba(0,0,0,1)] relative z-10">전투 이탈</h3>
+            <p className="text-neutral-200 text-sm mb-5 leading-relaxed font-bold drop-shadow-[0_2px_5px_rgba(0,0,0,1)] relative z-10 text-center">
+              정말 나가시겠습니까?<br/>
+              진행 중인 보스 전투 기록이 <span className="text-red-400 font-black">사라집니다</span>.
+            </p>
+            
+            <div className="flex justify-center items-center gap-1 w-full px-2 relative z-10">
+              <button 
+                onClick={onBack}
+                className="w-24 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_0_10px_rgba(0,0,0,0.8)] select-none"
+                style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+              >
+                <img src="/outkey.webp" alt="Confirm Exit" className="w-full h-auto object-contain pointer-events-none" draggable="false" />
+              </button>
+              
+              <button 
+                onClick={() => setShowExitPopup(false)}
+                className="w-24 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_0_15px_rgba(220,38,38,0.5)] select-none"
+                style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+              >
+                <img src="/continuekey.webp" alt="Cancel Exit" className="w-full h-auto object-contain pointer-events-none" draggable="false" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
