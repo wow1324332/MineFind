@@ -89,6 +89,17 @@ export default function App() {
 
   const [activeAchievement, setActiveAchievement] = useState(null);
 
+  const [gameIntroStage, setGameIntroStage] = useState('done');
+
+  useEffect(() => {
+    if (gameIntroStage === 'text') {
+      const t1 = setTimeout(() => setGameIntroStage('slash'), 800);
+      const t2 = setTimeout(() => setGameIntroStage('split'), 950);
+      const t3 = setTimeout(() => setGameIntroStage('done'), 1500);
+      return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+    }
+  }, [gameIntroStage]);
+
   // 💡 보상(rewards) 데이터에 신규 칭호가 도착하면 즉시 감지해서 화면에 띄움
   useEffect(() => {
     if (rewards && rewards.newTitles && rewards.newTitles.length > 0) {
@@ -294,7 +305,10 @@ export default function App() {
     initGame(selectedDifficulty, dungeonId); 
 
     setCurrentScreen('DUNGEON_LOADING');
-    setTimeout(() => setCurrentScreen('GAME_PVE'), 2000);
+    setTimeout(() => {
+      setCurrentScreen('GAME_PVE');
+      setGameIntroStage('text'); // 👈 화면이 GAME_PVE로 넘어가는 순간 인트로 발사!
+    }, 2000);
   };
 
   // 💡 획득한 보상(골드, 아이템)을 모달창에 예쁘게 그려주는 미니 렌더링 함수
@@ -591,6 +605,50 @@ export default function App() {
     case 'GAME_PVE':
       currentView = (
         <div className="min-h-screen bg-black flex flex-col items-center justify-start pt-0 px-4 pb-4 select-none touch-manipulation">
+
+          {/* ⚔️ 던전 진입 사선 베기 연출 (여기서부터) */}
+          {gameIntroStage !== 'done' && (
+            <div className="fixed inset-0 z-[200] pointer-events-none overflow-hidden">
+              <style>{`
+                @keyframes textPunch {
+                  0% { transform: scale(2.5); opacity: 0; filter: blur(5px); }
+                  40% { transform: scale(0.9); opacity: 1; filter: blur(0); }
+                  60% { transform: scale(1.05); }
+                  100% { transform: scale(1); }
+                }
+                @keyframes flash {
+                  0% { opacity: 0; }
+                  30% { opacity: 1; }
+                  100% { opacity: 0; }
+                }
+                .split-top { clip-path: polygon(0 0, 100% 0, 100% 45%, 0 55%); transition: transform 0.5s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.5s; }
+                .split-bottom { clip-path: polygon(0 55%, 100% 45%, 100% 100%, 0 100%); transition: transform 0.5s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.5s; }
+                .slash-line {
+                  position: absolute; top: 50%; left: -10%; width: 120%; height: 3px; background: #fff;
+                  box-shadow: 0 0 15px #fff, 0 0 30px #dc2626; transform: rotate(-5deg) scaleX(0);
+                  transform-origin: left center; opacity: 0; transition: transform 0.15s ease-out, opacity 0.15s;
+                }
+                .slash-line.active { transform: rotate(-5deg) scaleX(1); opacity: 1; }
+                .slash-line.fade { opacity: 0; transform: rotate(-5deg) scaleX(1) scaleY(10); transition: transform 0.3s ease-out, opacity 0.3s ease-out; }
+              `}</style>
+              
+              <div className={`absolute inset-0 bg-black flex items-center justify-center split-top ${gameIntroStage === 'split' ? '-translate-x-8 -translate-y-12 opacity-0' : ''}`}>
+                 <span className="text-red-600 font-sans font-black text-2xl sm:text-3xl tracking-[0.3em] uppercase drop-shadow-[0_0_20px_rgba(220,38,38,1)] italic" style={{ animation: 'textPunch 0.5s ease-out forwards' }}>
+                   Hunt Start
+                 </span>
+              </div>
+
+              <div className={`absolute inset-0 bg-black flex items-center justify-center split-bottom ${gameIntroStage === 'split' ? 'translate-x-8 translate-y-12 opacity-0' : ''}`}>
+                 <span className="text-red-600 font-sans font-black text-2xl sm:text-3xl tracking-[0.3em] uppercase drop-shadow-[0_0_20px_rgba(220,38,38,1)] italic" style={{ animation: 'textPunch 0.5s ease-out forwards' }}>
+                   Hunt Start
+                 </span>
+              </div>
+
+              <div className={`slash-line ${gameIntroStage === 'slash' ? 'active' : ''} ${gameIntroStage === 'split' ? 'fade' : ''}`}></div>
+              {gameIntroStage === 'slash' && <div className="absolute inset-0 bg-white" style={{ animation: 'flash 0.15s ease-out forwards' }}></div>}
+            </div>
+          )}
+          {/* ⚔️ 던전 진입 사선 베기 연출 (여기까지) */}
           
           <div className="w-full max-w-sm flex justify-center relative z-10 drop-shadow-[0_10px_15px_rgba(0,0,0,0.8)]">
             <img 
