@@ -20,6 +20,19 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
   const [partyMp, setPartyMp] = useState(0);
 
   const [combatLog, setCombatLog] = useState('전투 준비 완료! 보스를 공격하세요.');
+  // ✨ 인트로 애니메이션 상태와 타이머 로직 추가!
+  const [introStage, setIntroStage] = useState('loading'); 
+
+  useEffect(() => {
+    // 전투 데이터가 준비되면 인트로를 시작합니다.
+    if (partyStats && bossData) {
+      setIntroStage('text'); // 1. "BATTLE START" 화면 쾅!
+      const t1 = setTimeout(() => setIntroStage('slash'), 800);  // 2. 0.8초 후 검광(사선 베기) 번쩍!
+      const t2 = setTimeout(() => setIntroStage('split'), 950);  // 3. 0.15초 후 화면이 두 동강 나며 비켜짐
+      const t3 = setTimeout(() => setIntroStage('done'), 1500);  // 4. 애니메이션 완전 종료 (터치 활성화)
+      return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+    }
+  }, [partyStats, bossData]);
 
   useEffect(() => {
     if (!user) return;
@@ -151,7 +164,77 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-black select-none touch-manipulation">
-      
+
+{/* ⚔️ 사사삭! 박진감 넘치는 사선 베기 인트로 연출 (여기서부터) */}
+      {introStage !== 'done' && introStage !== 'loading' && (
+        <div className="absolute inset-0 z-[200] pointer-events-none overflow-hidden">
+          <style>{`
+            @keyframes textPunch {
+              0% { transform: scale(2.5); opacity: 0; filter: blur(5px); }
+              40% { transform: scale(0.9); opacity: 1; filter: blur(0); }
+              60% { transform: scale(1.05); }
+              100% { transform: scale(1); }
+            }
+            @keyframes flash {
+              0% { opacity: 0; }
+              30% { opacity: 1; }
+              100% { opacity: 0; }
+            }
+            .split-top {
+              clip-path: polygon(0 0, 100% 0, 100% 45%, 0 55%);
+              transition: transform 0.5s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.5s;
+            }
+            .split-bottom {
+              clip-path: polygon(0 55%, 100% 45%, 100% 100%, 0 100%);
+              transition: transform 0.5s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.5s;
+            }
+            .slash-line {
+              position: absolute;
+              top: 50%;
+              left: -10%;
+              width: 120%;
+              height: 3px;
+              background: #fff;
+              box-shadow: 0 0 15px #fff, 0 0 30px #dc2626;
+              transform: rotate(-5deg) scaleX(0);
+              transform-origin: left center;
+              opacity: 0;
+              transition: transform 0.15s ease-out, opacity 0.15s;
+            }
+            .slash-line.active {
+              transform: rotate(-5deg) scaleX(1);
+              opacity: 1;
+            }
+            .slash-line.fade {
+              opacity: 0;
+              transform: rotate(-5deg) scaleX(1) scaleY(10);
+              transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+            }
+          `}</style>
+          
+          {/* 베어지는 위쪽 화면 */}
+          <div className={`absolute inset-0 bg-black flex items-center justify-center split-top ${introStage === 'split' ? '-translate-x-8 -translate-y-12 opacity-0' : ''}`}>
+             <span className="text-red-600 font-serif font-black text-4xl sm:text-5xl tracking-[0.2em] uppercase drop-shadow-[0_0_20px_rgba(220,38,38,1)] italic" style={{ animation: 'textPunch 0.5s ease-out forwards' }}>
+               Battle Start
+             </span>
+          </div>
+
+          {/* 베어지는 아래쪽 화면 */}
+          <div className={`absolute inset-0 bg-black flex items-center justify-center split-bottom ${introStage === 'split' ? 'translate-x-8 translate-y-12 opacity-0' : ''}`}>
+             <span className="text-red-600 font-serif font-black text-4xl sm:text-5xl tracking-[0.2em] uppercase drop-shadow-[0_0_20px_rgba(220,38,38,1)] italic" style={{ animation: 'textPunch 0.5s ease-out forwards' }}>
+               Battle Start
+             </span>
+          </div>
+
+          {/* 사선 궤적 (검광) */}
+          <div className={`slash-line ${introStage === 'slash' ? 'active' : ''} ${introStage === 'split' ? 'fade' : ''}`}></div>
+
+          {/* 화면 번쩍임 효과 */}
+          {introStage === 'slash' && <div className="absolute inset-0 bg-white" style={{ animation: 'flash 0.15s ease-out forwards' }}></div>}
+        </div>
+      )}
+      {/* ⚔️ 사사삭 인트로 연출 (여기까지) */}
+              
       {/* 배경: 보스 이미지 */}
       <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80 z-0" style={{ backgroundImage: `url('${bossData.image}')` }}></div>
       <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-black/90 via-black/40 to-transparent z-0 pointer-events-none"></div>
