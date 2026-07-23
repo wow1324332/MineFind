@@ -222,9 +222,9 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
       <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black via-black/80 to-transparent z-0 pointer-events-none"></div>
 
       {/* 상단 UI (보스 영역) */}
-      <div className={`relative z-10 w-full px-4 pt-8 flex flex-col items-center gap-3 ${bossEffect ? 'animate-[shakeHit_0.3s_ease-in-out]' : ''}`}>
+      <div className={`relative z-10 w-full px-4 pt-10 flex flex-col items-center ${bossEffect ? 'animate-[shakeHit_0.3s_ease-in-out]' : ''}`}>
         
-        {/* ✨ 1. 구린 X버튼 대신 돌담 백키 적용 */}
+        {/* 돌담 백키 */}
         <button 
           onClick={() => setShowExitPopup(true)} 
           className="absolute left-4 top-8 transition-all duration-150 active:scale-90 outline-none" 
@@ -233,15 +233,19 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
           <img src="/header/backkey.webp" alt="Exit" className="w-8 h-8 object-contain drop-shadow-md" draggable="false" />
         </button>
 
-        {/* ✨ 2. 보스 이름 멋진 영문 그라데이션 적용 */}
-        <span className="text-transparent bg-clip-text bg-gradient-to-b from-red-400 to-red-800 font-serif font-black text-2xl tracking-[0.4em] uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,1)] italic">
-          {bossId}
-        </span>
-        
-        {/* ✨ 3. 각진 체력바를 둥근(pill) 모양으로 라운딩 처리 (rounded-full) */}
-        <div className="w-full max-w-sm h-4 bg-black/80 border-[1.5px] border-red-900/50 rounded-full overflow-hidden relative shadow-[0_0_15px_rgba(220,38,38,0.3)]">
-          <div className="h-full bg-gradient-to-r from-red-900 to-red-500 transition-all duration-300" style={{ width: `${Math.max(0, (bossHp / bossData.stats.maxHp) * 100)}%` }}></div>
-          <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white drop-shadow-md">{bossHp} / {bossData.stats.maxHp}</span>
+        {/* ✨ 이름 & 체력바 묶음 컨테이너 (우측 정렬) */}
+        <div className="w-full max-w-sm flex flex-col items-end gap-1">
+          
+          {/* ✨ 보스 이름 폰트 축소 & 체력바 우측 상단으로 바짝 붙이기 */}
+          <span className="text-transparent bg-clip-text bg-gradient-to-b from-red-400 to-red-800 font-serif font-black text-sm sm:text-base tracking-[0.3em] uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,1)] italic pr-1">
+            {bossId}
+          </span>
+          
+          {/* 체력바 */}
+          <div className="w-full h-4 bg-black/80 border-[1.5px] border-red-900/50 rounded-full overflow-hidden relative shadow-[0_0_15px_rgba(220,38,38,0.3)]">
+            <div className="h-full bg-gradient-to-r from-red-900 to-red-500 transition-all duration-300" style={{ width: `${Math.max(0, (bossHp / bossData.stats.maxHp) * 100)}%` }}></div>
+            <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white drop-shadow-md">{bossHp} / {bossData.stats.maxHp}</span>
+          </div>
         </div>
 
         {/* 보스 피격 데미지 팝업 */}
