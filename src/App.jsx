@@ -550,15 +550,26 @@ export default function App() {
         <div key="dungeon" style={{ animation: 'fadeInSmooth 0.8s ease-in-out forwards' }}>
           <BossDungeon 
             hp={hpData.hp}
-            bossId={currentBossDungeon} // ✨ 다시 원래대로 currentBossDungeon 으로 복구!!
+            bossId={currentBossDungeon} // 👈 1. 뻗는 현상 해결 (원래대로 복구)
             onBack={() => setCurrentScreen('BOSS_RAID')} 
             onLogout={logout}
-            // 💡 팝업에서 Challenge 클릭 시 실행될 함수 추가!
             onSelectBattle={(bossId) => {
               setCurrentBattleBoss(bossId); 
-              setCurrentScreen('BOSS_BATTLE_LOADING'); // 로딩 화면 호출
-              setTimeout(() => setCurrentScreen('BOSS_BATTLE'), 2500); // 2.5초 후 진짜 전투 돌입
+              setCurrentScreen('BOSS_BATTLE_LOADING'); 
+              setTimeout(() => setCurrentScreen('BOSS_BATTLE'), 2500); 
             }}
+          />
+        </div>
+      );
+      break;
+
+      // 👇 2. 까만 화면 해결 (BOSS_BATTLE 화면 라우팅 추가!!!) 👇
+    case 'BOSS_BATTLE':
+      currentView = (
+        <div key="battle" style={{ animation: 'fadeInSmooth 0.5s ease-in-out forwards' }}>
+          <BossBattle 
+            bossId={currentBattleBoss} 
+            onBack={() => setCurrentScreen('BOSS_DUNGEON')} 
           />
         </div>
       );
