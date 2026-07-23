@@ -147,8 +147,7 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
     setCombatLog(logText);
   };
 
-  if (!bossData) return <div className="fixed inset-0 bg-black z-50 flex items-center justify-center text-red-500 font-bold">보스 데이터 로딩 실패 ({bossId})</div>;
-  if (!partyStats) return <div className="fixed inset-0 bg-black z-50 flex items-center justify-center text-red-500 font-bold px-4 text-center">파티 스탯 계산 에러!<br/>데이터 연산 중 문제가 발생했습니다.</div>;
+  if (!bossData || !partyStats) return <div className="fixed inset-0 bg-black z-50"></div>;
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-black select-none touch-manipulation">
