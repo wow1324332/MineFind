@@ -42,18 +42,21 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
 
           let equipBonus = { str: 0, agi: 0, int: 0, vit: 0, luk: 0 };
 
-          ['WEAPON', 'HELMET', 'SHIELD', 'ARMOR'].forEach(part => {
-            const state = userEquipment[part] || defaultEquip;
-            const equipKey = `tier_${state.tier}_${state.element || 'neutral'}`;
-            const dbData = EQUIP_DATABASE[part]?.evolutions[equipKey] || EQUIP_DATABASE[part]?.evolutions['tier_0_neutral'];
-            const growth = EQUIP_DATABASE[part]?.enhanceGrowth || { str:0, agi:0, int:0, vit:0, luk:0 };
+          ['WEAPON', 'HELMET', 'SHIELD', 'ARMOR'].forEach(part => {
+            const state = userEquipment[part] || defaultEquip;
+            const equipKey = `tier_${state.tier}_${state.element || 'neutral'}`;
+            const dbData = EQUIP_DATABASE[part]?.evolutions[equipKey] || EQUIP_DATABASE[part]?.evolutions['tier_0_neutral'];
+            const growth = EQUIP_DATABASE[part]?.enhanceGrowth || { str:0, agi:0, int:0, vit:0, luk:0 };
 
-            equipBonus.str += dbData.baseStat.str + (growth.str * state.enhance);
-            equipBonus.agi += dbData.baseStat.agi + (growth.agi * state.enhance);
-            equipBonus.int += dbData.baseStat.int + (growth.int * state.enhance);
-            equipBonus.vit += dbData.baseStat.vit + (growth.vit * state.enhance);
-            equipBonus.luk += dbData.baseStat.luk + (growth.luk * state.enhance);
-          });
+            // ✨ 방어 코드: dbData와 baseStat이 있을 때만 계산!
+            if(dbData && dbData.baseStat) {
+              equipBonus.str += (dbData.baseStat.str || 0) + ((growth.str || 0) * state.enhance);
+              equipBonus.agi += (dbData.baseStat.agi || 0) + ((growth.agi || 0) * state.enhance);
+              equipBonus.int += (dbData.baseStat.int || 0) + ((growth.int || 0) * state.enhance);
+              equipBonus.vit += (dbData.baseStat.vit || 0) + ((growth.vit || 0) * state.enhance);
+              equipBonus.luk += (dbData.baseStat.luk || 0) + ((growth.luk || 0) * state.enhance);
+            }
+          });
 
           // =========================================
           // ⚔️ 2. 기사단 편성 및 최종 스탯 합산
@@ -144,7 +147,8 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
     setCombatLog(logText);
   };
 
-  if (!bossData || !partyStats) return <div className="fixed inset-0 bg-black z-50"></div>;
+  if (!bossData) return <div className="fixed inset-0 bg-black z-50 flex items-center justify-center text-red-500 font-bold">보스 데이터 로딩 실패 ({bossId})</div>;
+  if (!partyStats) return <div className="fixed inset-0 bg-black z-50 flex items-center justify-center text-red-500 font-bold px-4 text-center">파티 스탯 계산 에러!<br/>데이터 연산 중 문제가 발생했습니다.</div>;
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-black select-none touch-manipulation">
