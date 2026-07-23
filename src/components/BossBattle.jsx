@@ -214,15 +214,15 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
           
           {/* 베어지는 위쪽 화면 */}
           <div className={`absolute inset-0 bg-black flex items-center justify-center split-top ${introStage === 'split' ? '-translate-x-8 -translate-y-12 opacity-0' : ''}`}>
-             <span className="text-red-600 font-serif font-black text-4xl sm:text-5xl tracking-[0.2em] uppercase drop-shadow-[0_0_20px_rgba(220,38,38,1)] italic" style={{ animation: 'textPunch 0.5s ease-out forwards' }}>
-               Battle Start
+             <span className="text-red-600 font-sans font-black text-2xl sm:text-3xl tracking-[0.3em] uppercase drop-shadow-[0_0_20px_rgba(220,38,38,1)] italic" style={{ animation: 'textPunch 0.5s ease-out forwards' }}>
+              Battle Start
              </span>
           </div>
 
           {/* 베어지는 아래쪽 화면 */}
           <div className={`absolute inset-0 bg-black flex items-center justify-center split-bottom ${introStage === 'split' ? 'translate-x-8 translate-y-12 opacity-0' : ''}`}>
-             <span className="text-red-600 font-serif font-black text-4xl sm:text-5xl tracking-[0.2em] uppercase drop-shadow-[0_0_20px_rgba(220,38,38,1)] italic" style={{ animation: 'textPunch 0.5s ease-out forwards' }}>
-               Battle Start
+             <span className="text-red-600 font-sans font-black text-2xl sm:text-3xl tracking-[0.3em] uppercase drop-shadow-[0_0_20px_rgba(220,38,38,1)] italic" style={{ animation: 'textPunch 0.5s ease-out forwards' }}>
+              Battle Start
              </span>
           </div>
 
