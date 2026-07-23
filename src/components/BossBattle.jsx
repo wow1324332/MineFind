@@ -5,55 +5,43 @@ import { useAuth } from '../hooks/useAuth';
 
 import { RAID_BOSS_DATABASE } from '../constants/raidBossData';
 import { KNIGHT_DATABASE } from '../constants/knightData';
-import { EQUIP_DATABASE } from '../constants/equipData'; // ✨ 장비 계산을 위해 추가
+import { EQUIP_DATABASE } from '../constants/equipData'; 
 import { calculatePartyStats, calculateTurnDamage } from '../utils/combatUtils';
 
 export default function BossBattle({ bossId = 'dantalion', onBack }) {
-  const { user } = useAuth();
+  const { user } = useAuth();
 
-  const bossData = RAID_BOSS_DATABASE[bossId];
-  const [bossHp, setBossHp] = useState(bossData?.stats?.maxHp || 100);
+  const bossData = RAID_BOSS_DATABASE[bossId];
+  const [bossHp, setBossHp] = useState(bossData?.stats?.maxHp || 100);
 
-  const [partyKnights, setPartyKnights] = useState(Array(6).fill(null));
-  const [partyStats, setPartyStats] = useState(null);
-  const [partyHp, setPartyHp] = useState(0);
-  const [partyMp, setPartyMp] = useState(0);
+  const [partyKnights, setPartyKnights] = useState(Array(6).fill(null));
+  const [partyStats, setPartyStats] = useState(null);
+  const [partyHp, setPartyHp] = useState(0);
+  const [partyMp, setPartyMp] = useState(0);
 
-  const [combatLog, setCombatLog] = useState('전투 준비 완료! 보스를 공격하세요.');
-  // ✨ 인트로 애니메이션 상태와 타이머 로직 추가!
-  const [introStage, setIntroStage] = useState('loading'); 
+  // ✨ 텍스트 박스를 없애고 시각적 연출 상태를 도입!
+  const [isAnimating, setIsAnimating] = useState(false); // 공격 중 버튼 연타 방지
+  const [bossEffect, setBossEffect] = useState(null);    // 보스 피격 데이터
+  const [partyEffect, setPartyEffect] = useState(null);  // 기사단 피격 데이터
+  const [battleResult, setBattleResult] = useState(null); // 'win' or 'lose'
 
   useEffect(() => {
-    // 전투 데이터가 준비되면 인트로를 시작합니다.
-    if (partyStats && bossData) {
-      setIntroStage('text'); // 1. "BATTLE START" 화면 쾅!
-      const t1 = setTimeout(() => setIntroStage('slash'), 800);  // 2. 0.8초 후 검광(사선 베기) 번쩍!
-      const t2 = setTimeout(() => setIntroStage('split'), 950);  // 3. 0.15초 후 화면이 두 동강 나며 비켜짐
-      const t3 = setTimeout(() => setIntroStage('done'), 1500);  // 4. 애니메이션 완전 종료 (터치 활성화)
-      return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
-    }
-  }, [partyStats, bossData]);
+    if (!user) return;
+    const fetchBattleData = async () => {
+      try {
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          const userLevel = userData.level || 1; 
+          const userNickname = userData.nickname || user.displayName || '무명의 용사';
 
-  useEffect(() => {
-    if (!user) return;
-    const fetchBattleData = async () => {
-      try {
-        const userDoc = await getDoc(doc(db, 'users', user.uid));
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          const userLevel = userData.level || 1; // ✨ 주인공 레벨
-          const userNickname = userData.nickname || user.displayName || '무명의 용사';
+          const defaultEquip = { tier: 0, element: 'neutral', enhance: 0 };
+          const userEquipment = userData.equipment || {
+            WEAPON: { ...defaultEquip }, HELMET: { ...defaultEquip },
+            SHIELD: { ...defaultEquip }, ARMOR: { ...defaultEquip }
+          };
 
-          // =========================================
-          // 🛡️ 1. 장비 보너스 스탯 완벽 계산 (Knights.jsx와 100% 동일)
-          // =========================================
-          const defaultEquip = { tier: 0, element: 'neutral', enhance: 0 };
-          const userEquipment = userData.equipment || {
-            WEAPON: { ...defaultEquip }, HELMET: { ...defaultEquip },
-            SHIELD: { ...defaultEquip }, ARMOR: { ...defaultEquip }
-          };
-
-          let equipBonus = { str: 0, agi: 0, int: 0, vit: 0, luk: 0 };
+          let equipBonus = { str: 0, agi: 0, int: 0, vit: 0, luk: 0 };
 
           ['WEAPON', 'HELMET', 'SHIELD', 'ARMOR'].forEach(part => {
             const state = userEquipment[part] || defaultEquip;
@@ -61,7 +49,6 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
             const dbData = EQUIP_DATABASE[part]?.evolutions[equipKey] || EQUIP_DATABASE[part]?.evolutions['tier_0_neutral'];
             const growth = EQUIP_DATABASE[part]?.enhanceGrowth || { str:0, agi:0, int:0, vit:0, luk:0 };
 
-            // ✨ 방어 코드: dbData와 baseStat이 있을 때만 계산!
             if(dbData && dbData.baseStat) {
               equipBonus.str += (dbData.baseStat.str || 0) + ((growth.str || 0) * state.enhance);
               equipBonus.agi += (dbData.baseStat.agi || 0) + ((growth.agi || 0) * state.enhance);
@@ -71,247 +58,241 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
             }
           });
 
-          // =========================================
-          // ⚔️ 2. 기사단 편성 및 최종 스탯 합산
-          // =========================================
-          let myPartyIds = userData.unlockedKnights || ['knight_main'];
-          if (!myPartyIds.includes('knight_main')) {
-            myPartyIds = ['knight_main', ...myPartyIds];
-          }
-          
-          const slots = Array(6).fill(null);
-          const activeKnights = [];
-
-          myPartyIds.forEach((id, index) => {
-            if (index < 6 && KNIGHT_DATABASE[id]) {
-              const kDb = KNIGHT_DATABASE[id];
-              // ✨ 주인공이면 유저 레벨을, 소환수면 개별 레벨을 적용
-              const kLevel = id === 'knight_main' ? userLevel : (userData.knightStats?.[id]?.level || 1);
-              const lvMultiplier = kLevel - 1;
-
-              // ✨ 레벨 성장치 + 장비 보너스까지 완벽하게 더해진 기사 객체 생성
-              const flatKnight = {
-                id,
-                name: id === 'knight_main' ? userNickname : kDb.name,
-                image: kDb.image,
-                str: kDb.baseStats.str + (kDb.statGrowth.str * lvMultiplier) + equipBonus.str,
-                agi: kDb.baseStats.agi + (kDb.statGrowth.agi * lvMultiplier) + equipBonus.agi,
-                int: kDb.baseStats.int + (kDb.statGrowth.int * lvMultiplier) + equipBonus.int,
-                vit: kDb.baseStats.vit + (kDb.statGrowth.vit * lvMultiplier) + equipBonus.vit,
-                luk: kDb.baseStats.luk + (kDb.statGrowth.luk * lvMultiplier) + equipBonus.luk,
-              };
-
-              slots[index] = flatKnight; 
-              activeKnights.push(flatKnight);
-            }
-          });
-
-          setPartyKnights(slots);
-
-          // ✨ 이 모든 걸 합쳐서 Knights 화면과 똑같은 파티 스탯을 뽑아냄
-          const stats = calculatePartyStats(activeKnights);
-          setPartyStats(stats);
-          setPartyHp(stats.maxHp); 
-          setPartyMp(0); // 시작 마나는 무조건 0 (턴마다 참)
-        }
-      } catch (error) {
-        console.error("전투 데이터 로딩 실패:", error);
-      }
-    };
-    fetchBattleData();
-  }, [user]);
-
-  // ==========================================================
-  // ⚔️ [Attack] 버튼 전투 로직
-  // ==========================================================
-  const handleAttack = () => {
-    if (bossHp <= 0 || partyHp <= 0) return; 
-
-    let logText = "";
-
-    // 1️⃣ 아군의 턴 (기사단 -> 보스)
-    const knightAttack = calculateTurnDamage(partyStats, bossData.stats, true);
-    let currentBossHp = bossHp - knightAttack.damage;
-    
-    logText += `⚔️ 기사단 공격! [${knightAttack.damage}] 데미지! ${knightAttack.isCrit ? '(크리티컬!)' : ''}\n`;
-
-    if (currentBossHp <= 0) {
-      setBossHp(0);
-      setCombatLog(logText + `🎉 [${bossData.name}] 처치 완료! 승리했습니다!`);
-      return;
-    }
-    setBossHp(currentBossHp);
-
-    // 2️⃣ 보스의 턴 (보스 -> 기사단)
-    const bossAttack = calculateTurnDamage(bossData.stats, partyStats, false);
-    let currentPartyHp = partyHp - bossAttack.damage;
-
-    logText += `💀 보스의 반격! [${bossAttack.damage}] 피해를 입었습니다. ${bossAttack.isCrit ? '(치명상!)' : ''}`;
-
-    if (currentPartyHp <= 0) {
-      setPartyHp(0);
-      setCombatLog(logText + `\n☠️ 기사단 전멸... 패배했습니다.`);
-      return;
-    }
-    setPartyHp(currentPartyHp);
-
-    // 3️⃣ 턴 종료 후 마나 회복
-    setPartyMp(prevMp => Math.min(partyStats.maxMp, prevMp + partyStats.mpRegen));
-    setCombatLog(logText);
-  };
-
-  if (!bossData || !partyStats) return <div className="fixed inset-0 bg-black z-50"></div>;
-
-  return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-black select-none touch-manipulation">
-
-{/* ⚔️ 사사삭! 박진감 넘치는 사선 베기 인트로 연출 (여기서부터) */}
-      {introStage !== 'done' && introStage !== 'loading' && (
-        <div className="absolute inset-0 z-[200] pointer-events-none overflow-hidden">
-          <style>{`
-            @keyframes textPunch {
-              0% { transform: scale(2.5); opacity: 0; filter: blur(5px); }
-              40% { transform: scale(0.9); opacity: 1; filter: blur(0); }
-              60% { transform: scale(1.05); }
-              100% { transform: scale(1); }
-            }
-            @keyframes flash {
-              0% { opacity: 0; }
-              30% { opacity: 1; }
-              100% { opacity: 0; }
-            }
-            .split-top {
-              clip-path: polygon(0 0, 100% 0, 100% 45%, 0 55%);
-              transition: transform 0.5s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.5s;
-            }
-            .split-bottom {
-              clip-path: polygon(0 55%, 100% 45%, 100% 100%, 0 100%);
-              transition: transform 0.5s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.5s;
-            }
-            .slash-line {
-              position: absolute;
-              top: 50%;
-              left: -10%;
-              width: 120%;
-              height: 3px;
-              background: #fff;
-              box-shadow: 0 0 15px #fff, 0 0 30px #dc2626;
-              transform: rotate(-5deg) scaleX(0);
-              transform-origin: left center;
-              opacity: 0;
-              transition: transform 0.15s ease-out, opacity 0.15s;
-            }
-            .slash-line.active {
-              transform: rotate(-5deg) scaleX(1);
-              opacity: 1;
-            }
-            .slash-line.fade {
-              opacity: 0;
-              transform: rotate(-5deg) scaleX(1) scaleY(10);
-              transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-            }
-          `}</style>
+          let myPartyIds = userData.unlockedKnights || ['knight_main'];
+          if (!myPartyIds.includes('knight_main')) {
+            myPartyIds = ['knight_main', ...myPartyIds];
+          }
           
-          {/* 베어지는 위쪽 화면 */}
-          <div className={`absolute inset-0 bg-black flex items-center justify-center split-top ${introStage === 'split' ? '-translate-x-8 -translate-y-12 opacity-0' : ''}`}>
-             <span className="text-red-600 font-sans font-black text-2xl sm:text-3xl tracking-[0.3em] uppercase drop-shadow-[0_0_20px_rgba(220,38,38,1)] italic" style={{ animation: 'textPunch 0.5s ease-out forwards' }}>
-              Battle Start
-             </span>
-          </div>
+          const slots = Array(6).fill(null);
+          const activeKnights = [];
 
-          {/* 베어지는 아래쪽 화면 */}
-          <div className={`absolute inset-0 bg-black flex items-center justify-center split-bottom ${introStage === 'split' ? 'translate-x-8 translate-y-12 opacity-0' : ''}`}>
-             <span className="text-red-600 font-sans font-black text-2xl sm:text-3xl tracking-[0.3em] uppercase drop-shadow-[0_0_20px_rgba(220,38,38,1)] italic" style={{ animation: 'textPunch 0.5s ease-out forwards' }}>
-              Battle Start
-             </span>
-          </div>
+          myPartyIds.forEach((id, index) => {
+            if (index < 6 && KNIGHT_DATABASE[id]) {
+              const kDb = KNIGHT_DATABASE[id];
+              const kLevel = id === 'knight_main' ? userLevel : (userData.knightStats?.[id]?.level || 1);
+              const lvMultiplier = kLevel - 1;
 
-          {/* 사선 궤적 (검광) */}
-          <div className={`slash-line ${introStage === 'slash' ? 'active' : ''} ${introStage === 'split' ? 'fade' : ''}`}></div>
+              const flatKnight = {
+                id,
+                name: id === 'knight_main' ? userNickname : kDb.name,
+                image: kDb.image,
+                str: kDb.baseStats.str + (kDb.statGrowth.str * lvMultiplier) + equipBonus.str,
+                agi: kDb.baseStats.agi + (kDb.statGrowth.agi * lvMultiplier) + equipBonus.agi,
+                int: kDb.baseStats.int + (kDb.statGrowth.int * lvMultiplier) + equipBonus.int,
+                vit: kDb.baseStats.vit + (kDb.statGrowth.vit * lvMultiplier) + equipBonus.vit,
+                luk: kDb.baseStats.luk + (kDb.statGrowth.luk * lvMultiplier) + equipBonus.luk,
+              };
 
-          {/* 화면 번쩍임 효과 */}
-          {introStage === 'slash' && <div className="absolute inset-0 bg-white" style={{ animation: 'flash 0.15s ease-out forwards' }}></div>}
+              slots[index] = flatKnight; 
+              activeKnights.push(flatKnight);
+            }
+          });
+
+          setPartyKnights(slots);
+
+          const stats = calculatePartyStats(activeKnights);
+          setPartyStats(stats);
+          setPartyHp(stats.maxHp); 
+          setPartyMp(0); 
+        }
+      } catch (error) {
+        console.error("전투 데이터 로딩 실패:", error);
+      }
+    };
+    fetchBattleData();
+  }, [user]);
+
+  // ==========================================================
+  // ⚔️ [완벽한 턴제] 기사단 타격 -> 1초 딜레이 -> 보스 반격
+  // ==========================================================
+  const handleAttack = () => {
+    if (bossHp <= 0 || partyHp <= 0 || isAnimating || battleResult) return; 
+    setIsAnimating(true); // 애니메이션 도중 중복 클릭 방지
+
+    // 1️⃣ 아군의 턴 (내 공격 발사!)
+    const knightAttack = calculateTurnDamage(partyStats, bossData.stats, true);
+    let currentBossHp = Math.max(0, bossHp - knightAttack.damage);
+    
+    // 화면에 띄울 보스 이펙트 데이터 세팅
+    setBossEffect({
+      damage: knightAttack.damage,
+      isCrit: knightAttack.isCrit,
+      isMiss: knightAttack.isMiss,
+      id: Date.now() // 고유 키값
+    });
+    setBossHp(currentBossHp);
+
+    // 2️⃣ 1초 대기 후 생존 여부 확인
+    setTimeout(() => {
+      setBossEffect(null); // 이펙트 초기화
+
+      if (currentBossHp <= 0) {
+        setBattleResult('win');
+        setIsAnimating(false);
+        return;
+      }
+
+      // 3️⃣ 보스의 턴 (보스 반격 발사!)
+      const bossAttack = calculateTurnDamage(bossData.stats, partyStats, false);
+      let currentPartyHp = Math.max(0, partyHp - bossAttack.damage);
+
+      // 화면에 띄울 기사단 이펙트 데이터 세팅
+      setPartyEffect({
+        damage: bossAttack.damage,
+        isCrit: bossAttack.isCrit,
+        isMiss: bossAttack.isMiss,
+        id: Date.now()
+      });
+      setPartyHp(currentPartyHp);
+
+      // 4️⃣ 다시 1초 대기 후 턴 종료
+      setTimeout(() => {
+        setPartyEffect(null);
+
+        if (currentPartyHp <= 0) {
+          setBattleResult('lose');
+        } else {
+          // 생존했다면 턴 종료 마나 회복
+          setPartyMp(prevMp => Math.min(partyStats.maxMp, prevMp + partyStats.mpRegen));
+        }
+        setIsAnimating(false); // 다시 내 턴으로 복귀 (클릭 활성화)
+      }, 1000);
+
+    }, 1000);
+  };
+
+  if (!bossData) return <div className="fixed inset-0 bg-black z-50 flex items-center justify-center text-red-500 font-bold">보스 데이터 로딩 실패 ({bossId})</div>;
+  if (!partyStats) return <div className="fixed inset-0 bg-black z-50 flex items-center justify-center text-white/50 tracking-widest">전투 데이터 동기화 중...</div>;
+
+  return (
+    <div className="fixed inset-0 z-50 flex flex-col bg-black select-none touch-manipulation overflow-hidden">
+      
+      {/* ⚔️ 화려한 이펙트 CSS 애니메이션 */}
+      <style>{`
+        @keyframes floatUpDamage {
+          0% { transform: translateY(0) scale(0.5); opacity: 0; }
+          20% { transform: translateY(-20px) scale(1.3); opacity: 1; }
+          40% { transform: translateY(-30px) scale(1); opacity: 1; }
+          100% { transform: translateY(-70px) scale(1); opacity: 0; }
+        }
+        @keyframes slashHit {
+          0% { transform: rotate(-15deg) scaleX(0); opacity: 1; }
+          50% { transform: rotate(-15deg) scaleX(1); opacity: 1; }
+          100% { transform: rotate(-15deg) scaleX(1.5) scaleY(4); opacity: 0; }
+        }
+        @keyframes shakeHit {
+          0%, 100% { transform: translate(0, 0); }
+          20% { transform: translate(-8px, 6px); }
+          40% { transform: translate(6px, -8px); }
+          60% { transform: translate(-6px, -6px); }
+          80% { transform: translate(8px, 8px); }
+        }
+      `}</style>
+
+      {/* 🏆 전투 종료 팝업 (텍스트 박스 대체) */}
+      {battleResult && (
+        <div className="absolute inset-0 z-[100] bg-black/80 flex flex-col items-center justify-center animate-[fadeIn_0.5s_ease-out]">
+          <span className={`font-serif font-black text-5xl tracking-widest uppercase drop-shadow-[0_0_20px_rgba(0,0,0,1)] ${battleResult === 'win' ? 'text-yellow-400' : 'text-red-600'}`}>
+            {battleResult === 'win' ? 'VICTORY' : 'DEFEATED'}
+          </span>
+          <button onClick={onBack} className="mt-10 px-8 py-3 bg-[#110a08] text-[#f5d5a9] border border-[#a6845c] rounded-md font-serif font-bold tracking-widest active:scale-95 shadow-[0_0_15px_rgba(0,0,0,0.8)]">
+            RETURN
+          </button>
         </div>
       )}
-      {/* ⚔️ 사사삭 인트로 연출 (여기까지) */}
-              
-      {/* 배경: 보스 이미지 */}
-      <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80 z-0" style={{ backgroundImage: `url('${bossData.image}')` }}></div>
-      <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-black/90 via-black/40 to-transparent z-0 pointer-events-none"></div>
-      <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black via-black/80 to-transparent z-0 pointer-events-none"></div>
 
-      {/* 👑 상단: 보스 체력바 */}
-      <div className="relative z-10 w-full px-4 pt-8 flex flex-col items-center gap-2">
-        <button onClick={onBack} className="absolute left-4 top-8 w-8 h-8 flex items-center justify-center bg-black/50 border border-neutral-700 rounded-full text-white active:scale-90 transition-all">✕</button>
-        <span className="text-red-500 font-black text-xl tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,1)] uppercase">{bossData.name}</span>
-        
-        <div className="w-full max-w-sm h-4 bg-black/80 border-[1.5px] border-red-900/50 rounded-sm overflow-hidden relative shadow-[0_0_10px_rgba(220,38,38,0.3)]">
-          <div className="h-full bg-gradient-to-r from-red-900 to-red-500 transition-all duration-300" style={{ width: `${Math.max(0, (bossHp / bossData.stats.maxHp) * 100)}%` }}></div>
-          <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white drop-shadow-md">{bossHp} / {bossData.stats.maxHp}</span>
-        </div>
+      {/* 배경: 보스 이미지 */}
+      <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80 z-0" style={{ backgroundImage: `url('${bossData.image}')` }}></div>
+      <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-black/90 via-black/40 to-transparent z-0 pointer-events-none"></div>
+      <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black via-black/80 to-transparent z-0 pointer-events-none"></div>
 
-        <div className="flex gap-2 mt-1">
-          <div className="w-8 h-8 bg-black/60 border border-red-900/50 rounded-md shadow-inner flex items-center justify-center"><span className="text-red-500 text-[10px] font-black">S1</span></div>
-        </div>
-      </div>
+      {/* 👑 상단: 보스 영역 (타격 시 화면 흔들림 효과) */}
+      <div className={`relative z-10 w-full px-4 pt-8 flex flex-col items-center gap-2 ${bossEffect ? 'animate-[shakeHit_0.3s_ease-in-out]' : ''}`}>
+        <button onClick={onBack} className="absolute left-4 top-8 w-8 h-8 flex items-center justify-center bg-black/50 border border-neutral-700 rounded-full text-white active:scale-90 transition-all">✕</button>
+        <span className="text-red-500 font-black text-xl tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,1)] uppercase">{bossData.name}</span>
+        
+        <div className="w-full max-w-sm h-4 bg-black/80 border-[1.5px] border-red-900/50 rounded-sm overflow-hidden relative shadow-[0_0_10px_rgba(220,38,38,0.3)]">
+          <div className="h-full bg-gradient-to-r from-red-900 to-red-500 transition-all duration-300" style={{ width: `${Math.max(0, (bossHp / bossData.stats.maxHp) * 100)}%` }}></div>
+          <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white drop-shadow-md">{bossHp} / {bossData.stats.maxHp}</span>
+        </div>
 
-      {/* 👁️ 중간: 전투 로그 박스 */}
-      <div className="flex-1 w-full relative z-10 flex flex-col items-center justify-center px-4">
-        <div className="w-full max-w-sm bg-black/50 border border-yellow-900/30 rounded-md p-3 text-center backdrop-blur-sm min-h-[60px] flex items-center justify-center">
-          <p className="text-[#f5d5a9] text-xs font-bold whitespace-pre-line leading-relaxed drop-shadow-md">{combatLog}</p>
-        </div>
-      </div>
+        {/* 💥 보스 피격 사선 & 데미지 플로팅 */}
+        {bossEffect && (
+          <div key={`boss-${bossEffect.id}`} className="absolute inset-0 flex items-center justify-center pointer-events-none z-50 translate-y-16">
+            {!bossEffect.isMiss && <div className="absolute w-[150%] h-3 bg-white rounded-full shadow-[0_0_20px_#fff,0_0_40px_#ef4444] animate-[slashHit_0.3s_ease-out_forwards]"></div>}
+            <span className={`absolute font-black italic tracking-wider animate-[floatUpDamage_1s_ease-out_forwards] ${bossEffect.isMiss ? 'text-gray-400 text-4xl' : (bossEffect.isCrit ? 'text-yellow-400 drop-shadow-[0_0_15px_rgba(234,179,8,1)] text-6xl' : 'text-white drop-shadow-[0_0_10px_rgba(220,38,38,1)] text-5xl')}`}>
+              {bossEffect.isMiss ? 'MISS' : bossEffect.damage}
+            </span>
+          </div>
+        )}
+      </div>
 
-      {/* 🛡️ 하단: 기사단 UI */}
-      <div className="relative z-10 w-full px-2 pb-6 flex flex-col gap-3">
-        
-        <div className="w-full flex justify-between gap-1 px-1">
-          {partyKnights.map((knight, idx) => (
-            <div key={idx} className="flex-1 flex flex-col items-center gap-1">
-              {knight ? (
-                <>
-                  <button className="w-7 h-7 bg-[#1a1008]/80 border border-[#a6845c]/50 rounded-md shadow-inner flex items-center justify-center active:scale-95 transition-all">
-                    <span className="text-[#f5d5a9] text-[9px] font-bold">S</span>
-                  </button>
-                  <div className="w-full aspect-[1/2] bg-[#2a1a10] border border-[#5c3e23] rounded-sm overflow-hidden relative shadow-[0_5px_10px_rgba(0,0,0,0.8)]">
-                    <img src={knight.image} alt={knight.name} className="absolute inset-0 w-full h-full object-cover" />
-                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="w-7 h-7 bg-black/40 border border-[#3c2a1a]/30 rounded-md"></div>
-                  <div className="w-full aspect-[1/2] bg-black/40 border border-[#3c2a1a]/30 rounded-sm flex items-center justify-center overflow-hidden">
-                    <span className="text-[#3c2a1a] text-[8px] font-bold tracking-widest -rotate-90">EMPTY</span>
-                  </div>
-                </>
-              )}
-            </div>
-          ))}
-        </div>
+      {/* 👁️ 중앙: 빈 공간 (기존 텍스트 박스 삭제) */}
+      <div className="flex-1 w-full relative z-10 flex flex-col items-center justify-center px-4">
+        {/* 보스와 기사단 사이에 탁 트인 여백을 줍니다 */}
+      </div>
 
-        <div className="px-1">
-          <button 
-            onClick={handleAttack}
-            className="w-full py-3 bg-gradient-to-b from-[#5c3e23] to-[#3a2618] border-[1.5px] border-[#a6845c] rounded-md shadow-[0_0_15px_rgba(0,0,0,0.8)] flex items-center justify-center active:scale-[0.98] transition-all"
-          >
-            <span className="text-[#f5d5a9] font-serif font-black text-xl tracking-[0.3em] uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">Attack</span>
-          </button>
-        </div>
+      {/* 🛡️ 하단: 기사단 영역 (타격 시 화면 흔들림 효과) */}
+      <div className={`relative z-10 w-full px-2 pb-6 flex flex-col gap-3 ${partyEffect ? 'animate-[shakeHit_0.3s_ease-in-out]' : ''}`}>
+        
+        {/* 💥 기사단 피격 사선 & 데미지 플로팅 */}
+        {partyEffect && (
+          <div key={`party-${partyEffect.id}`} className="absolute inset-0 flex items-center justify-center pointer-events-none z-50 -translate-y-24">
+            {!partyEffect.isMiss && <div className="absolute w-[120%] h-3 bg-red-600 rounded-full shadow-[0_0_20px_#ef4444,0_0_40px_#991b1b] animate-[slashHit_0.3s_ease-out_forwards]"></div>}
+            <span className={`absolute font-black italic tracking-wider animate-[floatUpDamage_1s_ease-out_forwards] ${partyEffect.isMiss ? 'text-gray-400 text-4xl' : (partyEffect.isCrit ? 'text-orange-500 drop-shadow-[0_0_15px_rgba(234,179,8,1)] text-6xl' : 'text-red-500 drop-shadow-[0_0_10px_rgba(0,0,0,1)] text-5xl')}`}>
+              {partyEffect.isMiss ? 'MISS' : partyEffect.damage}
+            </span>
+          </div>
+        )}
 
-        <div className="w-full px-1 flex flex-col gap-1.5">
-          <div className="w-full h-3.5 bg-black/80 border border-[#4a2c11] rounded-sm overflow-hidden relative">
-            <div className="h-full bg-gradient-to-r from-green-900 to-green-500 transition-all duration-300" style={{ width: `${Math.max(0, (partyHp / partyStats.maxHp) * 100)}%` }}></div>
-            <span className="absolute inset-0 flex items-center justify-center text-[9px] font-black text-white drop-shadow-md tracking-wider">HP {partyHp} / {partyStats.maxHp}</span>
-          </div>
+        <div className="w-full flex justify-between gap-1 px-1">
+          {partyKnights.map((knight, idx) => (
+            <div key={idx} className="flex-1 flex flex-col items-center gap-1">
+              {knight ? (
+                <>
+                  <button className="w-7 h-7 bg-[#1a1008]/80 border border-[#a6845c]/50 rounded-md shadow-inner flex items-center justify-center active:scale-95 transition-all">
+                    <span className="text-[#f5d5a9] text-[9px] font-bold">S</span>
+                  </button>
+                  <div className="w-full aspect-[1/2] bg-[#2a1a10] border border-[#5c3e23] rounded-sm overflow-hidden relative shadow-[0_5px_10px_rgba(0,0,0,0.8)]">
+                    <img src={knight.image} alt={knight.name} className="absolute inset-0 w-full h-full object-cover" />
+                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="w-7 h-7 bg-black/40 border border-[#3c2a1a]/30 rounded-md"></div>
+                  <div className="w-full aspect-[1/2] bg-black/40 border border-[#3c2a1a]/30 rounded-sm flex items-center justify-center overflow-hidden">
+                    <span className="text-[#3c2a1a] text-[8px] font-bold tracking-widest -rotate-90">EMPTY</span>
+                  </div>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
 
-          <div className="w-full h-2.5 bg-black/80 border border-[#2c3e50] rounded-sm overflow-hidden relative">
-            <div className="h-full bg-gradient-to-r from-blue-900 to-blue-500 transition-all duration-300" style={{ width: `${Math.max(0, (partyMp / partyStats.maxMp) * 100)}%` }}></div>
-            <span className="absolute inset-0 flex items-center justify-center text-[8px] font-black text-white drop-shadow-md tracking-wider">MP {partyMp} / {partyStats.maxMp}</span>
-          </div>
-        </div>
+        <div className="px-1">
+          <button 
+            onClick={handleAttack}
+            disabled={isAnimating || battleResult}
+            className={`w-full py-3 bg-gradient-to-b from-[#5c3e23] to-[#3a2618] border-[1.5px] border-[#a6845c] rounded-md shadow-[0_0_15px_rgba(0,0,0,0.8)] flex items-center justify-center transition-all ${isAnimating ? 'opacity-50 grayscale' : 'active:scale-[0.98]'}`}
+          >
+            <span className="text-[#f5d5a9] font-serif font-black text-xl tracking-[0.3em] uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">Attack</span>
+          </button>
+        </div>
 
-      </div>
-    </div>
-  );
-} 
+        <div className="w-full px-1 flex flex-col gap-1.5">
+          <div className="w-full h-3.5 bg-black/80 border border-[#4a2c11] rounded-sm overflow-hidden relative">
+            <div className="h-full bg-gradient-to-r from-green-900 to-green-500 transition-all duration-300" style={{ width: `${Math.max(0, (partyHp / partyStats.maxHp) * 100)}%` }}></div>
+            <span className="absolute inset-0 flex items-center justify-center text-[9px] font-black text-white drop-shadow-md tracking-wider">HP {partyHp} / {partyStats.maxHp}</span>
+          </div>
+
+          <div className="w-full h-2.5 bg-black/80 border border-[#2c3e50] rounded-sm overflow-hidden relative">
+            <div className="h-full bg-gradient-to-r from-blue-900 to-blue-500 transition-all duration-300" style={{ width: `${Math.max(0, (partyMp / partyStats.maxMp) * 100)}%` }}></div>
+            <span className="absolute inset-0 flex items-center justify-center text-[8px] font-black text-white drop-shadow-md tracking-wider">MP {partyMp} / {partyStats.maxMp}</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+}
