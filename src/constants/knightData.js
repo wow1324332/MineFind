@@ -81,7 +81,7 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 20, agi: 10, int: 10, vit: 15, luk: 15 },
     statGrowth: { str: 3, agi: 1, int: 1, vit: 3, luk: 2 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_fire_hp',   // 파티 체력 상승
+    passiveSkill: 'passive_fire_atk_1',   // 불속성 기사 공격력 10% 강화
     activeSkill: 'active_fire_storm'   // 화염 폭풍 (지속 데미지)
   },
 
