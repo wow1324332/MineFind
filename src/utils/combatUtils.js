@@ -214,42 +214,67 @@ export const calculateDamageMitigation = (attackDamage, defense) => {
   return Math.floor(Math.max(finalDamage, minDamage));
 };
 
+// ✨ [수정됨] 깡딜(flatDamage)과 계수딜(power)을 모두 지원하는 궁극의 타격 엔진!
 export const calculateTurnDamage = (attacker, defender, isAttackerKnight = true, skill = null) => {
+  
+  // 1. 회피 판정 (보스의 accuracy 감소 디버프가 있을 시 회피율 체감 처리)
   let defenderEvasion = defender.evasionRate || 0;
   if (!isAttackerKnight && attacker.bossDebuffs_accuracy) {
     defenderEvasion += attacker.bossDebuffs_accuracy; 
   }
 
   const isHit = checkHit(defenderEvasion);
-  if (!isHit) return { damage: 0, isCrit: false, isMiss: true };
+  if (!isHit) {
+    return { damage: 0, isCrit: false, isMiss: true };
+  }
 
   let atkPower = 0;
-  if (attacker.minAtk !== undefined && attacker.maxAtk !== undefined) {
-    atkPower = getRandomAttackPower(attacker.minAtk, attacker.maxAtk);
-  } else {
-    const baseAtk = attacker.baseAttackPower || 0;
-    const min = Math.floor(baseAtk * 0.9);
-    const max = Math.floor(baseAtk * 1.1);
-    atkPower = getRandomAttackPower(min, max);
-  }
-
-  let skillMultiplier = 1.0;
   let attackElement = 'neutral';
 
-  if (skill && skill.type === 'active' && skill.power) {
-    skillMultiplier = skill.power; 
+  // ⚔️ 2. 공격력 산출 (깡딜 vs 계수딜 vs 평타)
+  if (skill && skill.type === 'active') {
     if (skill.element) attackElement = skill.element;
-  }
-  
-  atkPower = Math.floor(atkPower * skillMultiplier);
 
+    if (skill.flatDamage) {
+      // 💡 [깡딜 모드] 기사단의 기초 공격력을 무시하고 스킬의 고정 데미지를 베이스로 씁니다!
+      // (타격감을 위해 고정 수치에서 ±10% 정도 데미지 난수를 발생시킵니다)
+      const min = Math.floor(skill.flatDamage * 0.9);
+      const max = Math.floor(skill.flatDamage * 1.1);
+      atkPower = getRandomAttackPower(min, max);
+    } 
+    else {
+      // 💡 [계수딜 모드] 기사단 총공격력을 베이스로 power를 곱합니다.
+      const baseAtk = attacker.baseAttackPower || 0;
+      const min = Math.floor(baseAtk * 0.9);
+      const max = Math.floor(baseAtk * 1.1);
+      atkPower = getRandomAttackPower(min, max);
+      if (skill.power) atkPower = Math.floor(atkPower * skill.power);
+    }
+  } 
+  else {
+    // 💡 [일반 평타 모드] 스킬이 없을 때
+    if (attacker.minAtk !== undefined && attacker.maxAtk !== undefined) {
+      // 보스의 공격
+      atkPower = getRandomAttackPower(attacker.minAtk, attacker.maxAtk);
+    } else {
+      // 기사단의 공격
+      const baseAtk = attacker.baseAttackPower || 0;
+      const min = Math.floor(baseAtk * 0.9);
+      const max = Math.floor(baseAtk * 1.1);
+      atkPower = getRandomAttackPower(min, max);
+    }
+  }
+
+  // 3. 속성 상성 적용 (스킬 깡딜에도 속성 상성은 1.5배/0.7배 적용됩니다!)
   if (isAttackerKnight && defender.element && attackElement !== 'neutral') {
     const elemMultiplier = getElementMultiplier(attackElement, defender.element);
     atkPower = Math.floor(atkPower * elemMultiplier);
   }
 
+  // 4. 방어력 계산 적용 (깡딜도 보스 방어력에 의해 데미지가 약간 깎입니다)
   let finalDamage = calculateDamageMitigation(atkPower, defender.defense || 0);
 
+  // 5. 크리티컬 판정 및 배율 적용 (깡딜도 크리티컬이 터집니다!)
   const isCrit = checkCritical(attacker.critRate || 0);
   if (isCrit) {
     const critMultiplier = attacker.critDmg || 1.5; 
