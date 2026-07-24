@@ -36,7 +36,7 @@ export const SKILL_DATABASE = {
   'active_fire_atk_1': { 
     id: 'active_fire_atk_1', name: '불의 검편', type: 'active', subType: 'attack', 
     icon: '/skill/firesword-fire-skill.webp', description: '적에게 150%의 화염 속성 피해를 입힙니다.', 
-    mpCost: 30, element: 'fire', power: 1.5 
+    mpCost: 30, element: 'fire', flatDamage: 360
   },
   
   'passive_fire_crit': { 
