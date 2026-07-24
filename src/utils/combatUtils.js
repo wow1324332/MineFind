@@ -1,4 +1,4 @@
-import { SKILL_DATABASE } from './skillData'; // ✨ 스킬 DB 불러오기
+import { SKILL_DATABASE } from '../constants/skillData'; // ✨ 올바른 경로로 수정 완료!
 
 // 💡 속성 상성 사슬 정의
 // 물 > 불 > 얼음 > 독 > 치유(역병) > 공허 > 빛 > 물
