@@ -33,9 +33,9 @@ export const SKILL_DATABASE = {
     icon: '/skill/pheonixheart-fire-skill.webp', description: '불속성 기사의 공격력을 10% 증가시킵니다.', 
     target: 'ally', targetAttribute: 'fire', effectType: 'stat_up', stat: 'attack', value: 0.10 
   },
-  'active_fire_slash': { 
-    id: 'active_fire_slash', name: '화염 베기', type: 'active', subType: 'attack', 
-    icon: '/skills/active_fire_slash.webp', description: '적에게 150%의 화염 속성 피해를 입힙니다.', 
+  'active_fire_atk_1': { 
+    id: 'active_fire_atk_1', name: '불의 검편', type: 'active', subType: 'attack', 
+    icon: '/skill/firesword-fire-skill.webp', description: '적에게 150%의 화염 속성 피해를 입힙니다.', 
     mpCost: 30, element: 'fire', power: 1.5 
   },
   
