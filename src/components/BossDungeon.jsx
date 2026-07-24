@@ -74,7 +74,7 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId, onSelectBatt
             }
           });
 
-          const stats = calculatePartyStats(activeKnights);
+          const stats = calculatePartyStats(activeKnights, bossData.element || 'neutral');
           setPartyData({ knights: activeKnights, stats });
         }
       } catch (error) {
