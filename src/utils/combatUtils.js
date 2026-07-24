@@ -43,73 +43,96 @@ export const calculateKnightCP = (knight) => {
 
 // 3️⃣ 기사단 6인 파티의 종합 스탯(HP, MP, 방어력 등) + ✨ 패시브 스킬 연산
 export const calculatePartyStats = (knights) => {
-  let totalStr = 0, totalAgi = 0, totalInt = 0, totalVit = 0, totalLuk = 0;
+  let totalVit = 0, totalAgi = 0, totalInt = 0, totalLuk = 0;
+  
+  // ✨ 평균을 내기 위한 개별 버프 적용 후 총합 변수
+  let sumBuffedAttack = 0; 
+  let sumBuffedDefense = 0; 
 
-  // 빈자리(null) 제외하고 기초 스탯 먼저 합산
+  // 1. 기초 스탯 합산 및 ✨ 개별 공격력/방어력 버프 선계산
   knights.forEach(k => {
     if(k) {
-      totalStr += k.str || 0;
+      totalVit += k.vit || 0;
       totalAgi += k.agi || 0;
       totalInt += k.int || 0;
-      totalVit += k.vit || 0;
       totalLuk += k.luk || 0;
+
+      // ⚔️ 기사 1명의 순수 기본 공격력 & 방어력
+      let myAttack = (k.str || 0) * 1.5;
+      let myDefense = (k.agi || 0) * 0.5;
+      
+      let myAtkBuffRate = 0;
+      let myDefBuffRate = 0;
+
+      // 파티 전체의 패시브를 다 뒤져서 '나(k)'에게 적용되는 공격/방어 버프만 긁어옵니다.
+      knights.forEach(buffer => {
+        if (buffer && buffer.passiveSkill && SKILL_DATABASE[buffer.passiveSkill]) {
+          const passive = SKILL_DATABASE[buffer.passiveSkill];
+          
+          if (passive.target === 'ally' && passive.effectType === 'stat_up') {
+            // 특정 속성 전용 버프인데 내 속성과 맞거나, 속성 조건이 없는 전체 버프일 경우
+            if (!passive.targetAttribute || passive.targetAttribute === k.attribute) {
+              if (passive.stat === 'attack') myAtkBuffRate += passive.value; 
+              if (passive.stat === 'defense') myDefBuffRate += passive.value; 
+            }
+          }
+        }
+      });
+
+      // 내 순수 스탯에 나만의 버프율을 곱해서 총합에 더함
+      sumBuffedAttack += (myAttack * (1 + myAtkBuffRate));
+      sumBuffedDefense += (myDefense * (1 + myDefBuffRate));
     }
   });
 
-  // 기초 스탯을 바탕으로 기본 공식 적용
+  // 💡 [핵심] 공격력과 방어력은 6명 '평균치' 적용! (빈자리가 있으면 평균이 깎임)
+  let baseAttackPower = Math.floor(sumBuffedAttack / 6);
+  let defense = Math.floor(sumBuffedDefense / 6);
+
+  // 2. 평균을 내지 않는 스탯(체력, 마나) 기본 공식 (단순 합산)
   let maxHp = totalVit * 10;
   let maxMp = Math.floor(100 + (totalInt * 0.5));
   let mpRegen = Math.floor(20 + (totalInt * 0.1));
-  let defense = Math.floor(totalAgi * 0.5);
-  let baseAttackPower = Math.floor(totalStr * 1.5);
   
   let evasionRate = (totalAgi / (totalAgi + 1000)) * 100;
   let critRate = Math.min(70, ((totalLuk / (totalLuk + 800)) * 100));
   let critDmg = 1.5; // 기본 크리티컬 데미지 배율 (150%)
 
-  // ✨ 보스에게 걸 디버프 수집기
   let bossDebuffs = { attack: 0, defense: 0, accuracy: 0 }; 
 
-  // ✨ 패시브 스킬 효과 일괄 덧씌우기
+  // 3. 깡더하기(합산) 방식의 패시브 (체력 등) 연산
   knights.forEach(k => {
     if (k && k.passiveSkill && SKILL_DATABASE[k.passiveSkill]) {
       const passive = SKILL_DATABASE[k.passiveSkill];
       
       if (passive.target === 'ally' && passive.effectType === 'stat_up') {
         const val = passive.value;
-
-        // 💡 1. 특정 속성(targetAttribute) 전용 버프일 경우
-        if (passive.targetAttribute) {
-          let targetBaseStat = 0;
+        
+        // ✨ 공격력(attack)과 방어력(defense)은 위에서 이미 '개별 버프 후 평균' 처리를 끝냈으므로 패스!
+        if (passive.stat !== 'attack' && passive.stat !== 'defense') {
           
-          // 파티원 중 '해당 속성'을 가진 기사들만 찾아서 그들의 기초 스탯만 따로 합산
-          knights.forEach(targetKnight => {
-            if (targetKnight && targetKnight.attribute === passive.targetAttribute) {
-              if (passive.stat === 'attack') targetBaseStat += (targetKnight.str * 1.5);
-              if (passive.stat === 'maxHp') targetBaseStat += (targetKnight.vit * 10);
-              if (passive.stat === 'defense') targetBaseStat += (targetKnight.agi * 0.5);
+          // 특정 속성 전용 버프일 경우 (합산 방식)
+          if (passive.targetAttribute) {
+            knights.forEach(targetKnight => {
+              if (targetKnight && targetKnight.attribute === passive.targetAttribute) {
+                if (passive.stat === 'maxHp') maxHp += Math.floor((targetKnight.vit * 10) * val);
+              }
+            });
+          } 
+          // 타겟 속성이 없는 '파티 전체' 버프일 경우
+          else {
+            switch(passive.stat) {
+              case 'maxHp': maxHp = Math.floor(maxHp * (1 + val)); break; 
+              case 'evasion': evasionRate += val; break; 
+              case 'critRate': critRate += val; break;   
+              case 'critDmg': critDmg += val; break;     
+              case 'mpRegen': mpRegen += val; break;     
             }
-          });
-
-          // 그 기사들이 차지하는 지분만큼만 전체 파티 스탯에 더해줌
-          if (passive.stat === 'attack') baseAttackPower += Math.floor(targetBaseStat * val);
-          if (passive.stat === 'maxHp') maxHp += Math.floor(targetBaseStat * val);
-          if (passive.stat === 'defense') defense += Math.floor(targetBaseStat * val);
-        } 
-        // 💡 2. 타겟 속성이 없는 '파티 전체' 버프일 경우 (기존 로직)
-        else {
-          switch(passive.stat) {
-            case 'attack': baseAttackPower = Math.floor(baseAttackPower * (1 + val)); break; 
-            case 'maxHp': maxHp = Math.floor(maxHp * (1 + val)); break; 
-            case 'defense': defense = Math.floor(defense * (1 + val)); break; 
-            case 'evasion': evasionRate += val; break; 
-            case 'critRate': critRate += val; break;   
-            case 'critDmg': critDmg += val; break;     
-            case 'mpRegen': mpRegen += val; break;     
           }
         }
       } 
       else if (passive.target === 'enemy' && passive.effectType === 'stat_down') {
+        // 보스 디버프 누적
         if (passive.stat === 'attack') bossDebuffs.attack += passive.value;
         if (passive.stat === 'defense') bossDebuffs.defense += passive.value;
         if (passive.stat === 'accuracy') bossDebuffs.accuracy += passive.value;
@@ -122,13 +145,15 @@ export const calculatePartyStats = (knights) => {
   critRate = Math.min(70, critRate).toFixed(1);
 
   return {
-    totalStr, totalAgi, totalInt, totalVit, totalLuk,
-    maxHp, maxMp, mpRegen, defense,
+    totalStr: Math.floor(sumBuffedAttack / 6),
+    totalAgi, totalInt, totalVit, totalLuk,
+    maxHp, maxMp, mpRegen, 
+    defense, // ✨ 평균으로 계산된 완벽한 방어력!
     evasionRate: Number(evasionRate), 
     critRate: Number(critRate),
-    critDmg, // ✨ 크리 배율 추가됨
+    critDmg,
     baseAttackPower,
-    bossDebuffs // ✨ 배틀 화면에서 보스 스탯을 깎기 위해 전달!
+    bossDebuffs
   };
 };
 
