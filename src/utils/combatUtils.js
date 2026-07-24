@@ -77,18 +77,39 @@ export const calculatePartyStats = (knights) => {
       
       if (passive.target === 'ally' && passive.effectType === 'stat_up') {
         const val = passive.value;
-        switch(passive.stat) {
-          case 'attack': baseAttackPower = Math.floor(baseAttackPower * (1 + val)); break; // % 증가
-          case 'maxHp': maxHp = Math.floor(maxHp * (1 + val)); break; // % 증가
-          case 'defense': defense = Math.floor(defense * (1 + val)); break; // % 증가
-          case 'evasion': evasionRate += val; break; // 포인트 직접 합산
-          case 'critRate': critRate += val; break;   // 포인트 직접 합산
-          case 'critDmg': critDmg += val; break;     // 배율 합산
-          case 'mpRegen': mpRegen += val; break;     // 고정 수치 합산
+
+        // 💡 1. 특정 속성(targetAttribute) 전용 버프일 경우
+        if (passive.targetAttribute) {
+          let targetBaseStat = 0;
+          
+          // 파티원 중 '해당 속성'을 가진 기사들만 찾아서 그들의 기초 스탯만 따로 합산
+          knights.forEach(targetKnight => {
+            if (targetKnight && targetKnight.attribute === passive.targetAttribute) {
+              if (passive.stat === 'attack') targetBaseStat += (targetKnight.str * 1.5);
+              if (passive.stat === 'maxHp') targetBaseStat += (targetKnight.vit * 10);
+              if (passive.stat === 'defense') targetBaseStat += (targetKnight.agi * 0.5);
+            }
+          });
+
+          // 그 기사들이 차지하는 지분만큼만 전체 파티 스탯에 더해줌
+          if (passive.stat === 'attack') baseAttackPower += Math.floor(targetBaseStat * val);
+          if (passive.stat === 'maxHp') maxHp += Math.floor(targetBaseStat * val);
+          if (passive.stat === 'defense') defense += Math.floor(targetBaseStat * val);
+        } 
+        // 💡 2. 타겟 속성이 없는 '파티 전체' 버프일 경우 (기존 로직)
+        else {
+          switch(passive.stat) {
+            case 'attack': baseAttackPower = Math.floor(baseAttackPower * (1 + val)); break; 
+            case 'maxHp': maxHp = Math.floor(maxHp * (1 + val)); break; 
+            case 'defense': defense = Math.floor(defense * (1 + val)); break; 
+            case 'evasion': evasionRate += val; break; 
+            case 'critRate': critRate += val; break;   
+            case 'critDmg': critDmg += val; break;     
+            case 'mpRegen': mpRegen += val; break;     
+          }
         }
       } 
       else if (passive.target === 'enemy' && passive.effectType === 'stat_down') {
-        // 보스 디버프 누적 (예: 방어력 10% 감소, 5% 감소 -> 15% 감소)
         if (passive.stat === 'attack') bossDebuffs.attack += passive.value;
         if (passive.stat === 'defense') bossDebuffs.defense += passive.value;
         if (passive.stat === 'accuracy') bossDebuffs.accuracy += passive.value;
