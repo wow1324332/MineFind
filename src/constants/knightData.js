@@ -17,15 +17,18 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 10, agi: 10, int: 10, vit: 15, luk: 10 },
     statGrowth: { str: 2, agi: 2, int: 2, vit: 2, luk: 2 },
 
-    // ✨ 스킬 세팅 추가 (ID 매핑)
-    passiveSkill: 'passive_main_aura', // 아군 전체 공방업
-    activeSkill: 'active_main_strike', // 단일 강타
+    // ✨ 액티브 스킬은 고정
+    activeSkill: 'active_main_strike',
 
-    selectableSkills: {
-      'skill_main_str': { id: 'skill_main_str', name: '단장의 긍지', type: 'buff', mpCost: 20, description: '3턴 동안 파티 전체 기사들의 공격력을 15% 상승시킵니다.' },
-      'skill_main_vit': { id: 'skill_main_vit', name: '불굴의 방진', type: 'defense', mpCost: 30, description: '보스의 다음 공격 데미지를 50% 감소시키고, 파티 체력을 소량 회복합니다.' },
-      'skill_main_agi': { id: 'skill_main_agi', name: '치명적인 지휘', type: 'debuff', mpCost: 25, description: '보스의 회피율을 0으로 만들고, 이번 턴 아군의 모든 공격이 치명타로 적중합니다.' }
-    }
+    // ✨ 기본 장착 패시브 (파이어베이스 데이터가 없을 때의 기본값)
+    passiveSkill: 'passive_main_str', 
+
+    // 💡 주인공 전용: 언제든 교체 가능한 패시브 스킬 3종 풀(Pool)
+    selectablePassives: [
+      'passive_main_str', // 공격력 특화
+      'passive_main_vit', // 생존력 특화
+      'passive_main_agi'  // 속도/크리티컬 특화
+    ]
   },
 
   // ========================================================
