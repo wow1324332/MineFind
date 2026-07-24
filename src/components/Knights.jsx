@@ -538,6 +538,7 @@ setTimeout(async () => {
       id,
       name: id === 'knight_main' ? userNickname : kBase.name,
       element: kBase.attribute, 
+      passiveSkill: id === 'knight_main' ? (userData.mainPassive || kBase.passiveSkill) : kBase.passiveSkill,
       str: kBase.baseStats.str + (kBase.statGrowth.str * (kLevel - 1)) + equipBonus.str,
       agi: kBase.baseStats.agi + (kBase.statGrowth.agi * (kLevel - 1)) + equipBonus.agi,
       int: kBase.baseStats.int + (kBase.statGrowth.int * (kLevel - 1)) + equipBonus.int,
