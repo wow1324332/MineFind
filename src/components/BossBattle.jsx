@@ -105,7 +105,7 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
 
           setPartyKnights(slots);
 
-          const stats = calculatePartyStats(activeKnights);
+          const stats = calculatePartyStats(activeKnights, bossData.element || 'neutral');
           setPartyStats(stats);
           setPartyHp(stats.maxHp); 
           setPartyMp(0); 
