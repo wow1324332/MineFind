@@ -28,10 +28,10 @@ export const SKILL_DATABASE = {
   // ==========================================
   // 🌋 불 속성 스킬 (Fire)
   // ==========================================
-  'passive_fire_atk': { 
-    id: 'passive_fire_atk', name: '화염의 분노', type: 'passive', 
-    icon: '/skills/passive_fire_atk.webp', description: '파티 전체의 공격력을 10% 증가시킵니다.', 
-    target: 'ally', effectType: 'stat_up', stat: 'attack', value: 0.10 
+  'passive_fire_atk_1': { 
+    id: 'passive_fire_atk_1', name: '피닉스의 심장', type: 'passive', 
+    icon: '/skill/pheonixheart-fire-skill.webp', description: '불속성 기사의 공격력을 10% 증가시킵니다.', 
+    target: 'ally', targetAttribute: 'fire', effectType: 'stat_up', stat: 'attack', value: 0.10 
   },
   'active_fire_slash': { 
     id: 'active_fire_slash', name: '화염 베기', type: 'active', subType: 'attack', 
