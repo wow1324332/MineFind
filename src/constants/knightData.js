@@ -98,8 +98,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 15, agi: 15, int: 10, vit: 15, luk: 15 },
     statGrowth: { str: 5, agi: 4, int: 1, vit: 3, luk: 2 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_fire_def',  // 불속성 방어력 상승
-    activeSkill: 'active_fire_shield'  // 화염 방패 (버프)
+    passiveSkill: 'passive_fire_resist_1',  // 불속성 방어력 상승
+    activeSkill: 'active_fire_shield-1'  // 화염 방패 (버프)
   },
 
   'knight_fire_paramir': {
