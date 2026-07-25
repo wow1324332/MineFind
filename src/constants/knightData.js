@@ -186,8 +186,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 15, agi: 10, int: 5, vit: 20, luk: 20 },
     statGrowth: { str: 3, agi: 2, int: 1, vit: 5, luk: 4 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_water_evade', // 회피율 증가
-    activeSkill: 'active_water_wave'     // 해일 (디버프 공격)
+    passiveSkill: 'passive_water_hp_1', // 파티 전체 HP 증가
+    activeSkill: 'active_water_slash_1'     // 수속성 강력한 일격
   },
 
   'knight_water_palamedes': {
