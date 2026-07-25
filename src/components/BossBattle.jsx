@@ -220,18 +220,43 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
   };
 
 
-  // ✨ 컷인 내용물 렌더링 함수 (재사용을 위해 분리)
-  const renderCutinContent = () => (
-    <div className="w-full h-full bg-gradient-to-r from-red-950 via-red-800 to-black flex items-center px-[10%] sm:px-[15%] border-y-[3px] border-red-500/50 shadow-[0_0_30px_rgba(220,38,38,0.5)]" style={{ transform: 'skewX(-15deg)', animation: 'cutinBand 0.3s ease-out forwards' }}>
-       {/* 기사 초상화 크게 줌인 */}
-       <img src={skillCutin.knight.image} alt="Knight" className="h-[200%] w-auto object-cover object-top opacity-90 drop-shadow-[0_0_15px_rgba(220,38,38,0.8)] mix-blend-lighten -ml-10" style={{ transform: 'skewX(15deg)', animation: 'cutinFace 0.5s ease-out forwards' }} />
-       
-       <div className="ml-auto flex flex-col items-end justify-center h-full" style={{ transform: 'skewX(15deg)' }}>
-         <span className="text-red-300 font-bold text-xs sm:text-sm tracking-[0.5em] uppercase mb-1 drop-shadow-[0_2px_2px_rgba(0,0,0,1)]" style={{ animation: 'cutinText 0.4s ease-out 0.1s both' }}>Skill Active</span>
-         <span className="text-white font-serif font-black text-3xl sm:text-4xl italic tracking-wider drop-shadow-[0_0_20px_rgba(220,38,38,1)] whitespace-nowrap" style={{ animation: 'cutinText 0.4s ease-out 0.2s both' }}>{skillCutin.skill.name}</span>
-       </div>
-    </div>
-  );
+// ✨ 속성별 컷인 컬러 팔레트 추출기
+  const getCutinColors = (element) => {
+    switch(element) {
+      case 'fire': return { bg: 'from-red-950 via-red-800 to-black', border: 'border-red-500/50', shadow: 'shadow-[0_0_30px_rgba(220,38,38,0.5)]', img: 'drop-shadow-[0_0_15px_rgba(220,38,38,0.8)]', sub: 'text-red-300', main: 'drop-shadow-[0_0_20px_rgba(220,38,38,1)]' };
+      case 'water': return { bg: 'from-blue-950 via-blue-800 to-black', border: 'border-blue-500/50', shadow: 'shadow-[0_0_30px_rgba(59,130,246,0.5)]', img: 'drop-shadow-[0_0_15px_rgba(59,130,246,0.8)]', sub: 'text-blue-300', main: 'drop-shadow-[0_0_20px_rgba(59,130,246,1)]' };
+      case 'ice': return { bg: 'from-cyan-950 via-cyan-800 to-black', border: 'border-cyan-400/50', shadow: 'shadow-[0_0_30px_rgba(34,211,238,0.5)]', img: 'drop-shadow-[0_0_15px_rgba(34,211,238,0.8)]', sub: 'text-cyan-200', main: 'drop-shadow-[0_0_20px_rgba(34,211,238,1)]' };
+      case 'poison': return { bg: 'from-green-950 via-green-800 to-black', border: 'border-green-500/50', shadow: 'shadow-[0_0_30px_rgba(34,197,94,0.5)]', img: 'drop-shadow-[0_0_15px_rgba(34,197,94,0.8)]', sub: 'text-green-300', main: 'drop-shadow-[0_0_20px_rgba(34,197,94,1)]' };
+      case 'cure': return { bg: 'from-emerald-950 via-emerald-800 to-black', border: 'border-emerald-400/50', shadow: 'shadow-[0_0_30px_rgba(16,185,129,0.5)]', img: 'drop-shadow-[0_0_15px_rgba(16,185,129,0.8)]', sub: 'text-emerald-200', main: 'drop-shadow-[0_0_20px_rgba(16,185,129,1)]' };
+      case 'vain': return { bg: 'from-purple-950 via-purple-800 to-black', border: 'border-purple-500/50', shadow: 'shadow-[0_0_30px_rgba(168,85,247,0.5)]', img: 'drop-shadow-[0_0_15px_rgba(168,85,247,0.8)]', sub: 'text-purple-300', main: 'drop-shadow-[0_0_20px_rgba(168,85,247,1)]' };
+      case 'light': return { bg: 'from-yellow-950 via-yellow-700 to-black', border: 'border-yellow-500/50', shadow: 'shadow-[0_0_30px_rgba(234,179,8,0.5)]', img: 'drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]', sub: 'text-yellow-200', main: 'drop-shadow-[0_0_20px_rgba(234,179,8,1)]' };
+      default: return { bg: 'from-neutral-900 via-neutral-700 to-black', border: 'border-neutral-400/50', shadow: 'shadow-[0_0_30px_rgba(156,163,175,0.5)]', img: 'drop-shadow-[0_0_15px_rgba(156,163,175,0.8)]', sub: 'text-neutral-300', main: 'drop-shadow-[0_0_20px_rgba(156,163,175,1)]' };
+    }
+  };
+
+    // ✨ 컷인 내용물 렌더링 함수 (속성 컬러 동적 적용)
+    const renderCutinContent = () => {
+    // 현재 스킬을 쓴 기사의 속성을 가져와서 컬러셋을 뽑아냅니다.
+    const colors = getCutinColors(skillCutin.knight.attribute || skillCutin.skill.element);
+    
+    return (
+      <div className={`w-full h-full bg-gradient-to-r ${colors.bg} flex items-center px-[10%] sm:px-[15%] border-y-[3px] ${colors.border} ${colors.shadow}`} style={{ transform: 'skewX(-15deg)', animation: 'cutinBand 0.3s ease-out forwards' }}>
+         {/* 기사 초상화 크게 줌인 (속성별 그림자 색상 적용) */}
+         <img src={skillCutin.knight.image} alt="Knight" className={`h-[200%] w-auto object-cover object-top opacity-90 ${colors.img} mix-blend-lighten -ml-10`} style={{ transform: 'skewX(15deg)', animation: 'cutinFace 0.5s ease-out forwards' }} />
+         
+         <div className="ml-auto flex flex-col items-end justify-center h-full" style={{ transform: 'skewX(15deg)' }}>
+           {/* 서브 텍스트 (속성별 컬러) */}
+           <span className={`${colors.sub} font-bold text-xs sm:text-sm tracking-[0.5em] uppercase mb-1 drop-shadow-[0_2px_2px_rgba(0,0,0,1)]`} style={{ animation: 'cutinText 0.4s ease-out 0.1s both' }}>
+             Skill Active
+           </span>
+           {/* 메인 스킬명 (속성별 네온 글로우) */}
+           <span className={`text-white font-serif font-black text-3xl sm:text-4xl italic tracking-wider ${colors.main} whitespace-nowrap`} style={{ animation: 'cutinText 0.4s ease-out 0.2s both' }}>
+             {skillCutin.skill.name}
+           </span>
+         </div>
+      </div>
+    );
+  };
 
   if (!bossData) return <div className="fixed inset-0 bg-black z-50 flex items-center justify-center text-red-500 font-bold">보스 데이터 로딩 실패 ({bossId})</div>;
   if (!partyStats) return <div className="fixed inset-0 bg-black z-50"></div>; 
