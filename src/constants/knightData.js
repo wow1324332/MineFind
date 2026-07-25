@@ -64,8 +64,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 25, agi: 5, int: 10, vit: 20, luk: 10 },
     statGrowth: { str: 5, agi: 2, int: 1, vit: 1, luk: 1 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_fire_crit', // 치명타 확률 상승
-    activeSkill: 'active_fire_burst'   // 화염 폭발 (큰 데미지)
+    passiveSkill: 'passive_fire_def_1', // 치명타 확률 상승
+    activeSkill: 'active_fire_burst_1'   // 화염 폭발 (큰 데미지)
   },
 
   'knight_fire_laris': {
