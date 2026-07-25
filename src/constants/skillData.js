@@ -38,6 +38,11 @@ export const SKILL_DATABASE = {
     icon: '/skill/firesword-fire-skill.webp', description: '적에게 150%의 화염 속성 피해를 입힙니다.', 
     mpCost: 60, element: 'fire', flatDamage: 360
   },
+    'active_fire_atk_2': { 
+    id: 'active_fire_atk_2', name: '염화참', type: 'active', subType: 'attack', 
+    icon: '/skill/flameslash-fire-skill.webp', description: '적에게 400의 강력한 화염 피해를 입힙니다.', 
+    mpCost: 60, element: 'fire', flatDamage: 400
+  },
   
   'passive_fire_crit': { 
     id: 'passive_fire_crit', name: '불타는 약점', type: 'passive', 
@@ -50,10 +55,10 @@ export const SKILL_DATABASE = {
     mpCost: 40, element: 'fire', power: 1.8 
   },
   
-  'passive_fire_hp': { 
-    id: 'passive_fire_hp', name: '생명의 불꽃', type: 'passive', 
-    icon: '/skills/passive_fire_hp.webp', description: '파티 전체의 최대 체력을 10% 증가시킵니다.', 
-    target: 'ally', effectType: 'stat_up', stat: 'maxHp', value: 0.10 
+  'passive_fire_hp_1': { 
+    id: 'passive_fire_hp_1', name: '불꽃의 심장', type: 'passive', 
+    icon: '/skill/heartoffire_fire_skill.webp', description: '불 속성 기사들의 체력을 10% 증가시킵니다.', 
+    target: 'ally', targetAttribute: 'fire', effectType: 'stat_up', stat: 'maxHp', value: 0.15 
   },
   'active_fire_storm': { 
     id: 'active_fire_storm', name: '화염 폭풍', type: 'active', subType: 'dot', 
