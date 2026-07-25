@@ -36,7 +36,7 @@ export const SKILL_DATABASE = {
   'active_fire_atk_1': { 
     id: 'active_fire_atk_1', name: '불의 검편', type: 'active', subType: 'attack', 
     icon: '/skill/firesword-fire-skill.webp', description: '적에게 150%의 화염 속성 피해를 입힙니다.', 
-    mpCost: 30, element: 'fire', flatDamage: 360
+    mpCost: 60, element: 'fire', flatDamage: 360
   },
   
   'passive_fire_crit': { 
@@ -97,9 +97,9 @@ export const SKILL_DATABASE = {
     mpCost: 30, stat: 'evasion', power: 10, duration: 2 
   },
 
-  'passive_water_hp': { 
-    id: 'passive_water_hp', name: '바다의 축복', type: 'passive', 
-    icon: '/skills/passive_water_hp.webp', description: '파티 전체의 최대 체력을 15% 증가시킵니다.', 
+  'passive_water_hp_1': { 
+    id: 'passive_water_hp_1', name: '대양의 방패', type: 'passive', 
+    icon: '/skill/sheildofocean-water-skill.webp', description: '파티 전체의 최대 체력을 15% 증가시킵니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'maxHp', value: 0.15 
   },
   'active_water_heal': { 
@@ -113,10 +113,10 @@ export const SKILL_DATABASE = {
     icon: '/skills/passive_water_atk.webp', description: '파티 전체의 공격력을 10% 증가시킵니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'attack', value: 0.10 
   },
-  'active_water_slash': { 
-    id: 'active_water_slash', name: '파도 베기', type: 'active', subType: 'attack', 
-    icon: '/skills/active_water_slash.webp', description: '적에게 140%의 물 속성 피해를 입힙니다.', 
-    mpCost: 25, element: 'water', power: 1.4 
+  'active_water_slash_1': { 
+    id: 'active_water_slash_1', name: '대양의 창', type: 'active', subType: 'attack', 
+    icon: '/skill/lanceofocean-water-skill.webp', description: '적에게 140%의 물 속성 피해를 입힙니다.', 
+    mpCost: 60, element: 'water', flatDamage: 400
   },
 
   'passive_water_evade': { 
