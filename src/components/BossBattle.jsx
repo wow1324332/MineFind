@@ -320,15 +320,16 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
               <div key={idx} className="flex-1 flex flex-col items-center gap-1">
                 {knight ? (
                   <>
-                    {/* ✨ 기존 [S] 텍스트 버튼 대신 진짜 스킬 아이콘으로 변경! */}
+              {/* ✨ 진짜 스킬 아이콘 (CSS 테두리와 잘림 현상 완벽 제거!) */}
                     {skill ? (
                       <button 
                         onClick={() => handleAction('SKILL', skill)}
                         disabled={!canUseSkill || isAnimating || battleResult || introStage !== 'done'}
-                        className={`w-7 h-7 rounded-md shadow-inner flex items-center justify-center overflow-hidden border transition-all ${canUseSkill ? 'border-yellow-500/80 active:scale-90 hover:brightness-110' : 'border-neutral-700 opacity-50 grayscale'}`}
+                        className={`w-7 h-7 flex items-center justify-center transition-all ${canUseSkill ? 'active:scale-90 hover:brightness-110' : 'opacity-50 grayscale'}`}
                         style={{ outline: 'none', WebkitTapHighlightColor: 'transparent' }}
                       >
-                        <img src={skill.icon} alt="skill" className="w-full h-full object-cover" />
+                        {/* object-cover 대신 원본 테두리가 1픽셀도 안 잘리도록 object-contain 적용 */}
+                        <img src={skill.icon} alt="skill" className="w-full h-full object-contain drop-shadow-md" />
                       </button>
                     ) : (
                       <div className="w-7 h-7 bg-black/40 border border-[#3c2a1a]/30 rounded-md"></div>
