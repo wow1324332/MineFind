@@ -47,8 +47,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 20, agi: 10, int: 5, vit: 20, luk: 15 },
     statGrowth: { str: 3, agi: 1, int: 1, vit: 3, luk: 2 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_fire_atk',  // 불속성 아군 공격력 상승
-    activeSkill: 'active_fire_slash'   // 화염 베기 (단일 타격)
+    passiveSkill: 'passive_fire_hp_1',  // 불속성 아군 공격력 상승
+    activeSkill: 'active_fire_burst_1'   // 화염 베기 (단일 타격)
   },
 
   'knight_fire_gawain': {
