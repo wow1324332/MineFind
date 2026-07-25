@@ -115,8 +115,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 20, agi: 15, int: 5, vit: 20, luk: 10 },
     statGrowth: { str: 5, agi: 2, int: 1, vit: 4, luk: 3 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_fire_resist', // 보스 공격력 감소 (디버프)
-    activeSkill: 'active_fire_pierce'    // 화염 찌르기 (방관)
+    passiveSkill: 'passive_fire_crit_1', // 보스 공격력 감소 (디버프)
+    activeSkill: 'active_fire_atk_2'    // 화염 찌르기 (방관)
   },
   
   // ========================================================
