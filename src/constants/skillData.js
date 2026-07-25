@@ -44,15 +44,15 @@ export const SKILL_DATABASE = {
     mpCost: 60, element: 'fire', flatDamage: 400
   },
   
-  'passive_fire_crit': { 
-    id: 'passive_fire_crit', name: '불타는 약점', type: 'passive', 
-    icon: '/skills/passive_fire_crit.webp', description: '파티 전체의 치명타 확률을 5% 증가시킵니다.', 
-    target: 'ally', effectType: 'stat_up', stat: 'critRate', value: 5 
+  'passive_fire_crit_1': { 
+    id: 'passive_fire_crit_1', name: '업화의 눈', type: 'passive', 
+    icon: '/skill/hellfiregaze_fire_skill.webp', description: '파티 전체의 치명타 확률을 10% 증가시킵니다.', 
+    target: 'ally', effectType: 'stat_up', stat: 'critRate', value: 10 
   },
-  'active_fire_burst': { 
-    id: 'active_fire_burst', name: '화염 폭발', type: 'active', subType: 'attack', 
-    icon: '/skills/active_fire_burst.webp', description: '적에게 180%의 강력한 화염 속성 피해를 입힙니다.', 
-    mpCost: 40, element: 'fire', power: 1.8 
+  'active_fire_burst_1': { 
+    id: 'active_fire_burst_1', name: '화염 폭발', type: 'active', subType: 'attack', 
+    icon: '/skill/infernoboom_fire_skill.webp', description: '적에게 1000%의 강력한 화염 속성 피해를 입힙니다.', 
+    mpCost: 100, element: 'fire', power: 10 
   },
   
   'passive_fire_hp_1': { 
@@ -60,32 +60,27 @@ export const SKILL_DATABASE = {
     icon: '/skill/heartoffire_fire_skill.webp', description: '불 속성 기사들의 체력을 10% 증가시킵니다.', 
     target: 'ally', targetAttribute: 'fire', effectType: 'stat_up', stat: 'maxHp', value: 0.15 
   },
-  'active_fire_storm': { 
-    id: 'active_fire_storm', name: '화염 폭풍', type: 'active', subType: 'dot', 
-    icon: '/skills/active_fire_storm.webp', description: '적에게 3턴 동안 매 턴 30%의 화염 지속 피해를 입힙니다.', 
-    mpCost: 45, element: 'fire', power: 0.3, duration: 3 
+  'active_fire_storm_1': { 
+    id: 'active_fire_storm_1', name: '화상 작열', type: 'active', subType: 'dot', 
+    icon: '/skill/ignitedwound_fire_skill.webp', description: '적에게 3턴 동안 매 턴 50%의 화염 지속 피해를 입힙니다.', 
+    mpCost: 80, element: 'fire', power: 0.5, duration: 3 
   },
   
-  'passive_fire_def': { 
-    id: 'passive_fire_def', name: '화염의 가호', type: 'passive', 
-    icon: '/skills/passive_fire_def.webp', description: '파티 전체의 방어력을 10% 증가시킵니다.', 
-    target: 'ally', effectType: 'stat_up', stat: 'defense', value: 0.10 
+  'passive_fire_def_1': { 
+    id: 'passive_fire_def_1', name: '초열 피부', type: 'passive', 
+    icon: '/skill/magmaskin_fire_skill.webp', description: '불 속성 기사들의 방어력을 20% 증가시킵니다.', 
+    target: 'ally', targetAttribute: 'fire', effectType: 'stat_up', stat: 'defense', value: 0.20 
   },
-  'active_fire_shield': { 
-    id: 'active_fire_shield', name: '화염 방패', type: 'active', subType: 'buff', 
-    icon: '/skills/active_fire_shield.webp', description: '3턴 동안 파티 방어력이 30% 상승하는 화염 방패를 생성합니다.', 
-    mpCost: 35, stat: 'defense', power: 0.3, duration: 3 
+  'active_fire_shield_1': { 
+    id: 'active_fire_shield_1', name: '연옥 방어막', type: 'active', subType: 'buff', 
+    icon: '/skill/infernobarrier_fire_skill.webp', description: '2턴 동안 파티 방어력이 30% 상승하는 화염 방패를 생성합니다.', 
+    mpCost: 50, stat: 'defense', power: 0.3, duration: 2 
   },
 
-  'passive_fire_resist': { 
-    id: 'passive_fire_resist', name: '위압감', type: 'passive', 
-    icon: '/skills/passive_fire_resist.webp', description: '전투 진입 시 보스의 공격력을 5% 감소시킵니다.', 
+  'passive_fire_resist_1': { 
+    id: 'passive_fire_resist_1', name: '화룡의 가호', type: 'passive', 
+    icon: '/skill/firedragonfavor_fire_skill.webp', description: '전투 진입 시 보스의 공격력을 5% 감소시킵니다.', 
     target: 'enemy', effectType: 'stat_down', stat: 'attack', value: 0.05 
-  },
-  'active_fire_pierce': { 
-    id: 'active_fire_pierce', name: '화염 찌르기', type: 'active', subType: 'attack', 
-    icon: '/skills/active_fire_pierce.webp', description: '적의 장갑을 뚫고 140%의 화염 속성 피해를 입힙니다.', 
-    mpCost: 35, element: 'fire', power: 1.4 
   },
 
   // ==========================================
