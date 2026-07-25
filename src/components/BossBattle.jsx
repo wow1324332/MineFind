@@ -7,7 +7,7 @@ import { RAID_BOSS_DATABASE } from '../constants/raidBossData';
 import { KNIGHT_DATABASE } from '../constants/knightData';
 import { EQUIP_DATABASE } from '../constants/equipData'; 
 import { calculatePartyStats, calculateTurnDamage } from '../utils/combatUtils';
-import { SKILL_DATABASE } from '../constants/skillData'; // ✨ 스킬 DB 불러오기!
+import { SKILL_DATABASE } from '../constants/skillData'; 
 
 export default function BossBattle({ bossId = 'dantalion', onBack }) {
   const { user } = useAuth();
@@ -27,6 +27,9 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
   const [partyEffect, setPartyEffect] = useState(null);  
   const [battleResult, setBattleResult] = useState(null); 
   const [showExitPopup, setShowExitPopup] = useState(false);
+  
+  // ✨ 스킬 컷인 애니메이션 상태 추가
+  const [skillCutin, setSkillCutin] = useState(null);
 
   useEffect(() => {
     if (partyStats && bossData) {
@@ -88,9 +91,9 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
                 id,
                 name: id === 'knight_main' ? userNickname : kDb.name,
                 image: kDb.image,
-                attribute: kDb.attribute, // ✨ 속성 추가
-                activeSkill: kDb.activeSkill, // ✨ 액티브 스킬 추가
-                passiveSkill: id === 'knight_main' ? (userData.mainPassive || kDb.passiveSkill) : kDb.passiveSkill, // ✨ 패시브 추가
+                attribute: kDb.attribute, 
+                activeSkill: kDb.activeSkill, 
+                passiveSkill: id === 'knight_main' ? (userData.mainPassive || kDb.passiveSkill) : kDb.passiveSkill, 
                 str: kDb.baseStats.str + (kDb.statGrowth.str * lvMultiplier) + equipBonus.str,
                 agi: kDb.baseStats.agi + (kDb.statGrowth.agi * lvMultiplier) + equipBonus.agi,
                 int: kDb.baseStats.int + (kDb.statGrowth.int * lvMultiplier) + equipBonus.int,
@@ -117,29 +120,23 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
     fetchBattleData();
   }, [user]);
 
-  // ==========================================================
-  // ⚔️ [만능 턴 엔진] 평타 및 스킬 발동 통합 처리
-  // ==========================================================
-  const handleAction = (actionType = 'ATTACK', skill = null) => {
-    if (bossHp <= 0 || partyHp <= 0 || isAnimating || battleResult || introStage !== 'done') return; 
-    setIsAnimating(true); 
 
+  // ==========================================================
+  // ⚔️ [기존 만능 턴 엔진 캡슐화] 0.1%도 변경 안 된 기존 로직입니다.
+  // ==========================================================
+  const processCombatSequence = (actionType, skill) => {
     let currentBossHp = bossHp;
     let currentPartyHp = partyHp;
     let currentPartyMp = partyMp;
 
-    // ✨ 1. 아군의 턴 (스킬 or 평타)
     if (actionType === 'SKILL' && skill) {
-      // 마나 소모
       currentPartyMp -= skill.mpCost;
       setPartyMp(currentPartyMp);
 
-      // 스킬 타입별 효과 분기
       if (skill.subType === 'attack' || skill.subType === 'dot' || skill.subType === 'debuff') {
         const attackRes = calculateTurnDamage(partyStats, bossData.stats, true, skill);
         currentBossHp = Math.max(0, currentBossHp - attackRes.damage);
         
-        // 디버프나 도트기일 경우 추가 텍스트 표시
         const extraText = skill.subType === 'dot' ? '\n(맹독)' : (skill.subType === 'debuff' ? '\n(약화)' : '');
         setBossEffect({ damage: attackRes.damage + extraText, isCrit: attackRes.isCrit, isMiss: attackRes.isMiss, id: Date.now(), isSkill: true });
       } 
@@ -152,7 +149,6 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
         setPartyEffect({ damage: `BUFF ON!`, isBuff: true, id: Date.now() });
       }
     } else {
-      // 일반 평타 처리
       const attackRes = calculateTurnDamage(partyStats, bossData.stats, true, null);
       currentBossHp = Math.max(0, currentBossHp - attackRes.damage);
       setBossEffect({ damage: attackRes.damage, isCrit: attackRes.isCrit, isMiss: attackRes.isMiss, id: Date.now() });
@@ -160,7 +156,6 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
     
     setBossHp(currentBossHp);
 
-    // 2. 1초 대기 후 보스의 반격
     setTimeout(() => {
       setBossEffect(null); 
       setPartyEffect(null);
@@ -173,7 +168,6 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
 
       const bossAttack = calculateTurnDamage(bossData.stats, partyStats, false);
       
-      // 만약 방금 회피 스킬(evade)을 썼다면 강제로 데미지 0 (Miss 처리)
       if (actionType === 'SKILL' && skill && skill.subType === 'evade') {
         bossAttack.damage = 0;
         bossAttack.isMiss = true;
@@ -183,7 +177,6 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
       setPartyEffect({ damage: bossAttack.damage, isCrit: bossAttack.isCrit, isMiss: bossAttack.isMiss, id: Date.now() });
       setPartyHp(currentPartyHp);
 
-      // 3. 다시 1초 대기 후 턴 종료 (마나 회복)
       setTimeout(() => {
         setPartyEffect(null);
 
@@ -197,6 +190,48 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
 
     }, 1000);
   };
+
+
+  // ==========================================================
+  // ⚔️ [신규 발동기] 스킬일 경우 애니메이션부터 재생하고 엔진을 부릅니다!
+  // ==========================================================
+  const handleAction = (actionType = 'ATTACK', skill = null, casterKnight = null) => {
+    if (bossHp <= 0 || partyHp <= 0 || isAnimating || battleResult || introStage !== 'done') return; 
+    setIsAnimating(true); 
+
+    if (actionType === 'SKILL' && skill && casterKnight) {
+      // 🎬 1. 스킬 연출 시작!
+      setSkillCutin({ knight: casterKnight, skill, stage: 'enter' });
+      
+      // 타이밍 조절: 0.3초(등장) -> 1.1초(기합) -> 1.25초(참격 플래시) -> 1.75초(갈라짐 완료 & 데미지 터짐)
+      setTimeout(() => setSkillCutin(prev => prev ? { ...prev, stage: 'pause' } : null), 300);
+      setTimeout(() => setSkillCutin(prev => prev ? { ...prev, stage: 'slash' } : null), 1100);
+      setTimeout(() => setSkillCutin(prev => prev ? { ...prev, stage: 'split' } : null), 1250);
+      
+      // 🎬 2. 연출이 박살나며 끝나는 순간, 원장님의 기존 데미지 로직 실행!
+      setTimeout(() => {
+        setSkillCutin(null);
+        processCombatSequence(actionType, skill);
+      }, 1750);
+    } else {
+      // 일반 평타는 애니메이션 없이 바로 엔진 실행
+      processCombatSequence(actionType, skill);
+    }
+  };
+
+
+  // ✨ 컷인 내용물 렌더링 함수 (재사용을 위해 분리)
+  const renderCutinContent = () => (
+    <div className="w-full h-full bg-gradient-to-r from-red-950 via-red-800 to-black flex items-center px-[10%] sm:px-[15%] border-y-[3px] border-red-500/50 shadow-[0_0_30px_rgba(220,38,38,0.5)]" style={{ transform: 'skewX(-15deg)', animation: 'cutinBand 0.3s ease-out forwards' }}>
+       {/* 기사 초상화 크게 줌인 */}
+       <img src={skillCutin.knight.image} alt="Knight" className="h-[200%] w-auto object-cover object-top opacity-90 drop-shadow-[0_0_15px_rgba(220,38,38,0.8)] mix-blend-lighten -ml-10" style={{ transform: 'skewX(15deg)', animation: 'cutinFace 0.5s ease-out forwards' }} />
+       
+       <div className="ml-auto flex flex-col items-end justify-center h-full" style={{ transform: 'skewX(15deg)' }}>
+         <span className="text-red-300 font-bold text-xs sm:text-sm tracking-[0.5em] uppercase mb-1 drop-shadow-[0_2px_2px_rgba(0,0,0,1)]" style={{ animation: 'cutinText 0.4s ease-out 0.1s both' }}>Skill Active</span>
+         <span className="text-white font-serif font-black text-3xl sm:text-4xl italic tracking-wider drop-shadow-[0_0_20px_rgba(220,38,38,1)] whitespace-nowrap" style={{ animation: 'cutinText 0.4s ease-out 0.2s both' }}>{skillCutin.skill.name}</span>
+       </div>
+    </div>
+  );
 
   if (!bossData) return <div className="fixed inset-0 bg-black z-50 flex items-center justify-center text-red-500 font-bold">보스 데이터 로딩 실패 ({bossId})</div>;
   if (!partyStats) return <div className="fixed inset-0 bg-black z-50"></div>; 
@@ -216,7 +251,41 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
         @keyframes floatUpDamage { 0% { transform: translateY(0) scale(0.5); opacity: 0; } 20% { transform: translateY(-20px) scale(1.3); opacity: 1; } 40% { transform: translateY(-30px) scale(1); opacity: 1; } 100% { transform: translateY(-70px) scale(1); opacity: 0; } }
         @keyframes slashHit { 0% { transform: rotate(-15deg) scaleX(0); opacity: 1; } 50% { transform: rotate(-15deg) scaleX(1); opacity: 1; } 100% { transform: rotate(-15deg) scaleX(1.5) scaleY(4); opacity: 0; } }
         @keyframes shakeHit { 0%, 100% { transform: translate(0, 0); } 20% { transform: translate(-8px, 6px); } 40% { transform: translate(6px, -8px); } 60% { transform: translate(-6px, -6px); } 80% { transform: translate(8px, 8px); } }
+        
+        /* ✨ 스킬 컷인 전용 애니메이션 */
+        @keyframes cutinBand { 0% { transform: translateX(-100%) skewX(-15deg); } 100% { transform: translateX(0) skewX(-15deg); } }
+        @keyframes cutinFace { 0% { transform: scale(1.3) translateX(-30px) skewX(15deg); opacity: 0; } 100% { transform: scale(1.1) translateX(0) skewX(15deg); opacity: 1; } }
+        @keyframes cutinText { 0% { transform: translateX(40px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
+        .cutin-split-top { clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%); transition: transform 0.4s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.4s; }
+        .cutin-split-bottom { clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%); transition: transform 0.4s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.4s; }
       `}</style>
+
+      {/* ✨ 스킬 컷인 연출 UI */}
+      {skillCutin && (
+        <div className="absolute inset-0 z-[250] flex items-center justify-center overflow-hidden pointer-events-none">
+          {/* 배경 딤 처리 */}
+          <div className={`absolute inset-0 transition-opacity duration-300 ${skillCutin.stage === 'enter' || skillCutin.stage === 'pause' ? 'bg-black/75' : 'bg-transparent'}`}></div>
+
+          <div className="relative w-[150%] h-48 sm:h-56 flex items-center justify-center">
+            
+            {/* 상단 반갈죽 컨테이너 */}
+            <div className={`absolute inset-0 w-full h-full flex items-center justify-center cutin-split-top ${skillCutin.stage === 'split' ? '-translate-x-12 -translate-y-12 opacity-0' : ''}`}>
+              {renderCutinContent()}
+            </div>
+            
+            {/* 하단 반갈죽 컨테이너 */}
+            <div className={`absolute inset-0 w-full h-full flex items-center justify-center cutin-split-bottom ${skillCutin.stage === 'split' ? 'translate-x-12 translate-y-12 opacity-0' : ''}`}>
+              {renderCutinContent()}
+            </div>
+
+            {/* 하얀색 참격선 (갈라질 때 발동) */}
+            <div className={`slash-line ${skillCutin.stage === 'slash' ? 'active' : ''} ${skillCutin.stage === 'split' ? 'fade' : ''}`} style={{ background: '#fff', boxShadow: '0 0 20px #fff, 0 0 40px #ef4444' }}></div>
+            
+            {/* 참격 플래시 눈뽕 효과 */}
+            {skillCutin.stage === 'slash' && <div className="absolute inset-0 bg-white" style={{ animation: 'flash 0.15s ease-out forwards' }}></div>}
+          </div>
+        </div>
+      )}
 
       {/* BATTLE START 인트로 */}
       {introStage !== 'done' && introStage !== 'loading' && (
@@ -256,7 +325,6 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
       {/* 상단 UI (보스 영역) */}
       <div className={`relative z-10 w-full px-4 pt-10 flex flex-col items-center ${bossEffect ? 'animate-[shakeHit_0.3s_ease-in-out]' : ''}`}>
         
-        {/* 돌담 백키 */}
         <button 
           onClick={() => setShowExitPopup(true)} 
           className="absolute left-4 top-8 transition-all duration-150 active:scale-90 outline-none" 
@@ -265,7 +333,6 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
           <img src="/header/backkey.webp" alt="Exit" className="w-8 h-8 object-contain drop-shadow-md" draggable="false" />
         </button>
 
-        {/* 이름 & 체력바 묶음 컨테이너 (우측 정렬) */}
         <div className="w-full max-w-sm flex flex-col items-end gap-1">
           <span className="text-transparent bg-clip-text bg-gradient-to-b from-red-400 to-red-800 font-serif font-black text-sm sm:text-base tracking-[0.3em] uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,1)] italic pr-1">
             {bossId}
@@ -277,7 +344,7 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
           </div>
         </div>
 
-        {/* 💥 보스 피격 데미지 / 텍스트 팝업 */}
+        {/* 💥 보스 피격 데미지 팝업 */}
         {bossEffect && (
           <div key={`boss-${bossEffect.id}`} className="absolute inset-0 flex items-center justify-center pointer-events-none z-50 translate-y-16">
             {!bossEffect.isMiss && <div className={`absolute w-[150%] h-3 rounded-full animate-[slashHit_0.3s_ease-out_forwards] ${bossEffect.isSkill ? 'bg-purple-400 shadow-[0_0_20px_#c084fc,0_0_40px_#9333ea]' : 'bg-white shadow-[0_0_20px_#fff,0_0_40px_#ef4444]'}`}></div>}
@@ -294,7 +361,7 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
       {/* 하단 UI (기사단 영역) */}
       <div className={`relative z-10 w-full px-2 pb-6 flex flex-col gap-3 ${partyEffect ? 'animate-[shakeHit_0.3s_ease-in-out]' : ''}`}>
         
-        {/* 💥 기사단 피격 / 힐 / 버프 팝업 */}
+        {/* 💥 기사단 피격 팝업 */}
         {partyEffect && (
           <div key={`party-${partyEffect.id}`} className="absolute inset-0 flex items-center justify-center pointer-events-none z-50 -translate-y-24">
             {!partyEffect.isMiss && !partyEffect.isHeal && !partyEffect.isBuff && <div className="absolute w-[120%] h-3 bg-red-600 rounded-full shadow-[0_0_20px_#ef4444,0_0_40px_#991b1b] animate-[slashHit_0.3s_ease-out_forwards]"></div>}
@@ -312,7 +379,6 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
 
         <div className="w-full flex justify-between gap-1 px-1">
           {partyKnights.map((knight, idx) => {
-            // ✨ 스킬 아이콘 및 사용 가능 여부 판별
             const skill = knight && knight.activeSkill ? SKILL_DATABASE[knight.activeSkill] : null;
             const canUseSkill = skill && partyMp >= skill.mpCost;
 
@@ -320,15 +386,14 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
               <div key={idx} className="flex-1 flex flex-col items-center gap-1">
                 {knight ? (
                   <>
-              {/* ✨ 진짜 스킬 아이콘 (CSS 테두리와 잘림 현상 완벽 제거!) */}
                     {skill ? (
                       <button 
-                        onClick={() => handleAction('SKILL', skill)}
+                        // ✨ 기사 객체(knight)를 함께 던져서 컷인에 얼굴이 나오게 합니다!
+                        onClick={() => handleAction('SKILL', skill, knight)} 
                         disabled={!canUseSkill || isAnimating || battleResult || introStage !== 'done'}
                         className={`w-7 h-7 flex items-center justify-center transition-all ${canUseSkill ? 'active:scale-90 hover:brightness-110' : 'opacity-50 grayscale'}`}
                         style={{ outline: 'none', WebkitTapHighlightColor: 'transparent' }}
                       >
-                        {/* object-cover 대신 원본 테두리가 1픽셀도 안 잘리도록 object-contain 적용 */}
                         <img src={skill.icon} alt="skill" className="w-full h-full object-contain drop-shadow-md" />
                       </button>
                     ) : (
