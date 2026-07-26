@@ -223,8 +223,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 10, agi: 25, int: 10, vit: 15, luk: 10 },
     statGrowth: { str: 2, agi: 3, int: 1, vit: 1, luk: 2 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_poison_atk', // 독속성 공격력 증가
-    activeSkill: 'active_poison_stab'   // 맹독 찌르기
+    passiveSkill: 'passive_poison_atk_1', // 독속성 공격력 증가
+    activeSkill: 'active_poison_atk_1'   // 맹독 찌르기
   },
   
   'knight_poison_gareth': {
@@ -240,8 +240,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 15, agi: 20, int: 10, vit: 10, luk: 15 },
     statGrowth: { str: 2, agi: 3, int: 1, vit: 1, luk: 3 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_poison_evade', // 파티 회피율 상승
-    activeSkill: 'active_poison_cloud'    // 맹독 구름 (도트 데미지)
+    passiveSkill: 'passive_poison_eva_1', // 파티 회피율 상승
+    activeSkill: 'active_poison_dot_1'    // 맹독 구름 (도트 데미지)
   },
 
   'knight_poison_safir': {
@@ -257,8 +257,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 15, agi: 25, int: 10, vit: 5, luk: 15 },
     statGrowth: { str: 2, agi: 4, int: 1, vit: 1, luk: 2 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_poison_crit', // 치명타 대미지 증가
-    activeSkill: 'active_poison_assassinate' // 암살 (회피 무시 타격)
+    passiveSkill: 'passive_poison_crit_1', // 치명타 대미지 증가
+    activeSkill: 'active_poison_atk_2' // 암살 (회피 무시 타격)
   },
 
   'knight_poison_bors': {
@@ -274,8 +274,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 20, agi: 20, int: 10, vit: 10, luk: 20 },
     statGrowth: { str: 3, agi: 5, int: 2, vit: 2, luk: 3 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_poison_hp',   // 보스 공격력 디버프
-    activeSkill: 'active_poison_strike'  // 독기 방출 (광역기 느낌의 강타)
+    passiveSkill: 'passive_poison_hp_1',   // 보스 공격력 디버프
+    activeSkill: 'active_poison_splash_1'  // 독기 방출 (광역기 느낌의 강타)
   },
 
   'knight_poison_calogrenant': {
@@ -291,8 +291,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 10, agi: 25, int: 20, vit: 10, luk: 15 },
     statGrowth: { str: 2, agi: 5, int: 4, vit: 2, luk: 2 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_poison_def', // 보스 방어력 감소
-    activeSkill: 'active_poison_trap'   // 맹독 덫 (다음 턴 보스 데미지 약화)
+    passiveSkill: 'passive_poison_def_1', // 보스 방어력 감소
+    activeSkill: 'active_poison_trap_1'   // 맹독 덫 (다음 턴 보스 데미지 약화)
   },
   
   // ========================================================
