@@ -86,15 +86,15 @@ export const SKILL_DATABASE = {
   // ==========================================
   // 💧 물 속성 스킬 (Water)
   // ==========================================
-  'passive_water_def': { 
-    id: 'passive_water_def', name: '물의 장막', type: 'passive', 
-    icon: '/skills/passive_water_def.webp', description: '파티 전체의 방어력을 10% 증가시킵니다.', 
-    target: 'ally', effectType: 'stat_up', stat: 'defense', value: 0.10 
+  'passive_water_def_1': { 
+    id: 'passive_water_def_1', name: '수룡의 가호', type: 'passive', 
+    icon: '/skill/tidalward_water_skill.webp', description: '수속성 기사들의 방어력을 20% 증가시킵니다.', 
+    target: 'ally', targetAttribute: 'water', effectType: 'stat_up', stat: 'defense', value: 0.20 
   },
-  'active_water_shield': { 
-    id: 'active_water_shield', name: '물의 방패', type: 'active', subType: 'buff', 
-    icon: '/skills/active_water_shield.webp', description: '2턴 동안 파티의 회피율을 대폭(10%) 증가시킵니다.', 
-    mpCost: 30, stat: 'evasion', power: 10, duration: 2 
+  'active_water_eva_1': { 
+    id: 'active_water_eva_1', name: '수상비', type: 'active', subType: 'buff', 
+    icon: '/skill/aquaglide-water-skill.webp', description: '2턴 동안 파티의 회피율을 대폭(30%) 증가시킵니다.', 
+    mpCost: 90, stat: 'evasion', power: 30, duration: 2 
   },
 
   'passive_water_hp_1': { 
@@ -102,16 +102,16 @@ export const SKILL_DATABASE = {
     icon: '/skill/sheildofocean-water-skill.webp', description: '파티 전체의 최대 체력을 15% 증가시킵니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'maxHp', value: 0.15 
   },
-  'active_water_heal': { 
-    id: 'active_water_heal', name: '치유의 물결', type: 'active', subType: 'heal', 
-    icon: '/skills/active_water_heal.webp', description: '파티 전체의 체력을 공격력의 30%만큼 회복시킵니다.', 
-    mpCost: 40, power: 0.3 
+  'active_water_heal_1': { 
+    id: 'active_water_heal_1', name: '여신의 물결', type: 'active', subType: 'heal', 
+    icon: '/skill/divinewave-water-skill.webp', description: '파티 전체의 체력을 공격력의 200%만큼 회복시킵니다.', 
+    mpCost: 50, power: 2.0 
   },
 
-  'passive_water_atk': { 
-    id: 'passive_water_atk', name: '거센 물결', type: 'passive', 
-    icon: '/skills/passive_water_atk.webp', description: '파티 전체의 공격력을 10% 증가시킵니다.', 
-    target: 'ally', effectType: 'stat_up', stat: 'attack', value: 0.10 
+  'passive_water_atk_1': { 
+    id: 'passive_water_atk_1', name: '물의 여신의 격노', type: 'passive', 
+    icon: '/skill/celestialtsunami-water-skill.webp', description: '수속성 기사들의 공격력을 20% 증가시킵니다.', 
+    target: 'ally', targetAttribute: 'water', effectType: 'stat_up', stat: 'attack', value: 0.20 
   },
   'active_water_slash_1': { 
     id: 'active_water_slash_1', name: '대양의 창', type: 'active', subType: 'attack', 
@@ -119,26 +119,26 @@ export const SKILL_DATABASE = {
     mpCost: 60, element: 'water', flatDamage: 400
   },
 
-  'passive_water_evade': { 
-    id: 'passive_water_evade', name: '흐르는 물', type: 'passive', 
-    icon: '/skills/passive_water_evade.webp', description: '파티 전체의 회피율을 5% 증가시킵니다.', 
+  'passive_water_evade_1': { 
+    id: 'passive_water_evade_1', name: '등평도수', type: 'passive', 
+    icon: '/skill/weightlessripple-water-skill.webp', description: '파티 전체의 회피율을 5% 증가시킵니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'evasion', value: 5 
   },
-  'active_water_wave': { 
-    id: 'active_water_wave', name: '해일', type: 'active', subType: 'debuff', 
-    icon: '/skills/active_water_wave.webp', description: '거대한 해일로 2턴 동안 보스의 공격력을 20% 감소시킵니다.', 
-    mpCost: 45, element: 'water', stat: 'attack', power: 0.2, duration: 2 
+  'active_water_wave_1': { 
+    id: 'active_water_wave_1', name: '해일 장벽', type: 'active', subType: 'debuff', 
+    icon: '/skill/tidalwall-water-skill.webp', description: '거대한 해일로 2턴 동안 보스의 공격력을 30% 감소시킵니다.', 
+    mpCost: 60, element: 'water', stat: 'attack', power: 0.3, duration: 2 
   },
 
-  'passive_water_crit': { 
-    id: 'passive_water_crit', name: '매서운 파도', type: 'passive', 
-    icon: '/skills/passive_water_crit.webp', description: '파티 전체의 치명타 확률을 5% 증가시킵니다.', 
+  'passive_water_crit_1': { 
+    id: 'passive_water_crit_1', name: '심해의 눈', type: 'passive', 
+    icon: '/skill/abyssaleye-water-skill.webp', description: '파티 전체의 치명타 확률을 5% 증가시킵니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'critRate', value: 5 
   },
-  'active_water_spear': { 
-    id: 'active_water_spear', name: '삼지창 찌르기', type: 'active', subType: 'attack', 
-    icon: '/skills/active_water_spear.webp', description: '적에게 200%의 강력한 물 속성 피해를 입힙니다.', 
-    mpCost: 50, element: 'water', power: 2.0 
+  'active_water_spear_1': { 
+    id: 'active_water_spear_1', name: '포세이돈의 삼지창', type: 'active', subType: 'attack', 
+    icon: '/skill/poseidonstrident-water-skill.webp', description: '적에게 400%의 강력한 물 속성 피해를 입힙니다.', 
+    mpCost: 100, element: 'water', power: 4.0 
   },
 
   // ==========================================
