@@ -135,8 +135,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 15, agi: 5, int: 10, vit: 25, luk: 15 },
     statGrowth: { str: 2, agi: 1, int: 1, vit: 4, luk: 2 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_water_def', // 물속성 아군 방어력 상승
-    activeSkill: 'active_water_shield' // 물의 방패 (회피율 증가)
+    passiveSkill: 'passive_water_def_1', // 물속성 아군 방어력 상승
+    activeSkill: 'active_water_eva_1' // 물의 방패 (회피율 증가)
   },
 
   'knight_water_percival': {
@@ -152,8 +152,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 10, agi: 5, int: 10, vit: 30, luk: 15 },
     statGrowth: { str: 1, agi: 1, int: 1, vit: 5, luk: 2 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_water_hp',  // 파티 체력 상승
-    activeSkill: 'active_water_heal'   // 치유의 물결 (회복)
+    passiveSkill: 'passive_water_hp_1',  // 파티 체력 상승
+    activeSkill: 'active_water_heal_1'   // 치유의 물결 (회복)
   },
 
   'knight_water_urien': {
@@ -169,8 +169,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 10, agi: 10, int: 10, vit: 25, luk: 15 },
     statGrowth: { str: 1, agi: 2, int: 1, vit: 4, luk: 2 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_water_atk', // 공격력 상승
-    activeSkill: 'active_water_slash'  // 파도 베기 (공격)
+    passiveSkill: 'passive_water_atk_1', // 공격력 상승
+    activeSkill: 'active_water_wave_1'  // 파도 베기 (공격)
   },
 
   'knight_water_heliona': {
@@ -203,8 +203,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 15, agi: 10, int: 5, vit: 20, luk: 20 },
     statGrowth: { str: 3, agi: 2, int: 1, vit: 5, luk: 4 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_water_crit', // 치명타 확률 증가
-    activeSkill: 'active_water_spear'   // 삼지창 찌르기 (강타)
+    passiveSkill: 'passive_water_crit_1', // 치명타 확률 증가
+    activeSkill: 'active_water_spear_1'   // 삼지창 찌르기 (강타)
   }, 
   
   // ========================================================
