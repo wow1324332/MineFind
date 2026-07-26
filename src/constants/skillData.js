@@ -144,59 +144,59 @@ export const SKILL_DATABASE = {
   // ==========================================
   // ☠️ 독 속성 스킬 (Poison)
   // ==========================================
-  'passive_poison_atk': { 
-    id: 'passive_poison_atk', name: '치명적인 독', type: 'passive', 
-    icon: '/skills/passive_poison_atk.webp', description: '파티 전체의 공격력을 15% 증가시킵니다.', 
-    target: 'ally', effectType: 'stat_up', stat: 'attack', value: 0.15 
+  'passive_poison_atk_1': { 
+    id: 'passive_poison_atk_1', name: '치명적인 독', type: 'passive', 
+    icon: '/skill/fatalvenom-poison-skill.webp', description: '독 속성의 기사들 공격력을 15% 증가시킵니다.', 
+    target: 'ally', targetattribute: 'poison', effectType: 'stat_up', stat: 'attack', value: 0.15 
   },
-  'active_poison_stab': { 
-    id: 'active_poison_stab', name: '맹독 찌르기', type: 'active', subType: 'attack', 
-    icon: '/skills/active_poison_stab.webp', description: '적에게 150%의 독 속성 피해를 입힙니다.', 
-    mpCost: 25, element: 'poison', power: 1.5 
+  'active_poison_atk_1': { 
+    id: 'active_poison_atk_1', name: '맹독 찌르기', type: 'active', subType: 'attack', 
+    icon: '/skill/venomthrust-poison-skill.webp', description: '적에게 350%의 독 속성 피해를 입힙니다.', 
+    mpCost: 70, element: 'poison', power: 3.0 
   },
 
-  'passive_poison_evade': { 
-    id: 'passive_poison_evade', name: '그림자 숨기', type: 'passive', 
-    icon: '/skills/passive_poison_evade.webp', description: '파티 전체의 회피율을 8% 증가시킵니다.', 
+  'passive_poison_eva_1': { 
+    id: 'passive_poison_eva_1', name: '그림자 숨기', type: 'passive', 
+    icon: '/skill/shadowmeld-poison-skill.webp', description: '파티 전체의 회피율을 8% 증가시킵니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'evasion', value: 8 
   },
-  'active_poison_cloud': { 
-    id: 'active_poison_cloud', name: '맹독 구름', type: 'active', subType: 'dot', 
-    icon: '/skills/active_poison_cloud.webp', description: '적에게 3턴 동안 매 턴 30%의 독 지속 피해를 입힙니다.', 
-    mpCost: 40, element: 'poison', power: 0.3, duration: 3 
+  'active_poison_dot_1': { 
+    id: 'active_poison_dot_1', name: '맹독 구름', type: 'active', subType: 'dot', 
+    icon: '/skill/venomousmist-poison-skill.webp', description: '적에게 3턴 동안 매 턴 50%의 독 지속 피해를 입힙니다.', 
+    mpCost: 90, element: 'poison', power: 0.5, duration: 3 
   },
 
-  'passive_poison_crit': { 
-    id: 'passive_poison_crit', name: '암살자의 눈', type: 'passive', 
-    icon: '/skills/passive_poison_crit.webp', description: '파티 전체의 치명타 데미지를 20% 증가시킵니다.', 
+  'passive_poison_crit_1': { 
+    id: 'passive_poison_crit_1', name: '암살자의 눈', type: 'passive', 
+    icon: '/skill/assassinseye-poison-skill.webp', description: '파티 전체의 치명타 데미지를 20% 증가시킵니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'critDmg', value: 0.2 
   },
-  'active_poison_assassinate': { 
-    id: 'active_poison_assassinate', name: '암살', type: 'active', subType: 'attack', 
-    icon: '/skills/active_poison_assassinate.webp', description: '적에게 250%의 치명적인 독 속성 피해를 입힙니다.', 
-    mpCost: 55, element: 'poison', power: 2.5 
+  'active_poison_atk_2': { 
+    id: 'active_poison_atk_2', name: '암살', type: 'active', subType: 'attack', 
+    icon: '/skill/assassinate-poison-skill.webp', description: '적에게 380의 치명적인 독 속성 피해를 입힙니다.', 
+    mpCost: 70, element: 'poison', flatDamage: 380
   },
 
-  'passive_poison_hp': { 
-    id: 'passive_poison_hp', name: '부패한 기운', type: 'passive', 
-    icon: '/skills/passive_poison_hp.webp', description: '전투 진입 시 보스의 공격력을 10% 감소시킵니다.', 
-    target: 'enemy', effectType: 'stat_down', stat: 'attack', value: 0.10 
+  'passive_poison_hp_1': { 
+    id: 'passive_poison_hp_1', name: '부패한 기운', type: 'passive', 
+    icon: '/skill/decayingpresence-poison-skill.webp', description: '전투 진입 시 보스의 공격력을 15% 감소시킵니다.', 
+    target: 'enemy', effectType: 'stat_down', stat: 'attack', value: 0.15 
   },
-  'active_poison_strike': { 
-    id: 'active_poison_strike', name: '독기 방출', type: 'active', subType: 'attack', 
-    icon: '/skills/active_poison_strike.webp', description: '적에게 160%의 독 속성 피해를 입힙니다.', 
-    mpCost: 45, element: 'poison', power: 1.6 
+  'active_poison_splash_1': { 
+    id: 'active_poison_splash_1', name: '독기 방출', type: 'active', subType: 'attack', 
+    icon: '/skill/venomdischarge-poison-skill.webp', description: '적에게 300%의 독 속성 피해를 입힙니다.', 
+    mpCost: 80, element: 'poison', power: 3.0
   },
 
-  'passive_poison_def': { 
-    id: 'passive_poison_def', name: '갑옷 부식', type: 'passive', 
-    icon: '/skills/passive_poison_def.webp', description: '전투 진입 시 보스의 방어력을 15% 감소시킵니다.', 
+  'passive_poison_def_1': { 
+    id: 'passive_poison_def_1', name: '갑옷 부식', type: 'passive', 
+    icon: '/skill/armorcorrosion-poison-skill.webp', description: '전투 진입 시 보스의 방어력을 15% 감소시킵니다.', 
     target: 'enemy', effectType: 'stat_down', stat: 'defense', value: 0.15 
   },
-  'active_poison_trap': { 
-    id: 'active_poison_trap', name: '맹독 덫', type: 'active', subType: 'debuff', 
-    icon: '/skills/active_poison_trap.webp', description: '맹독 덫을 설치하여 1턴 동안 보스의 공격력을 30% 감소시킵니다.', 
-    mpCost: 35, stat: 'attack', power: 0.3, duration: 1 
+  'active_poison_trap_1': { 
+    id: 'active_poison_trap_1', name: '맹독 덫', type: 'active', subType: 'debuff', 
+    icon: '/skill/poisonmine-poison-skill.webp', description: '맹독 덫을 설치하여 2턴 동안 보스의 공격력을 50% 감소시킵니다.', 
+    mpCost: 70, stat: 'attack', power: 0.5, duration: 2 
   },
 
   // ==========================================
