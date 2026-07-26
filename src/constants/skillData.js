@@ -195,66 +195,66 @@ export const SKILL_DATABASE = {
   },
   'active_poison_trap_1': { 
     id: 'active_poison_trap_1', name: '맹독 덫', type: 'active', subType: 'debuff', 
-    icon: '/skill/poisonmine-poison-skill.webp', description: '맹독 덫을 설치하여 2턴 동안 보스의 공격력을 50% 감소시킵니다.', 
+    icon: '/skill /poisonmine-poison-skill.webp', description: '맹독 덫을 설치하여 2턴 동안 보스의 공격력을 50% 감소시킵니다.', 
     mpCost: 70, stat: 'attack', power: 0.5, duration: 2 
   },
 
   // ==========================================
   // ☀️ 빛 속성 스킬 (Light)
   // ==========================================
-  'passive_light_def': { 
-    id: 'passive_light_def', name: '빛의 가호', type: 'passive', 
-    icon: '/skills/passive_light_def.webp', description: '파티 전체의 방어력을 15% 증가시킵니다.', 
-    target: 'ally', effectType: 'stat_up', stat: 'defense', value: 0.15 
+  'passive_light_def_1': { 
+    id: 'passive_light_def_1', name: '빛의 가호', type: 'passive', 
+    icon: '/skill/divineprotection-light-skill.webp', description: '파티 전체의 방어력을 10% 증가시킵니다.', 
+    target: 'ally', effectType: 'stat_up', stat: 'defense', value: 0.10 
   },
-  'active_light_shield': { 
-    id: 'active_light_shield', name: '신성한 방패', type: 'active', subType: 'buff', 
-    icon: '/skills/active_light_shield.webp', description: '3턴 동안 파티 방어력이 40% 상승하는 신성한 방패를 생성합니다.', 
-    mpCost: 50, stat: 'defense', power: 0.4, duration: 3 
-  },
-
-  'passive_light_atk': { 
-    id: 'passive_light_atk', name: '눈부신 빛', type: 'passive', 
-    icon: '/skills/passive_light_atk.webp', description: '파티 전체의 공격력을 10% 증가시킵니다.', 
-    target: 'ally', effectType: 'stat_up', stat: 'attack', value: 0.10 
-  },
-  'active_light_slash': { 
-    id: 'active_light_slash', name: '섬광 베기', type: 'active', subType: 'attack', 
-    icon: '/skills/active_light_slash.webp', description: '적에게 160%의 빛 속성 피해를 입힙니다.', 
-    mpCost: 30, element: 'light', power: 1.6 
+  'active_light_def_1': { 
+    id: 'active_light_def_1', name: '신성한 방패', type: 'active', subType: 'buff', 
+    icon: '/skill/holyshield-light-skill.webp', description: '3턴 동안 파티 방어력이 30% 상승하는 신성한 방패를 생성합니다.', 
+    mpCost: 80, stat: 'defense', power: 0.3, duration: 3 
   },
 
-  'passive_light_hp': { 
-    id: 'passive_light_hp', name: '성스러운 오라', type: 'passive', 
-    icon: '/skills/passive_light_hp.webp', description: '파티 전체의 최대 체력을 20% 증가시킵니다.', 
-    target: 'ally', effectType: 'stat_up', stat: 'maxHp', value: 0.20 
+  'passive_light_atk_1': { 
+    id: 'passive_light_atk_1', name: '광휘의 빛', type: 'passive', 
+    icon: '/skills/radiantlight-light-skill.webp', description: '파티 전체의 공격력을 5% 증가시킵니다.', 
+    target: 'ally', effectType: 'stat_up', stat: 'attack', value: 0.5 
   },
-  'active_light_heal': { 
-    id: 'active_light_heal', name: '성스러운 빛', type: 'active', subType: 'heal', 
-    icon: '/skills/active_light_heal.webp', description: '파티 전체의 체력을 공격력의 50%만큼 회복시킵니다.', 
-    mpCost: 60, power: 0.5 
+  'active_light_dmg_1': { 
+    id: 'active_light_dmg_1', name: '섬광 베기', type: 'active', subType: 'attack', 
+    icon: '/skill/flashstrike-light-skill.webp', description: '적에게 300%의 빛 속성 피해를 입힙니다.', 
+    mpCost: 60, element: 'light', power: 3.0 
   },
 
-  'passive_light_crit': { 
-    id: 'passive_light_crit', name: '심판의 눈', type: 'passive', 
-    icon: '/skills/passive_light_crit.webp', description: '파티 전체의 치명타 확률을 10% 증가시킵니다.', 
+  'passive_light_hp_1': { 
+    id: 'passive_light_hp_1', name: '빛의 여신의 보호', type: 'passive', 
+    icon: '/skill/goddessoflightward-light-skill.webp', description: '파티 전체의 최대 체력을 10% 증가시킵니다.', 
+    target: 'ally', effectType: 'stat_up', stat: 'maxHp', value: 0.10 
+  },
+  'active_light_heal_1': { 
+    id: 'active_light_heal_1', name: '성스러운 빛', type: 'active', subType: 'heal', 
+    icon: '/skill/holylight-light-skill.webp', description: '파티 전체의 체력을 공격력의 100%만큼 회복시킵니다.', 
+    mpCost: 90, power: 1.0 
+  },
+
+  'passive_light_crit_1': { 
+    id: 'passive_light_crit_1', name: '심판의 눈', type: 'passive', 
+    icon: '/skill/eyeofjudgment-light-skill.webp', description: '파티 전체의 치명타 확률을 10% 증가시킵니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'critRate', value: 10 
   },
-  'active_light_smite': { 
-    id: 'active_light_smite', name: '신의 심판', type: 'active', subType: 'attack', 
-    icon: '/skills/active_light_smite.webp', description: '적에게 300%의 강력한 빛 속성 피해를 입힙니다.', 
-    mpCost: 70, element: 'light', power: 3.0 
+  'active_light_dmg_2': { 
+    id: 'active_light_dmg_2', name: '제우스의 분노', type: 'active', subType: 'attack', 
+    icon: '/skill/wrathofzeus-light-skill.webp', description: '적에게 400의 강력한 빛 속성 고정 피해를 입힙니다.', 
+    mpCost: 70, element: 'light', flatDamage: 400 
   },
 
-  'passive_light_evade': { 
-    id: 'passive_light_evade', name: '눈부심', type: 'passive', 
-    icon: '/skills/passive_light_evade.webp', description: '전투 진입 시 보스의 명중률을 10% 감소시킵니다.', 
+  'passive_light_eva_1': { 
+    id: 'passive_light_eva_1', name: '태양 응시', type: 'passive', 
+    icon: '/skill/solargaze-light-skill.webp', description: '전투 진입 시 보스의 명중률을 10% 감소시킵니다.', 
     target: 'enemy', effectType: 'stat_down', stat: 'accuracy', value: 10 
   },
-  'active_light_pierce': { 
-    id: 'active_light_pierce', name: '빛의 창', type: 'active', subType: 'attack', 
-    icon: '/skills/active_light_pierce.webp', description: '적에게 150%의 빛 속성 피해를 입힙니다.', 
-    mpCost: 40, element: 'light', power: 1.5 
+  'active_light_dmg_3': { 
+    id: 'active_light_dmg_3', name: '광휘어검', type: 'active', subType: 'attack', 
+    icon: '/skill/luminousbladecontrol-light-skill.webp', description: '적에게 350%의 빛 속성 피해를 입힙니다.', 
+    mpCost: 90, element: 'light', power: 3.5 
   },
 
   // ==========================================
