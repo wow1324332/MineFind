@@ -99,7 +99,7 @@ export const SKILL_DATABASE = {
 
   'passive_water_hp_1': { 
     id: 'passive_water_hp_1', name: '대양의 방패', type: 'passive', 
-    icon: '/skill/sheildofocean-water-skill.webp', description: '파티 전체의 최대 체력을 15% 증가시킵니다.', 
+    icon: '/skill/shieldofocean-water-skill.webp', description: '파티 전체의 최대 체력을 15% 증가시킵니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'maxHp', value: 0.15 
   },
   'active_water_heal_1': { 
