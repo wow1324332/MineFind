@@ -311,8 +311,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 20, agi: 10, int: 10, vit: 15, luk: 15 },
     statGrowth: { str: 3, agi: 1, int: 2, vit: 2, luk: 2 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_light_def', // 방어력 대폭 상승
-    activeSkill: 'active_light_shield' // 신성한 방패 (피해 감소 버프)
+    passiveSkill: 'passive_light_def_1', // 방어력 대폭 상승
+    activeSkill: 'active_light_def_1' // 신성한 방패 (피해 감소 버프)
   },
   
   'knight_light_kay': {
@@ -328,8 +328,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 15, agi: 10, int: 15, vit: 15, luk: 15 },
     statGrowth: { str: 2, agi: 1, int: 2, vit: 2, luk: 3 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_light_atk', // 빛속성 공격력 증가
-    activeSkill: 'active_light_slash'  // 섬광 베기
+    passiveSkill: 'passive_light_atk_1', // 빛속성 공격력 증가
+    activeSkill: 'active_light_dmg_1'  // 섬광 베기
   },
 
   'knight_light_bedivere': {
@@ -345,8 +345,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 20, agi: 15, int: 15, vit: 10, luk: 10 },
     statGrowth: { str: 3, agi: 2, int: 3, vit: 1, luk: 1 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_light_hp', // 최대 HP 증가
-    activeSkill: 'active_light_heal'  // 성스러운 빛 (치유)
+    passiveSkill: 'passive_light_hp_1', // 최대 HP 증가
+    activeSkill: 'active_light_heal_1'  // 성스러운 빛 (치유)
   },
 
   'knight_light_degore': {
@@ -362,8 +362,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 20, agi: 15, int: 20, vit: 15, luk: 10 },
     statGrowth: { str: 5, agi: 2, int: 5, vit: 2, luk: 1 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_light_crit', // 치명타 확률 대폭 상승
-    activeSkill: 'active_light_smite'   // 신의 심판 (강력한 단일기)
+    passiveSkill: 'passive_light_eva_1', // 치명타 확률 대폭 상승
+    activeSkill: 'active_light_dmg_3'   // 신의 심판 (강력한 단일기)
   },
 
   'knight_light_griflet': {
@@ -379,8 +379,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 20, agi: 15, int: 20, vit: 15, luk: 10 },
     statGrowth: { str: 4, agi: 3, int: 5, vit: 2, luk: 1 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_light_evade', // 보스 명중률 하락
-    activeSkill: 'active_light_pierce'   // 빛의 창 (방어력 무시)
+    passiveSkill: 'passive_light_crit_1', // 보스 명중률 하락
+    activeSkill: 'active_light_dmg_2'   // 빛의 창 (방어력 무시)
   },
   
   // ========================================================
