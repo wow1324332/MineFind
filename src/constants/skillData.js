@@ -320,56 +320,56 @@ export const SKILL_DATABASE = {
   // ==========================================
   'passive_cure_mp_1': { 
     id: 'passive_cure_mp_1', name: '재생의 기운', type: 'passive', 
-    icon: '/skill/windoflife-cure-skill.webp', description: '파티의 턴당 마나 회복량을 10 증가시킵니다.', 
+    icon: '/skill/재생의기운.webp', description: '파티의 턴당 마나 회복량을 10 증가시킵니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'mpRegen', value: 10 
   },
   'active_cure_heal_1': { 
     id: 'active_cure_heal_1', name: '대천사의 축복', type: 'active', subType: 'heal', 
-    icon: '/skill/active_cure_heal.webp', description: '파티 전체의 체력을 40% 회복시킵니다.', 
+    icon: '/skill/대천사의축복.webp', description: '파티 전체의 체력을 40% 회복시킵니다.', 
     mpCost: 150, power: 0.4 
   },
 
   'passive_cure_def_1': { 
     id: 'passive_cure_def_1', name: '자연의 가호', type: 'passive', 
-    icon: '/skill/passive_cure_def.webp', description: '치유의 기사 전체의 방어력을 15% 증가시킵니다.', 
+    icon: '/skill/자연의가호.webp', description: '치유의 기사 전체의 방어력을 15% 증가시킵니다.', 
     target: 'ally', targetattribute: 'cure', effectType: 'stat_up', stat: 'defense', value: 0.15 
   },
   'active_cure_def_1': { 
     id: 'active_cure_def_1', name: '대자연의 방패', type: 'active', subType: 'buff', 
-    icon: '/skill/active_cure_shield.webp', description: '3턴 동안 파티 방어력이 20% 상승하는 자연의 방패를 생성합니다.', 
+    icon: '/skill/대자연의방패.webp', description: '3턴 동안 파티 방어력이 20% 상승하는 자연의 방패를 생성합니다.', 
     mpCost: 90, stat: 'defense', power: 0.2, duration: 3 
   },
 
   'passive_cure_atk_1': { 
     id: 'passive_cure_atk_1', name: '정화의 힘', type: 'passive', 
-    icon: '/skill/passive_cure_atk.webp', description: '치유의 기사 전체의 공격력을 15% 증가시킵니다.', 
+    icon: '/skill/정화의힘.webp', description: '치유의 기사 전체의 공격력을 15% 증가시킵니다.', 
     target: 'ally', targetattribute: 'cure', effectType: 'stat_up', stat: 'attack', value: 0.15 
   },
   'active_cure_atk_1': { 
     id: 'active_cure_atk_1', name: '정화의 일격', type: 'active', subType: 'attack', 
-    icon: '/skill/active_cure_smite.webp', description: '적에게 350%의 치유 속성 피해를 입힙니다.', 
+    icon: '/skill/정화의일격.webp', description: '적에게 350%의 치유 속성 피해를 입힙니다.', 
     mpCost: 60, element: 'cure', power: 3.5 
   },
 
   'passive_cure_crit_1': { 
     id: 'passive_cure_crit_1', name: '해부학의 눈', type: 'passive', 
-    icon: '/skill/passive_cure_crit.webp', description: '파티 전체의 치명타 확률을 5% 증가시킵니다.', 
+    icon: '/skill/해부학의눈.webp', description: '파티 전체의 치명타 확률을 5% 증가시킵니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'critRate', value: 5 
   },
   'active_cure_atk_2': { 
-    id: 'active_cure_atk_2', name: '흡성대법', type: 'active', subType: 'attack', 
-    icon: '/skill/active_cure_slash.webp', description: '적에게 250%의 치유 속성 피해를 입히고 체력을 소량 회복합니다.', 
+    id: 'active_cure_atk_2', name: '회복의 일격', type: 'active', subType: 'attack', 
+    icon: '/skill/회복의일격.webp', description: '적에게 250%의 치유 속성 피해를 입히고 체력을 소량 회복합니다.', 
     mpCost: 60, element: 'cure', power: 2.5 
   },
 
   'passive_cure_eva_1': { 
     id: 'passive_cure_eva_1', name: '바람의 인도', type: 'passive', 
-    icon: '/skill/passive_cure_evade.webp', description: '파티 전체의 회피율을 5% 증가시킵니다.', 
+    icon: '/skill/바람의인도.webp', description: '파티 전체의 회피율을 5% 증가시킵니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'evasion', value: 5 
   },
   'active_cure_debuff_1': { 
     id: 'active_cure_debuff_1', name: '정화', type: 'active', subType: 'debuff', 
-    icon: '/skill/active_cure_purify.webp', description: '3턴 동안 보스의 방어력을 20% 감소시킵니다.', 
+    icon: '/skill/정화.webp', description: '3턴 동안 보스의 방어력을 20% 감소시킵니다.', 
     mpCost: 80, stat: 'defense', power: 0.2, duration: 3 
   },
 
