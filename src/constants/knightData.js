@@ -399,8 +399,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 15, agi: 10, int: 25, vit: 10, luk: 10 },
     statGrowth: { str: 2, agi: 1, int: 3, vit: 2, luk: 2 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_ice_atk',  // 빙속성 공격력 증가
-    activeSkill: 'active_ice_spear'   // 얼음 창
+    passiveSkill: 'passive_ice_def_1',  // 빙속성 공격력 증가
+    activeSkill: 'active_ice_def_1'   // 얼음 창
   },
   
   'knight_ice_tor': {
@@ -416,8 +416,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 15, agi: 15, int: 20, vit: 15, luk: 5 },
     statGrowth: { str: 2, agi: 2, int: 3, vit: 2, luk: 1 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_ice_def',  // 아군 방어력 증가
-    activeSkill: 'active_ice_shield'  // 얼음 방패 (반사 데미지)
+    passiveSkill: 'passive_ice_eva_1',  // 아군 방어력 증가
+    activeSkill: 'active_ice_freeze_1'  // 얼음 방패 (반사 데미지)
   },
 
   'knight_ice_lamorak': {
@@ -433,8 +433,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 20, agi: 15, int: 20, vit: 15, luk: 10 },
     statGrowth: { str: 4, agi: 3, int: 3, vit: 4, luk: 1 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_ice_hp',   // 체력 및 마나 재생 증가
-    activeSkill: 'active_ice_blizzard' // 눈보라 (도트 + 적 공속 하락)
+    passiveSkill: 'passive_ice_hp_1',   // 체력 및 마나 재생 증가
+    activeSkill: 'active_ice_dot_1' // 눈보라 (도트 + 적 공속 하락)
   },
 
   'knight_ice_lionel': {
@@ -450,8 +450,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 15, agi: 20, int: 20, vit: 15, luk: 10 },
     statGrowth: { str: 2, agi: 4, int: 4, vit: 2, luk: 3 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_ice_crit', // 치명타 대미지 증가
-    activeSkill: 'active_ice_slash'   // 빙결 베기
+    passiveSkill: 'passive_ice_crit_1', // 치명타 대미지 증가
+    activeSkill: 'active_ice_atk_2'   // 빙결 베기
   },
 
   'knight_ice_dagonet': {
@@ -467,8 +467,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 20, agi: 20, int: 20, vit: 15, luk: 5 },
     statGrowth: { str: 4, agi: 4, int: 4, vit: 2, luk: 1 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_ice_evade', // 파티 전체 회피율 상승
-    activeSkill: 'active_ice_freeze'   // 빙결 (1턴간 적 공격력 50% 감소)
+    passiveSkill: 'passive_ice_atk_1', // 파티 전체 회피율 상승
+    activeSkill: 'active_ice_atk_1'   // 빙결 (1턴간 적 공격력 50% 감소)
   },
 
   // ========================================================
