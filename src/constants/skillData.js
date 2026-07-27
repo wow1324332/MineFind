@@ -266,15 +266,15 @@ export const SKILL_DATABASE = {
     target: 'ally', effectType: 'stat_up', stat: 'attack', value: 0.10 
   },
   'active_ice_spear': { 
-    id: 'active_ice_spear', name: '얼음 창', type: 'active', subType: 'attack', 
-    icon: '/skills/active_ice_spear.webp', description: '적에게 140%의 얼음 속성 피해를 입힙니다.', 
-    mpCost: 30, element: 'ice', power: 1.4 
+    id: 'active_ice_spear', name: '빙검 폭격', type: 'active', subType: 'attack', 
+    icon: '/skill/iceswordwind-ice-skill.webp', description: '적에게 400의 고정 얼음 속성 피해를 입힙니다.', 
+    mpCost: 30, element: 'ice', flatDamage: 400
   },
 
-  'passive_ice_def': { 
-    id: 'passive_ice_def', name: '빙갑', type: 'passive', 
-    icon: '/skills/passive_ice_def.webp', description: '파티 전체의 방어력을 15% 증가시킵니다.', 
-    target: 'ally', effectType: 'stat_up', stat: 'defense', value: 0.15 
+  'passive_ice_def_1': { 
+    id: 'passive_ice_def_1', name: '빙설 방패', type: 'passive', 
+    icon: '/skill/iceshield-ice-skill.webp', description: '얼음 기사의 방어력을 20% 증가시킵니다.', 
+    target: 'ally', targetattribute: 'ice', effectType: 'stat_up', stat: 'defense', value: 0.15 
   },
   'active_ice_shield': { 
     id: 'active_ice_shield', name: '얼음 방패', type: 'active', subType: 'buff', 
