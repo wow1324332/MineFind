@@ -487,8 +487,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 10, agi: 10, int: 30, vit: 10, luk: 10 },
     statGrowth: { str: 1, agi: 1, int: 4, vit: 2, luk: 2 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_cure_hp', // 턴당 HP 회복 (도트 힐)
-    activeSkill: 'active_cure_heal'  // 대천사의 축복 (대형 힐)
+    passiveSkill: 'passive_cure_mp_1', // 턴당 HP 회복 (도트 힐)
+    activeSkill: 'active_cure_heal_1'  // 대천사의 축복 (대형 힐)
   },
 
   'knight_cure_tierra': {
@@ -504,8 +504,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 20, agi: 10, int: 20, vit: 15, luk: 5 },
     statGrowth: { str: 3, agi: 2, int: 3, vit: 1, luk: 1 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_cure_def', // 마법 방어(INT 기반 데미지 감소)
-    activeSkill: 'active_cure_shield' // 자연의 방패
+    passiveSkill: 'passive_cure_def_1', // 마법 방어(INT 기반 데미지 감소)
+    activeSkill: 'active_cure_def_1' // 자연의 방패
   },
   
   'knight_cure_dornar': {
@@ -521,8 +521,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 25, agi: 5, int: 20, vit: 15, luk: 5 },
     statGrowth: { str: 4, agi: 1, int: 3, vit: 1, luk: 1 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_cure_atk', // 치유 속성 공격력 증가
-    activeSkill: 'active_cure_smite'  // 정화의 일격
+    passiveSkill: 'passive_cure_atk_1', // 치유 속성 공격력 증가
+    activeSkill: 'active_cure_atk_1'  // 정화의 일격
   },
   
   'knight_cure_gwin': {
@@ -538,8 +538,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 20, agi: 20, int: 20, vit: 15, luk: 5 },
     statGrowth: { str: 4, agi: 4, int: 5, vit: 1, luk: 1 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_cure_crit', // 치명타 타격 시 아군 회복
-    activeSkill: 'active_cure_slash'   // 생명력 흡수 베기
+    passiveSkill: 'passive_cure_crit_1', // 치명타 타격 시 아군 회복
+    activeSkill: 'active_cure_atk_2'   // 생명력 흡수 베기
   },
   
   'knight_cure_dodinel': {
@@ -555,8 +555,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 10, agi: 20, int: 30, vit: 15, luk: 5 },
     statGrowth: { str: 2, agi: 3, int: 5, vit: 2, luk: 3 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_cure_evade', // 회피 시 마나 회복
-    activeSkill: 'active_cure_purify'   // 정화 (보스 버프 제거 & 피해)
+    passiveSkill: 'passive_cure_eva_1', // 회피 시 마나 회복
+    activeSkill: 'active_cure_debuff_1'   // 정화 (보스 버프 제거 & 피해)
   },
   
   // ========================================================
