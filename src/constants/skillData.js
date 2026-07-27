@@ -293,9 +293,9 @@ export const SKILL_DATABASE = {
     mpCost: 50, element: 'ice', power: 0.2, duration: 3 
   },
 
-  'passive_ice_crit': { 
-    id: 'passive_ice_crit', name: '급소 노리기', type: 'passive', 
-    icon: '/skills/passive_ice_crit.webp', description: '파티 전체의 치명타 데미지를 25% 증가시킵니다.', 
+  'passive_ice_crit_1': { 
+    id: 'passive_ice_crit_1', name: '빙결안', type: 'passive', 
+    icon: '/skill/eyeofice-ice-skill.webp', description: '파티 전체의 치명타 데미지를 25% 증가시킵니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'critDmg', value: 0.25 
   },
   'active_ice_slash': { 
