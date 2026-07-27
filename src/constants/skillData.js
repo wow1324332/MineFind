@@ -260,15 +260,15 @@ export const SKILL_DATABASE = {
   // ==========================================
   // ❄️ 혹한 속성 스킬 (Ice)
   // ==========================================
-  'passive_ice_atk': { 
-    id: 'passive_ice_atk', name: '서리 칼날', type: 'passive', 
-    icon: '/skills/passive_ice_atk.webp', description: '파티 전체의 공격력을 10% 증가시킵니다.', 
-    target: 'ally', effectType: 'stat_up', stat: 'attack', value: 0.10 
+  'passive_ice_atk_1': { 
+    id: 'passive_ice_atk_1', name: '서리 칼날', type: 'passive', 
+    icon: '/skill/icesword-ice-skill.webp', description: '얼음 속성 기사들의 공격력을 15% 증가시킵니다.', 
+    target: 'ally', targetattribute: 'ice', effectType: 'stat_up', stat: 'attack', value: 0.15 
   },
-  'active_ice_spear': { 
-    id: 'active_ice_spear', name: '빙검 폭격', type: 'active', subType: 'attack', 
+  'active_ice_atk_1': { 
+    id: 'active_ice_atk_1', name: '빙검 폭격', type: 'active', subType: 'attack', 
     icon: '/skill/iceswordwind-ice-skill.webp', description: '적에게 400의 고정 얼음 속성 피해를 입힙니다.', 
-    mpCost: 30, element: 'ice', flatDamage: 400
+    mpCost: 70, element: 'ice', flatDamage: 400
   },
 
   'passive_ice_def_1': { 
@@ -276,21 +276,21 @@ export const SKILL_DATABASE = {
     icon: '/skill/iceshield-ice-skill.webp', description: '얼음 기사의 방어력을 20% 증가시킵니다.', 
     target: 'ally', targetattribute: 'ice', effectType: 'stat_up', stat: 'defense', value: 0.15 
   },
-  'active_ice_shield': { 
-    id: 'active_ice_shield', name: '얼음 방패', type: 'active', subType: 'buff', 
-    icon: '/skills/active_ice_shield.webp', description: '2턴 동안 파티 방어력이 30% 상승하는 얼음 방패를 생성합니다.', 
-    mpCost: 35, stat: 'defense', power: 0.3, duration: 2 
+  'active_ice_def_1': { 
+    id: 'active_ice_def_1', name: '얼어붙은 피부', type: 'active', subType: 'buff', 
+    icon: '/skill/frozenskin-ice-skill.webp', description: '2턴 동안 파티 방어력이 30% 상승하는 얼음 방패를 생성합니다.', 
+    mpCost: 70, stat: 'defense', power: 0.3, duration: 2 
   },
 
-  'passive_ice_hp': { 
-    id: 'passive_ice_hp', name: '얼어붙은 심장', type: 'passive', 
-    icon: '/skills/passive_ice_hp.webp', description: '파티 전체의 최대 체력을 10% 증가시킵니다.', 
-    target: 'ally', effectType: 'stat_up', stat: 'maxHp', value: 0.10 
+  'passive_ice_hp_1': { 
+    id: 'passive_ice_hp_1', name: '얼어붙은 심장', type: 'passive', 
+    icon: '/skill/frozenheart-ice-skill.webp', description: '얼음 기사들의 최대 체력을 10% 증가시킵니다.', 
+    target: 'ally', targetattribute: 'ice', effectType: 'stat_up', stat: 'maxHp', value: 0.10 
   },
-  'active_ice_blizzard': { 
-    id: 'active_ice_blizzard', name: '눈보라', type: 'active', subType: 'dot', 
-    icon: '/skills/active_ice_blizzard.webp', description: '적에게 3턴 동안 매 턴 20%의 얼음 지속 피해를 입힙니다.', 
-    mpCost: 50, element: 'ice', power: 0.2, duration: 3 
+  'active_ice_dot_1': { 
+    id: 'active_ice_dot_1', name: '눈보라', type: 'active', subType: 'dot', 
+    icon: '/skill/blizzard-ice-skill.webp', description: '적에게 3턴 동안 매 턴 40%의 얼음 지속 피해를 입힙니다.', 
+    mpCost: 90, element: 'ice', power: 0.4, duration: 3 
   },
 
   'passive_ice_crit_1': { 
@@ -298,21 +298,21 @@ export const SKILL_DATABASE = {
     icon: '/skill/eyeofice-ice-skill.webp', description: '파티 전체의 치명타 데미지를 25% 증가시킵니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'critDmg', value: 0.25 
   },
-  'active_ice_slash': { 
-    id: 'active_ice_slash', name: '빙결 베기', type: 'active', subType: 'attack', 
-    icon: '/skills/active_ice_slash.webp', description: '적에게 160%의 얼음 속성 피해를 입힙니다.', 
-    mpCost: 35, element: 'ice', power: 1.6 
+  'active_ice_atk_2': { 
+    id: 'active_ice_atk_2', name: '빙결 일섬', type: 'active', subType: 'attack', 
+    icon: '/skill/frozenslash-ice-skill.webp', description: '적에게 350%의 얼음 속성 피해를 입힙니다.', 
+    mpCost: 70, element: 'ice', power: 3.5 
   },
 
-  'passive_ice_evade': { 
-    id: 'passive_ice_evade', name: '신기루', type: 'passive', 
-    icon: '/skills/passive_ice_evade.webp', description: '파티 전체의 회피율을 5% 증가시킵니다.', 
+  'passive_ice_eva_1': { 
+    id: 'passive_ice_eva_1', name: '얼음 오로라', type: 'passive', 
+    icon: '/skill/auroraofice-ice-skill.webp', description: '파티 전체의 회피율을 5% 증가시킵니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'evasion', value: 5 
   },
-  'active_ice_freeze': { 
-    id: 'active_ice_freeze', name: '빙결', type: 'active', subType: 'debuff', 
-    icon: '/skills/active_ice_freeze.webp', description: '1턴 동안 적의 공격력을 50% 대폭 감소시킵니다.', 
-    mpCost: 60, stat: 'attack', power: 0.5, duration: 1 
+  'active_ice_freeze_1': { 
+    id: 'active_ice_freeze_1', name: '빙결', type: 'active', subType: 'debuff', 
+    icon: '/skill/freeze-ice-skill.webp', description: '1턴 동안 적의 공격력을 75% 대폭 감소시킵니다.', 
+    mpCost: 60, stat: 'attack', power: 0.75, duration: 1 
   },
 
   // ==========================================
