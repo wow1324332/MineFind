@@ -17,6 +17,7 @@ export default function Knights({ onBack, hp }) {
   
   const [selectedKnight, setSelectedKnight] = useState(null);
   const [selectedEquipPart, setSelectedEquipPart] = useState(null);
+  const [selectedSkillDetail, setSelectedSkillDetail] = useState(null);
 
   const [showDismissPopup, setShowDismissPopup] = useState(false);
 
@@ -142,6 +143,14 @@ export default function Knights({ onBack, hp }) {
       luk: activeKnightBase.baseStats.luk + activeKnightBase.statGrowth.luk * (activeKnightLevel - 1) + equipBonus.luk,
     };
     combatPower = (finalStats.str * 10) + (finalStats.agi * 8) + (finalStats.vit * 6) + (finalStats.int * 4) + (finalStats.luk * 2);
+  }
+
+  let activeSkillData = null;
+  let passiveSkillData = null;
+  if (selectedKnight && activeKnightBase) {
+    if (activeKnightBase.activeSkill) activeSkillData = SKILL_DATABASE[activeKnightBase.activeSkill];
+    const passiveId = selectedKnight === 'knight_main' ? (userData.mainPassive || activeKnightBase.passiveSkill) : activeKnightBase.passiveSkill;
+    if (passiveId) passiveSkillData = SKILL_DATABASE[passiveId];
   }
 
 // =========================================
@@ -276,14 +285,36 @@ setTimeout(async () => {
                 </div>
               </div>
               
-              <div className="flex flex-col items-center mb-1">
-                <div className="w-12 h-12 bg-[#1a1008] border-[1.5px] border-[#a6845c] rounded-sm relative cursor-pointer shadow-[0_0_15px_rgba(0,0,0,0.8)] overflow-hidden group">
-                  <img 
-                    src="/default-skill-icon.png" 
-                    alt="Skill" 
-                    className="w-full h-full object-cover opacity-100 group-hover:scale-110 transition-transform duration-300" 
-                    onError={(e) => { e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%231a1008'/%3E%3Ccircle cx='12' cy='12' r='6' fill='%238c6543'/%3E%3C/svg%3E" }} 
-                  />
+{/* ✨ 스킬 2칸 (액티브 & 패시브) */}
+              <div className="flex items-center gap-3 mb-1">
+                {/* 액티브 스킬 슬롯 */}
+                <div 
+                  className="flex flex-col items-center relative cursor-pointer group"
+                  onClick={() => activeSkillData && setSelectedSkillDetail(activeSkillData)}
+                >
+                  <div className="w-11 h-11 bg-transparent rounded-sm relative flex items-center justify-center">
+                    {activeSkillData ? (
+                      <img src={activeSkillData.icon} alt="Active" className="w-full h-full object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300" />
+                    ) : (
+                      <img src="/default-skill-icon.png" alt="Empty" className="w-full h-full object-contain opacity-40" />
+                    )}
+                  </div>
+                  <span className="text-[#a6845c] text-[9px] font-black tracking-widest mt-1">ACTIVE</span>
+                </div>
+
+                {/* 패시브 스킬 슬롯 */}
+                <div 
+                  className="flex flex-col items-center relative cursor-pointer group"
+                  onClick={() => passiveSkillData && setSelectedSkillDetail(passiveSkillData)}
+                >
+                  <div className="w-11 h-11 bg-transparent rounded-sm relative flex items-center justify-center">
+                    {passiveSkillData ? (
+                      <img src={passiveSkillData.icon} alt="Passive" className="w-full h-full object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300" />
+                    ) : (
+                      <img src="/default-skill-icon.png" alt="Empty" className="w-full h-full object-contain opacity-40" />
+                    )}
+                  </div>
+                  <span className="text-[#a6845c] text-[9px] font-black tracking-widest mt-1">PASSIVE</span>
                 </div>
               </div>
             </div>
@@ -386,6 +417,81 @@ setTimeout(async () => {
                 <div className="flex gap-2">
                   <button className="flex-1 bg-[#4a2c11] hover:bg-[#3a2210] text-[#f5d5a9] font-bold text-xs py-2.5 rounded-sm transition-colors border border-[#5c3e23] shadow-md active:scale-95">장비 강화</button>
                   <button className="flex-1 bg-[#1a1008] hover:bg-black text-amber-400 font-bold text-xs py-2.5 rounded-sm transition-colors border border-[#a6845c] shadow-md active:scale-95">속성 진화</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ========================================= */}
+        {/* ✨ 스킬 상세 팝업 (마이페이지 아이템 팝업 스타일) */}
+        {/* ========================================= */}
+        {selectedSkillDetail && (
+          <div 
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-[fadeIn_0.2s_ease-out] select-none"
+            style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none', WebkitTapHighlightColor: 'transparent' }}
+            onClick={() => setSelectedSkillDetail(null)} 
+          >
+            <div className="relative w-full max-w-[280px]" onClick={(e) => e.stopPropagation()}>
+              <div className="w-full aspect-[4/5] flex flex-col bg-transparent shadow-[0_10px_40px_rgba(0,0,0,0.9)] rounded-lg overflow-hidden border border-[#a6845c]/50">
+                
+                {/* 👑 상단 50%: 스킬 이미지 영역 */}
+                <div className="flex-1 relative flex justify-center items-center bg-gradient-to-b from-[#2a1a10] to-[#1a1008]">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_100%)] opacity-80 pointer-events-none"></div>
+                  
+                  <div className="relative z-10 w-28 h-28 flex items-center justify-center">
+                    <img 
+                      src={selectedSkillDetail.icon} 
+                      alt={selectedSkillDetail.name} 
+                      className="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(255,255,255,0.15)] animate-pulse" 
+                      draggable="false" 
+                    />
+                  </div>
+                </div>
+
+                {/* 📜 하단 50%: 스킬 설명 영역 */}
+                <div className="flex-1 bg-[#150d08] p-5 flex flex-col items-center text-center relative border-t border-[#a6845c]/30">
+                  <span className="text-[#f5d5a9] font-serif font-black text-lg tracking-widest drop-shadow-md mb-1.5 uppercase leading-tight">
+                    {selectedSkillDetail.name}
+                  </span>
+                  
+                  <span className={`text-[9px] font-bold tracking-widest mb-3 px-2 py-0.5 rounded-sm border uppercase bg-black/40 ${selectedSkillDetail.type === 'active' ? 'border-red-500/80 text-red-400' : 'border-blue-500/80 text-blue-400'}`}>
+                    {selectedSkillDetail.type === 'active' ? 'ACTIVE SKILL' : 'PASSIVE SKILL'}
+                  </span>
+                  
+                  <p className="text-[#d8b486] text-[11px] font-medium leading-relaxed break-keep mt-1 opacity-90 h-[50px] overflow-y-auto custom-scrollbar">
+                    {selectedSkillDetail.description}
+                  </p>
+                  
+                  {/* 하단 스탯 (MP, 계수, 턴 등) */}
+                  <div className="mt-auto flex w-full items-center justify-center gap-4 opacity-80 pt-4 border-t border-dashed border-[#5c3e23]/50">
+                    {selectedSkillDetail.mpCost && (
+                      <div className="flex flex-col items-center">
+                        <span className="text-[#a6845c] text-[9px] font-bold tracking-widest uppercase mb-0.5">MP Cost</span>
+                        <span className="text-blue-400 font-black text-[12px] drop-shadow-md">{selectedSkillDetail.mpCost}</span>
+                      </div>
+                    )}
+                    {selectedSkillDetail.power && (
+                      <div className="flex flex-col items-center">
+                        <span className="text-[#a6845c] text-[9px] font-bold tracking-widest uppercase mb-0.5">Power</span>
+                        <span className="text-red-400 font-black text-[12px] drop-shadow-md">{selectedSkillDetail.power * 100}%</span>
+                      </div>
+                    )}
+                    {selectedSkillDetail.flatDamage && (
+                      <div className="flex flex-col items-center">
+                        <span className="text-[#a6845c] text-[9px] font-bold tracking-widest uppercase mb-0.5">Damage</span>
+                        <span className="text-red-400 font-black text-[12px] drop-shadow-md">{selectedSkillDetail.flatDamage}</span>
+                      </div>
+                    )}
+                    {selectedSkillDetail.value !== undefined && (
+                      <div className="flex flex-col items-center">
+                        <span className="text-[#a6845c] text-[9px] font-bold tracking-widest uppercase mb-0.5">Effect</span>
+                        <span className="text-green-400 font-black text-[12px] drop-shadow-md">
+                          {selectedSkillDetail.value >= 1 ? `+${selectedSkillDetail.value}` : `+${selectedSkillDetail.value * 100}%`}
+                        </span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
