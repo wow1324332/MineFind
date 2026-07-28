@@ -389,7 +389,7 @@ export const SKILL_DATABASE = {
 
   'passive_vain_def_1': { 
     id: 'passive_vain_def_1', name: '칠흑의 갑옷', type: 'passive', 
-    icon: '/skills/passive_vain_def.webp', description: '공허 속성 기사들의 방어력을 15% 증가시킵니다.', 
+    icon: '/skill/칠흑의갑옷.webp', description: '공허 속성 기사들의 방어력을 15% 증가시킵니다.', 
     target: 'ally', targetattribute: 'vain', effectType: 'stat_up', stat: 'defense', value: 0.15 
   },
   'active_vain_def_1': { 
