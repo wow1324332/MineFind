@@ -575,8 +575,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 10, agi: 15, int: 25, vit: 10, luk: 10 },
     statGrowth: { str: 1, agi: 3, int: 3, vit: 2, luk: 1 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_vain_atk', // 공허 속성 공격력 대폭 증가
-    activeSkill: 'active_vain_slash'  // 공허 가르기
+    passiveSkill: 'passive_vain_atk_1', // 공허 속성 공격력 대폭 증가
+    activeSkill: 'active_vain_atk_1'  // 공허 가르기
   },
   
   'knight_vain_ywain': {
@@ -592,8 +592,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 10, agi: 10, int: 25, vit: 15, luk: 10 },
     statGrowth: { str: 1, agi: 1, int: 3, vit: 3, luk: 2 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_vain_def', // 피격 시 일정 확률로 데미지 무시
-    activeSkill: 'active_vain_shield' // 칠흑의 장막
+    passiveSkill: 'passive_vain_def_1', // 피격 시 일정 확률로 데미지 무시
+    activeSkill: 'active_vain_def_1' // 칠흑의 장막
   },
   
   'knight_vain_yvain': {
@@ -609,8 +609,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 15, agi: 10, int: 20, vit: 15, luk: 10 },
     statGrowth: { str: 2, agi: 1, int: 2, vit: 3, luk: 2 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_vain_hp', // 적 타격 시 마나 스틸
-    activeSkill: 'active_vain_drain' // 영혼 흡수
+    passiveSkill: 'passive_vain_debuff_1', // 적 타격 시 마나 스틸
+    activeSkill: 'active_vain_dot_1' // 영혼 흡수
   },
   
   'knight_vain_merlin': {
@@ -626,8 +626,8 @@ export const KNIGHT_DATABASE = {
     baseStats: { str: 10, agi: 20, int: 30, vit: 10, luk: 10 },
     statGrowth: { str: 1, agi: 4, int: 5, vit: 3, luk: 2 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_vain_evade', // 보스 회피율 0으로 고정 (강력 디버프)
-    activeSkill: 'active_vain_meteor'   // 공허의 운석 (초대형 마법)
+    passiveSkill: 'passive_vain_crit_1', // 보스 회피율 0으로 고정 (강력 디버프)
+    activeSkill: 'active_vain_atk_3'   // 공허의 운석 (초대형 마법)
   },
   
   'knight_vain_aglovale': {
@@ -638,12 +638,12 @@ export const KNIGHT_DATABASE = {
     rarity: 'rare',
     image: '/knights/vain/knight-aglovale-profile.webp',
     fullImage: '/knights/vain/knight-aglovale.webp',   
-    description: '악에 대항하는 비밀 결사단 크롬마스의 대현자.',
+    description: '악에 대항하는 비밀 결사단 크롬마스의 마법사.',
     cost: { itemId: 'con_soul_7', count: 10, gold: 5000 },
     baseStats: { str: 10, agi: 20, int: 30, vit: 10, luk: 10 },
     statGrowth: { str: 1, agi: 5, int: 6, vit: 1, luk: 2 },
     // ✨ 스킬 세팅
-    passiveSkill: 'passive_vain_crit', // 크리티컬 배율 증가
-    activeSkill: 'active_vain_pierce'  // 어둠의 창 (방어 관통)
+    passiveSkill: 'passive_vain_eva_1', // 크리티컬 배율 증가
+    activeSkill: 'active_vain_atk_2'  // 어둠의 창 (방어 관통)
   }
 };
