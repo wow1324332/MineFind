@@ -376,58 +376,58 @@ export const SKILL_DATABASE = {
   // ==========================================
   // 🌌 공허 속성 스킬 (Vain)
   // ==========================================
-  'passive_vain_atk': { 
-    id: 'passive_vain_atk', name: '심연의 힘', type: 'passive', 
-    icon: '/skills/passive_vain_atk.webp', description: '파티 전체의 공격력을 20% 대폭 증가시킵니다.', 
-    target: 'ally', effectType: 'stat_up', stat: 'attack', value: 0.20 
+  'passive_vain_atk_1': { 
+    id: 'passive_vain_atk_1', name: '심연의 기운', type: 'passive', 
+    icon: '/skill/심연의기운.webp', description: '공허 속성의 기사 공격력을 20% 대폭 증가시킵니다.', 
+    target: 'ally', targetattribute: 'vain', effectType: 'stat_up', stat: 'attack', value: 0.20 
   },
-  'active_vain_slash': { 
-    id: 'active_vain_slash', name: '공허 가르기', type: 'active', subType: 'attack', 
-    icon: '/skills/active_vain_slash.webp', description: '적에게 170%의 공허 속성 피해를 입힙니다.', 
-    mpCost: 35, element: 'vain', power: 1.7 
-  },
-
-  'passive_vain_def': { 
-    id: 'passive_vain_def', name: '칠흑의 갑옷', type: 'passive', 
-    icon: '/skills/passive_vain_def.webp', description: '파티 전체의 방어력을 15% 증가시킵니다.', 
-    target: 'ally', effectType: 'stat_up', stat: 'defense', value: 0.15 
-  },
-  'active_vain_shield': { 
-    id: 'active_vain_shield', name: '칠흑의 장막', type: 'active', subType: 'evade', 
-    icon: '/skills/active_vain_shield.webp', description: '1턴 동안 보스의 다음 공격을 완벽하게 회피합니다.', 
-    mpCost: 50, duration: 1 
+  'active_vain_atk_1': { 
+    id: 'active_vain_atk_1', name: '공간 베기', type: 'active', subType: 'attack', 
+    icon: '/skill/공간베기.webp', description: '적에게 350%의 공허 속성 피해를 입힙니다.', 
+    mpCost: 70, element: 'vain', power: 3.5 
   },
 
-  'passive_vain_hp': { 
-    id: 'passive_vain_hp', name: '어둠의 장막', type: 'passive', 
-    icon: '/skills/passive_vain_hp.webp', description: '전투 진입 시 보스의 명중률을 5% 감소시킵니다.', 
+  'passive_vain_def_1': { 
+    id: 'passive_vain_def_1', name: '칠흑의 갑옷', type: 'passive', 
+    icon: '/skills/passive_vain_def.webp', description: '공허 속성 기사들의 방어력을 15% 증가시킵니다.', 
+    target: 'ally', targetattribute: 'vain', effectType: 'stat_up', stat: 'defense', value: 0.15 
+  },
+  'active_vain_def_1': { 
+    id: 'active_vain_def_1', name: '공허의 장막', type: 'active', subType: 'evade', 
+    icon: '/skill/공허의장막.webp', description: '1턴 동안 보스의 다음 공격을 완벽하게 회피합니다.', 
+    mpCost: 60, duration: 1 
+  },
+
+  'passive_vain_debuff_1': { 
+    id: 'passive_vain_debuff_1', name: '공허의 눈', type: 'passive', 
+    icon: '/skill/공허의눈.webp', description: '전투 진입 시 보스의 명중률을 5% 감소시킵니다.', 
     target: 'enemy', effectType: 'stat_down', stat: 'accuracy', value: 5 
   },
-  'active_vain_drain': { 
-    id: 'active_vain_drain', name: '영혼 흡수', type: 'active', subType: 'dot', 
-    icon: '/skills/active_vain_drain.webp', description: '적에게 3턴 동안 매 턴 25%의 공허 지속 피해를 입힙니다.', 
-    mpCost: 45, element: 'vain', power: 0.25, duration: 3 
+  'active_vain_dot_1': { 
+    id: 'active_vain_dot_1', name: '절망', type: 'active', subType: 'dot', 
+    icon: '/skill/절망.webp', description: '적에게 3턴 동안 매 턴 250%의 공허 지속 피해를 입힙니다.', 
+    mpCost: 80, element: 'vain', power: 2.5, duration: 3 
   },
 
-  'passive_vain_evade': { 
-    id: 'passive_vain_evade', name: '절망의 기운', type: 'passive', 
-    icon: '/skills/passive_vain_evade.webp', description: '전투 진입 시 보스의 공격력을 10% 감소시킵니다.', 
+  'passive_vain_eva_1': { 
+    id: 'passive_vain_eva_1', name: '무기력', type: 'passive', 
+    icon: '/skill/무기력.webp', description: '전투 진입 시 보스의 공격력을 10% 감소시킵니다.', 
     target: 'enemy', effectType: 'stat_down', stat: 'attack', value: 0.10 
   },
-  'active_vain_meteor': { 
-    id: 'active_vain_meteor', name: '공허의 운석', type: 'active', subType: 'attack', 
-    icon: '/skills/active_vain_meteor.webp', description: '적에게 350%의 파괴적인 공허 속성 피해를 입힙니다.', 
-    mpCost: 80, element: 'vain', power: 3.5 
+  'active_vain_atk_2': { 
+    id: 'active_vain_atk_2', name: '무형검', type: 'active', subType: 'attack', 
+    icon: '/skill/무형검.webp', description: '적에게 400%의 파괴적인 공허 속성 피해를 입힙니다.', 
+    mpCost: 70, element: 'vain', power: 4.0 
   },
 
-  'passive_vain_crit': { 
-    id: 'passive_vain_crit', name: '파멸의 징조', type: 'passive', 
-    icon: '/skills/passive_vain_crit.webp', description: '파티 전체의 치명타 데미지를 30% 증가시킵니다.', 
+  'passive_vain_crit_1': { 
+    id: 'passive_vain_crit_1', name: '파멸의 시선', type: 'passive', 
+    icon: '/skill/파멸의시선.webp', description: '파티 전체의 치명타 데미지를 30% 증가시킵니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'critDmg', value: 0.3 
   },
-  'active_vain_pierce': { 
-    id: 'active_vain_pierce', name: '어둠의 창', type: 'active', subType: 'attack', 
-    icon: '/skills/active_vain_pierce.webp', description: '적에게 160%의 공허 속성 피해를 입힙니다.', 
-    mpCost: 40, element: 'vain', power: 1.6 
+  'active_vain_atk_3': { 
+    id: 'active_vain_atk_3', name: '심검', type: 'active', subType: 'attack', 
+    icon: '/skill/심검.webp', description: '적에게 400의 공허 속성 고정 피해를 입힙니다.', 
+    mpCost: 70, element: 'vain', flatDamage: 400
   }
 };
