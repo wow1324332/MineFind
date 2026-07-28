@@ -9,6 +9,7 @@ import { ITEM_DATABASE } from '../constants/itemData';
 import { getKnightRequiredExp, processKnightExpGain } from '../utils/expUtils';
 import { TITLE_DATABASE } from '../constants/titleData';
 import { calculatePartyStats, getAllElementsBP } from '../utils/combatUtils';
+import { SKILL_DATABASE } from '../constants/skillData';
 
 export default function Knights({ onBack, hp }) {
   const { user } = useAuth();
@@ -233,6 +234,9 @@ setTimeout(async () => {
   // 🛡️ 화면 2. 기사 상세 풀스크린 화면 
   // =========================================
   if (selectedKnight) {
+    const activeSkillData = activeKnightBase?.activeSkill ? SKILL_DATABASE[activeKnightBase.activeSkill] : null;
+    const passiveId = selectedKnight === 'knight_main' ? (userData?.mainPassive || activeKnightBase?.passiveSkill) : activeKnightBase?.passiveSkill;
+    const passiveSkillData = passiveId ? SKILL_DATABASE[passiveId] : null;
     return (
       <div className="relative min-h-screen bg-black text-white flex flex-col items-center animate-[fadeIn_0.3s_ease-in-out] overflow-hidden">
         <div 
