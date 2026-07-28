@@ -437,7 +437,7 @@ setTimeout(async () => {
             onClick={() => setSelectedSkillDetail(null)} 
           >
             <div className="relative w-full max-w-[280px]" onClick={(e) => e.stopPropagation()}>
-              <div className="w-full aspect-[4/5] flex flex-col bg-transparent shadow-[0_10px_40px_rgba(0,0,0,0.9)] rounded-lg overflow-hidden border border-[#a6845c]/50">
+              <div className="w-full aspect-[4/5] flex flex-col bg-transparent shadow-[0_10px_40px_rgba(0,0,0,0.9)] rounded-lg overflow-hidden">
                 
                 {/* 👑 상단 50%: 스킬 이미지 영역 */}
                 <div className="flex-1 relative flex justify-center items-center bg-gradient-to-b from-[#2a1a10] to-[#1a1008]">
