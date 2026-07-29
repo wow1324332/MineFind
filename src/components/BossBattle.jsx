@@ -473,7 +473,7 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
       {/* 💀 전투 패배 화면 */}
       {battleResult === 'lose' && (
         <div 
-          className="fixed inset-0 z-[100] flex flex-col justify-end pb-8"
+          className="fixed inset-0 z-[100] flex flex-col justify-between pb-8 pt-12"
           style={{ 
             backgroundImage: `url(${DUNGEON_INFO[bossData.element]?.loseBg})`,
             backgroundSize: 'cover',
@@ -483,13 +483,16 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
         >
           <div className="absolute inset-0 bg-black/50 pointer-events-none z-0"></div>
           
-          {/* 💡 패배 위로 보상 모달 렌더링! */}
-          {renderRewardsUI()}
+          {/* 💡 상단/중앙: 패배 위로 보상 모달 렌더링 */}
+          <div className="flex-1 flex items-center justify-center relative z-10 w-full">
+            {renderRewardsUI()}
+          </div>
           
-          <div className="flex justify-center items-center gap-4 px-6 w-full max-w-md mx-auto relative z-10 mt-8">
+          {/* 💡 하단: Back 버튼 영역 (크기 고정 및 절대적인 중앙 정렬) */}
+          <div className="flex justify-center items-center w-full px-6 relative z-10 mt-4">
             <button 
               onClick={onBack} 
-              className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)] select-none"
+              className="w-full max-w-[160px] transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)] select-none"
               style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
             >
               <img src="/back.png" alt="Back" className="w-full h-auto object-contain pointer-events-none" draggable="false" />
