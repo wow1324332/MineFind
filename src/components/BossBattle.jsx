@@ -53,27 +53,28 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
           const userLevel = userData.level || 1; 
           const userNickname = userData.nickname || user.displayName || '무명의 용사';
 
-          const defaultEquip = { tier: 0, element: 'neutral', enhance: 0 };
+const defaultEquip = { tier: 0, element: 'neutral', enhance: 0 };
           const userEquipment = userData.equipment || {
             WEAPON: { ...defaultEquip }, HELMET: { ...defaultEquip },
             SHIELD: { ...defaultEquip }, ARMOR: { ...defaultEquip }
           };
 
-          let equipBonus = { str: 0, agi: 0, int: 0, vit: 0, luk: 0 };
-
-          ['WEAPON', 'HELMET', 'SHIELD', 'ARMOR'].forEach(part => {
+          const parsedEquips = ['WEAPON', 'HELMET', 'SHIELD', 'ARMOR'].map(part => {
             const state = userEquipment[part] || defaultEquip;
             const equipKey = `tier_${state.tier}_${state.element || 'neutral'}`;
             const dbData = EQUIP_DATABASE[part]?.evolutions[equipKey] || EQUIP_DATABASE[part]?.evolutions['tier_0_neutral'];
-            const growth = EQUIP_DATABASE[part]?.enhanceGrowth || { str:0, agi:0, int:0, vit:0, luk:0 };
+            const growth = EQUIP_DATABASE[part]?.enhanceGrowth?.[`tier_${state.tier}`] || EQUIP_DATABASE[part]?.enhanceGrowth?.tier_0 || { str:0, agi:0, int:0, vit:0, luk:0 };
 
-            if(dbData && dbData.baseStat) {
-              equipBonus.str += (dbData.baseStat.str || 0) + ((growth.str || 0) * state.enhance);
-              equipBonus.agi += (dbData.baseStat.agi || 0) + ((growth.agi || 0) * state.enhance);
-              equipBonus.int += (dbData.baseStat.int || 0) + ((growth.int || 0) * state.enhance);
-              equipBonus.vit += (dbData.baseStat.vit || 0) + ((growth.vit || 0) * state.enhance);
-              equipBonus.luk += (dbData.baseStat.luk || 0) + ((growth.luk || 0) * state.enhance);
-            }
+            return {
+              element: dbData?.element || 'neutral',
+              baseStat: {
+                str: (dbData?.baseStat?.str || 0) + ((growth.str || 0) * state.enhance),
+                agi: (dbData?.baseStat?.agi || 0) + ((growth.agi || 0) * state.enhance),
+                int: (dbData?.baseStat?.int || 0) + ((growth.int || 0) * state.enhance),
+                vit: (dbData?.baseStat?.vit || 0) + ((growth.vit || 0) * state.enhance),
+                luk: (dbData?.baseStat?.luk || 0) + ((growth.luk || 0) * state.enhance),
+              }
+            };
           });
 
           let myPartyIds = userData.unlockedKnights || ['knight_main'];
@@ -90,6 +91,17 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
               const kLevel = id === 'knight_main' ? userLevel : (userData.knightStats?.[id]?.level || 1);
               const lvMultiplier = kLevel - 1;
 
+              let finalEquipBonus = { str: 0, agi: 0, int: 0, vit: 0, luk: 0 };
+              parsedEquips.forEach(equip => {
+                 const isSynergy = kDb.attribute !== 'neutral' && kDb.attribute === equip.element;
+                 const multiplier = isSynergy ? 1.2 : 1.0;
+                 finalEquipBonus.str += Math.floor(equip.baseStat.str * multiplier);
+                 finalEquipBonus.agi += Math.floor(equip.baseStat.agi * multiplier);
+                 finalEquipBonus.int += Math.floor(equip.baseStat.int * multiplier);
+                 finalEquipBonus.vit += Math.floor(equip.baseStat.vit * multiplier);
+                 finalEquipBonus.luk += Math.floor(equip.baseStat.luk * multiplier);
+              });
+
               const flatKnight = {
                 id,
                 name: id === 'knight_main' ? userNickname : kDb.name,
@@ -97,11 +109,11 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
                 attribute: kDb.attribute, 
                 activeSkill: kDb.activeSkill, 
                 passiveSkill: id === 'knight_main' ? (userData.mainPassive || kDb.passiveSkill) : kDb.passiveSkill, 
-                str: kDb.baseStats.str + (kDb.statGrowth.str * lvMultiplier) + equipBonus.str,
-                agi: kDb.baseStats.agi + (kDb.statGrowth.agi * lvMultiplier) + equipBonus.agi,
-                int: kDb.baseStats.int + (kDb.statGrowth.int * lvMultiplier) + equipBonus.int,
-                vit: kDb.baseStats.vit + (kDb.statGrowth.vit * lvMultiplier) + equipBonus.vit,
-                luk: kDb.baseStats.luk + (kDb.statGrowth.luk * lvMultiplier) + equipBonus.luk,
+                str: kDb.baseStats.str + (kDb.statGrowth.str * lvMultiplier) + finalEquipBonus.str,
+                agi: kDb.baseStats.agi + (kDb.statGrowth.agi * lvMultiplier) + finalEquipBonus.agi,
+                int: kDb.baseStats.int + (kDb.statGrowth.int * lvMultiplier) + finalEquipBonus.int,
+                vit: kDb.baseStats.vit + (kDb.statGrowth.vit * lvMultiplier) + finalEquipBonus.vit,
+                luk: kDb.baseStats.luk + (kDb.statGrowth.luk * lvMultiplier) + finalEquipBonus.luk,
               };
 
               slots[index] = flatKnight; 
