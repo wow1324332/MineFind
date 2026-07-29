@@ -162,16 +162,8 @@ export default function Knights({ onBack, hp }) {
     };
     combatPower = (finalStats.str * 10) + (finalStats.agi * 8) + (finalStats.vit * 6) + (finalStats.int * 4) + (finalStats.luk * 2);
   }
-
-  let activeSkillData = null;
-  let passiveSkillData = null;
-  if (selectedKnight && activeKnightBase) {
-    if (activeKnightBase.activeSkill) activeSkillData = SKILL_DATABASE[activeKnightBase.activeSkill];
-    const passiveId = selectedKnight === 'knight_main' ? (userData.mainPassive || activeKnightBase.passiveSkill) : activeKnightBase.passiveSkill;
-    if (passiveId) passiveSkillData = SKILL_DATABASE[passiveId];
-  }
-
-// =========================================
+  
+  // =========================================
   // 🔮 기사 소환 처리 함수
   // =========================================
   const handleSummon = async (knight) => {
