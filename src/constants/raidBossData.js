@@ -36,5 +36,14 @@ export const RAID_BOSS_DATABASE = {
         { itemId: 'con_soul_1', chance: 0.1 }            
       ]
     },
+    // 💀 패배 보상 (새로 추가됨)
+    defeatRewards: {
+      gold: 500,          // 승리 시의 약 15~20% 수준의 위로금
+      exp: 200,           // 승리 시의 약 20% 수준의 경험치
+      dropItems: [
+        { itemId: 'potion_exp_fire_small', chance: 0.5 }, // 50% 확률로 작은 경험치 포션
+        { itemId: 'mat_fire_4', chance: 0.05 }            // 5%의 매우 낮은 확률로 재료 아이템
+      ]
+    },
   },
 };
