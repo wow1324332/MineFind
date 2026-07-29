@@ -74,7 +74,7 @@ export default function Knights({ onBack, hp }) {
     : ['knight_main', ...dbUnlocked];
   const maxSlots = 6; 
 
-  // =========================================
+// =========================================
   // 🛡️ 장비 및 스탯 계산 로직 
   // =========================================
   const defaultEquip = { tier: 0, element: 'neutral', enhance: 0 };
@@ -83,36 +83,8 @@ export default function Knights({ onBack, hp }) {
     SHIELD: { ...defaultEquip }, ARMOR: { ...defaultEquip }
   };
 
-  let equipBonus = { str: 0, agi: 0, int: 0, vit: 0, luk: 0 };
-  const parsedEquip = {}; 
-
-  ['WEAPON', 'HELMET', 'SHIELD', 'ARMOR'].forEach(part => {
-    const state = userEquipment[part] || defaultEquip;
-    const equipKey = `tier_${state.tier}_${state.element || 'neutral'}`;
-    const dbData = EQUIP_DATABASE[part]?.evolutions[equipKey] || EQUIP_DATABASE[part]?.evolutions['tier_0_neutral'];
-    const growth = EQUIP_DATABASE[part]?.enhanceGrowth || { str:0, agi:0, int:0, vit:0, luk:0 };
-
-    const currentStats = {
-      str: dbData.baseStat.str + (growth.str * state.enhance),
-      agi: dbData.baseStat.agi + (growth.agi * state.enhance),
-      int: dbData.baseStat.int + (growth.int * state.enhance),
-      vit: dbData.baseStat.vit + (growth.vit * state.enhance),
-      luk: dbData.baseStat.luk + (growth.luk * state.enhance),
-    };
-
-    parsedEquip[part] = { ...state, name: dbData.name, image: dbData.image, stats: currentStats };
-
-    equipBonus.str += currentStats.str;
-    equipBonus.agi += currentStats.agi;
-    equipBonus.int += currentStats.int;
-    equipBonus.vit += currentStats.vit;
-    equipBonus.luk += currentStats.luk;
-  });
-
   let activeKnightBase = null;
   let activeKnightLevel = 1;
-  
-  // 💡 핵심 해결: 모달이 데이터를 읽을 수 있도록 변수들을 조건문 밖(전역)으로 꺼내줍니다!
   let activeKnightExp = 0;
   let requiredKnightExp = 1;
   let knightExpPercent = 0;
@@ -121,6 +93,9 @@ export default function Knights({ onBack, hp }) {
   let combatPower = 0;
   let displayTitle = '';
   let displayName = '';
+
+  let activeSkillData = null;
+  let passiveSkillData = null;
 
   if (selectedKnight) {
     activeKnightBase = KNIGHT_DATABASE[selectedKnight];
@@ -131,11 +106,53 @@ export default function Knights({ onBack, hp }) {
       ? userLevel 
       : (userData.knightStats?.[selectedKnight]?.level || 1);
 
-    // 💡 const를 제거하고 밖에서 만든 변수에 값을 쏙쏙 담아줍니다.
     activeKnightExp = selectedKnight === 'knight_main' ? 0 : (userData.knightStats?.[selectedKnight]?.exp || 0);
     requiredKnightExp = selectedKnight === 'knight_main' ? 1 : getKnightRequiredExp(activeKnightLevel);
     knightExpPercent = selectedKnight === 'knight_main' ? 100 : Math.min((activeKnightExp / requiredKnightExp) * 100, 100);
 
+    if (activeKnightBase.activeSkill) activeSkillData = SKILL_DATABASE[activeKnightBase.activeSkill];
+    const passiveId = selectedKnight === 'knight_main' ? (userData.mainPassive || activeKnightBase.passiveSkill) : activeKnightBase.passiveSkill;
+    if (passiveId) passiveSkillData = SKILL_DATABASE[passiveId];
+  }
+
+  // ✨ 장비 스탯 및 속성 시너지(+20%) 계산 로직
+  let equipBonus = { str: 0, agi: 0, int: 0, vit: 0, luk: 0 };
+  const parsedEquip = {}; 
+
+  ['WEAPON', 'HELMET', 'SHIELD', 'ARMOR'].forEach(part => {
+    const state = userEquipment[part] || defaultEquip;
+    const equipKey = `tier_${state.tier}_${state.element || 'neutral'}`;
+    const dbData = EQUIP_DATABASE[part]?.evolutions[equipKey] || EQUIP_DATABASE[part]?.evolutions['tier_0_neutral'];
+    const growth = EQUIP_DATABASE[part]?.enhanceGrowth?.[`tier_${state.tier}`] || EQUIP_DATABASE[part]?.enhanceGrowth?.tier_0 || { str:0, agi:0, int:0, vit:0, luk:0 };
+
+    let currentStats = {
+      str: dbData.baseStat.str + (growth.str * state.enhance),
+      agi: dbData.baseStat.agi + (growth.agi * state.enhance),
+      int: dbData.baseStat.int + (growth.int * state.enhance),
+      vit: dbData.baseStat.vit + (growth.vit * state.enhance),
+      luk: dbData.baseStat.luk + (growth.luk * state.enhance),
+    };
+
+    let isSynergy = false;
+    if (activeKnightBase && activeKnightBase.attribute !== 'neutral' && activeKnightBase.attribute === dbData.element) {
+      isSynergy = true;
+      currentStats.str = Math.floor(currentStats.str * 1.2);
+      currentStats.agi = Math.floor(currentStats.agi * 1.2);
+      currentStats.int = Math.floor(currentStats.int * 1.2);
+      currentStats.vit = Math.floor(currentStats.vit * 1.2);
+      currentStats.luk = Math.floor(currentStats.luk * 1.2);
+    }
+
+    parsedEquip[part] = { ...state, name: dbData.name, image: dbData.image, stats: currentStats, isSynergy };
+
+    equipBonus.str += currentStats.str;
+    equipBonus.agi += currentStats.agi;
+    equipBonus.int += currentStats.int;
+    equipBonus.vit += currentStats.vit;
+    equipBonus.luk += currentStats.luk;
+  });
+
+  if (selectedKnight) {
     finalStats = {
       str: activeKnightBase.baseStats.str + activeKnightBase.statGrowth.str * (activeKnightLevel - 1) + equipBonus.str,
       agi: activeKnightBase.baseStats.agi + activeKnightBase.statGrowth.agi * (activeKnightLevel - 1) + equipBonus.agi,
@@ -639,21 +656,45 @@ setTimeout(async () => {
     );
   }
 
-// 💡 옛날 계산식을 지우고 새 엔진 연산으로 교체!
+// 💡 파티 전체 스탯 계산 (기사 속성 시너지 개별 적용)
   const myPartyKnights = unlockedKnights.map(id => {
     const kBase = KNIGHT_DATABASE[id];
     if (!kBase) return null;
     const kLevel = id === 'knight_main' ? userLevel : (userData.knightStats?.[id]?.level || 1);
+    
+    let finalEquipBonus = { str: 0, agi: 0, int: 0, vit: 0, luk: 0 };
+    ['WEAPON', 'HELMET', 'SHIELD', 'ARMOR'].forEach(part => {
+      const state = userEquipment[part] || defaultEquip;
+      const equipKey = `tier_${state.tier}_${state.element || 'neutral'}`;
+      const dbData = EQUIP_DATABASE[part]?.evolutions[equipKey] || EQUIP_DATABASE[part]?.evolutions['tier_0_neutral'];
+      const growth = EQUIP_DATABASE[part]?.enhanceGrowth?.[`tier_${state.tier}`] || EQUIP_DATABASE[part]?.enhanceGrowth?.tier_0 || { str:0, agi:0, int:0, vit:0, luk:0 };
+      
+      let baseS = {
+        str: (dbData?.baseStat?.str || 0) + ((growth.str || 0) * state.enhance),
+        agi: (dbData?.baseStat?.agi || 0) + ((growth.agi || 0) * state.enhance),
+        int: (dbData?.baseStat?.int || 0) + ((growth.int || 0) * state.enhance),
+        vit: (dbData?.baseStat?.vit || 0) + ((growth.vit || 0) * state.enhance),
+        luk: (dbData?.baseStat?.luk || 0) + ((growth.luk || 0) * state.enhance),
+      };
+
+      const multiplier = (kBase.attribute !== 'neutral' && kBase.attribute === dbData?.element) ? 1.2 : 1.0;
+      finalEquipBonus.str += Math.floor(baseS.str * multiplier);
+      finalEquipBonus.agi += Math.floor(baseS.agi * multiplier);
+      finalEquipBonus.int += Math.floor(baseS.int * multiplier);
+      finalEquipBonus.vit += Math.floor(baseS.vit * multiplier);
+      finalEquipBonus.luk += Math.floor(baseS.luk * multiplier);
+    });
+
     return {
       id,
       name: id === 'knight_main' ? userNickname : kBase.name,
       element: kBase.attribute, 
       passiveSkill: id === 'knight_main' ? (userData.mainPassive || kBase.passiveSkill) : kBase.passiveSkill,
-      str: kBase.baseStats.str + (kBase.statGrowth.str * (kLevel - 1)) + equipBonus.str,
-      agi: kBase.baseStats.agi + (kBase.statGrowth.agi * (kLevel - 1)) + equipBonus.agi,
-      int: kBase.baseStats.int + (kBase.statGrowth.int * (kLevel - 1)) + equipBonus.int,
-      vit: kBase.baseStats.vit + (kBase.statGrowth.vit * (kLevel - 1)) + equipBonus.vit,
-      luk: kBase.baseStats.luk + (kBase.statGrowth.luk * (kLevel - 1)) + equipBonus.luk,
+      str: kBase.baseStats.str + (kBase.statGrowth.str * (kLevel - 1)) + finalEquipBonus.str,
+      agi: kBase.baseStats.agi + (kBase.statGrowth.agi * (kLevel - 1)) + finalEquipBonus.agi,
+      int: kBase.baseStats.int + (kBase.statGrowth.int * (kLevel - 1)) + finalEquipBonus.int,
+      vit: kBase.baseStats.vit + (kBase.statGrowth.vit * (kLevel - 1)) + finalEquipBonus.vit,
+      luk: kBase.baseStats.luk + (kBase.statGrowth.luk * (kLevel - 1)) + finalEquipBonus.luk,
       skillBonus: 0
     };
   }).filter(Boolean);
