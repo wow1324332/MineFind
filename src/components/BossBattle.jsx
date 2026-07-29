@@ -8,6 +8,8 @@ import { KNIGHT_DATABASE } from '../constants/knightData';
 import { EQUIP_DATABASE } from '../constants/equipData'; 
 import { calculatePartyStats, calculateTurnDamage } from '../utils/combatUtils';
 import { SKILL_DATABASE } from '../constants/skillData'; 
+import { DUNGEON_INFO } from '../constants/dungeonData';
+import { ITEM_DATABASE } from '../constants/itemData';
 
 export default function BossBattle({ bossId = 'dantalion', onBack }) {
   const { user } = useAuth();
@@ -30,6 +32,7 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
   
   // ✨ 스킬 컷인 애니메이션 상태 추가
   const [skillCutin, setSkillCutin] = useState(null);
+  const [earnedRewards, setEarnedRewards] = useState(null);
 
   useEffect(() => {
     if (partyStats && bossData) {
@@ -160,9 +163,36 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
       setBossEffect(null); 
       setPartyEffect(null);
 
-      if (currentBossHp <= 0) {
+if (currentBossHp <= 0) {
+        // 💡 1. 확률에 따른 드랍 아이템 및 보상 계산
+        const rGold = bossData.rewards?.gold || 0;
+        const rExp = bossData.rewards?.exp || 0;
+        const rItems = {};
+        
+        if (bossData.rewards?.dropItems) {
+          bossData.rewards.dropItems.forEach(drop => {
+            if (Math.random() <= drop.chance) {
+              rItems[drop.itemId] = (rItems[drop.itemId] || 0) + 1;
+            }
+          });
+        }
+
+        // 💡 2. 화면에 띄워줄 보상 상태 저장 및 승리 판정
+        setEarnedRewards({ gold: rGold, earnedExp: rExp, items: rItems });
         setBattleResult('win');
         setIsAnimating(false);
+
+        // 💡 3. 파이어베이스 DB에 획득한 골드, 경험치, 아이템 즉시 저장
+        const userDocRef = doc(db, 'users', user.uid);
+        const updates = {
+          'inventory.gold': increment(rGold),
+          exp: increment(rExp)
+        };
+        Object.entries(rItems).forEach(([itemId, count]) => {
+          updates[`inventory.items.${itemId}`] = increment(count);
+        });
+        updateDoc(userDocRef, updates);
+
         return;
       }
 
@@ -258,6 +288,52 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
     );
   };
 
+// 💡 보상 아이템을 예쁘게 그려주는 미니 렌더링 함수 (App.jsx에서 이식)
+  const renderRewardsUI = () => {
+    if (!earnedRewards) return null;
+    return (
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[16rem] z-10 animate-[fadeIn_0.5s_ease-in-out]">
+        <div className="bg-black/70 rounded-md p-4 border border-[#a6845c]/20 shadow-[0_0_30px_rgba(0,0,0,0.9)]">
+          <h3 className="text-center font-serif text-[#d8b486] text-sm tracking-[0.3em] mb-4 drop-shadow-md uppercase">
+            Acquired
+          </h3>
+          <div className="flex flex-col gap-2 mb-4">
+            <div className="flex justify-center items-center bg-black/40 rounded-sm py-1.5">
+              <span className="text-[#f5d5a9] font-black text-[16px] tracking-widest font-serif drop-shadow-md">
+                +{earnedRewards.gold} <span className="text-[10px] text-[#d8b486] ml-1 font-sans uppercase">Gold</span>
+              </span>
+            </div>
+            <div className="flex justify-center items-center bg-black/40 rounded-sm py-1.5 border border-blue-900/30">
+              <span className="text-blue-300 font-black text-[16px] tracking-widest font-serif drop-shadow-md">
+                +{earnedRewards.earnedExp} <span className="text-[10px] text-blue-400/80 ml-1 font-sans uppercase">EXP</span>
+              </span>
+            </div>
+          </div>
+          {earnedRewards.items && Object.keys(earnedRewards.items).length > 0 && (
+            <div className="flex flex-wrap justify-center gap-2 mt-2 pt-3 border-t border-[#a6845c]/20">
+              {Object.entries(earnedRewards.items).map(([itemId, count]) => {
+                const item = ITEM_DATABASE[itemId];
+                if (!item) return null;
+                return (
+                  <div key={itemId} className="w-12 h-12 bg-black/40 rounded-sm flex items-center justify-center relative group border border-[#5c3e23]/30">
+                    {item.icon.startsWith('/') ? (
+                      <img src={item.icon} alt={item.name} className="w-[70%] h-[70%] object-contain drop-shadow-md" draggable="false" />
+                    ) : (
+                      <span className="text-2xl drop-shadow-md select-none">{item.icon}</span>
+                    )}
+                    <span className="absolute bottom-0 right-1 text-[10px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,1)]">
+                      {count}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   if (!bossData) return <div className="fixed inset-0 bg-black z-50 flex items-center justify-center text-red-500 font-bold">보스 데이터 로딩 실패 ({bossId})</div>;
   if (!partyStats) return <div className="fixed inset-0 bg-black z-50"></div>; 
 
@@ -281,6 +357,7 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
         @keyframes cutinBand { 0% { transform: translateX(-100%) skewX(-15deg); } 100% { transform: translateX(0) skewX(-15deg); } }
         @keyframes cutinFace { 0% { transform: scale(1.3) translateX(-30px) skewX(15deg); opacity: 0; } 100% { transform: scale(1.1) translateX(0) skewX(15deg); opacity: 1; } }
         @keyframes cutinText { 0% { transform: translateX(40px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
+        @keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
         .cutin-split-top { clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%); transition: transform 0.4s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.4s; }
         .cutin-split-bottom { clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%); transition: transform 0.4s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.4s; }
       `}</style>
@@ -326,15 +403,62 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
         </div>
       )}
 
-      {/* 전투 종료 팝업 */}
-      {battleResult && (
-        <div className="absolute inset-0 z-[100] bg-black/80 flex flex-col items-center justify-center animate-[fadeIn_0.5s_ease-out]">
-          <span className={`font-serif font-black text-5xl tracking-widest uppercase drop-shadow-[0_0_20px_rgba(0,0,0,1)] ${battleResult === 'win' ? 'text-yellow-400' : 'text-red-600'}`}>
-            {battleResult === 'win' ? 'VICTORY' : 'DEFEATED'}
-          </span>
-          <button onClick={onBack} className="mt-10 px-8 py-3 bg-[#110a08] text-[#f5d5a9] border border-[#a6845c] rounded-md font-serif font-bold tracking-widest active:scale-95 shadow-[0_0_15px_rgba(0,0,0,0.8)]">
-            RETURN
-          </button>
+{/* 🏆 전투 승리 화면 */}
+      {battleResult === 'win' && (
+        <div 
+          className="fixed inset-0 z-[100] flex flex-col justify-end pb-8"
+          style={{ 
+            backgroundImage: `url(${DUNGEON_INFO[bossData.element]?.winBg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            animation: 'fadeInOverlay 1.0s cubic-bezier(0.25, 1, 0.5, 1) forwards'
+          }}
+        >
+          <div className="absolute inset-0 bg-black/50 pointer-events-none z-0"></div>
+          
+          {/* 보상 카드 렌더링 */}
+          {renderRewardsUI()}
+
+          <div className="flex justify-center items-center gap-4 px-6 w-full max-w-md mx-auto relative z-10 mt-8">
+            <button 
+              onClick={onBack} 
+              className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)] select-none"
+            >
+              <img src="/back.png" alt="Back" className="w-full max-w-[150px] mx-auto h-auto object-contain pointer-events-none" draggable="false" />
+            </button>
+          </div>
+          <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent pointer-events-none z-0"></div>
+        </div>
+      )}
+
+      {/* 💀 전투 패배 화면 */}
+      {battleResult === 'lose' && (
+        <div 
+          className="fixed inset-0 z-[100] flex flex-col justify-end pb-8"
+          style={{ 
+            backgroundImage: `url(${DUNGEON_INFO[bossData.element]?.loseBg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            animation: 'fadeInOverlay 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards'
+          }}
+        >
+          <div className="absolute inset-0 bg-black/50 pointer-events-none z-0"></div>
+          
+          <div className="relative z-10 flex flex-col items-center mb-10">
+            <span className="font-serif font-black text-5xl tracking-widest uppercase drop-shadow-[0_0_20px_rgba(220,38,38,1)] text-red-600 mb-2">
+              DEFEATED
+            </span>
+          </div>
+
+          <div className="flex justify-center items-center gap-4 px-6 w-full max-w-md mx-auto relative z-10">
+            <button 
+              onClick={onBack} 
+              className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)] select-none"
+            >
+              <img src="/back.png" alt="Back" className="w-full max-w-[150px] mx-auto h-auto object-contain pointer-events-none" draggable="false" />
+            </button>
+          </div>
+          <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent pointer-events-none z-0"></div>
         </div>
       )}
 
