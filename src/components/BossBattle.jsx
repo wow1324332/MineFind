@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, increment } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from '../hooks/useAuth';
 
@@ -163,7 +163,7 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
       setBossEffect(null); 
       setPartyEffect(null);
 
-if (currentBossHp <= 0) {
+      if (currentBossHp <= 0) {
         // 💡 1. 확률에 따른 드랍 아이템 및 보상 계산
         const rGold = bossData.rewards?.gold || 0;
         const rExp = bossData.rewards?.exp || 0;
@@ -177,21 +177,26 @@ if (currentBossHp <= 0) {
           });
         }
 
-        // 💡 2. 화면에 띄워줄 보상 상태 저장 및 승리 판정
         setEarnedRewards({ gold: rGold, earnedExp: rExp, items: rItems });
         setBattleResult('win');
         setIsAnimating(false);
 
-        // 💡 3. 파이어베이스 DB에 획득한 골드, 경험치, 아이템 즉시 저장
-        const userDocRef = doc(db, 'users', user.uid);
-        const updates = {
-          'inventory.gold': increment(rGold),
-          exp: increment(rExp)
-        };
-        Object.entries(rItems).forEach(([itemId, count]) => {
-          updates[`inventory.items.${itemId}`] = increment(count);
-        });
-        updateDoc(userDocRef, updates);
+        // 💡 2. 파이어베이스 DB에 안전하게 즉시 저장 (증발 방지용 비동기 처리)
+        (async () => {
+          try {
+            const userDocRef = doc(db, 'users', user.uid);
+            const updates = {
+              'inventory.gold': increment(rGold),
+              exp: increment(rExp)
+            };
+            Object.entries(rItems).forEach(([itemId, count]) => {
+              updates[`inventory.items.${itemId}`] = increment(count);
+            });
+            await updateDoc(userDocRef, updates);
+          } catch (err) {
+            console.error("보상 저장 실패:", err);
+          }
+        })();
 
         return;
       }
@@ -403,7 +408,7 @@ if (currentBossHp <= 0) {
         </div>
       )}
 
-{/* 🏆 전투 승리 화면 */}
+      {/* 🏆 전투 승리 화면 */}
       {battleResult === 'win' && (
         <div 
           className="fixed inset-0 z-[100] flex flex-col justify-end pb-8"
@@ -444,13 +449,7 @@ if (currentBossHp <= 0) {
         >
           <div className="absolute inset-0 bg-black/50 pointer-events-none z-0"></div>
           
-          <div className="relative z-10 flex flex-col items-center mb-10">
-            <span className="font-serif font-black text-5xl tracking-widest uppercase drop-shadow-[0_0_20px_rgba(220,38,38,1)] text-red-600 mb-2">
-              DEFEATED
-            </span>
-          </div>
-
-          <div className="flex justify-center items-center gap-4 px-6 w-full max-w-md mx-auto relative z-10">
+          <div className="flex justify-center items-center gap-4 px-6 w-full max-w-md mx-auto relative z-10 mt-8">
             <button 
               onClick={onBack} 
               className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)] select-none"
