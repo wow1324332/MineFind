@@ -216,11 +216,45 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
         setPartyEffect(null);
 
         if (currentPartyHp <= 0) {
+          // 💡 1. 패배 시 보상(defeatRewards) 계산
+          const rGold = bossData.defeatRewards?.gold || 0;
+          const rExp = bossData.defeatRewards?.exp || 0;
+          const rItems = {};
+          
+          if (bossData.defeatRewards?.dropItems) {
+            bossData.defeatRewards.dropItems.forEach(drop => {
+              if (Math.random() <= drop.chance) {
+                rItems[drop.itemId] = (rItems[drop.itemId] || 0) + 1;
+              }
+            });
+          }
+
+          setEarnedRewards({ gold: rGold, earnedExp: rExp, items: rItems });
           setBattleResult('lose');
+          setIsAnimating(false);
+
+          // 💡 2. 파이어베이스 DB에 위로 보상 안전하게 저장
+          if (rGold > 0 || rExp > 0 || Object.keys(rItems).length > 0) {
+            (async () => {
+              try {
+                const userDocRef = doc(db, 'users', user.uid);
+                const updates = {};
+                if (rGold > 0) updates['inventory.gold'] = increment(rGold);
+                if (rExp > 0) updates.exp = increment(rExp);
+                
+                Object.entries(rItems).forEach(([itemId, count]) => {
+                  updates[`inventory.items.${itemId}`] = increment(count);
+                });
+                await updateDoc(userDocRef, updates);
+              } catch (err) {
+                console.error("패배 보상 저장 실패:", err);
+              }
+            })();
+          }
         } else {
           setPartyMp(prevMp => Math.min(partyStats.maxMp, prevMp + partyStats.mpRegen));
+          setIsAnimating(false); 
         }
-        setIsAnimating(false); 
       }, 1000);
 
     }, 1000);
@@ -449,12 +483,16 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
         >
           <div className="absolute inset-0 bg-black/50 pointer-events-none z-0"></div>
           
+          {/* 💡 패배 위로 보상 모달 렌더링! */}
+          {renderRewardsUI()}
+          
           <div className="flex justify-center items-center gap-4 px-6 w-full max-w-md mx-auto relative z-10 mt-8">
             <button 
               onClick={onBack} 
               className="flex-1 transition-all duration-200 active:scale-95 hover:brightness-110 drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)] select-none"
+              style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
             >
-              <img src="/back.png" alt="Back" className="w-full max-w-[150px] mx-auto h-auto object-contain pointer-events-none" draggable="false" />
+              <img src="/back.png" alt="Back" className="w-full h-auto object-contain pointer-events-none" draggable="false" />
             </button>
           </div>
           <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent pointer-events-none z-0"></div>
