@@ -562,7 +562,7 @@ setTimeout(async () => {
         </div>
 
         {/* ========================================= */}
-        {/* 🔨 대장간 겸용 장비 상세 & 강화/진화 모달 (디자인 업그레이드) */}
+        {/* 🔨 대장간 겸용 장비 상세 & 강화/진화 모달 (디자인 업그레이드 V2) */}
         {/* ========================================= */}
         {selectedEquipPart && (() => {
           const currentEquipState = userEquipment[selectedEquipPart] || defaultEquip;
@@ -589,25 +589,16 @@ setTimeout(async () => {
               <div className="relative w-full max-w-[280px]" onClick={(e) => e.stopPropagation()}>
                 <div className="w-full flex flex-col bg-transparent shadow-[0_10px_40px_rgba(0,0,0,0.9)] rounded-lg overflow-hidden">
                   
-                  {/* 👑 상단: 장비 이미지 영역 (아이템 팝업 스타일) */}
+                  {/* 👑 상단: 장비 이미지 영역 (이미지 크기 확대 w-32 h-32) */}
                   <div className="relative flex justify-center items-center bg-gradient-to-b from-[#2a1a10] to-[#1a1008] py-8 border-b border-[#a6845c]/30">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_100%)] opacity-80 pointer-events-none"></div>
                     
-                    {/* 닫기 버튼 */}
-                    <button 
-                      onClick={() => {
-                        setSelectedEquipPart(null);
-                        setEquipActionType(null);
-                        setSelectedEvolveTarget(null);
-                      }} 
-                      className="absolute top-3 right-3 text-[#a6845c] hover:text-[#d8b486] transition-colors z-20 outline-none"
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
+                    {/* 💡 X 닫기 버튼 완전 제거됨 (배경 터치로 닫기) */}
 
-                    <div className="relative z-10 w-24 h-24 flex items-center justify-center">
+                    <div className="relative z-10 w-32 h-32 flex items-center justify-center mt-2">
+                      {/* 💡 강화 수치 폰트 스타일 변경 (이탤릭 제거, 아이보리 색상 text-[#fffff0] 적용) */}
                       {currentEnhance > 0 && (
-                        <span className="absolute bottom-0 right-0 text-yellow-400 font-black text-sm drop-shadow-[0_2px_3px_rgba(0,0,0,1)] z-20 italic pointer-events-none">
+                        <span className="absolute bottom-0 right-0 text-[#fffff0] font-serif font-black text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,1)] z-20 pointer-events-none">
                           +{currentEnhance}
                         </span>
                       )}
@@ -623,20 +614,21 @@ setTimeout(async () => {
                   {/* 📜 하단: 장비 정보 및 컨트롤 영역 */}
                   <div className="bg-[#150d08] p-5 flex flex-col relative">
                     
-                    {/* 장비 이름 및 뱃지 */}
-                    <div className="flex flex-col items-center text-center mb-4">
-                      <span className="text-[#f5d5a9] font-serif font-black text-lg tracking-widest drop-shadow-md mb-2 uppercase leading-tight">
+                    {/* 장비 이름 및 설명 (티어 뱃지 제거, 설명 추가) */}
+                    <div className="flex flex-col items-center text-center mb-4 border-b border-[#a6845c]/20 pb-4">
+                      <span className="text-[#f5d5a9] font-serif font-black text-lg tracking-widest drop-shadow-md uppercase leading-tight mb-2">
                         {parsedItem.name}
                       </span>
-                      <div className="flex items-center gap-2">
-                        <span className="text-[#8c6543] font-bold text-[10px] tracking-widest border border-[#8c6543]/50 px-2 py-0.5 rounded-sm bg-black/40">
-                          Tier {currentEquipState.tier} / {selectedEquipPart}
-                        </span>
+                      <div className="flex flex-col items-center gap-1.5 mt-1">
                         {parsedItem.isSynergy && (
-                          <span className="text-[9px] bg-amber-900/50 text-yellow-400 font-bold px-1.5 py-0.5 rounded-sm border border-amber-600/50 shadow-sm animate-pulse tracking-wide">
+                          <span className="text-[9px] bg-amber-900/50 text-yellow-400 font-bold px-1.5 py-0.5 rounded-sm border border-amber-600/50 shadow-sm animate-pulse tracking-wide mb-1">
                             시너지 +20%
                           </span>
                         )}
+                        {/* 💡 판타지풍 장비 설명 추가 */}
+                        <span className="text-[#a6845c] text-[10px] font-medium leading-relaxed break-keep opacity-90 px-2 text-center">
+                          {dbData?.desc || dbData?.description || "오랜 세월을 견뎌낸 고대의 장비.\n착용자에게 숨겨진 힘을 부여한다."}
+                        </span>
                       </div>
                     </div>
 
@@ -647,13 +639,14 @@ setTimeout(async () => {
                           <div className="text-[#a6845c] font-black text-[11px] mb-2 border-b border-[#a6845c]/20 pb-1 flex justify-between">
                             <span className="tracking-widest">부여된 스탯</span>
                           </div>
-                          <div className="grid grid-cols-2 gap-2">
+                          {/* 💡 스탯 폰트 축소 및 세로 일렬(flex-col) 정렬 변경 */}
+                          <div className="flex flex-col gap-1.5 px-1">
                             {Object.entries(parsedItem.stats)
                               .filter(([_, val]) => val > 0)
                               .map(([key, val]) => (
                                 <div key={key} className="flex justify-between items-center">
-                                  <span className="text-[#8c6543] font-bold text-xs uppercase tracking-wider">{key}</span>
-                                  <span className="text-[#d8b486] font-black text-sm">+{val}</span>
+                                  <span className="text-[#8c6543] font-bold text-[10px] uppercase tracking-wider">{key}</span>
+                                  <span className="text-[#d8b486] font-black text-xs">+{val}</span>
                                 </div>
                             ))}
                           </div>
@@ -685,7 +678,7 @@ setTimeout(async () => {
                       </div>
                     )}
 
-                    {/* --- 장비 강화 화면 --- */}
+                    {/* --- 장비 강화 화면 (수정 사항 없음) --- */}
                     {equipActionType === 'enhance' && (
                       <div className="animate-[fadeIn_0.2s_ease-out]">
                         <div className="flex justify-between items-center border-b border-[#a6845c]/30 pb-2 mb-3">
@@ -726,7 +719,7 @@ setTimeout(async () => {
                       </div>
                     )}
 
-                    {/* --- 속성 진화 화면 --- */}
+                    {/* --- 속성 진화 화면 (수정 사항 없음) --- */}
                     {equipActionType === 'evolve' && (
                       <div className="animate-[fadeIn_0.2s_ease-out]">
                         <div className="flex justify-between items-center border-b border-[#a6845c]/30 pb-2 mb-3">
