@@ -24,6 +24,7 @@ const [selectedKnight, setSelectedKnight] = useState(null);
   const [equipActionType, setEquipActionType] = useState(null); // 'enhance' 또는 'evolve'
   const [selectedEvolveTarget, setSelectedEvolveTarget] = useState(null); // 진화 선택 속성
   const [selectedSouls, setSelectedSouls] = useState({}); // 💡 무속성 장비용 다중 영혼석 선택 상태
+  const [enhanceSuccessAnim, setEnhanceSuccessAnim] = useState(false); // 🌟 강화 성공 시네마틱 이펙트 상태
   // ✨ 토스트 알림 상태 및 함수
   const [toastMessage, setToastMessage] = useState(null);
   const showToast = (text, type = 'error') => {
@@ -86,10 +87,14 @@ const [selectedKnight, setSelectedKnight] = useState(null);
         ? 'equipment' 
         : `knightStats.${selectedKnight}.equipment`;
 
-      if (isSuccess) {
+    if (isSuccess) {
         updates[equipPath] = newEquipmentMap; 
         await updateDoc(userDocRef, updates);
-        showToast(`강화 성공! [ +${nextLevel} ${parsedEquip[part]?.name} ]`, 'success');
+        showToast(`🎉 강화 성공! [ +${nextLevel} ${parsedEquip[part]?.name} ] 달성!`, 'success');
+        
+        // 🌟 강화 성공 시네마틱 1.2초간 재생
+        setEnhanceSuccessAnim(true);
+        setTimeout(() => setEnhanceSuccessAnim(false), 1200);
       } else {
         await updateDoc(userDocRef, updates);
         showToast(`강화 실패...\n영혼석과 골드가 소모되었습니다.`, 'error');
@@ -630,17 +635,52 @@ setTimeout(async () => {
                     
                     {/* 💡 X 닫기 버튼 완전 제거됨 (배경 터치로 닫기) */}
 
-                     <div className="relative z-10 w-32 h-32 flex items-center justify-center mt-2 bg-black/30 border border-[#a6845c]/20 rounded-sm shadow-[inset_0_0_15px_rgba(0,0,0,0.8)]">
-                      {/* 💡 프레임 내측 우측 하단에 고정 */}
+                    {/* ✨ 강화 성공 연출 전용 애니메이션 (모달 안에만 적용) */}
+                    <style>{`
+                      @keyframes equipSuccessFlash {
+                        0% { background-color: rgba(255,255,255,0); }
+                        15% { background-color: rgba(255,255,255,1); }
+                        100% { background-color: rgba(255,255,255,0); }
+                      }
+                      @keyframes equipSuccessGlow {
+                        0% { transform: scale(1); filter: brightness(1); }
+                        15% { transform: scale(1.3); filter: brightness(2) drop-shadow(0 0 20px rgba(250,204,21,1)); }
+                        100% { transform: scale(1); filter: brightness(1); }
+                      }
+                      @keyframes equipSuccessRays {
+                        0% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+                        20% { opacity: 1; transform: scale(1.5) rotate(45deg); }
+                        100% { opacity: 0; transform: scale(2) rotate(90deg); }
+                      }
+                    `}</style>
+
+                    {/* 💡 overflow-hidden을 주어 프레임 안쪽에서만 빛이 뿜어지게 제한 */}
+                    <div className="relative z-10 w-32 h-32 flex items-center justify-center mt-2 bg-black/30 border border-[#a6845c]/20 rounded-sm shadow-[inset_0_0_15px_rgba(0,0,0,0.8)] overflow-hidden">
+                      
+                      {/* 🌟 시네마틱 이펙트 오버레이 */}
+                      {enhanceSuccessAnim && (
+                        <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center">
+                          {/* 하얀 섬광 팡! */}
+                          <div className="absolute inset-0 animate-[equipSuccessFlash_1.2s_ease-out_forwards]"></div>
+                          {/* 회전하는 금빛 후광 */}
+                          <div className="absolute w-[200%] h-[200%] bg-[radial-gradient(circle_at_center,_rgba(250,204,21,0.5)_0%,_transparent_60%)] animate-[equipSuccessRays_1.2s_ease-out_forwards] mix-blend-screen"></div>
+                        </div>
+                      )}
+
+                      {/* 💡 프레임 내측 우측 하단 강화 수치 (성공 시 커지면서 노란색으로 빛나며 튀어오름) */}
                       {currentEnhance > 0 && (
-                        <span className="absolute bottom-1.5 right-1.5 text-[#fffff0] font-serif font-black text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,1)] z-20 pointer-events-none">
+                        <span className={`absolute bottom-1.5 right-1.5 font-serif font-black text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,1)] z-40 pointer-events-none transition-all duration-500
+                          ${enhanceSuccessAnim ? 'text-yellow-300 scale-[2.0] -translate-x-2 -translate-y-2' : 'text-[#fffff0] scale-100'}`}>
                           +{currentEnhance}
                         </span>
                       )}
-                      <img
+                      
+                      {/* 장비 썸네일 (성공 시 줌인되며 번쩍거림) */}
+                      <img 
                         src={parsedItem.image} 
                         alt={parsedItem.name} 
-                        className="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(255,255,255,0.15)] animate-pulse"
+                        className={`relative z-20 w-full h-full object-contain drop-shadow-[0_0_20px_rgba(255,255,255,0.15)] 
+                          ${enhanceSuccessAnim ? 'animate-[equipSuccessGlow_1.2s_ease-out_forwards]' : 'animate-pulse'}`}
                         onError={(e) => { e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a6845c'%3E%3Cpath d='M12 2L2 22h20L12 2z'/%3E%3C/svg%3E"; }} 
                       />
                     </div>
