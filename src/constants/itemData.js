@@ -12,7 +12,7 @@ export const ITEM_DATABASE = {
     rarity: 'common',
     desc: '불의 악마들의 피를 굳혀 만든 작은 불꽃의 기운을 담은 수정.',
     sellPrice: 100,
-    enhanceExp: 50
+    enhanceExp: 100
   },
   'mat_fire_2': {
     id: 'mat_fire_2',
@@ -22,7 +22,7 @@ export const ITEM_DATABASE = {
     rarity: 'common',
     desc: '중급 불의 악마 피를 굳혀 만든 작은 강력한 불꽃의 기운을 담은 수정.',
     sellPrice: 200,
-    enhanceExp: 100
+    enhanceExp: 200
   },
   'mat_fire_3': {
     id: 'mat_fire_3',
@@ -32,7 +32,7 @@ export const ITEM_DATABASE = {
     rarity: 'rare',
     desc: '불의 악마 제3의 눈.',
     sellPrice: 350,
-    enhanceExp: 150
+    enhanceExp: 300
   },
   'mat_fire_4': {
     id: 'mat_fire_4',
@@ -42,7 +42,7 @@ export const ITEM_DATABASE = {
     rarity: 'rare',
     desc: '중급 불의 악마들의 화염의 기운을 모은 불의 정수.',
     sellPrice: 500,
-    enhanceExp: 250
+    enhanceExp: 400
   },
   'mat_fire_5': {
     id: 'mat_fire_5',
@@ -52,7 +52,7 @@ export const ITEM_DATABASE = {
     rarity: 'rare',
     desc: '불꽃의 대악마 메피스토의 심장 파편.',
     sellPrice: 2000,
-    enhanceExp: 400
+    enhanceExp: 1500
   },
 
   // ==========================================
@@ -65,7 +65,8 @@ export const ITEM_DATABASE = {
     icon: '/items/aquacristal.webp', 
     rarity: 'common',
     desc: '물의 악마의 기운을 머금고있는 작은 수정.',
-    sellPrice: 100
+    sellPrice: 100,
+    enhanceExp: 100
   },
   'mat_water_2': {
     id: 'mat_water_2',
@@ -74,7 +75,8 @@ export const ITEM_DATABASE = {
     icon: '/items/highaquacrystal.webp',
     rarity: 'normal',
     desc: '물의 악마의 기운을 가득 머금고 있는 수정.',
-    sellPrice: 200
+    sellPrice: 200,
+    enhanceExp: 200
   },
   'mat_water_3': {
     id: 'mat_water_3',
@@ -83,7 +85,8 @@ export const ITEM_DATABASE = {
     icon: '/items/eyeofaquadevil.webp',
     rarity: 'rare',
     desc: '중급 심해의 악마를 처치하고 나온 물의 기운이 담긴 눈.',
-    sellPrice: 350
+    sellPrice: 350,
+    enhanceExp: 300
   },
   'mat_water_4': {
     id: 'mat_water_4',
@@ -92,7 +95,8 @@ export const ITEM_DATABASE = {
     icon: '/items/coreofaqua.webp',
     rarity: 'rare',
     desc: '심해 악마들의 물의 기운을 잔뜩모은 강력한 물의 정수.',
-    sellPrice: 500
+    sellPrice: 500,
+    enhanceExp: 400
   },
   'mat_water_5': {
     id: 'mat_water_5',
@@ -101,7 +105,8 @@ export const ITEM_DATABASE = {
     icon: '/items/lungofbaal.webp',
     rarity: 'rare',
     desc: '물의 대악마 바알을 처치하고 얻은 바알의 폐.',
-    sellPrice: 2000
+    sellPrice: 2000,
+    enhanceExp: 1500
   },
 
     // ==========================================
@@ -114,7 +119,8 @@ export const ITEM_DATABASE = {
     icon: '/items/poisoncristal.webp', 
     rarity: 'common',
     desc: '독의 악마 기운을 머금고있는 작은 수정.',
-    sellPrice: 100
+    sellPrice: 100,
+    enhanceExp: 100
   },
   'mat_poison_2': {
     id: 'mat_poison_2',
@@ -123,7 +129,8 @@ export const ITEM_DATABASE = {
     icon: '/items/highpoisoncrystal.webp',
     rarity: 'normal',
     desc: '독의 악마의 기운을 가득 머금고 있는 수정.',
-    sellPrice: 200
+    sellPrice: 200,
+    enhanceExp: 200
   },
   'mat_poison_3': {
     id: 'mat_poison_3',
@@ -132,7 +139,8 @@ export const ITEM_DATABASE = {
     icon: '/items/eyeofpoisondevil.webp',
     rarity: 'rare',
     desc: '중급 독연의 악마를 처치하고 나온 독의 기운이 담긴 눈.',
-    sellPrice: 350
+    sellPrice: 350,
+    enhanceExp: 300
   },
   'mat_poison_4': {
     id: 'mat_poison_4',
@@ -141,7 +149,8 @@ export const ITEM_DATABASE = {
     icon: '/items/coreofpoison.webp',
     rarity: 'rare',
     desc: '독연 악마들의 독의 기운을 잔뜩모은 강력한 독의 정수.',
-    sellPrice: 500
+    sellPrice: 500,
+    enhanceExp: 400
   },
   'mat_poison_5': {
     id: 'mat_poison_5',
@@ -150,7 +159,8 @@ export const ITEM_DATABASE = {
     icon: '/items/brainofbelial.webp',
     rarity: 'rare',
     desc: '독의 대악마 벨리알을 처치하고 얻은 벨리알의 뇌.',
-    sellPrice: 2000
+    sellPrice: 2000,
+    enhanceExp: 1500
   },
 
   // ==========================================
@@ -163,7 +173,8 @@ export const ITEM_DATABASE = {
     icon: '/items/lightcristal.webp', 
     rarity: 'common',
     desc: '지혜의 악마 기운을 머금고있는 작은 수정.',
-    sellPrice: 100
+    sellPrice: 100,
+    enhanceExp: 100
   },
   'mat_light_2': {
     id: 'mat_light_2',
@@ -172,7 +183,8 @@ export const ITEM_DATABASE = {
     icon: '/items/highlightcrystal.webp',
     rarity: 'normal',
     desc: '지혜의 악마의 기운을 가득 머금고 있는 수정.',
-    sellPrice: 200
+    sellPrice: 200,
+    enhanceExp: 200
   },
   'mat_light_3': {
     id: 'mat_light_3',
@@ -181,7 +193,8 @@ export const ITEM_DATABASE = {
     icon: '/items/eyeoflightdevil.webp',
     rarity: 'rare',
     desc: '중급 독연의 악마를 처치하고 나온 독의 기운이 담긴 눈.',
-    sellPrice: 350
+    sellPrice: 350,
+    enhanceExp: 300
   },
   'mat_light_4': {
     id: 'mat_light_4',
@@ -190,7 +203,8 @@ export const ITEM_DATABASE = {
     icon: '/items/coreoflight.webp',
     rarity: 'rare',
     desc: '지혜의 악마들의 빛의 기운을 잔뜩모은 강력한 독의 정수.',
-    sellPrice: 500
+    sellPrice: 500,
+    enhanceExp: 400
   },
   'mat_light_5': {
     id: 'mat_light_5',
@@ -199,7 +213,8 @@ export const ITEM_DATABASE = {
     icon: '/items/liveroflucifer.webp',
     rarity: 'rare',
     desc: '번뇌의 대악마 루시퍼를 처치하고 얻은 루시퍼의 간.',
-    sellPrice: 2000
+    sellPrice: 2000,
+    enhanceExp: 1500
   },
   
   // ==========================================
@@ -212,7 +227,8 @@ export const ITEM_DATABASE = {
     icon: '/items/icecristal.webp', 
     rarity: 'common',
     desc: '빙결의 악마 기운을 머금고있는 작은 수정.',
-    sellPrice: 100
+    sellPrice: 100,
+    enhanceExp: 100
   },
   'mat_ice_2': {
     id: 'mat_ice_2',
@@ -221,7 +237,8 @@ export const ITEM_DATABASE = {
     icon: '/items/highicecrystal.webp',
     rarity: 'normal',
     desc: '빙결의 악마의 기운을 가득 머금고 있는 수정.',
-    sellPrice: 200
+    sellPrice: 200,
+    enhanceExp: 200
   },
   'mat_ice_3': {
     id: 'mat_ice_3',
@@ -230,7 +247,8 @@ export const ITEM_DATABASE = {
     icon: '/items/eyeoficedevil.webp',
     rarity: 'rare',
     desc: '중급 빙결의 악마를 처치하고 나온 극한의 기운이 담긴 눈.',
-    sellPrice: 350
+    sellPrice: 350,
+    enhanceExp: 300
   },
   'mat_ice_4': {
     id: 'mat_ice_4',
@@ -239,7 +257,8 @@ export const ITEM_DATABASE = {
     icon: '/items/coreofice.webp',
     rarity: 'rare',
     desc: '빙결의 악마들의 극한의 기운을 잔뜩모은 강력한 냉기의 정수.',
-    sellPrice: 500
+    sellPrice: 500,
+    enhanceExp: 400
   },
   'mat_ice_5': {
     id: 'mat_ice_5',
@@ -248,7 +267,8 @@ export const ITEM_DATABASE = {
     icon: '/items/kidneyofamon.webp',
     rarity: 'rare',
     desc: '혹한의 대악마 아몬을 처치하고 얻은 혹한의 기운이 담긴 신장.',
-    sellPrice: 2000
+    sellPrice: 2000,
+    enhanceExp: 1500
   },
 
   // ==========================================
@@ -261,7 +281,8 @@ export const ITEM_DATABASE = {
     icon: '/items/plaguecrystal.webp', 
     rarity: 'common',
     desc: '치유의 기운을 머금고있는 작은 수정.',
-    sellPrice: 100
+    sellPrice: 100,
+    enhanceExp: 100
   },
   'mat_cure_2': {
     id: 'mat_cure_2',
@@ -270,7 +291,8 @@ export const ITEM_DATABASE = {
     icon: '/items/highplaguecrystal.webp',
     rarity: 'normal',
     desc: '치유의 기운을 가득 머금고 있는 수정.',
-    sellPrice: 200
+    sellPrice: 200,
+    enhanceExp: 200
   },
   'mat_cure_3': {
     id: 'mat_cure_3',
@@ -279,7 +301,8 @@ export const ITEM_DATABASE = {
     icon: '/items/eyeofplaguedevil.webp',
     rarity: 'rare',
     desc: '역병의 악마를 처치하고 나온 치유의 기운이 담긴 눈.',
-    sellPrice: 350
+    sellPrice: 350,
+    enhanceExp: 300
   },
   'mat_cure_4': {
     id: 'mat_cure_4',
@@ -288,7 +311,8 @@ export const ITEM_DATABASE = {
     icon: '/items/coreofplague.webp',
     rarity: 'rare',
     desc: '역병의 악마들의 역병의 기운을 잔뜩 모은 강력한 정수.',
-    sellPrice: 500
+    sellPrice: 500,
+    enhanceExp: 400
   },
   'mat_cure_5': {
     id: 'mat_cure_5',
@@ -297,7 +321,8 @@ export const ITEM_DATABASE = {
     icon: '/items/spineofmarbas.webp',
     rarity: 'rare',
     desc: '역병의 대악마 마르바스를 처치하고 얻은 강력한 치유의 기운이 담긴 척추뼈.',
-    sellPrice: 2000
+    sellPrice: 2000,
+    enhanceExp: 1500
   },
 
   // ==========================================
@@ -310,7 +335,8 @@ export const ITEM_DATABASE = {
     icon: '/items/vaincrystal.webp', 
     rarity: 'common',
     desc: '공허의 기운을 담고있는 작은 수정.',
-    sellPrice: 100
+    sellPrice: 100,
+    enhanceExp: 100
   },
   'mat_vain_2': {
     id: 'mat_vain_2',
@@ -319,7 +345,8 @@ export const ITEM_DATABASE = {
     icon: '/items/highvaincrystal.webp',
     rarity: 'normal',
     desc: '공허의 기운을 가득 담고 있는 위험한 수정.',
-    sellPrice: 200
+    sellPrice: 200,
+    enhanceExp: 200
   },
   'mat_vain_3': {
     id: 'mat_vain_3',
@@ -328,7 +355,8 @@ export const ITEM_DATABASE = {
     icon: '/items/eyeofvaindevil.webp',
     rarity: 'rare',
     desc: '공허의 악마를 처치하고 나온 허무의 기운이 담긴 눈.',
-    sellPrice: 350
+    sellPrice: 350,
+    enhanceExp: 300
   },
   'mat_vain_4': {
     id: 'mat_vain_4',
@@ -337,7 +365,8 @@ export const ITEM_DATABASE = {
     icon: '/items/coreofvain.webp',
     rarity: 'rare',
     desc: '공허의 악마들의 위험한 기운을 잔뜩 모은 강력한 정수.',
-    sellPrice: 500
+    sellPrice: 500,
+    enhanceExp: 400
   },
   'mat_vain_5': {
     id: 'mat_vain_5',
@@ -346,7 +375,8 @@ export const ITEM_DATABASE = {
     icon: '/items/nerveofdiablo.webp',
     rarity: 'rare',
     desc: '공허의 대악마 디아블로를 처치하고 얻은 강력한 허무의 기운이 담긴 신경 덩어리.',
-    sellPrice: 2000
+    sellPrice: 2000,
+    enhanceExp: 1500
   },
 
   // ==========================================
