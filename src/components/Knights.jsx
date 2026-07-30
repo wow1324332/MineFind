@@ -57,12 +57,12 @@ const [selectedKnight, setSelectedKnight] = useState(null);
     const userSoulCount = items[soulItemId] || 0;
 
     if (gold < costGold) {
-      alert(`골드가 부족합니다! (필요: ${costGold.toLocaleString()} G)`);
+      showToast(`골드가 부족합니다!\n(필요: ${costGold.toLocaleString()} G)`, 'error');
       return;
     }
     if (userSoulCount < costSoul) {
       const soulName = ITEM_DATABASE[soulItemId]?.name || "영혼석";
-      alert(`${soulName}이(가) 부족합니다! (필요: ${costSoul}개 / 보유: ${userSoulCount}개)`);
+      showToast(`${soulName}이(가) 부족합니다!\n(필요: ${costSoul}개 / 보유: ${userSoulCount}개)`, 'error');
       return;
     }
 
@@ -118,7 +118,7 @@ const [selectedKnight, setSelectedKnight] = useState(null);
     const matName = ITEM_DATABASE[material]?.name || "진화 재료";
 
     if (userMatCount < count) {
-      alert(`${matName}이(가) 부족합니다! (필요: ${count}개 / 보유: ${userMatCount}개)`);
+      showToast(`${matName}이(가) 부족합니다!\n(필요: ${count}개 / 보유: ${userMatCount}개)`, 'error');
       return;
     }
 
