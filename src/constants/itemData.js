@@ -11,7 +11,8 @@ export const ITEM_DATABASE = {
     icon: '/items/flamecrystal.webp',
     rarity: 'common',
     desc: '불의 악마들의 피를 굳혀 만든 작은 불꽃의 기운을 담은 수정.',
-    sellPrice: 100
+    sellPrice: 100,
+    enhanceExp: 50
   },
   'mat_fire_2': {
     id: 'mat_fire_2',
@@ -20,7 +21,8 @@ export const ITEM_DATABASE = {
     icon: '/items/highflamecrystal.webp',
     rarity: 'common',
     desc: '중급 불의 악마 피를 굳혀 만든 작은 강력한 불꽃의 기운을 담은 수정.',
-    sellPrice: 200
+    sellPrice: 200,
+    enhanceExp: 100
   },
   'mat_fire_3': {
     id: 'mat_fire_3',
@@ -29,7 +31,8 @@ export const ITEM_DATABASE = {
     icon: '/items/eyeofflamedevil.webp',
     rarity: 'rare',
     desc: '불의 악마 제3의 눈.',
-    sellPrice: 350
+    sellPrice: 350,
+    enhanceExp: 150
   },
   'mat_fire_4': {
     id: 'mat_fire_4',
@@ -38,7 +41,8 @@ export const ITEM_DATABASE = {
     icon: '/items/coreofflame.webp',
     rarity: 'rare',
     desc: '중급 불의 악마들의 화염의 기운을 모은 불의 정수.',
-    sellPrice: 500
+    sellPrice: 500,
+    enhanceExp: 250
   },
   'mat_fire_5': {
     id: 'mat_fire_5',
@@ -47,7 +51,8 @@ export const ITEM_DATABASE = {
     icon: '/items/heartofmephisto.webp',
     rarity: 'rare',
     desc: '불꽃의 대악마 메피스토의 심장 파편.',
-    sellPrice: 2000
+    sellPrice: 2000,
+    enhanceExp: 400
   },
 
   // ==========================================
