@@ -561,8 +561,8 @@ setTimeout(async () => {
           </div>
         </div>
 
-{/* ========================================= */}
-        {/* 🔨 대장간 겸용 장비 상세 & 강화/진화 모달 */}
+        {/* ========================================= */}
+        {/* 🔨 대장간 겸용 장비 상세 & 강화/진화 모달 (디자인 업그레이드) */}
         {/* ========================================= */}
         {selectedEquipPart && (() => {
           const currentEquipState = userEquipment[selectedEquipPart] || defaultEquip;
@@ -577,204 +577,215 @@ setTimeout(async () => {
           const soulItemData = ITEM_DATABASE[soulItemId];
 
           return (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-[fadeIn_0.2s_ease-in-out]">
-              <div className="w-full max-w-xs border-2 border-[#5c3e23] rounded-md shadow-[0_10px_40px_rgba(0,0,0,1)] relative overflow-hidden flex flex-col">
-                <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('/yangpiji-bg.webp')" }}></div>
-                
-                <div className="relative z-10 flex flex-col p-5">
-                  {/* 닫기 버튼 */}
-                  <button 
-                    onClick={() => {
-                      setSelectedEquipPart(null);
-                      setEquipActionType(null);
-                      setSelectedEvolveTarget(null);
-                    }} 
-                    className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center text-[#5c3e23] hover:text-[#3a2210] transition-colors"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
-                  </button>
+            <div 
+              className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-[fadeIn_0.2s_ease-out] select-none"
+              style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none', WebkitTapHighlightColor: 'transparent' }}
+              onClick={() => {
+                setSelectedEquipPart(null);
+                setEquipActionType(null);
+                setSelectedEvolveTarget(null);
+              }} 
+            >
+              <div className="relative w-full max-w-[280px]" onClick={(e) => e.stopPropagation()}>
+                <div className="w-full flex flex-col bg-transparent shadow-[0_10px_40px_rgba(0,0,0,0.9)] rounded-lg overflow-hidden">
+                  
+                  {/* 👑 상단: 장비 이미지 영역 (아이템 팝업 스타일) */}
+                  <div className="relative flex justify-center items-center bg-gradient-to-b from-[#2a1a10] to-[#1a1008] py-8 border-b border-[#a6845c]/30">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_100%)] opacity-80 pointer-events-none"></div>
+                    
+                    {/* 닫기 버튼 */}
+                    <button 
+                      onClick={() => {
+                        setSelectedEquipPart(null);
+                        setEquipActionType(null);
+                        setSelectedEvolveTarget(null);
+                      }} 
+                      className="absolute top-3 right-3 text-[#a6845c] hover:text-[#d8b486] transition-colors z-20 outline-none"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
 
-                  {/* 장비 헤더 정보 */}
-                  <div className="flex flex-col items-center mb-3 mt-1">
-                    <div className="w-16 h-16 bg-[#3a2210]/10 border border-[#5c3e23] rounded-sm flex items-center justify-center shadow-inner mb-2 relative overflow-hidden">
+                    <div className="relative z-10 w-24 h-24 flex items-center justify-center">
                       {currentEnhance > 0 && (
-                        <span className="absolute bottom-0 right-1 text-yellow-400 font-black text-sm drop-shadow-[0_2px_3px_rgba(0,0,0,1)] z-20 italic pointer-events-none">
+                        <span className="absolute bottom-0 right-0 text-yellow-400 font-black text-sm drop-shadow-[0_2px_3px_rgba(0,0,0,1)] z-20 italic pointer-events-none">
                           +{currentEnhance}
                         </span>
                       )}
                       <img 
                         src={parsedItem.image} 
                         alt={parsedItem.name} 
-                        className="w-full h-full object-contain drop-shadow-md"
-                        onError={(e) => { e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233a2210'%3E%3Cpath d='M12 2L2 22h20L12 2z'/%3E%3C/svg%3E"; }} 
+                        className="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(255,255,255,0.15)] animate-pulse"
+                        onError={(e) => { e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a6845c'%3E%3Cpath d='M12 2L2 22h20L12 2z'/%3E%3C/svg%3E"; }} 
                       />
                     </div>
-
-                    <h3 className="text-[#3a2210] font-black text-lg text-center leading-tight drop-shadow-sm flex items-center gap-1.5">
-                      {parsedItem.name}
-                      {parsedItem.isSynergy && (
-                        <span className="text-[9px] bg-amber-800 text-yellow-300 font-bold px-1.5 py-0.5 rounded border border-amber-600 shadow-sm animate-pulse">
-                          속성 시너지 +20%
-                        </span>
-                      )}
-                    </h3>
-                    
-                    <span className="text-[#8c6543] font-bold text-[10px] tracking-widest mt-0.5">
-                      [ Tier {currentEquipState.tier} / {selectedEquipPart} ]
-                    </span>
                   </div>
 
-                  {/* 기본 메인 화면 (스탯 보기) */}
-                  {!equipActionType && (
-                    <>
-                      <div className="bg-[#3a2210]/5 border border-[#8c6543]/30 rounded-sm p-3 mb-4">
-                        <div className="text-[#5c3e23] font-black text-[11px] mb-2 border-b border-[#8c6543]/30 pb-1 flex justify-between">
-                          <span>부여된 스탯</span>
-                          {parsedItem.isSynergy && <span className="text-amber-800 font-black">(시너지 적용됨)</span>}
-                        </div>
-                        <div className="grid grid-cols-2 gap-2">
-                          {Object.entries(parsedItem.stats)
-                            .filter(([_, val]) => val > 0)
-                            .map(([key, val]) => (
-                              <div key={key} className="flex justify-between items-center">
-                                <span className="text-[#5c3e23] font-bold text-xs uppercase">{key}</span>
-                                <span className="text-[#3a2210] font-black text-sm">+{val}</span>
-                              </div>
-                          ))}
-                        </div>
+                  {/* 📜 하단: 장비 정보 및 컨트롤 영역 */}
+                  <div className="bg-[#150d08] p-5 flex flex-col relative">
+                    
+                    {/* 장비 이름 및 뱃지 */}
+                    <div className="flex flex-col items-center text-center mb-4">
+                      <span className="text-[#f5d5a9] font-serif font-black text-lg tracking-widest drop-shadow-md mb-2 uppercase leading-tight">
+                        {parsedItem.name}
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[#8c6543] font-bold text-[10px] tracking-widest border border-[#8c6543]/50 px-2 py-0.5 rounded-sm bg-black/40">
+                          Tier {currentEquipState.tier} / {selectedEquipPart}
+                        </span>
+                        {parsedItem.isSynergy && (
+                          <span className="text-[9px] bg-amber-900/50 text-yellow-400 font-bold px-1.5 py-0.5 rounded-sm border border-amber-600/50 shadow-sm animate-pulse tracking-wide">
+                            시너지 +20%
+                          </span>
+                        )}
                       </div>
-
-                      <div className="flex gap-2">
-                        <button 
-                          onClick={() => setEquipActionType('enhance')}
-                          className="flex-1 bg-[#4a2c11] hover:bg-[#3a2210] text-[#f5d5a9] font-bold text-xs py-2.5 rounded-sm transition-colors border border-[#5c3e23] shadow-md active:scale-95"
-                        >
-                          장비 강화
-                        </button>
-                        <button 
-                          onClick={() => {
-                            if (currentEnhance < 10) {
-                              showToast("장비 진화는 +10 강화 이상\n달성 시에만 가능합니다!", 'error');
-                              return;
-                            }
-                            setEquipActionType('evolve');
-                          }}
-                          className={`flex-1 font-bold text-xs py-2.5 rounded-sm transition-colors border shadow-md active:scale-95 
-                            ${currentEnhance >= 10 
-                              ? 'bg-[#1a1008] hover:bg-black text-amber-400 border-[#a6845c] animate-pulse' 
-                              : 'bg-neutral-800 text-neutral-500 border-neutral-700 cursor-not-allowed'}`}
-                        >
-                          속성 진화
-                        </button>
-                      </div>
-                    </>
-                  )}
-
-                  {/* 🔨 [장비 강화 서브 패널] */}
-                  {equipActionType === 'enhance' && (
-                    <div className="flex flex-col bg-[#3a2210]/10 border border-[#8c6543]/40 rounded-sm p-3">
-                      <div className="flex justify-between items-center border-b border-[#8c6543]/30 pb-2 mb-3">
-                        <span className="text-[#3a2210] font-black text-xs">장비 강화 (+{currentEnhance} ➔ +{nextEnhanceLevel})</span>
-                        <button onClick={() => setEquipActionType(null)} className="text-[#8c6543] text-[10px] font-bold underline">이전</button>
-                      </div>
-
-                      {nextEnhanceLevel <= 15 ? (
-                        <>
-                          <div className="flex flex-col gap-2 mb-4">
-                            {/* 필요 재화 목록 */}
-                            <div className="flex justify-between items-center bg-[#3a2210]/10 p-2 rounded border border-[#8c6543]/20">
-                              <span className="text-[#5c3e23] font-bold text-xs">소모 골드</span>
-                              <span className={`font-black text-xs ${gold >= enhanceRecipe.goldCost ? 'text-[#3a2210]' : 'text-red-600'}`}>
-                                {enhanceRecipe.goldCost.toLocaleString()} G
-                              </span>
-                            </div>
-
-                            <div className="flex justify-between items-center bg-[#3a2210]/10 p-2 rounded border border-[#8c6543]/20">
-                              <span className="text-[#5c3e23] font-bold text-xs">{soulItemData?.name || "소모 영혼석"}</span>
-                              <span className={`font-black text-xs ${(items[soulItemId] || 0) >= enhanceRecipe.soulCost ? 'text-[#3a2210]' : 'text-red-600'}`}>
-                                {items[soulItemId] || 0} / {enhanceRecipe.soulCost}개
-                              </span>
-                            </div>
-
-                            <div className="flex justify-between items-center bg-[#3a2210]/10 p-2 rounded border border-[#8c6543]/20">
-                              <span className="text-[#5c3e23] font-bold text-xs">성공 확률</span>
-                              <span className="text-amber-800 font-black text-xs">{enhanceRecipe.successRate}%</span>
-                            </div>
-                          </div>
-
-                          <button 
-                            onClick={() => handleEnhanceEquip(selectedEquipPart, currentEquipState)}
-                            className="w-full bg-[#4a2c11] hover:bg-[#3a2210] text-[#f5d5a9] font-black text-xs py-2.5 rounded-sm transition-all border border-[#5c3e23] shadow-md active:scale-95 uppercase tracking-wider"
-                          >
-                            강화 시도
-                          </button>
-                        </>
-                      ) : (
-                        <div className="text-center text-[#5c3e23] font-bold text-xs py-4">최고 강화 단계에 도달했습니다.</div>
-                      )}
                     </div>
-                  )}
 
-                  {/* 🧬 [속성 진화 서브 패널] */}
-                  {equipActionType === 'evolve' && (
-                    <div className="flex flex-col bg-[#3a2210]/10 border border-[#8c6543]/40 rounded-sm p-3">
-                      <div className="flex justify-between items-center border-b border-[#8c6543]/30 pb-2 mb-3">
-                        <span className="text-[#3a2210] font-black text-xs">속성 진화 (Tier {currentEquipState.tier} ➔ {currentEquipState.tier + 1})</span>
-                        <button onClick={() => setEquipActionType(null)} className="text-[#8c6543] text-[10px] font-bold underline">이전</button>
-                      </div>
-
-                      {dbData?.evolutionRecipes && dbData.evolutionRecipes.length > 0 ? (
-                        <>
-                          {/* 레시피 선택 (티어 0일 경우 속성 선택) */}
-                          <div className="flex flex-col gap-2 mb-3 max-h-36 overflow-y-auto custom-scrollbar pr-1">
-                            {dbData.evolutionRecipes.map((recipe, idx) => {
-                              const targetDb = EQUIP_DATABASE[selectedEquipPart]?.evolutions[recipe.target];
-                              const isSelected = selectedEvolveTarget?.target === recipe.target || (dbData.evolutionRecipes.length === 1 && idx === 0);
-                              const matData = ITEM_DATABASE[recipe.material];
-                              const userMat = items[recipe.material] || 0;
-
-                              return (
-                                <div 
-                                  key={idx}
-                                  onClick={() => setSelectedEvolveTarget(recipe)}
-                                  className={`p-2 rounded border cursor-pointer transition-all flex flex-col gap-1 
-                                    ${isSelected ? 'bg-[#3a2210]/30 border-[#3a2210] shadow-sm' : 'bg-transparent border-[#8c6543]/30 hover:border-[#8c6543]'}`}
-                                >
-                                  <div className="flex justify-between items-center">
-                                    <span className="text-[#3a2210] font-black text-xs">{targetDb?.name}</span>
-                                    <span className="text-[#8c6543] font-bold text-[10px] uppercase">[{targetDb?.element}]</span>
-                                  </div>
-                                  <div className="flex justify-between items-center text-[10px]">
-                                    <span className="text-[#5c3e23]">{matData?.name || "필요 재료"}</span>
-                                    <span className={`font-bold ${userMat >= recipe.count ? 'text-green-800' : 'text-red-600'}`}>
-                                      {userMat} / {recipe.count}개
-                                    </span>
-                                  </div>
-                                </div>
-                              );
-                            })}
+                    {/* --- 기본 스탯 화면 --- */}
+                    {!equipActionType && (
+                      <div className="animate-[fadeIn_0.2s_ease-out]">
+                        <div className="bg-black/40 border border-[#a6845c]/20 rounded-sm p-3 mb-4 shadow-inner">
+                          <div className="text-[#a6845c] font-black text-[11px] mb-2 border-b border-[#a6845c]/20 pb-1 flex justify-between">
+                            <span className="tracking-widest">부여된 스탯</span>
                           </div>
+                          <div className="grid grid-cols-2 gap-2">
+                            {Object.entries(parsedItem.stats)
+                              .filter(([_, val]) => val > 0)
+                              .map(([key, val]) => (
+                                <div key={key} className="flex justify-between items-center">
+                                  <span className="text-[#8c6543] font-bold text-xs uppercase tracking-wider">{key}</span>
+                                  <span className="text-[#d8b486] font-black text-sm">+{val}</span>
+                                </div>
+                            ))}
+                          </div>
+                        </div>
 
+                        <div className="flex gap-2">
+                          <button 
+                            onClick={() => setEquipActionType('enhance')}
+                            className="flex-1 bg-[#2a1a10] hover:bg-[#3a2618] text-[#f5d5a9] font-bold text-[11px] py-2.5 rounded-sm transition-colors border border-[#8c6543]/50 shadow-md active:scale-95 tracking-widest outline-none"
+                          >
+                            장비 강화
+                          </button>
                           <button 
                             onClick={() => {
-                              const activeRecipe = selectedEvolveTarget || (dbData.evolutionRecipes.length === 1 ? dbData.evolutionRecipes[0] : null);
-                              if (!activeRecipe) {
-                                alert("진화할 속성 경로를 선택해 주세요!");
+                              if (currentEnhance < 10) {
+                                showToast("장비 진화는 +10 강화 이상\n달성 시에만 가능합니다!", 'error');
                                 return;
                               }
-                              handleEvolveEquip(selectedEquipPart, currentEquipState, activeRecipe);
+                              setEquipActionType('evolve');
                             }}
-                            className="w-full bg-[#1a1008] hover:bg-black text-amber-400 font-black text-xs py-2.5 rounded-sm transition-all border border-[#a6845c] shadow-md active:scale-95 uppercase tracking-wider"
+                            className={`flex-1 font-bold text-[11px] py-2.5 rounded-sm transition-colors border shadow-md active:scale-95 tracking-widest outline-none
+                              ${currentEnhance >= 10 
+                                ? 'bg-amber-950/40 hover:bg-amber-900/60 text-amber-400 border-amber-700/50 animate-pulse' 
+                                : 'bg-black/40 text-neutral-600 border-neutral-800 cursor-not-allowed'}`}
                           >
-                            속성 진화 실행
+                            속성 진화
                           </button>
-                        </>
-                      ) : (
-                        <div className="text-center text-[#5c3e23] font-bold text-xs py-4">더 이상 진화할 수 없는 최종 단계입니다.</div>
-                      )}
-                    </div>
-                  )}
+                        </div>
+                      </div>
+                    )}
 
+                    {/* --- 장비 강화 화면 --- */}
+                    {equipActionType === 'enhance' && (
+                      <div className="animate-[fadeIn_0.2s_ease-out]">
+                        <div className="flex justify-between items-center border-b border-[#a6845c]/30 pb-2 mb-3">
+                          <span className="text-[#d8b486] font-black text-[11px] tracking-widest">강화 (+{currentEnhance} ➔ +{nextEnhanceLevel})</span>
+                          <button onClick={() => setEquipActionType(null)} className="text-[#8c6543] text-[10px] font-bold hover:text-[#d8b486] transition-colors outline-none">뒤로</button>
+                        </div>
+
+                        {nextEnhanceLevel <= 15 ? (
+                          <>
+                            <div className="flex flex-col gap-1.5 mb-4">
+                              <div className="flex justify-between items-center bg-black/40 p-2 rounded-sm border border-[#a6845c]/20">
+                                <span className="text-[#a6845c] font-bold text-[10px] tracking-widest">소모 골드</span>
+                                <span className={`font-black text-[11px] tracking-wider ${gold >= enhanceRecipe.goldCost ? 'text-yellow-500' : 'text-red-500'}`}>
+                                  {enhanceRecipe.goldCost.toLocaleString()} G
+                                </span>
+                              </div>
+                              <div className="flex justify-between items-center bg-black/40 p-2 rounded-sm border border-[#a6845c]/20">
+                                <span className="text-[#a6845c] font-bold text-[10px] tracking-widest">{soulItemData?.name || "소모 영혼석"}</span>
+                                <span className={`font-black text-[11px] tracking-wider ${(items[soulItemId] || 0) >= enhanceRecipe.soulCost ? 'text-[#d8b486]' : 'text-red-500'}`}>
+                                  {items[soulItemId] || 0} / {enhanceRecipe.soulCost}
+                                </span>
+                              </div>
+                              <div className="flex justify-between items-center bg-black/40 p-2 rounded-sm border border-[#a6845c]/20">
+                                <span className="text-[#a6845c] font-bold text-[10px] tracking-widest">성공 확률</span>
+                                <span className="text-amber-500 font-black text-[11px] tracking-wider">{enhanceRecipe.successRate}%</span>
+                              </div>
+                            </div>
+                            <button 
+                              onClick={() => handleEnhanceEquip(selectedEquipPart, currentEquipState)}
+                              className="w-full bg-red-950/40 hover:bg-red-900/60 text-red-400 font-black text-[11px] py-2.5 rounded-sm transition-all border border-red-800/50 shadow-md active:scale-95 tracking-[0.2em] uppercase outline-none"
+                            >
+                              강화 시도
+                            </button>
+                          </>
+                        ) : (
+                          <div className="text-center text-[#8c6543] font-bold text-xs py-4">최고 강화 단계에 도달했습니다.</div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* --- 속성 진화 화면 --- */}
+                    {equipActionType === 'evolve' && (
+                      <div className="animate-[fadeIn_0.2s_ease-out]">
+                        <div className="flex justify-between items-center border-b border-[#a6845c]/30 pb-2 mb-3">
+                          <span className="text-[#d8b486] font-black text-[11px] tracking-widest">진화 (Tier {currentEquipState.tier} ➔ {currentEquipState.tier + 1})</span>
+                          <button onClick={() => setEquipActionType(null)} className="text-[#8c6543] text-[10px] font-bold hover:text-[#d8b486] transition-colors outline-none">뒤로</button>
+                        </div>
+
+                        {dbData?.evolutionRecipes && dbData.evolutionRecipes.length > 0 ? (
+                          <>
+                            <div className="flex flex-col gap-2 mb-4 max-h-[140px] overflow-y-auto custom-scrollbar pr-1">
+                              {dbData.evolutionRecipes.map((recipe, idx) => {
+                                const targetDb = EQUIP_DATABASE[selectedEquipPart]?.evolutions[recipe.target];
+                                const isSelected = selectedEvolveTarget?.target === recipe.target || (dbData.evolutionRecipes.length === 1 && idx === 0);
+                                const matData = ITEM_DATABASE[recipe.material];
+                                const userMat = items[recipe.material] || 0;
+
+                                return (
+                                  <div 
+                                    key={idx}
+                                    onClick={() => setSelectedEvolveTarget(recipe)}
+                                    className={`p-2 rounded-sm border cursor-pointer transition-all flex flex-col gap-1 
+                                      ${isSelected ? 'bg-amber-950/30 border-amber-600/50 shadow-sm' : 'bg-black/40 border-[#a6845c]/20 hover:border-[#a6845c]/50'}`}
+                                  >
+                                    <div className="flex justify-between items-center">
+                                      <span className={`font-black text-[11px] ${isSelected ? 'text-amber-400' : 'text-[#d8b486]'}`}>{targetDb?.name}</span>
+                                      <span className="text-[#8c6543] font-bold text-[9px] uppercase">[{targetDb?.element}]</span>
+                                    </div>
+                                    <div className="flex justify-between items-center text-[10px] mt-1">
+                                      <span className="text-[#a6845c] font-bold">{matData?.name || "필요 재료"}</span>
+                                      <span className={`font-black tracking-wider ${userMat >= recipe.count ? 'text-green-500' : 'text-red-500'}`}>
+                                        {userMat} / {recipe.count}
+                                      </span>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+
+                            <button 
+                              onClick={() => {
+                                const activeRecipe = selectedEvolveTarget || (dbData.evolutionRecipes.length === 1 ? dbData.evolutionRecipes[0] : null);
+                                if (!activeRecipe) {
+                                  showToast("진화할 속성 경로를 선택해 주세요!", 'error');
+                                  return;
+                                }
+                                handleEvolveEquip(selectedEquipPart, currentEquipState, activeRecipe);
+                              }}
+                              className="w-full bg-amber-950/40 hover:bg-amber-900/60 text-amber-400 font-black text-[11px] py-2.5 rounded-sm transition-all border border-amber-700/50 shadow-md active:scale-95 tracking-[0.2em] uppercase outline-none"
+                            >
+                              속성 진화 실행
+                            </button>
+                          </>
+                        ) : (
+                          <div className="text-center text-[#8c6543] font-bold text-xs py-4">더 이상 진화할 수 없는 최종 단계입니다.</div>
+                        )}
+                      </div>
+                    )}
+
+                  </div>
                 </div>
               </div>
             </div>
