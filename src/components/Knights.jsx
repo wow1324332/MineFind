@@ -23,6 +23,12 @@ const [selectedKnight, setSelectedKnight] = useState(null);
   // ✨ 장비 강화/진화 팝업 제어용 상태
   const [equipActionType, setEquipActionType] = useState(null); // 'enhance' 또는 'evolve'
   const [selectedEvolveTarget, setSelectedEvolveTarget] = useState(null); // 진화 선택 속성
+  // ✨ 토스트 알림 상태 및 함수
+  const [toastMessage, setToastMessage] = useState(null);
+  const showToast = (text, type = 'error') => {
+    setToastMessage({ text, type });
+    setTimeout(() => setToastMessage(null), 2500);
+  };
 
   // 🔨 [장비 강화 처리 함수]
   const handleEnhanceEquip = async (part, currentEquip) => {
@@ -71,17 +77,21 @@ const [selectedKnight, setSelectedKnight] = useState(null);
         [`inventory.items.${soulItemId}`]: increment(-costSoul)
       };
 
+      const equipPath = selectedKnight === 'knight_main' 
+        ? `equipment.${part}.enhance` 
+        : `knightStats.${selectedKnight}.equipment.${part}.enhance`;
+
       if (isSuccess) {
-        updates[`equipment.${part}.enhance`] = increment(1);
+        updates[equipPath] = increment(1);
         await updateDoc(userDocRef, updates);
-        alert(`🎉 강화 성공! [ +${nextLevel} ${parsedEquip[part]?.name} ] 달성!`);
+        showToast(`🎉 강화 성공! [ +${nextLevel} ${parsedEquip[part]?.name} ] 달성!`, 'success');
       } else {
         await updateDoc(userDocRef, updates);
-        alert(`💥 강화 실패... (성공 확률: ${recipe.successRate}%)\n영혼석과 골드가 소모되었습니다.`);
+        showToast(`💥 강화 실패...\n영혼석과 골드가 소모되었습니다.`, 'error');
       }
     } catch (error) {
       console.error("강화 처리 오류:", error);
-      alert("강화 도중 오류가 발생했습니다.");
+      showToast("강화 도중 오류가 발생했습니다.", 'error');
     }
   };
 
@@ -112,20 +122,25 @@ const [selectedKnight, setSelectedKnight] = useState(null);
 
     try {
       const userDocRef = doc(db, 'users', user.uid);
+      
+      const basePath = selectedKnight === 'knight_main' 
+        ? `equipment.${part}` 
+        : `knightStats.${selectedKnight}.equipment.${part}`;
+
       const updates = {
         [`inventory.items.${material}`]: increment(-count),
-        [`equipment.${part}.tier`]: nextTier,
-        [`equipment.${part}.element`]: nextElement,
-        [`equipment.${part}.enhance`]: 0 // 💡 진화 시 강화 수치 0 초기화!
+        [`${basePath}.tier`]: nextTier,
+        [`${basePath}.element`]: nextElement,
+        [`${basePath}.enhance`]: 0
       };
 
       await updateDoc(userDocRef, updates);
-      alert(`✨ 진화 성공! 새로운 속성 장비로 거듭났습니다!\n(강화 수치가 +0으로 초기화되었습니다)`);
+      showToast(`✨ 진화 성공!\n새로운 속성 장비로 거듭났습니다!`, 'success');
       setEquipActionType(null);
       setSelectedEvolveTarget(null);
     } catch (error) {
       console.error("진화 처리 오류:", error);
-      alert("진화 도중 오류가 발생했습니다.");
+      showToast("진화 도중 오류가 발생했습니다.", 'error');
     }
   };
 
@@ -187,10 +202,18 @@ const [selectedKnight, setSelectedKnight] = useState(null);
   // 🛡️ 장비 및 스탯 계산 로직 
   // =========================================
   const defaultEquip = { tier: 0, element: 'neutral', enhance: 0 };
-  const userEquipment = userData.equipment || {
+  let userEquipment = {
     WEAPON: { ...defaultEquip }, HELMET: { ...defaultEquip },
     SHIELD: { ...defaultEquip }, ARMOR: { ...defaultEquip }
   };
+
+  if (selectedKnight) {
+    if (selectedKnight === 'knight_main' && userData.equipment) {
+      userEquipment = { ...userEquipment, ...userData.equipment };
+    } else if (userData.knightStats?.[selectedKnight]?.equipment) {
+      userEquipment = { ...userEquipment, ...userData.knightStats[selectedKnight].equipment };
+    }
+  }
 
   let activeKnightBase = null;
   let activeKnightLevel = 1;
@@ -470,7 +493,7 @@ setTimeout(async () => {
                         className="w-[21%] aspect-square max-w-[60px] bg-[#3a2210]/10 border border-[#5c3e23]/60 rounded-sm relative flex items-center justify-center shadow-[inset_0_2px_5px_rgba(0,0,0,0.2)] cursor-pointer hover:border-[#3a2210] transition-colors group overflow-hidden"
                       >
                         {equipItem.enhance > 0 && (
-                          <span className="absolute -top-1 -left-1 bg-black/80 text-yellow-500 font-black text-[10px] px-1 rounded-sm shadow-md border border-[#5c3e23] z-20">
+                          <span className="absolute bottom-0 right-0.5 text-yellow-400 font-black text-[11px] drop-shadow-[0_1px_2px_rgba(0,0,0,1)] z-20 italic pointer-events-none">
                             +{equipItem.enhance}
                           </span>
                         )}
@@ -528,7 +551,7 @@ setTimeout(async () => {
                   <div className="flex flex-col items-center mb-3 mt-1">
                     <div className="w-16 h-16 bg-[#3a2210]/10 border border-[#5c3e23] rounded-sm flex items-center justify-center shadow-inner mb-2 relative overflow-hidden">
                       {currentEnhance > 0 && (
-                        <span className="absolute -top-1.5 -left-1.5 bg-black/80 text-yellow-500 font-black text-xs px-1.5 py-0.5 rounded-sm shadow-md border border-[#5c3e23] z-20">
+                        <span className="absolute bottom-0 right-1 text-yellow-400 font-black text-sm drop-shadow-[0_2px_3px_rgba(0,0,0,1)] z-20 italic pointer-events-none">
                           +{currentEnhance}
                         </span>
                       )}
@@ -986,6 +1009,18 @@ setTimeout(async () => {
   // =========================================
   return (
     <div className="relative min-h-screen bg-black text-white flex flex-col items-center px-6 pb-6 pt-0 animate-[fadeIn_0.5s_ease-in-out] overflow-hidden">
+
+      {toastMessage && (
+        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-[9999] flex flex-col items-center justify-center pointer-events-none w-[90%] max-w-[320px]"
+             style={{ animation: 'toastFadeInOut 2.5s ease-in-out forwards' }}>
+          <div className={`bg-black/85 backdrop-blur-md border px-5 py-3 rounded-md flex items-center justify-center text-center shadow-xl w-full
+            ${toastMessage.type === 'success' ? 'border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'border-red-900/50 shadow-[0_0_15px_rgba(220,38,38,0.5)]'}`}>
+            <span className={`font-bold text-[12px] tracking-wide leading-relaxed whitespace-pre-line ${toastMessage.type === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+              {toastMessage.text}
+            </span>
+          </div>
+        </div>
+      )}
       
       {/* 🎬 애니메이션 키프레임 */}
       <style>{`
