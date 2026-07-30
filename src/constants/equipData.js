@@ -38,7 +38,7 @@ export const EQUIP_DATABASE = {
         image: '/equips/woodensword.webp',
         element: 'neutral',
         baseStat: { str: 3, agi: 0, int: 0, vit: 0, luk: 0 },
-        desc: '볼품 없는 초보 수련 기사의 목검'
+        desc: '볼품 없는 초보 수련 기사의 목검',
         evolutionRecipes: [
           { target: 'tier_1_fire', material: 'mat_fire_1', count: 10 },
           { target: 'tier_1_water', material: 'mat_water_1', count: 10 },
