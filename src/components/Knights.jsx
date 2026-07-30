@@ -293,7 +293,14 @@ const [selectedKnight, setSelectedKnight] = useState(null);
       currentStats.luk = Math.floor(currentStats.luk * 1.2);
     }
 
-    parsedEquip[part] = { ...state, name: dbData.name, image: dbData.image, stats: currentStats, isSynergy };
+    parsedEquip[part] = { 
+      ...state, 
+      name: dbData.name, 
+      image: dbData.image, 
+      stats: currentStats, 
+      isSynergy,
+      desc: dbData.desc || dbData.description 
+    };
 
     equipBonus.str += currentStats.str;
     equipBonus.agi += currentStats.agi;
@@ -625,9 +632,9 @@ setTimeout(async () => {
                             시너지 +20%
                           </span>
                         )}
-                        {/* 💡 판타지풍 장비 설명 추가 */}
-                        <span className="text-[#a6845c] text-[10px] font-medium leading-relaxed break-keep opacity-90 px-2 text-center">
-                          {dbData?.desc || dbData?.description || "오랜 세월을 견뎌낸 고대의 장비.\n착용자에게 숨겨진 힘을 부여한다."}
+                        {/* 💡 판타지풍 장비 설명 및 whitespace-pre-line 속성 추가 */}
+                        <span className="text-[#a6845c] text-[10px] font-medium leading-relaxed break-keep opacity-90 px-2 text-center whitespace-pre-line">
+                          {parsedItem.desc || "오랜 세월을 견뎌낸 고대의 장비.\n착용자에게 숨겨진 힘을 부여한다."}
                         </span>
                       </div>
                     </div>
