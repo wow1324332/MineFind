@@ -70,19 +70,28 @@ const [selectedKnight, setSelectedKnight] = useState(null);
     const roll = Math.floor(Math.random() * 100) + 1;
     const isSuccess = roll <= recipe.successRate;
 
-    try {
+     try {
       const userDocRef = doc(db, 'users', user.uid);
       const updates = {
         'inventory.gold': increment(-costGold),
         [`inventory.items.${soulItemId}`]: increment(-costSoul)
       };
 
+      // 💡 안전한 덮어쓰기를 위해 현재 장비 상태를 통째로 복사해서 수치만 +1 올림
+      const newEquipmentMap = { 
+        ...userEquipment, 
+        [part]: { 
+          ...userEquipment[part], 
+          enhance: (userEquipment[part]?.enhance || 0) + 1 
+        } 
+      };
+
       const equipPath = selectedKnight === 'knight_main' 
-        ? `equipment.${part}.enhance` 
-        : `knightStats.${selectedKnight}.equipment.${part}.enhance`;
+        ? 'equipment' 
+        : `knightStats.${selectedKnight}.equipment`;
 
       if (isSuccess) {
-        updates[equipPath] = increment(1);
+        updates[equipPath] = newEquipmentMap; // 💡 개별 기사 경로에 통째로 저장!
         await updateDoc(userDocRef, updates);
         showToast(`🎉 강화 성공! [ +${nextLevel} ${parsedEquip[part]?.name} ] 달성!`, 'success');
       } else {
@@ -123,15 +132,24 @@ const [selectedKnight, setSelectedKnight] = useState(null);
     try {
       const userDocRef = doc(db, 'users', user.uid);
       
-      const basePath = selectedKnight === 'knight_main' 
-        ? `equipment.${part}` 
-        : `knightStats.${selectedKnight}.equipment.${part}`;
+      // 💡 안전한 덮어쓰기를 위해 현재 장비 상태를 복사 후 티어와 속성을 덮어씌움
+      const newEquipmentMap = { 
+        ...userEquipment, 
+        [part]: { 
+          ...userEquipment[part], 
+          tier: nextTier,
+          element: nextElement,
+          enhance: 0 
+        } 
+      };
+
+      const equipPath = selectedKnight === 'knight_main' 
+        ? 'equipment' 
+        : `knightStats.${selectedKnight}.equipment`;
 
       const updates = {
         [`inventory.items.${material}`]: increment(-count),
-        [`${basePath}.tier`]: nextTier,
-        [`${basePath}.element`]: nextElement,
-        [`${basePath}.enhance`]: 0
+        [equipPath]: newEquipmentMap // 💡 개별 기사 경로에 통째로 저장!
       };
 
       await updateDoc(userDocRef, updates);
@@ -380,6 +398,28 @@ setTimeout(async () => {
     const passiveSkillData = passiveId ? SKILL_DATABASE[passiveId] : null;
     return (
       <div className="relative min-h-screen bg-black text-white flex flex-col items-center animate-[fadeIn_0.3s_ease-in-out] overflow-hidden">
+        
+        {/* ✨ 누락되었던 상세 화면용 토스트 UI와 애니메이션 CSS 추가 */}
+        {toastMessage && (
+          <div className="fixed top-16 left-1/2 -translate-x-1/2 z-[9999] flex flex-col items-center justify-center pointer-events-none w-[90%] max-w-[320px]"
+               style={{ animation: 'toastFadeInOut 2.5s ease-in-out forwards' }}>
+            <div className={`bg-black/85 backdrop-blur-md border px-5 py-3 rounded-md flex items-center justify-center text-center shadow-xl w-full
+              ${toastMessage.type === 'success' ? 'border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'border-red-900/50 shadow-[0_0_15px_rgba(220,38,38,0.5)]'}`}>
+              <span className={`font-bold text-[12px] tracking-wide leading-relaxed whitespace-pre-line ${toastMessage.type === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+                {toastMessage.text}
+              </span>
+            </div>
+          </div>
+        )}
+        <style>{`
+          @keyframes toastFadeInOut {
+            0% { opacity: 0; transform: translate(-50%, -10px); }
+            15% { opacity: 1; transform: translate(-50%, 0); }
+            85% { opacity: 1; transform: translate(-50%, 0); }
+            100% { opacity: 0; transform: translate(-50%, -10px); }
+          }
+        `}</style>
+
         <div 
           className="absolute inset-0 bg-cover bg-top z-0 opacity-100"
           style={{ backgroundImage: `url(${activeKnightBase.bgImage || activeKnightBase.fullImage || activeKnightBase.image})` }}
@@ -430,7 +470,7 @@ setTimeout(async () => {
                 </div>
               </div>
               
-{/* ✨ 스킬 2칸 (액티브 & 패시브) */}
+              {/* ✨ 스킬 2칸 (액티브 & 패시브) */}
               <div className="flex items-center gap-3 mb-1">
                 {/* 액티브 스킬 슬롯 */}
                 <div 
