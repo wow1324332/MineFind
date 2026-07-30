@@ -23,15 +23,15 @@ const [selectedKnight, setSelectedKnight] = useState(null);
   // ✨ 장비 강화/진화 팝업 제어용 상태
   const [equipActionType, setEquipActionType] = useState(null); // 'enhance' 또는 'evolve'
   const [selectedEvolveTarget, setSelectedEvolveTarget] = useState(null); // 진화 선택 속성
+  const [selectedSouls, setSelectedSouls] = useState({}); // 💡 무속성 장비용 다중 영혼석 선택 상태
   // ✨ 토스트 알림 상태 및 함수
   const [toastMessage, setToastMessage] = useState(null);
   const showToast = (text, type = 'error') => {
     setToastMessage({ text, type });
     setTimeout(() => setToastMessage(null), 2500);
   };
-  // 🔨 [장비 강화 처리 함수]
-  // 💡 targetSoulId를 화면에서 계산해서 던져주도록 파라미터 추가!
-  const handleEnhanceEquip = async (part, currentEquip, targetSoulId) => {
+  // 🔨 [장비 강화 처리 함수] (다중 영혼석 소비 지원)
+  const handleEnhanceEquip = async (part, currentEquip, soulSelection) => {
     if (!user || !currentEquip) return;
 
     const currentEnhance = currentEquip.enhance || 0;
@@ -44,35 +44,36 @@ const [selectedKnight, setSelectedKnight] = useState(null);
     const recipe = ENHANCE_TABLE[nextLevel];
     if (!recipe) return;
 
-    // 필요 재화 검사
     const costGold = recipe.goldCost;
-    const costSoul = recipe.soulCost;
-    
-    // 💡 화면에서 넘겨준 정확한 영혼석 ID로 개수를 셉니다.
-    const userSoulCount = items[targetSoulId] || 0;
 
     if (gold < costGold) {
       showToast(`골드가 부족합니다!\n(필요: ${costGold.toLocaleString()} G)`, 'error');
       return;
     }
-    if (userSoulCount < costSoul) {
-      const soulName = ITEM_DATABASE[targetSoulId]?.name || "영혼석";
-      showToast(`${soulName}이(가) 부족합니다!\n(필요: ${costSoul}개 / 보유: ${userSoulCount}개)`, 'error');
-      return;
+
+    // 💡 선택된 영혼석들이 유저 가방에 충분히 있는지 꼼꼼하게 검사
+    for (const [sId, sCount] of Object.entries(soulSelection)) {
+      if (sCount > 0 && (items[sId] || 0) < sCount) {
+        const sName = ITEM_DATABASE[sId]?.name || "영혼석";
+        showToast(`${sName}이(가) 부족합니다!`, 'error');
+        return;
+      }
     }
 
-    // 강화 확률 판정 (1 ~ 100)
     const roll = Math.floor(Math.random() * 100) + 1;
     const isSuccess = roll <= recipe.successRate;
 
-     try {
+    try {
       const userDocRef = doc(db, 'users', user.uid);
       const updates = {
-        'inventory.gold': increment(-costGold),
-        [`inventory.items.${soulItemId}`]: increment(-costSoul)
+        'inventory.gold': increment(-costGold)
       };
 
-      // 💡 안전한 덮어쓰기를 위해 현재 장비 상태를 통째로 복사해서 수치만 +1 올림
+      // 💡 소모하기로 한 영혼석들을 전부 - 차감시킵니다.
+      for (const [sId, sCount] of Object.entries(soulSelection)) {
+        if (sCount > 0) updates[`inventory.items.${sId}`] = increment(-sCount);
+      }
+
       const newEquipmentMap = { 
         ...userEquipment, 
         [part]: { 
@@ -86,13 +87,14 @@ const [selectedKnight, setSelectedKnight] = useState(null);
         : `knightStats.${selectedKnight}.equipment`;
 
       if (isSuccess) {
-        updates[equipPath] = newEquipmentMap; // 💡 개별 기사 경로에 통째로 저장!
+        updates[equipPath] = newEquipmentMap; 
         await updateDoc(userDocRef, updates);
-        showToast(`강화 성공, [ +${nextLevel} ${parsedEquip[part]?.name} ]`, 'success');
+        showToast(`🎉 강화 성공! [ +${nextLevel} ${parsedEquip[part]?.name} ] 달성!`, 'success');
       } else {
         await updateDoc(userDocRef, updates);
-        showToast(`강화 실패...\n영혼석과 골드가 소모되었습니다.`, 'error');
+        showToast(`💥 강화 실패...\n영혼석과 골드가 소모되었습니다.`, 'error');
       }
+      setSelectedSouls({}); // 완료 후 선택 초기화
     } catch (error) {
       console.error("강화 처리 오류:", error);
       showToast("강화 도중 오류가 발생했습니다.", 'error');
@@ -211,7 +213,7 @@ const [selectedKnight, setSelectedKnight] = useState(null);
     : ['knight_main', ...dbUnlocked];
   const maxSlots = 6; 
 
-// =========================================
+  // =========================================
   // 🛡️ 장비 및 스탯 계산 로직 
   // =========================================
   const defaultEquip = { tier: 0, element: 'neutral', enhance: 0 };
@@ -711,43 +713,114 @@ setTimeout(async () => {
                       </div>
                     )}
 
-                    {/* --- 장비 강화 화면 (수정 사항 없음) --- */}
-                    {equipActionType === 'enhance' && (
-                      <div className="animate-[fadeIn_0.2s_ease-out]">
-                        <div className="flex justify-between items-center border-b border-[#a6845c]/30 pb-2 mb-3">
-                          <span className="text-[#d8b486] font-black text-[11px] tracking-widest">강화 (+{currentEnhance} ➔ +{nextEnhanceLevel})</span>
-                          <button onClick={() => setEquipActionType(null)} className="text-[#8c6543] text-[10px] font-bold hover:text-[#d8b486] transition-colors outline-none">뒤로</button>
-                        </div>
+                    {/* --- 장비 강화 화면 (무속성 자유 분배 지원) --- */}
+                    {equipActionType === 'enhance' && (() => {
+                      const isNeutral = (currentEquipState.element || 'neutral') === 'neutral';
+                      const requiredSoul = enhanceRecipe?.soulCost || 0;
+                      
+                      const elementToSoulMap = {
+                        fire: 'con_soul_1', water: 'con_soul_2', poison: 'con_soul_3',
+                        light: 'con_soul_4', ice: 'con_soul_5', cure: 'con_soul_6', vain: 'con_soul_7'
+                      };
+                      
+                      const specificSoulId = isNeutral ? null : elementToSoulMap[currentEquipState.element];
+                      const totalSelected = isNeutral ? Object.values(selectedSouls).reduce((a, b) => a + b, 0) : 0;
 
-                        {nextEnhanceLevel <= 15 ? (
-                          <>
-                            <div className="flex flex-col gap-1.5 mb-4">
-                              <div className="flex justify-between items-center bg-black/40 p-2 rounded-sm border border-[#a6845c]/20">
+                      return (
+                        <div className="animate-[fadeIn_0.2s_ease-out]">
+                          <div className="flex justify-between items-center border-b border-[#a6845c]/30 pb-2 mb-3">
+                            <span className="text-[#d8b486] font-black text-[11px] tracking-widest">강화 (+{currentEnhance} ➔ +{nextEnhanceLevel})</span>
+                            <button onClick={() => { setEquipActionType(null); setSelectedSouls({}); }} className="text-[#8c6543] text-[10px] font-bold hover:text-[#d8b486] transition-colors outline-none">뒤로</button>
+                          </div>
+
+                          {nextEnhanceLevel <= 15 ? (
+                            <>
+                              <div className="flex justify-between items-center bg-black/40 p-2 rounded-sm border border-[#a6845c]/20 mb-2">
                                 <span className="text-[#a6845c] font-bold text-[10px] tracking-widest">소모 골드</span>
                                 <span className={`font-black text-[11px] tracking-wider ${gold >= enhanceRecipe.goldCost ? 'text-yellow-500' : 'text-red-500'}`}>
                                   {enhanceRecipe.goldCost.toLocaleString()} G
                                 </span>
                               </div>
-                            <div className="flex justify-between items-center bg-black/40 p-2 rounded-sm border border-[#a6845c]/20">
-                                {/* 💡 (무속성용) 속성 영혼석 중 조건을 만족하는 녀석의 이름이 뜹니다! */}
-                                <span className="text-[#a6845c] font-bold text-[10px] tracking-widest">{soulItemData?.name || "소모 영혼석"}</span>
-                                <span className={`font-black text-[11px] tracking-wider ${(items[displaySoulId] || 0) >= enhanceRecipe.soulCost ? 'text-[#d8b486]' : 'text-red-500'}`}>
-                                  {items[displaySoulId] || 0} / {enhanceRecipe.soulCost}
-                                </span>
-                              </div>
-                            </div>
-                            <button 
-                              onClick={() => handleEnhanceEquip(selectedEquipPart, currentEquipState, displaySoulId)}
-                              className="w-full bg-red-950/40 hover:bg-red-900/60 text-red-400 font-black text-[11px] py-2.5 rounded-sm transition-all border border-red-800/50 shadow-md active:scale-95 tracking-[0.2em] uppercase outline-none"
-                            >
-                              강화 시도
-                            </button>
-                          </>
-                        ) : (
-                          <div className="text-center text-[#8c6543] font-bold text-xs py-4">최고 강화 단계에 도달했습니다.</div>
-                        )}
-                      </div>
-                    )}
+
+                              {/* 💡 0티어(무속성)일 경우: 여러 영혼석을 조합해서 소비 */}
+                              {isNeutral ? (
+                                <div className="flex flex-col border border-[#a6845c]/20 bg-black/40 rounded-sm mb-4">
+                                  <div className="flex justify-between items-center p-2 border-b border-[#a6845c]/20">
+                                    <span className="text-[#a6845c] font-bold text-[10px] tracking-widest">영혼석 자유 선택</span>
+                                    <span className={`font-black text-[11px] tracking-wider ${totalSelected === requiredSoul ? 'text-green-400' : 'text-red-400'}`}>
+                                      {totalSelected} / {requiredSoul}
+                                    </span>
+                                  </div>
+                                  <div className="flex flex-col gap-1 p-1 max-h-[140px] overflow-y-auto custom-scrollbar">
+                                    {Object.values(elementToSoulMap).map(soulId => {
+                                      const soulData = ITEM_DATABASE[soulId];
+                                      const owned = items[soulId] || 0;
+                                      const selected = selectedSouls[soulId] || 0;
+                                      
+                                      if (owned === 0 && selected === 0) return null; // 없는 영혼석은 숨김
+                                      
+                                      return (
+                                        <div key={soulId} className="flex justify-between items-center bg-[#1a1008]/50 p-1.5 rounded-sm">
+                                          <div className="flex items-center gap-2">
+                                            <img src={soulData?.image || soulData?.icon} alt="soul" className="w-5 h-5 object-contain" />
+                                            <div className="flex flex-col text-left">
+                                              <span className="text-[#d8b486] text-[9px] font-bold">{soulData?.name}</span>
+                                              <span className="text-[#8c6543] text-[8px]">보유: {owned}</span>
+                                            </div>
+                                          </div>
+                                          <div className="flex items-center gap-1.5">
+                                            <button 
+                                              onClick={() => setSelectedSouls(p => ({...p, [soulId]: Math.max(0, (p[soulId]||0)-1)}))}
+                                              className="w-5 h-5 bg-[#3a2210] hover:bg-[#5c3e23] text-[#f5d5a9] font-black rounded-sm flex items-center justify-center active:scale-90 transition-colors outline-none"
+                                            >-</button>
+                                            <span className="text-white font-black text-[10px] w-3 text-center">{selected}</span>
+                                            <button 
+                                              onClick={() => {
+                                                if (totalSelected < requiredSoul && selected < owned) {
+                                                  setSelectedSouls(p => ({...p, [soulId]: (p[soulId]||0)+1}))
+                                                }
+                                              }}
+                                              className="w-5 h-5 bg-[#3a2210] text-[#f5d5a9] font-black rounded-sm flex items-center justify-center active:scale-90 transition-colors opacity-90 hover:bg-[#5c3e23] hover:opacity-100 disabled:opacity-30 disabled:grayscale outline-none"
+                                              disabled={totalSelected >= requiredSoul || selected >= owned}
+                                            >+</button>
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              ) : (
+                                /* 💡 1티어 이상(속성 장비)일 경우: 전용 영혼석 1가지만 소모 */
+                                <div className="flex flex-col gap-1.5 mb-4">
+                                  <div className="flex justify-between items-center bg-black/40 p-2 rounded-sm border border-[#a6845c]/20">
+                                    <span className="text-[#a6845c] font-bold text-[10px] tracking-widest">{ITEM_DATABASE[specificSoulId]?.name || "소모 영혼석"}</span>
+                                    <span className={`font-black text-[11px] tracking-wider ${(items[specificSoulId] || 0) >= requiredSoul ? 'text-[#d8b486]' : 'text-red-500'}`}>
+                                      {items[specificSoulId] || 0} / {requiredSoul}
+                                    </span>
+                                  </div>
+                                </div>
+                              )}
+
+                              <button 
+                                onClick={() => {
+                                  if (isNeutral && totalSelected !== requiredSoul) {
+                                    showToast(`영혼석을 ${requiredSoul}개 맞춰서 선택해주세요.`, 'error');
+                                    return;
+                                  }
+                                  const consumedSouls = isNeutral ? selectedSouls : { [specificSoulId]: requiredSoul };
+                                  handleEnhanceEquip(selectedEquipPart, currentEquipState, consumedSouls);
+                                }}
+                                className="w-full bg-red-950/40 hover:bg-red-900/60 text-red-400 font-black text-[11px] py-2.5 rounded-sm transition-all border border-red-800/50 shadow-md active:scale-95 tracking-[0.2em] uppercase outline-none"
+                              >
+                                강화 시도
+                              </button>
+                            </>
+                          ) : (
+                            <div className="text-center text-[#8c6543] font-bold text-xs py-4">최고 강화 단계에 도달했습니다.</div>
+                          )}
+                        </div>
+                      );
+                    })()}
 
                     {/* --- 속성 진화 화면 (수정 사항 없음) --- */}
                     {equipActionType === 'evolve' && (
