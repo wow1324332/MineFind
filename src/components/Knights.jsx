@@ -654,7 +654,7 @@ setTimeout(async () => {
                         <button 
                           onClick={() => {
                             if (currentEnhance < 10) {
-                              alert("장비 진화는 +10 강화 이상 달성 시에만 가능합니다!");
+                              showToast("장비 진화는 +10 강화 이상\n달성 시에만 가능합니다!", 'error');
                               return;
                             }
                             setEquipActionType('evolve');
