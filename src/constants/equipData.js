@@ -2,21 +2,21 @@
 
 // 🎲 1. 강화 확률 및 비용 테이블 (1강 ~ 15강)
 export const ENHANCE_TABLE = {
-  1:  { successRate: 100, soulCost: 1,  goldCost: 500 },
-  2:  { successRate: 95,  soulCost: 2,  goldCost: 1000 },
-  3:  { successRate: 90,  soulCost: 3,  goldCost: 1500 },
-  4:  { successRate: 85,  soulCost: 4,  goldCost: 2000 },
-  5:  { successRate: 80,  soulCost: 5,  goldCost: 3000 },
-  6:  { successRate: 70,  soulCost: 7,  goldCost: 4500 },
-  7:  { successRate: 60,  soulCost: 9,  goldCost: 6000 },
-  8:  { successRate: 50,  soulCost: 11, goldCost: 8000 },
-  9:  { successRate: 45,  soulCost: 13, goldCost: 10000 },
-  10: { successRate: 40,  soulCost: 15, goldCost: 15000 }, // ✨ 진화 가능 구간
-  11: { successRate: 30,  soulCost: 20, goldCost: 20000 },
-  12: { successRate: 20,  soulCost: 25, goldCost: 25000 },
-  13: { successRate: 15,  soulCost: 30, goldCost: 30000 },
-  14: { successRate: 10,  soulCost: 40, goldCost: 40000 },
-  15: { successRate: 5,   soulCost: 50, goldCost: 50000 }, // 👑 MAX
+  1:  { successRate: 100, reqExp: 100,  goldCost: 500 },
+  2:  { successRate: 95,  reqExp: 200,  goldCost: 1000 },
+  3:  { successRate: 90,  reqExp: 400,  goldCost: 1500 },
+  4:  { successRate: 85,  reqExp: 800,  goldCost: 2000 },
+  5:  { successRate: 80,  reqExp: 1500, goldCost: 3000 },
+  6:  { successRate: 70,  reqExp: 2500, goldCost: 4500 },
+  7:  { successRate: 60,  reqExp: 4000, goldCost: 6000 },
+  8:  { successRate: 50,  reqExp: 6000, goldCost: 8000 },
+  9:  { successRate: 45,  reqExp: 8500, goldCost: 10000 },
+  10: { successRate: 40,  reqExp: 12000, goldCost: 15000 }, // ✨ 진화 가능 구간
+  11: { successRate: 30,  reqExp: 16000, goldCost: 20000 },
+  12: { successRate: 20,  reqExp: 22000, goldCost: 25000 },
+  13: { successRate: 15,  reqExp: 30000, goldCost: 30000 },
+  14: { successRate: 10,  reqExp: 45000, goldCost: 40000 },
+  15: { successRate: 5,   reqExp: 70000, goldCost: 50000 }, // 👑 MAX
 };
 
 export const EQUIP_DATABASE = {
@@ -40,13 +40,13 @@ export const EQUIP_DATABASE = {
         baseStat: { str: 3, agi: 0, int: 0, vit: 0, luk: 0 },
         desc: '볼품 없는 초보 수련 기사의 목검',
         evolutionRecipes: [
-          { target: 'tier_1_fire', material: 'mat_fire_1', count: 10 },
-          { target: 'tier_1_water', material: 'mat_water_1', count: 10 },
-          { target: 'tier_1_poison', material: 'mat_poison_1', count: 10 },
-          { target: 'tier_1_light', material: 'mat_light_1', count: 10 },
-          { target: 'tier_1_ice', material: 'mat_ice_1', count: 10 },
-          { target: 'tier_1_cure', material: 'mat_cure_1', count: 10 },
-          { target: 'tier_1_vain', material: 'mat_vain_1', count: 10 }
+          { target: 'tier_1_fire', material: 'con_soul_1', count: 20 },
+          { target: 'tier_1_water', material: 'con_soul_2', count: 20 },
+          { target: 'tier_1_poison', material: 'con_soul_3', count: 20 },
+          { target: 'tier_1_light', material: 'con_soul_4', count: 20 },
+          { target: 'tier_1_ice', material: 'con_soul_5', count: 20 },
+          { target: 'tier_1_cure', material: 'con_soul_6', count: 20 },
+          { target: 'tier_1_vain', material: 'con_soul_7', count: 20 }
         ]
       },
 
@@ -56,14 +56,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/weapon_fire_1.webp',
         element: 'fire',
         baseStat: { str: 25, agi: 5, int: 0, vit: 0, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_2_fire', material: 'mat_fire_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_fire', material: 'con_soul_1', count: 30 }]
       },
       'tier_2_fire': {
         name: '업화의 대검',
         image: '/equips/weapon_fire_2.webp',
         element: 'fire',
         baseStat: { str: 55, agi: 10, int: 0, vit: 0, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_3_fire', material: 'mat_fire_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_fire', material: 'con_soul_1', count: 50 }]
       },
       'tier_3_fire': {
         name: '단탈리온의 심장 베기',
@@ -79,14 +79,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/weapon_water_1.webp',
         element: 'water',
         baseStat: { str: 22, agi: 8, int: 0, vit: 0, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_2_water', material: 'mat_water_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_water', material: 'con_soul_2', count: 30 }]
       },
       'tier_2_water': {
         name: '심연의 절단기',
         image: '/equips/weapon_water_2.webp',
         element: 'water',
         baseStat: { str: 50, agi: 15, int: 0, vit: 0, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_3_water', material: 'mat_water_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_water', material: 'con_soul_2', count: 50 }]
       },
       'tier_3_water': {
         name: '바알의 대해일',
@@ -102,14 +102,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/weapon_poison_1.webp',
         element: 'poison',
         baseStat: { str: 15, agi: 15, int: 0, vit: 0, luk: 5 },
-        evolutionRecipes: [{ target: 'tier_2_poison', material: 'mat_poison_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_poison', material: 'con_soul_3', count: 30 }]
       },
       'tier_2_poison': {
         name: '암살자의 독니',
         image: '/equips/weapon_poison_2.webp',
         element: 'poison',
         baseStat: { str: 35, agi: 35, int: 0, vit: 0, luk: 15 },
-        evolutionRecipes: [{ target: 'tier_3_poison', material: 'mat_poison_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_poison', material: 'con_soul_3', count: 50 }]
       },
       'tier_3_poison': {
         name: '벨리알의 맹독 쐐기',
@@ -125,14 +125,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/weapon_light_1.webp',
         element: 'light',
         baseStat: { str: 20, agi: 5, int: 10, vit: 0, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_2_light', material: 'mat_light_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_light', material: 'con_soul_4', count: 30 }]
       },
       'tier_2_light': {
         name: '빛의 심판자',
         image: '/equips/weapon_light_2.webp',
         element: 'light',
         baseStat: { str: 45, agi: 10, int: 25, vit: 0, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_3_light', material: 'mat_light_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_light', material: 'con_soul_4', count: 50 }]
       },
       'tier_3_light': {
         name: '루시퍼의 광휘',
@@ -148,14 +148,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/weapon_ice_1.webp',
         element: 'ice',
         baseStat: { str: 22, agi: 10, int: 0, vit: 0, luk: 5 },
-        evolutionRecipes: [{ target: 'tier_2_ice', material: 'mat_ice_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_ice', material: 'con_soul_5', count: 30 }]
       },
       'tier_2_ice': {
         name: '절대영도의 칼날',
         image: '/equips/weapon_ice_2.webp',
         element: 'ice',
         baseStat: { str: 48, agi: 20, int: 0, vit: 0, luk: 15 },
-        evolutionRecipes: [{ target: 'tier_3_ice', material: 'mat_ice_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_ice', material: 'con_soul_5', count: 50 }]
       },
       'tier_3_ice': {
         name: '아몬의 빙결검',
@@ -171,14 +171,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/weapon_cure_1.webp',
         element: 'cure',
         baseStat: { str: 10, agi: 0, int: 25, vit: 0, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_2_cure', material: 'mat_cure_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_cure', material: 'con_soul_6', count: 30 }]
       },
       'tier_2_cure': {
         name: '생명의 잎날',
         image: '/equips/weapon_cure_2.webp',
         element: 'cure',
         baseStat: { str: 20, agi: 0, int: 60, vit: 0, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_3_cure', material: 'mat_cure_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_cure', material: 'con_soul_6', count: 50 }]
       },
       'tier_3_cure': {
         name: '마르바스의 치유검',
@@ -194,14 +194,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/weapon_vain_1.webp',
         element: 'vain',
         baseStat: { str: 35, agi: 0, int: 0, vit: 0, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_2_vain', material: 'mat_vain_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_vain', material: 'con_soul_7', count: 30 }]
       },
       'tier_2_vain': {
         name: '허무의 대낫',
         image: '/equips/weapon_vain_2.webp',
         element: 'vain',
         baseStat: { str: 75, agi: 0, int: 0, vit: 0, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_3_vain', material: 'mat_vain_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_vain', material: 'con_soul_7', count: 50 }]
       },
       'tier_3_vain': {
         name: '디아블로의 절망',
@@ -231,13 +231,13 @@ export const EQUIP_DATABASE = {
         element: 'neutral',
         baseStat: { str: 0, agi: 0, int: 0, vit: 5, luk: 0 },
         evolutionRecipes: [
-          { target: 'tier_1_fire', material: 'mat_fire_1', count: 10 },
-          { target: 'tier_1_water', material: 'mat_water_1', count: 10 },
-          { target: 'tier_1_poison', material: 'mat_poison_1', count: 10 },
-          { target: 'tier_1_light', material: 'mat_light_1', count: 10 },
-          { target: 'tier_1_ice', material: 'mat_ice_1', count: 10 },
-          { target: 'tier_1_cure', material: 'mat_cure_1', count: 10 },
-          { target: 'tier_1_vain', material: 'mat_vain_1', count: 10 }
+          { target: 'tier_1_fire', material: 'con_soul_1', count: 20 },
+          { target: 'tier_1_water', material: 'con_soul_2', count: 20 },
+          { target: 'tier_1_poison', material: 'con_soul_3', count: 20 },
+          { target: 'tier_1_light', material: 'con_soul_4', count: 20 },
+          { target: 'tier_1_ice', material: 'con_soul_5', count: 20 },
+          { target: 'tier_1_cure', material: 'con_soul_6', count: 20 },
+          { target: 'tier_1_vain', material: 'con_soul_7', count: 20 }
         ]
       },
 
@@ -246,14 +246,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/helmet_fire_1.webp',
         element: 'fire',
         baseStat: { str: 0, agi: 0, int: 15, vit: 15, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_2_fire', material: 'mat_fire_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_fire', material: 'con_soul_1', count: 30 }]
       },
       'tier_2_fire': {
         name: '지옥불 왕관',
         image: '/equips/helmet_fire_2.webp',
         element: 'fire',
         baseStat: { str: 0, agi: 0, int: 35, vit: 30, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_3_fire', material: 'mat_fire_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_fire', material: 'con_soul_1', count: 50 }]
       },
       'tier_3_fire': {
         name: '메피스토의 뿔',
@@ -268,14 +268,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/helmet_water_1.webp',
         element: 'water',
         baseStat: { str: 0, agi: 0, int: 10, vit: 20, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_2_water', material: 'mat_water_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_water', material: 'con_soul_2', count: 30 }]
       },
       'tier_2_water': {
         name: '해신의 투구',
         image: '/equips/helmet_water_2.webp',
         element: 'water',
         baseStat: { str: 0, agi: 0, int: 25, vit: 45, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_3_water', material: 'mat_water_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_water', material: 'con_soul_2', count: 50 }]
       },
       'tier_3_water': {
         name: '레비아탄의 응시',
@@ -290,14 +290,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/helmet_poison_1.webp',
         element: 'poison',
         baseStat: { str: 0, agi: 10, int: 10, vit: 10, luk: 5 },
-        evolutionRecipes: [{ target: 'tier_2_poison', material: 'mat_poison_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_poison', material: 'con_soul_3', count: 30 }]
       },
       'tier_2_poison': {
         name: '맹독 숨결 복면',
         image: '/equips/helmet_poison_2.webp',
         element: 'poison',
         baseStat: { str: 0, agi: 25, int: 25, vit: 20, luk: 15 },
-        evolutionRecipes: [{ target: 'tier_3_poison', material: 'mat_poison_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_poison', material: 'con_soul_3', count: 50 }]
       },
       'tier_3_poison': {
         name: '벨리알의 장막',
@@ -312,14 +312,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/helmet_light_1.webp',
         element: 'light',
         baseStat: { str: 0, agi: 0, int: 20, vit: 15, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_2_light', material: 'mat_light_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_light', material: 'con_soul_4', count: 30 }]
       },
       'tier_2_light': {
         name: '성스러운 후광',
         image: '/equips/helmet_light_2.webp',
         element: 'light',
         baseStat: { str: 0, agi: 0, int: 45, vit: 35, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_3_light', material: 'mat_light_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_light', material: 'con_soul_4', count: 50 }]
       },
       'tier_3_light': {
         name: '루시퍼의 후광',
@@ -334,14 +334,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/helmet_ice_1.webp',
         element: 'ice',
         baseStat: { str: 0, agi: 0, int: 25, vit: 5, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_2_ice', material: 'mat_ice_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_ice', material: 'con_soul_5', count: 30 }]
       },
       'tier_2_ice': {
         name: '영구동토의 관',
         image: '/equips/helmet_ice_2.webp',
         element: 'ice',
         baseStat: { str: 0, agi: 0, int: 55, vit: 15, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_3_ice', material: 'mat_ice_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_ice', material: 'con_soul_5', count: 50 }]
       },
       'tier_3_ice': {
         name: '아몬의 서리관',
@@ -356,14 +356,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/helmet_cure_1.webp',
         element: 'cure',
         baseStat: { str: 0, agi: 0, int: 15, vit: 20, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_2_cure', material: 'mat_cure_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_cure', material: 'con_soul_6', count: 30 }]
       },
       'tier_2_cure': {
         name: '세계수의 화관',
         image: '/equips/helmet_cure_2.webp',
         element: 'cure',
         baseStat: { str: 0, agi: 0, int: 35, vit: 45, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_3_cure', material: 'mat_cure_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_cure', material: 'con_soul_6', count: 50 }]
       },
       'tier_3_cure': {
         name: '마르바스의 잎장식',
@@ -378,14 +378,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/helmet_vain_1.webp',
         element: 'vain',
         baseStat: { str: 0, agi: 0, int: 25, vit: 5, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_2_vain', material: 'mat_vain_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_vain', material: 'con_soul_7', count: 30 }]
       },
       'tier_2_vain': {
         name: '공허의 후드',
         image: '/equips/helmet_vain_2.webp',
         element: 'vain',
         baseStat: { str: 0, agi: 0, int: 55, vit: 10, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_3_vain', material: 'mat_vain_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_vain', material: 'con_soul_7', count: 50 }]
       },
       'tier_3_vain': {
         name: '파멸자의 얼굴',
@@ -415,13 +415,13 @@ export const EQUIP_DATABASE = {
         element: 'neutral',
         baseStat: { str: 0, agi: 0, int: 0, vit: 4, luk: 1 },
         evolutionRecipes: [
-          { target: 'tier_1_fire', material: 'mat_fire_1', count: 10 },
-          { target: 'tier_1_water', material: 'mat_water_1', count: 10 },
-          { target: 'tier_1_poison', material: 'mat_poison_1', count: 10 },
-          { target: 'tier_1_light', material: 'mat_light_1', count: 10 },
-          { target: 'tier_1_ice', material: 'mat_ice_1', count: 10 },
-          { target: 'tier_1_cure', material: 'mat_cure_1', count: 10 },
-          { target: 'tier_1_vain', material: 'mat_vain_1', count: 10 }
+          { target: 'tier_1_fire', material: 'con_soul_1', count: 20 },
+          { target: 'tier_1_water', material: 'con_soul_2', count: 20 },
+          { target: 'tier_1_poison', material: 'con_soul_3', count: 20 },
+          { target: 'tier_1_light', material: 'con_soul_4', count: 20 },
+          { target: 'tier_1_ice', material: 'con_soul_5', count: 20 },
+          { target: 'tier_1_cure', material: 'con_soul_6', count: 20 },
+          { target: 'tier_1_vain', material: 'con_soul_7', count: 20 }
         ]
       },
 
@@ -430,14 +430,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/shield_fire_1.webp',
         element: 'fire',
         baseStat: { str: 0, agi: 0, int: 0, vit: 20, luk: 10 },
-        evolutionRecipes: [{ target: 'tier_2_fire', material: 'mat_fire_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_fire', material: 'con_soul_1', count: 30 }]
       },
       'tier_2_fire': {
         name: '용암 거북의 등껍질',
         image: '/equips/shield_fire_2.webp',
         element: 'fire',
         baseStat: { str: 0, agi: 0, int: 0, vit: 45, luk: 20 },
-        evolutionRecipes: [{ target: 'tier_3_fire', material: 'mat_fire_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_fire', material: 'con_soul_1', count: 50 }]
       },
       'tier_3_fire': {
         name: '이프리트의 비늘',
@@ -452,14 +452,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/shield_water_1.webp',
         element: 'water',
         baseStat: { str: 0, agi: 0, int: 0, vit: 35, luk: 5 },
-        evolutionRecipes: [{ target: 'tier_2_water', material: 'mat_water_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_water', material: 'con_soul_2', count: 30 }]
       },
       'tier_2_water': {
         name: '빙하의 방벽',
         image: '/equips/shield_water_2.webp',
         element: 'water',
         baseStat: { str: 0, agi: 0, int: 0, vit: 80, luk: 10 },
-        evolutionRecipes: [{ target: 'tier_3_water', material: 'mat_water_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_water', material: 'con_soul_2', count: 50 }]
       },
       'tier_3_water': {
         name: '크라켄의 안식처',
@@ -474,14 +474,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/shield_poison_1.webp',
         element: 'poison',
         baseStat: { str: 0, agi: 0, int: 0, vit: 25, luk: 15 },
-        evolutionRecipes: [{ target: 'tier_2_poison', material: 'mat_poison_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_poison', material: 'con_soul_3', count: 30 }]
       },
       'tier_2_poison': {
         name: '맹독 포자 방패',
         image: '/equips/shield_poison_2.webp',
         element: 'poison',
         baseStat: { str: 0, agi: 0, int: 0, vit: 55, luk: 35 },
-        evolutionRecipes: [{ target: 'tier_3_poison', material: 'mat_poison_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_poison', material: 'con_soul_3', count: 50 }]
       },
       'tier_3_poison': {
         name: '벨리알의 독안개 방패',
@@ -496,14 +496,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/shield_light_1.webp',
         element: 'light',
         baseStat: { str: 0, agi: 0, int: 0, vit: 30, luk: 10 },
-        evolutionRecipes: [{ target: 'tier_2_light', material: 'mat_light_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_light', material: 'con_soul_4', count: 30 }]
       },
       'tier_2_light': {
         name: '아이기스의 수호',
         image: '/equips/shield_light_2.webp',
         element: 'light',
         baseStat: { str: 0, agi: 0, int: 0, vit: 70, luk: 25 },
-        evolutionRecipes: [{ target: 'tier_3_light', material: 'mat_light_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_light', material: 'con_soul_4', count: 50 }]
       },
       'tier_3_light': {
         name: '루시퍼의 거울',
@@ -518,14 +518,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/shield_ice_1.webp',
         element: 'ice',
         baseStat: { str: 0, agi: 0, int: 0, vit: 40, luk: 5 },
-        evolutionRecipes: [{ target: 'tier_2_ice', material: 'mat_ice_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_ice', material: 'con_soul_5', count: 30 }]
       },
       'tier_2_ice': {
         name: '눈보라의 수호벽',
         image: '/equips/shield_ice_2.webp',
         element: 'ice',
         baseStat: { str: 0, agi: 0, int: 0, vit: 90, luk: 10 },
-        evolutionRecipes: [{ target: 'tier_3_ice', material: 'mat_ice_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_ice', material: 'con_soul_5', count: 50 }]
       },
       'tier_3_ice': {
         name: '아몬의 빙벽',
@@ -540,14 +540,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/shield_cure_1.webp',
         element: 'cure',
         baseStat: { str: 0, agi: 0, int: 0, vit: 35, luk: 10 },
-        evolutionRecipes: [{ target: 'tier_2_cure', material: 'mat_cure_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_cure', material: 'con_soul_6', count: 30 }]
       },
       'tier_2_cure': {
         name: '생명의 수호목',
         image: '/equips/shield_cure_2.webp',
         element: 'cure',
         baseStat: { str: 0, agi: 0, int: 0, vit: 80, luk: 25 },
-        evolutionRecipes: [{ target: 'tier_3_cure', material: 'mat_cure_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_cure', material: 'con_soul_6', count: 50 }]
       },
       'tier_3_cure': {
         name: '마르바스의 껍질',
@@ -562,14 +562,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/shield_vain_1.webp',
         element: 'vain',
         baseStat: { str: 0, agi: 0, int: 0, vit: 15, luk: 20 },
-        evolutionRecipes: [{ target: 'tier_2_vain', material: 'mat_vain_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_vain', material: 'con_soul_7', count: 30 }]
       },
       'tier_2_vain': {
         name: '허무의 결계',
         image: '/equips/shield_vain_2.webp',
         element: 'vain',
         baseStat: { str: 0, agi: 0, int: 0, vit: 35, luk: 45 },
-        evolutionRecipes: [{ target: 'tier_3_vain', material: 'mat_vain_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_vain', material: 'con_soul_7', count: 50 }]
       },
       'tier_3_vain': {
         name: '영원의 감옥',
@@ -599,13 +599,13 @@ export const EQUIP_DATABASE = {
         element: 'neutral',
         baseStat: { str: 0, agi: 2, int: 0, vit: 10, luk: 2 },
         evolutionRecipes: [
-          { target: 'tier_1_fire', material: 'mat_fire_1', count: 10 },
-          { target: 'tier_1_water', material: 'mat_water_1', count: 10 },
-          { target: 'tier_1_poison', material: 'mat_poison_1', count: 10 },
-          { target: 'tier_1_light', material: 'mat_light_1', count: 10 },
-          { target: 'tier_1_ice', material: 'mat_ice_1', count: 10 },
-          { target: 'tier_1_cure', material: 'mat_cure_1', count: 10 },
-          { target: 'tier_1_vain', material: 'mat_vain_1', count: 10 }
+          { target: 'tier_1_fire', material: 'con_soul_1', count: 20 },
+          { target: 'tier_1_water', material: 'con_soul_2', count: 20 },
+          { target: 'tier_1_poison', material: 'con_soul_3', count: 20 },
+          { target: 'tier_1_light', material: 'con_soul_4', count: 20 },
+          { target: 'tier_1_ice', material: 'con_soul_5', count: 20 },
+          { target: 'tier_1_cure', material: 'con_soul_6', count: 20 },
+          { target: 'tier_1_vain', material: 'con_soul_7', count: 20 }
         ]
       },
 
@@ -614,14 +614,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/armor_fire_1.webp',
         element: 'fire',
         baseStat: { str: 10, agi: 0, int: 0, vit: 30, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_2_fire', material: 'mat_fire_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_fire', material: 'con_soul_1', count: 30 }]
       },
       'tier_2_fire': {
         name: '화산암 흉갑',
         image: '/equips/armor_fire_2.webp',
         element: 'fire',
         baseStat: { str: 25, agi: 0, int: 0, vit: 70, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_3_fire', material: 'mat_fire_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_fire', material: 'con_soul_1', count: 50 }]
       },
       'tier_3_fire': {
         name: '수르트의 용암 갑주',
@@ -636,14 +636,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/armor_water_1.webp',
         element: 'water',
         baseStat: { str: 5, agi: 5, int: 0, vit: 25, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_2_water', material: 'mat_water_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_water', material: 'con_soul_2', count: 30 }]
       },
       'tier_2_water': {
         name: '산호초 비늘 갑옷',
         image: '/equips/armor_water_2.webp',
         element: 'water',
         baseStat: { str: 15, agi: 10, int: 0, vit: 60, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_3_water', material: 'mat_water_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_water', material: 'con_soul_2', count: 50 }]
       },
       'tier_3_water': {
         name: '포세이돈의 가호',
@@ -658,14 +658,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/armor_poison_1.webp',
         element: 'poison',
         baseStat: { str: 5, agi: 15, int: 0, vit: 20, luk: 5 },
-        evolutionRecipes: [{ target: 'tier_2_poison', material: 'mat_poison_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_poison', material: 'con_soul_3', count: 30 }]
       },
       'tier_2_poison': {
         name: '치명적인 독의 껍질',
         image: '/equips/armor_poison_2.webp',
         element: 'poison',
         baseStat: { str: 10, agi: 35, int: 0, vit: 45, luk: 15 },
-        evolutionRecipes: [{ target: 'tier_3_poison', material: 'mat_poison_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_poison', material: 'con_soul_3', count: 50 }]
       },
       'tier_3_poison': {
         name: '벨리알의 맹독 수트',
@@ -680,14 +680,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/armor_light_1.webp',
         element: 'light',
         baseStat: { str: 15, agi: 0, int: 0, vit: 35, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_2_light', material: 'mat_light_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_light', material: 'con_soul_4', count: 30 }]
       },
       'tier_2_light': {
         name: '성기사의 흉갑',
         image: '/equips/armor_light_2.webp',
         element: 'light',
         baseStat: { str: 35, agi: 0, int: 0, vit: 80, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_3_light', material: 'mat_light_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_light', material: 'con_soul_4', count: 50 }]
       },
       'tier_3_light': {
         name: '루시퍼의 신성 갑옷',
@@ -702,14 +702,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/armor_ice_1.webp',
         element: 'ice',
         baseStat: { str: 5, agi: 10, int: 0, vit: 30, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_2_ice', material: 'mat_ice_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_ice', material: 'con_soul_5', count: 30 }]
       },
       'tier_2_ice': {
         name: '눈꽃의 은신처',
         image: '/equips/armor_ice_2.webp',
         element: 'ice',
         baseStat: { str: 10, agi: 25, int: 0, vit: 70, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_3_ice', material: 'mat_ice_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_ice', material: 'con_soul_5', count: 50 }]
       },
       'tier_3_ice': {
         name: '아몬의 빙설 로브',
@@ -724,14 +724,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/armor_cure_1.webp',
         element: 'cure',
         baseStat: { str: 0, agi: 5, int: 10, vit: 35, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_2_cure', material: 'mat_cure_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_cure', material: 'con_soul_6', count: 30 }]
       },
       'tier_2_cure': {
         name: '세계수의 로브',
         image: '/equips/armor_cure_2.webp',
         element: 'cure',
         baseStat: { str: 0, agi: 10, int: 25, vit: 80, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_3_cure', material: 'mat_cure_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_cure', material: 'con_soul_6', count: 50 }]
       },
       'tier_3_cure': {
         name: '마르바스의 치유복',
@@ -746,14 +746,14 @@ export const EQUIP_DATABASE = {
         image: '/equips/armor_vain_1.webp',
         element: 'vain',
         baseStat: { str: 15, agi: 0, int: 0, vit: 40, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_2_vain', material: 'mat_vain_2', count: 20 }]
+        evolutionRecipes: [{ target: 'tier_2_vain', material: 'con_soul_7', count: 30 }]
       },
       'tier_2_vain': {
         name: '마왕의 껍질',
         image: '/equips/armor_vain_2.webp',
         element: 'vain',
         baseStat: { str: 30, agi: 0, int: 0, vit: 80, luk: 0 },
-        evolutionRecipes: [{ target: 'tier_3_vain', material: 'mat_vain_3', count: 5 }]
+        evolutionRecipes: [{ target: 'tier_3_vain', material: 'con_soul_7', count: 50 }]
       },
       'tier_3_vain': {
         name: '어둠이 깃든 장속',
