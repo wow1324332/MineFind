@@ -29,30 +29,6 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId, onSelectBatt
           const userData = userDoc.data();
           const userLevel = userData.level || 1;
 
-          const defaultEquip = { tier: 0, element: 'neutral', enhance: 0 };
-          const userEquipment = userData.equipment || {
-            WEAPON: { ...defaultEquip }, HELMET: { ...defaultEquip },
-            SHIELD: { ...defaultEquip }, ARMOR: { ...defaultEquip }
-          };
-
-          const parsedEquips = ['WEAPON', 'HELMET', 'SHIELD', 'ARMOR'].map(part => {
-            const state = userEquipment[part] || defaultEquip;
-            const equipKey = `tier_${state.tier}_${state.element || 'neutral'}`;
-            const dbData = EQUIP_DATABASE[part]?.evolutions[equipKey] || EQUIP_DATABASE[part]?.evolutions['tier_0_neutral'];
-            const growth = EQUIP_DATABASE[part]?.enhanceGrowth?.[`tier_${state.tier}`] || EQUIP_DATABASE[part]?.enhanceGrowth?.tier_0 || { str:0, agi:0, int:0, vit:0, luk:0 };
-
-            return {
-              element: dbData?.element || 'neutral',
-              baseStat: {
-                str: (dbData?.baseStat?.str || 0) + ((growth.str || 0) * state.enhance),
-                agi: (dbData?.baseStat?.agi || 0) + ((growth.agi || 0) * state.enhance),
-                int: (dbData?.baseStat?.int || 0) + ((growth.int || 0) * state.enhance),
-                vit: (dbData?.baseStat?.vit || 0) + ((growth.vit || 0) * state.enhance),
-                luk: (dbData?.baseStat?.luk || 0) + ((growth.luk || 0) * state.enhance),
-              }
-            };
-          });
-
           let myPartyIds = userData.unlockedKnights || ['knight_main'];
           if (!myPartyIds.includes('knight_main')) myPartyIds = ['knight_main', ...myPartyIds];
           
@@ -63,15 +39,32 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId, onSelectBatt
               const kLevel = id === 'knight_main' ? userLevel : (userData.knightStats?.[id]?.level || 1);
               const lvMultiplier = kLevel - 1;
 
+              let kEquip = {
+                WEAPON: { tier: 0, element: 'neutral', enhance: 0 }, HELMET: { tier: 0, element: 'neutral', enhance: 0 },
+                SHIELD: { tier: 0, element: 'neutral', enhance: 0 }, ARMOR: { tier: 0, element: 'neutral', enhance: 0 }
+              };
+              
+              if (id === 'knight_main' && userData.equipment) {
+                kEquip = { ...kEquip, ...userData.equipment };
+              } else if (userData.knightStats?.[id]?.equipment) {
+                kEquip = { ...kEquip, ...userData.knightStats[id].equipment };
+              }
+
               let finalEquipBonus = { str: 0, agi: 0, int: 0, vit: 0, luk: 0 };
-              parsedEquips.forEach(equip => {
-                 const isSynergy = kDb.attribute !== 'neutral' && kDb.attribute === equip.element;
+              ['WEAPON', 'HELMET', 'SHIELD', 'ARMOR'].forEach(part => {
+                 const state = kEquip[part];
+                 const equipKey = `tier_${state.tier}_${state.element || 'neutral'}`;
+                 const dbData = EQUIP_DATABASE[part]?.evolutions[equipKey] || EQUIP_DATABASE[part]?.evolutions['tier_0_neutral'];
+                 const growth = EQUIP_DATABASE[part]?.enhanceGrowth?.[`tier_${state.tier}`] || EQUIP_DATABASE[part]?.enhanceGrowth?.tier_0 || { str:0, agi:0, int:0, vit:0, luk:0 };
+                 
+                 const isSynergy = kDb.attribute !== 'neutral' && kDb.attribute === dbData.element;
                  const multiplier = isSynergy ? 1.2 : 1.0;
-                 finalEquipBonus.str += Math.floor(equip.baseStat.str * multiplier);
-                 finalEquipBonus.agi += Math.floor(equip.baseStat.agi * multiplier);
-                 finalEquipBonus.int += Math.floor(equip.baseStat.int * multiplier);
-                 finalEquipBonus.vit += Math.floor(equip.baseStat.vit * multiplier);
-                 finalEquipBonus.luk += Math.floor(equip.baseStat.luk * multiplier);
+
+                 finalEquipBonus.str += Math.floor((dbData.baseStat.str + growth.str * state.enhance) * multiplier);
+                 finalEquipBonus.agi += Math.floor((dbData.baseStat.agi + growth.agi * state.enhance) * multiplier);
+                 finalEquipBonus.int += Math.floor((dbData.baseStat.int + growth.int * state.enhance) * multiplier);
+                 finalEquipBonus.vit += Math.floor((dbData.baseStat.vit + growth.vit * state.enhance) * multiplier);
+                 finalEquipBonus.luk += Math.floor((dbData.baseStat.luk + growth.luk * state.enhance) * multiplier);
               });
 
               activeKnights.push({
