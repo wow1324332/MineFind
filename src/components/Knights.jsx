@@ -838,12 +838,14 @@ setTimeout(async () => {
                                       const expValue = matData?.enhanceExp || 0;
                                       
                                       return (
-                                        <div key={matId} className="flex justify-between items-center bg-[#1a1008]/50 p-1 rounded-sm">
+                                         <div key={matId} className="flex justify-between items-center bg-[#1a1008]/50 p-1 rounded-sm">
                                           <div className="flex items-center gap-2">
                                             <img src={matData?.image || matData?.icon} alt="mat" className="w-6 h-6 object-contain drop-shadow-md p-0.5" />
                                             <div className="flex flex-col text-left">
                                               <span className="text-[#d8b486] text-[9px] font-bold truncate max-w-[80px]">{matData?.name}</span>
-                                              <span className="text-green-500/80 text-[8px] font-black tracking-widest mt-0.5">EXP +{expValue}</span>
+                                              <span className="text-green-500/80 text-[8px] font-black tracking-widest mt-0.5">
+                                                EXP +{expValue} <span className="text-[#8c6543] ml-0.5">/ {owned}개</span>
+                                              </span>
                                             </div>
                                           </div>
                                           <div className="flex items-center gap-1">
