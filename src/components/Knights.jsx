@@ -93,10 +93,10 @@ const [selectedKnight, setSelectedKnight] = useState(null);
       if (isSuccess) {
         updates[equipPath] = newEquipmentMap; // 💡 개별 기사 경로에 통째로 저장!
         await updateDoc(userDocRef, updates);
-        showToast(`🎉 강화 성공! [ +${nextLevel} ${parsedEquip[part]?.name} ] 달성!`, 'success');
+        showToast(`강화 성공, [ +${nextLevel} ${parsedEquip[part]?.name} ]`, 'success');
       } else {
         await updateDoc(userDocRef, updates);
-        showToast(`💥 강화 실패...\n영혼석과 골드가 소모되었습니다.`, 'error');
+        showToast(`강화 실패...\n영혼석과 골드가 소모되었습니다.`, 'error');
       }
     } catch (error) {
       console.error("강화 처리 오류:", error);
