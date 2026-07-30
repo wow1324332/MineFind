@@ -1034,6 +1034,12 @@ setTimeout(async () => {
           30% { opacity: 1; background-color: #fff; }
           100% { opacity: 0; }
         }
+        @keyframes toastFadeInOut {
+          0% { opacity: 0; transform: translate(-50%, -10px); }
+          15% { opacity: 1; transform: translate(-50%, 0); }
+          85% { opacity: 1; transform: translate(-50%, 0); }
+          100% { opacity: 0; transform: translate(-50%, -10px); }
+        }
       `}</style>
 
       <div 
