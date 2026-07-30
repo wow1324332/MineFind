@@ -540,7 +540,7 @@ setTimeout(async () => {
                         className="w-[21%] aspect-square max-w-[60px] bg-[#3a2210]/10 border border-[#5c3e23]/60 rounded-sm relative flex items-center justify-center shadow-[inset_0_2px_5px_rgba(0,0,0,0.2)] cursor-pointer hover:border-[#3a2210] transition-colors group overflow-hidden"
                       >
                         {equipItem.enhance > 0 && (
-                          <span className="absolute bottom-0 right-0.5 text-yellow-400 font-black text-[11px] drop-shadow-[0_1px_2px_rgba(0,0,0,1)] z-20 italic pointer-events-none">
+                          <span className="absolute bottom-0.5 right-1 text-[#fffff0] font-serif font-black text-[11px] drop-shadow-[0_2px_3px_rgba(0,0,0,1)] z-20 pointer-events-none">
                             +{equipItem.enhance}
                           </span>
                         )}
@@ -595,14 +595,14 @@ setTimeout(async () => {
                     
                     {/* 💡 X 닫기 버튼 완전 제거됨 (배경 터치로 닫기) */}
 
-                    <div className="relative z-10 w-32 h-32 flex items-center justify-center mt-2">
-                      {/* 💡 강화 수치 폰트 스타일 변경 (이탤릭 제거, 아이보리 색상 text-[#fffff0] 적용) */}
+                     <div className="relative z-10 w-32 h-32 flex items-center justify-center mt-2 bg-black/30 border border-[#a6845c]/20 rounded-sm shadow-[inset_0_0_15px_rgba(0,0,0,0.8)]">
+                      {/* 💡 프레임 내측 우측 하단에 고정 */}
                       {currentEnhance > 0 && (
-                        <span className="absolute bottom-0 right-0 text-[#fffff0] font-serif font-black text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,1)] z-20 pointer-events-none">
+                        <span className="absolute bottom-1.5 right-1.5 text-[#fffff0] font-serif font-black text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,1)] z-20 pointer-events-none">
                           +{currentEnhance}
                         </span>
                       )}
-                      <img 
+                      <img
                         src={parsedItem.image} 
                         alt={parsedItem.name} 
                         className="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(255,255,255,0.15)] animate-pulse"
@@ -700,10 +700,6 @@ setTimeout(async () => {
                                 <span className={`font-black text-[11px] tracking-wider ${(items[soulItemId] || 0) >= enhanceRecipe.soulCost ? 'text-[#d8b486]' : 'text-red-500'}`}>
                                   {items[soulItemId] || 0} / {enhanceRecipe.soulCost}
                                 </span>
-                              </div>
-                              <div className="flex justify-between items-center bg-black/40 p-2 rounded-sm border border-[#a6845c]/20">
-                                <span className="text-[#a6845c] font-bold text-[10px] tracking-widest">성공 확률</span>
-                                <span className="text-amber-500 font-black text-[11px] tracking-wider">{enhanceRecipe.successRate}%</span>
                               </div>
                             </div>
                             <button 
