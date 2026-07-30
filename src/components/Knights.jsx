@@ -89,10 +89,10 @@ const [selectedKnight, setSelectedKnight] = useState(null);
       if (isSuccess) {
         updates[equipPath] = newEquipmentMap; 
         await updateDoc(userDocRef, updates);
-        showToast(`🎉 강화 성공! [ +${nextLevel} ${parsedEquip[part]?.name} ] 달성!`, 'success');
+        showToast(`강화 성공! [ +${nextLevel} ${parsedEquip[part]?.name} ]`, 'success');
       } else {
         await updateDoc(userDocRef, updates);
-        showToast(`💥 강화 실패...\n영혼석과 골드가 소모되었습니다.`, 'error');
+        showToast(`강화 실패...\n영혼석과 골드가 소모되었습니다.`, 'error');
       }
       setSelectedSouls({}); // 완료 후 선택 초기화
     } catch (error) {
