@@ -399,13 +399,20 @@ setTimeout(async () => {
     return (
       <div className="relative min-h-screen bg-black text-white flex flex-col items-center animate-[fadeIn_0.3s_ease-in-out] overflow-hidden">
         
-        {/* ✨ 누락되었던 상세 화면용 토스트 UI와 애니메이션 CSS 추가 */}
+        {/* ✨ 인게임 토스트 알림 컴포넌트 (체력 토스트 스타일) */}
         {toastMessage && (
-          <div className="fixed top-16 left-1/2 -translate-x-1/2 z-[9999] flex flex-col items-center justify-center pointer-events-none w-[90%] max-w-[320px]"
-               style={{ animation: 'toastFadeInOut 2.5s ease-in-out forwards' }}>
-            <div className={`bg-black/85 backdrop-blur-md border px-5 py-3 rounded-md flex items-center justify-center text-center shadow-xl w-full
-              ${toastMessage.type === 'success' ? 'border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'border-red-900/50 shadow-[0_0_15px_rgba(220,38,38,0.5)]'}`}>
-              <span className={`font-bold text-[12px] tracking-wide leading-relaxed whitespace-pre-line ${toastMessage.type === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+          <div 
+            className="fixed top-28 left-1/2 -translate-x-1/2 z-[9999] flex flex-col items-center justify-center pointer-events-none w-max max-w-[90%]"
+            style={{ animation: 'toastFadeInOut 2.5s ease-in-out forwards' }}
+          >
+            <div className={`bg-black/60 backdrop-blur-md border px-6 py-2 rounded-md flex items-center justify-center text-center shadow-xl
+              ${toastMessage.type === 'success' 
+                ? 'border-green-900/50 shadow-[0_0_15px_rgba(34,197,94,0.5)]' 
+                : 'border-red-900/50 shadow-[0_0_15px_rgba(220,38,38,0.5)]'}`}
+            >
+              <span className={`font-serif font-black tracking-wider text-sm italic drop-shadow-md whitespace-pre-line opacity-90
+                ${toastMessage.type === 'success' ? 'text-green-500' : 'text-red-500'}`}
+              >
                 {toastMessage.text}
               </span>
             </div>
@@ -1050,17 +1057,25 @@ setTimeout(async () => {
   return (
     <div className="relative min-h-screen bg-black text-white flex flex-col items-center px-6 pb-6 pt-0 animate-[fadeIn_0.5s_ease-in-out] overflow-hidden">
 
-      {toastMessage && (
-        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-[9999] flex flex-col items-center justify-center pointer-events-none w-[90%] max-w-[320px]"
-             style={{ animation: 'toastFadeInOut 2.5s ease-in-out forwards' }}>
-          <div className={`bg-black/85 backdrop-blur-md border px-5 py-3 rounded-md flex items-center justify-center text-center shadow-xl w-full
-            ${toastMessage.type === 'success' ? 'border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'border-red-900/50 shadow-[0_0_15px_rgba(220,38,38,0.5)]'}`}>
-            <span className={`font-bold text-[12px] tracking-wide leading-relaxed whitespace-pre-line ${toastMessage.type === 'success' ? 'text-green-400' : 'text-red-400'}`}>
-              {toastMessage.text}
-            </span>
+        {/* ✨ 인게임 토스트 알림 컴포넌트 (체력 토스트 스타일) */}
+        {toastMessage && (
+          <div 
+            className="fixed top-28 left-1/2 -translate-x-1/2 z-[9999] flex flex-col items-center justify-center pointer-events-none w-max max-w-[90%]"
+            style={{ animation: 'toastFadeInOut 2.5s ease-in-out forwards' }}
+          >
+            <div className={`bg-black/60 backdrop-blur-md border px-6 py-2 rounded-md flex items-center justify-center text-center shadow-xl
+              ${toastMessage.type === 'success' 
+                ? 'border-green-900/50 shadow-[0_0_15px_rgba(34,197,94,0.5)]' 
+                : 'border-red-900/50 shadow-[0_0_15px_rgba(220,38,38,0.5)]'}`}
+            >
+              <span className={`font-serif font-black tracking-wider text-sm italic drop-shadow-md whitespace-pre-line opacity-90
+                ${toastMessage.type === 'success' ? 'text-green-500' : 'text-red-500'}`}
+              >
+                {toastMessage.text}
+              </span>
+            </div>
           </div>
-        </div>
-      )}
+        )}
       
       {/* 🎬 애니메이션 키프레임 */}
       <style>{`
