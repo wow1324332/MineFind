@@ -93,7 +93,7 @@ export default function Knights({ onBack, hp }) {
             [part]: { ...userEquipment[part], enhance: nextLevel, exp: 0 } 
           };
           await updateDoc(userDocRef, updates);
-          showToast(`🎉 강화 돌파 성공! [ +${nextLevel} ] 달성!`, 'success');
+          showToast(`강화 성공! [ +${nextLevel} ]`, 'success');
           setEnhanceSuccessAnim(true);
           setTimeout(() => setEnhanceSuccessAnim(false), 1200);
         } else {
@@ -103,7 +103,7 @@ export default function Knights({ onBack, hp }) {
             [part]: { ...userEquipment[part], exp: 0 } 
           };
           await updateDoc(userDocRef, updates);
-          showToast(`💥 돌파 실패...\n누적된 경험치가 초기화되었습니다.`, 'error');
+          showToast(`강화 실패...\n경험치가 초기화되었습니다.`, 'error');
         }
       } 
       // 5. 경험치 부족 -> 수치만 누적
@@ -113,7 +113,7 @@ export default function Knights({ onBack, hp }) {
           [part]: { ...userEquipment[part], exp: newExp } 
         };
         await updateDoc(userDocRef, updates);
-        showToast(`✨ 장비 경험치 증가! (${newExp} / ${recipe.reqExp})`, 'success');
+        showToast(`장비 경험치 증가! (${newExp} / ${recipe.reqExp})`, 'success');
       }
 
       setFeedMaterials({}); // 투입 장바구니 초기화
@@ -641,6 +641,7 @@ setTimeout(async () => {
                 setSelectedEquipPart(null);
                 setEquipActionType(null);
                 setSelectedEvolveTarget(null);
+                setFeedMaterials({});
               }} 
             >
               <div className="relative w-full max-w-[280px]" onClick={(e) => e.stopPropagation()}>
@@ -872,7 +873,7 @@ setTimeout(async () => {
                               </div>
 
                               <div className="flex justify-between items-center bg-black/40 p-2 rounded-sm border border-[#a6845c]/20 mb-3">
-                                <span className="text-[#a6845c] font-bold text-[10px] tracking-widest">제련 비용</span>
+                                <span className="text-[#a6845c] font-bold text-[10px] tracking-widest">Cost</span>
                                 <span className={`font-black text-[11px] tracking-wider ${gold >= costGold ? 'text-yellow-500' : 'text-red-500'}`}>
                                   {costGold.toLocaleString()} G
                                 </span>
@@ -882,10 +883,10 @@ setTimeout(async () => {
                                 onClick={() => handleEnhanceEquip(selectedEquipPart, currentEquipState, feedMaterials)}
                                 className={`w-full font-black text-[11px] py-2.5 rounded-sm transition-all border shadow-md active:scale-95 tracking-[0.2em] uppercase outline-none
                                   ${isReadyToEnhance 
-                                    ? 'bg-red-950/40 hover:bg-red-900/60 text-red-400 border-red-800/50 animate-pulse' 
-                                    : 'bg-green-950/30 hover:bg-green-900/50 text-green-400 border-green-800/50'}`}
+                                    ? 'bg-[#4a301c] hover:bg-[#5c3e23] text-[#fffff0] border-[#a6845c] shadow-[0_0_10px_rgba(166,132,92,0.5)] animate-pulse' 
+                                    : 'bg-[#2a1a10] hover:bg-[#3a2618] text-[#d8b486] border-[#5c3e23]'}`}
                               >
-                                {isReadyToEnhance ? '강화 돌파 시도' : '경험치 투입'}
+                                {isReadyToEnhance ? 'Enhance' : 'Enhance'}
                               </button>
                             </>
                           ) : (
