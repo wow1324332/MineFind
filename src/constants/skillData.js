@@ -5,24 +5,34 @@ export const SKILL_DATABASE = {
   // 👑 주인공 스킬
   // ==========================================
   'passive_main_str': { 
-    id: 'passive_main_str', name: '단장의 완력', type: 'passive', 
-    icon: '/skills/passive_main_str.webp', description: '기사단 전체의 공격력이 10% 증가합니다.', 
-    target: 'ally', effectType: 'stat_up', stat: 'attack', value: 0.10 
+    id: 'passive_main_str', name: '군단장의 함성', type: 'passive', 
+    icon: '/skills/passive_main_str.webp', description: '기사단 전체의 공격력이 5% 증가합니다.', 
+    target: 'ally', effectType: 'stat_up', stat: 'attack', value: 0.05 
   },
   'passive_main_vit': { 
-    id: 'passive_main_vit', name: '단장의 끈기', type: 'passive', 
-    icon: '/skills/passive_main_vit.webp', description: '기사단 전체의 최대 체력이 15% 증가합니다.', 
-    target: 'ally', effectType: 'stat_up', stat: 'maxHp', value: 0.15 
+    id: 'passive_main_vit', name: '체력 단련', type: 'passive', 
+    icon: '/skills/passive_main_vit.webp', description: '기사단 전체의 최대 체력이 5% 증가합니다.', 
+    target: 'ally', effectType: 'stat_up', stat: 'maxHp', value: 0.05 
   },
   'passive_main_agi': { 
-    id: 'passive_main_agi', name: '단장의 기민함', type: 'passive', 
+    id: 'passive_main_agi', name: '능숙한 지휘', type: 'passive', 
     icon: '/skills/passive_main_agi.webp', description: '기사단 전체의 회피율이 5% 증가합니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'evasion', value: 5 
   },
   'active_main_strike': { 
-    id: 'active_main_strike', name: '단장의 강타', type: 'active', subType: 'attack', 
-    icon: '/skills/active_main_strike.webp', description: '적에게 130%의 강력한 피해를 입힙니다.', 
-    mpCost: 20, element: 'neutral', power: 1.3 
+    id: 'active_main_strike', name: '선봉장의 일격', type: 'active', subType: 'attack', 
+    icon: '/skills/active_main_strike.webp', description: '적에게 200%의 강력한 피해를 입힙니다.', 
+    mpCost: 60, element: 'neutral', power: 2.0 
+  },
+    'active_main_strike': { 
+    id: 'active_main_strike', name: '동귀어진', type: 'active', subType: 'attack', 
+    icon: '/skills/active_main_strike.webp', description: '적에게 400의 강력한 고정 피해를 입힙니다.', 
+    mpCost: 60, element: 'neutral', flatDamage: 400 
+  },
+    'active_main_strike': { 
+    id: 'active_main_strike', name: '영웅의 메아리', type: 'active', subType: 'buff', 
+    icon: '/skills/active_main_strike.webp', description: '사자후를 날려 2턴간 파티의 방어력을 20% 강화시킵니다.', 
+    mpCost: 60, stat: 'defense', power: 0.2, duration: 2 
   },
 
   // ==========================================
