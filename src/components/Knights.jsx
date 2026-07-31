@@ -39,10 +39,13 @@ export default function Knights({ onBack, hp }) {
     if (!user) return;
     try {
       const userDocRef = doc(db, 'users', user.uid);
+      // 💡 핵심 버그 수정: 엉망이 된 skill.id 대신 강제로 주입한 정확한 식별 키(dbKey)를 사용해 저장합니다!
+      const targetId = skill.dbKey || skill.id;
+
       if (skill.type === 'active') {
-        await updateDoc(userDocRef, { mainActive: skill.id });
+        await updateDoc(userDocRef, { mainActive: targetId });
       } else {
-        await updateDoc(userDocRef, { mainPassive: skill.id });
+        await updateDoc(userDocRef, { mainPassive: targetId });
       }
       showToast(`${skill.name} 장착 완료!`, 'success');
       setCandidateSkillDetail(null);
@@ -1103,7 +1106,8 @@ setTimeout(async () => {
                   return (
                     <div 
                       key={skillId}
-                      onClick={() => setCandidateSkillDetail(skill)} // 클릭 시 상세+장착 모달 띄움
+                      // 💡 핵심 버그 수정: 정확한 딕셔너리 키(skillId)를 dbKey라는 이름으로 묶어서 전달합니다!
+                      onClick={() => setCandidateSkillDetail({ ...skill, dbKey: skillId })} 
                       className={`flex items-center gap-3 p-2.5 rounded-sm border cursor-pointer transition-all active:scale-[0.98] 
                         ${isEquipped ? 'bg-amber-950/30 border-amber-500/50 shadow-[inset_0_0_10px_rgba(245,213,169,0.1)]' : 'bg-black/40 border-[#5c3e23]/50 hover:border-[#a6845c]'}`}
                     >
