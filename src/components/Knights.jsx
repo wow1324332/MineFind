@@ -1083,7 +1083,7 @@ setTimeout(async () => {
             onClick={() => setSkillSelectType(null)}
           >
             <div className="w-full max-w-[280px] bg-[#150d08] border border-[#a6845c]/50 rounded-md shadow-2xl flex flex-col p-4 relative" onClick={e => e.stopPropagation()}>
-              <button onClick={() => setSkillSelectType(null)} className="absolute top-3 right-3 text-[#a6845c] hover:text-[#d8b486] transition-colors outline-none"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+              {/* 💡 X 닫기 버튼 제거됨 (배경 터치 시 닫힘) */}
               
               <div className="text-center mb-4 border-b border-[#a6845c]/30 pb-3">
                 <h3 className="text-[#f5d5a9] font-serif font-black text-lg tracking-widest uppercase mb-1">Select Skill</h3>
@@ -1110,12 +1110,12 @@ setTimeout(async () => {
                       <div className="w-11 h-11 bg-black/80 rounded-sm border border-[#3a2210] flex items-center justify-center p-0.5 shrink-0">
                         <img src={skill.icon} alt={skill.name} className="w-full h-full object-contain" />
                       </div>
-                      <div className="flex flex-col flex-1 text-left">
-                        <div className="flex justify-between items-center mb-0.5">
-                          <span className={`text-[12px] font-black ${isEquipped ? 'text-amber-400' : 'text-[#d8b486]'}`}>{skill.name}</span>
-                          {isEquipped && <span className="text-[9px] text-amber-500 font-bold border border-amber-600/50 px-1 py-0.5 rounded-sm bg-black animate-pulse">Equipped</span >}
+                      <div className="flex flex-col flex-1 text-left justify-center">
+                        <div className="flex justify-between items-center">
+                          <span className={`text-[13px] font-black ${isEquipped ? 'text-amber-400' : 'text-[#d8b486]'}`}>{skill.name}</span>
+                          {isEquipped && <span className="text-[9px] text-amber-500 font-bold border border-amber-600/50 px-1.5 py-0.5 rounded-sm bg-black animate-pulse">Equipped</span >}
                         </div>
-                        <span className="text-[#a6845c] text-[9px] leading-tight line-clamp-2 pr-1">{skill.description}</span>
+                        {/* 💡 목록에서의 스킬 설명(description) 제거 완료 */}
                       </div>
                     </div>
                   )
@@ -1137,7 +1137,17 @@ setTimeout(async () => {
               <div className="w-full aspect-[4/5] flex flex-col bg-transparent shadow-[0_10px_40px_rgba(0,0,0,0.9)] rounded-lg overflow-hidden">
                 <div className="flex-1 relative flex justify-center items-center bg-gradient-to-b from-[#2a1a10] to-[#1a1008]">
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_100%)] opacity-80 pointer-events-none"></div>
-                  <button onClick={() => setCandidateSkillDetail(null)} className="absolute top-3 right-3 text-[#a6845c] hover:text-[#d8b486] transition-colors z-20 outline-none"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                  
+                  {/* 💡 X 버튼 대신 좌측 상단 '< BACK' 버튼으로 교체 완료 */}
+                  <button 
+                    onClick={() => setCandidateSkillDetail(null)} 
+                    className="absolute top-3 left-3 text-[#a6845c] hover:text-[#d8b486] transition-colors z-20 outline-none flex items-center gap-1"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                    <span className="text-[10px] font-bold tracking-widest mt-0.5">BACK</span>
+                  </button>
                   
                   <div className="relative z-10 w-28 h-28 flex items-center justify-center">
                     <img src={candidateSkillDetail.icon} alt={candidateSkillDetail.name} className="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(255,255,255,0.15)] animate-pulse" draggable="false" />
@@ -1145,13 +1155,12 @@ setTimeout(async () => {
                 </div>
 
                 <div className="flex-1 bg-[#150d08] p-5 flex flex-col items-center text-center relative border-t border-[#a6845c]/30">
-                  <span className="text-[#f5d5a9] font-serif font-black text-lg tracking-widest drop-shadow-md mb-1.5 uppercase leading-tight">
+                  {/* 💡 액티브/패시브 배지 제거 완료 */}
+                  <span className="text-[#f5d5a9] font-serif font-black text-lg tracking-widest drop-shadow-md mb-2 mt-2 uppercase leading-tight">
                     {candidateSkillDetail.name}
                   </span>
-                  <span className={`text-[9px] font-bold tracking-widest mb-3 px-2 py-0.5 rounded-sm border uppercase bg-black/40 ${candidateSkillDetail.type === 'active' ? 'border-red-500/80 text-red-400' : 'border-blue-500/80 text-blue-400'}`}>
-                    {candidateSkillDetail.type === 'active' ? 'ACTIVE SKILL' : 'PASSIVE SKILL'}
-                  </span>
-                  <p className="text-[#d8b486] text-[11px] font-medium leading-relaxed break-keep mt-1 opacity-90 h-[50px] overflow-y-auto custom-scrollbar">
+                  
+                  <p className="text-[#d8b486] text-[11px] font-medium leading-relaxed break-keep mt-2 opacity-90 h-[50px] overflow-y-auto custom-scrollbar">
                     {candidateSkillDetail.description}
                   </p>
                   
