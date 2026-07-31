@@ -157,7 +157,7 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId, onSelectBatt
           className="w-full relative group transition-all duration-200 active:scale-[0.98] select-none" 
           style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
         >
-          <div className="relative w-full aspect-[4/1] bg-black/60 rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.8)] flex items-center justify-between px-4 border-[1px] border-red-900/30 group-hover:border-red-900/80">
+          <div className="relative w-full aspect-[4/1] bg-black/60 rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.8)] flex items-center justify-between px-4">
             <div 
               className="absolute inset-0 bg-cover opacity-60 group-hover:opacity-90 transition-opacity duration-300" 
               style={{ backgroundImage: "url('/bossraid/raidboss-dantalion.webp')", backgroundPosition: "center 20%" }}
