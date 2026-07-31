@@ -49,7 +49,7 @@ export const RAID_BOSS_DATABASE = {
   andromalius: {
     id: 'andromalius',
     name: '안드로말리우스 (Andromalius)',
-    title: '화염ㅎ연옥의 지배자',
+    title: '화염 연옥의 지배자',
     element: 'fire',
     image: '/bossraid/raidboss-andromalius.webp', // 💡 첨부해주신 이미지 경로
     description: '용암이 흐르는 심연에서 눈을 뜬 지옥의 감시자.',
@@ -74,6 +74,37 @@ export const RAID_BOSS_DATABASE = {
       exp: 200,
       dropItems: [
         { itemId: 'mat_fire_3', chance: 0.2 } // 패배 시 위로 보상
+      ]
+    },
+  },
+  mephisto: {
+    id: 'mephisto',
+    name: '메피스토 (Mephisto)',
+    title: '화염 지옥의 마왕',
+    element: 'fire',
+    image: '/bossraid/raidboss-mephisto.webp', // 💡 첨부해주신 이미지 경로
+    description: '불의 지옥을 지배하는 대마왕.',
+    stats: {
+      maxHp: 15000,   // 단탈리온보다 조금 더 높은 체력
+      minAtk: 1000,
+      maxAtk: 1200,
+      defense: 250
+    },
+    rewards: {
+      gold: 55000,
+      exp: 10000,
+      dropItems: [
+        { itemId: 'mat_fire_4', chance: 1.0 }, // 코어 오브 플레임 100% 드랍
+        { itemId: 'mat_fire_5', chance: 0.4 }, // 희귀 재료 30% 드랍
+        { itemId: 'con_soul_1', chance: 0.7 }, // 화염 기사의 영혼석 50%
+        { itemId: 'potion_exp_fire_large', chance: 0.8 }
+      ]
+    },
+    defeatRewards: {
+      gold: 5000,
+      exp: 200,
+      dropItems: [
+        { itemId: 'mat_fire_4', chance: 0.2 } // 패배 시 위로 보상
       ]
     },
   },
