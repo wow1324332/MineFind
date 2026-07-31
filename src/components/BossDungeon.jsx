@@ -197,6 +197,29 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId, onSelectBatt
             </div>
           </div>
         </button>
+        {/* 🔥 메피스토 버튼 */}
+        <button 
+          onClick={() => setPreviewBossId('mephisto')} 
+          className="w-full relative group transition-all duration-200 active:scale-[0.98] select-none" 
+          style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+        >
+          <div className="relative w-full aspect-[4/1] bg-black/60 rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.8)] flex items-center justify-between px-4">
+            <div 
+              className="absolute inset-0 bg-cover opacity-60 group-hover:opacity-90 transition-opacity duration-300" 
+              style={{ backgroundImage: "url('/bossraid/raidboss-mephisto.webp')", backgroundPosition: "center 30%" }}
+            ></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
+            
+            <div className="relative z-10 flex flex-col text-left">
+              <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest drop-shadow-md">Hell of Flame</span>
+              <span className="text-xl font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,1)] tracking-widest font-serif mt-0.5">mephisto</span>
+            </div>
+            
+            <div className="relative z-10 w-12 h-12 flex items-center justify-center drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
+              <img src="/loading-icon.webp" alt="Enter" className="w-full h-full object-contain opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" draggable="false"/>
+            </div>
+          </div>
+        </button>
       </div>
 
       {/* ========================================= */}
