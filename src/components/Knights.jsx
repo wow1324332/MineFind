@@ -1178,7 +1178,7 @@ setTimeout(async () => {
                       onClick={() => handleEquipSkill(candidateSkillDetail)}
                       className="w-full bg-[#4a301c] hover:bg-[#5c3e23] text-[#fffff0] font-black text-[12px] py-2.5 rounded-sm transition-all border border-[#a6845c] shadow-md active:scale-95 tracking-[0.2em] uppercase outline-none animate-pulse"
                     >
-                      Select & Equip
+                      Select
                     </button>
                   </div>
                 </div>
