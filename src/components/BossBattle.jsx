@@ -95,13 +95,14 @@ export default function BossBattle({ bossId = 'dantalion', onBack }) {
                  finalEquipBonus.luk += Math.floor((dbData.baseStat.luk + growth.luk * state.enhance) * multiplier);
               });
 
-              const flatKnight = {
+                const flatKnight = {
                 id,
                 name: id === 'knight_main' ? userNickname : kDb.name,
                 image: kDb.image,
                 attribute: kDb.attribute, 
-                activeSkill: kDb.activeSkill, 
-                passiveSkill: id === 'knight_main' ? (userData.mainPassive || kDb.passiveSkill) : kDb.passiveSkill, 
+                // 💡 핵심 수정: 주인공(knight_main)일 경우 파이어베이스에 저장된 액티브/패시브 스킬을 우선적으로 불러옵니다!
+                activeSkill: id === 'knight_main' ? (userData.mainActive || 'active_main_strike_1') : kDb.activeSkill, 
+                passiveSkill: id === 'knight_main' ? (userData.mainPassive || 'passive_main_str') : kDb.passiveSkill, 
                 str: kDb.baseStats.str + (kDb.statGrowth.str * lvMultiplier) + finalEquipBonus.str,
                 agi: kDb.baseStats.agi + (kDb.statGrowth.agi * lvMultiplier) + finalEquipBonus.agi,
                 int: kDb.baseStats.int + (kDb.statGrowth.int * lvMultiplier) + finalEquipBonus.int,
