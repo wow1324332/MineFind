@@ -1112,10 +1112,15 @@ setTimeout(async () => {
                       </div>
                       <div className="flex flex-col flex-1 text-left justify-center">
                         <div className="flex justify-between items-center">
-                          <span className={`text-[13px] font-black ${isEquipped ? 'text-amber-400' : 'text-[#d8b486]'}`}>{skill.name}</span>
-                          {isEquipped && <span className="text-[9px] text-amber-500 font-bold border border-amber-600/50 px-1.5 py-0.5 rounded-sm bg-black animate-pulse">Equipped</span >}
+                          <span className={`text-[13px] font-black ${isEquipped ? 'text-amber-400 drop-shadow-md' : 'text-[#d8b486]'}`}>{skill.name}</span>
+                          
+                          {/* 💡 장착 중인 스킬 표시 (Selected) */}
+                          {isEquipped && (
+                            <span className="text-[9px] text-yellow-300 font-black border border-yellow-500/70 px-2 py-0.5 rounded-sm bg-[#3a2210]/80 shadow-[0_0_8px_rgba(250,204,21,0.3)] animate-pulse tracking-wider">
+                              Selected
+                            </span>
+                          )}
                         </div>
-                        {/* 💡 목록에서의 스킬 설명(description) 제거 완료 */}
                       </div>
                     </div>
                   )
