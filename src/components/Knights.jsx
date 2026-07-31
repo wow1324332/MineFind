@@ -25,6 +25,34 @@ export default function Knights({ onBack, hp }) {
   const [selectedEvolveTarget, setSelectedEvolveTarget] = useState(null); // 진화 선택 속성
   const [feedMaterials, setFeedMaterials] = useState({}); // 💡 간이 인벤토리 재료 투입 장바구니 상태
   const [enhanceSuccessAnim, setEnhanceSuccessAnim] = useState(false); // 🌟 강화 성공 시네마틱 이펙트 상태
+
+// 👑 주인공 전용 스킬 교체 상태
+  const [skillSelectType, setSkillSelectType] = useState(null); // 'active' | 'passive'
+  const [candidateSkillDetail, setCandidateSkillDetail] = useState(null);
+
+  // 주인공 스킬 DB 목록
+  const MAIN_ACTIVES = ['active_main_strike_1', 'active_main_strike_2', 'active_main_strike_3'];
+  const MAIN_PASSIVES = ['passive_main_str', 'passive_main_vit', 'passive_main_agi'];
+
+  // 주인공 스킬 장착 실행 함수
+  const handleEquipSkill = async (skill) => {
+    if (!user) return;
+    try {
+      const userDocRef = doc(db, 'users', user.uid);
+      if (skill.type === 'active') {
+        await updateDoc(userDocRef, { mainActive: skill.id });
+      } else {
+        await updateDoc(userDocRef, { mainPassive: skill.id });
+      }
+      showToast(`${skill.name} 장착 완료!`, 'success');
+      setCandidateSkillDetail(null);
+      setSkillSelectType(null); // 모달 닫기
+    } catch (error) {
+      console.error("스킬 장착 오류:", error);
+      showToast("스킬 장착에 실패했습니다.", 'error');
+    }
+  };
+  
   // ✨ 토스트 알림 상태 및 함수
   const [toastMessage, setToastMessage] = useState(null);
   const showToast = (text, type = 'error') => {
@@ -419,8 +447,11 @@ setTimeout(async () => {
   // 🛡️ 화면 2. 기사 상세 풀스크린 화면 
   // =========================================
   if (selectedKnight) {
-    const activeSkillData = activeKnightBase?.activeSkill ? SKILL_DATABASE[activeKnightBase.activeSkill] : null;
-    const passiveId = selectedKnight === 'knight_main' ? (userData?.mainPassive || activeKnightBase?.passiveSkill) : activeKnightBase?.passiveSkill;
+    // 💡 주인공은 장착된 스킬(mainActive/mainPassive)을 우선 적용, 없으면 기본 1번 스킬 장착
+    const activeId = selectedKnight === 'knight_main' ? (userData?.mainActive || 'active_main_strike_1') : activeKnightBase?.activeSkill;
+    const activeSkillData = activeId ? SKILL_DATABASE[activeId] : null;
+    
+    const passiveId = selectedKnight === 'knight_main' ? (userData?.mainPassive || 'passive_main_str') : activeKnightBase?.passiveSkill;
     const passiveSkillData = passiveId ? SKILL_DATABASE[passiveId] : null;
     return (
       <div className="relative min-h-screen bg-black text-white flex flex-col items-center animate-[fadeIn_0.3s_ease-in-out] overflow-hidden">
@@ -508,7 +539,10 @@ setTimeout(async () => {
                 {/* 액티브 스킬 슬롯 */}
                 <div 
                   className="flex flex-col items-center relative cursor-pointer group"
-                  onClick={() => activeSkillData && setSelectedSkillDetail(activeSkillData)}
+                  onClick={() => {
+                    if (selectedKnight === 'knight_main') setSkillSelectType('active');
+                    else if (activeSkillData) setSelectedSkillDetail(activeSkillData);
+                  }}
                 >
                   <div className="w-11 h-11 bg-transparent rounded-sm relative flex items-center justify-center">
                     {activeSkillData ? (
@@ -523,7 +557,10 @@ setTimeout(async () => {
                 {/* 패시브 스킬 슬롯 */}
                 <div 
                   className="flex flex-col items-center relative cursor-pointer group"
-                  onClick={() => passiveSkillData && setSelectedSkillDetail(passiveSkillData)}
+                  onClick={() => {
+                    if (selectedKnight === 'knight_main') setSkillSelectType('passive');
+                    else if (passiveSkillData) setSelectedSkillDetail(passiveSkillData);
+                  }}
                 >
                   <div className="w-11 h-11 bg-transparent rounded-sm relative flex items-center justify-center">
                     {passiveSkillData ? (
@@ -1037,6 +1074,101 @@ setTimeout(async () => {
           </div>
         )}
 
+        {/* ========================================= */}
+        {/* 👑 주인공 전용: 스킬 선택 목록 모달 */}
+        {/* ========================================= */}
+        {skillSelectType && (
+          <div 
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-[fadeIn_0.2s_ease-out] select-none"
+            onClick={() => setSkillSelectType(null)}
+          >
+            <div className="w-full max-w-[280px] bg-[#150d08] border border-[#a6845c]/50 rounded-md shadow-2xl flex flex-col p-4 relative" onClick={e => e.stopPropagation()}>
+              <button onClick={() => setSkillSelectType(null)} className="absolute top-3 right-3 text-[#a6845c] hover:text-[#d8b486] transition-colors outline-none"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+              
+              <div className="text-center mb-4 border-b border-[#a6845c]/30 pb-3">
+                <h3 className="text-[#f5d5a9] font-serif font-black text-lg tracking-widest uppercase mb-1">Select Skill</h3>
+                <span className="text-[#8c6543] text-[10px] font-bold">장착할 스킬을 선택하세요</span>
+              </div>
+              
+              <div className="flex flex-col gap-2">
+                {(skillSelectType === 'active' ? MAIN_ACTIVES : MAIN_PASSIVES).map(skillId => {
+                  const skill = SKILL_DATABASE[skillId];
+                  if (!skill) return null;
+                  
+                  // 현재 장착 중인 스킬인지 판별
+                  const isEquipped = skillSelectType === 'active' 
+                    ? (userData?.mainActive === skillId || (!userData?.mainActive && skillId === 'active_main_strike_1')) 
+                    : (userData?.mainPassive === skillId || (!userData?.mainPassive && skillId === 'passive_main_str'));
+
+                  return (
+                    <div 
+                      key={skillId}
+                      onClick={() => setCandidateSkillDetail(skill)} // 클릭 시 상세+장착 모달 띄움
+                      className={`flex items-center gap-3 p-2.5 rounded-sm border cursor-pointer transition-all active:scale-[0.98] 
+                        ${isEquipped ? 'bg-amber-950/30 border-amber-500/50 shadow-[inset_0_0_10px_rgba(245,213,169,0.1)]' : 'bg-black/40 border-[#5c3e23]/50 hover:border-[#a6845c]'}`}
+                    >
+                      <div className="w-11 h-11 bg-black/80 rounded-sm border border-[#3a2210] flex items-center justify-center p-0.5 shrink-0">
+                        <img src={skill.icon} alt={skill.name} className="w-full h-full object-contain" />
+                      </div>
+                      <div className="flex flex-col flex-1 text-left">
+                        <div className="flex justify-between items-center mb-0.5">
+                          <span className={`text-[12px] font-black ${isEquipped ? 'text-amber-400' : 'text-[#d8b486]'}`}>{skill.name}</span>
+                          {isEquipped && <span className="text-[9px] text-amber-500 font-bold border border-amber-600/50 px-1 py-0.5 rounded-sm bg-black animate-pulse">Equipped</span >}
+                        </div>
+                        <span className="text-[#a6845c] text-[9px] leading-tight line-clamp-2 pr-1">{skill.description}</span>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ========================================= */}
+        {/* 👑 주인공 전용: 스킬 장착 상세 모달 */}
+        {/* ========================================= */}
+        {candidateSkillDetail && (
+          <div 
+            className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-[fadeIn_0.2s_ease-out] select-none"
+            onClick={() => setCandidateSkillDetail(null)}
+          >
+            <div className="relative w-full max-w-[280px]" onClick={(e) => e.stopPropagation()}>
+              <div className="w-full aspect-[4/5] flex flex-col bg-transparent shadow-[0_10px_40px_rgba(0,0,0,0.9)] rounded-lg overflow-hidden">
+                <div className="flex-1 relative flex justify-center items-center bg-gradient-to-b from-[#2a1a10] to-[#1a1008]">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_100%)] opacity-80 pointer-events-none"></div>
+                  <button onClick={() => setCandidateSkillDetail(null)} className="absolute top-3 right-3 text-[#a6845c] hover:text-[#d8b486] transition-colors z-20 outline-none"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                  
+                  <div className="relative z-10 w-28 h-28 flex items-center justify-center">
+                    <img src={candidateSkillDetail.icon} alt={candidateSkillDetail.name} className="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(255,255,255,0.15)] animate-pulse" draggable="false" />
+                  </div>
+                </div>
+
+                <div className="flex-1 bg-[#150d08] p-5 flex flex-col items-center text-center relative border-t border-[#a6845c]/30">
+                  <span className="text-[#f5d5a9] font-serif font-black text-lg tracking-widest drop-shadow-md mb-1.5 uppercase leading-tight">
+                    {candidateSkillDetail.name}
+                  </span>
+                  <span className={`text-[9px] font-bold tracking-widest mb-3 px-2 py-0.5 rounded-sm border uppercase bg-black/40 ${candidateSkillDetail.type === 'active' ? 'border-red-500/80 text-red-400' : 'border-blue-500/80 text-blue-400'}`}>
+                    {candidateSkillDetail.type === 'active' ? 'ACTIVE SKILL' : 'PASSIVE SKILL'}
+                  </span>
+                  <p className="text-[#d8b486] text-[11px] font-medium leading-relaxed break-keep mt-1 opacity-90 h-[50px] overflow-y-auto custom-scrollbar">
+                    {candidateSkillDetail.description}
+                  </p>
+                  
+                  <div className="mt-auto w-full pt-4 border-t border-dashed border-[#5c3e23]/50">
+                    <button 
+                      onClick={() => handleEquipSkill(candidateSkillDetail)}
+                      className="w-full bg-[#4a301c] hover:bg-[#5c3e23] text-[#fffff0] font-black text-[12px] py-2.5 rounded-sm transition-all border border-[#a6845c] shadow-md active:scale-95 tracking-[0.2em] uppercase outline-none animate-pulse"
+                    >
+                      Select & Equip
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        
         {/* ========================================= */}
         {/* 🧪 기사 레벨업 (포션 먹이기) 모달 */}
         {/* ========================================= */}
