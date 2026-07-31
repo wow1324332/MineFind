@@ -31,8 +31,8 @@ export const RAID_BOSS_DATABASE = {
       exp: 1000,
       dropItems: [
         { itemId: 'potion_exp_fire_large', chance: 1.0 }, 
-        { itemId: 'mat_fire_4', chance: 0.5 },            
-        { itemId: 'mat_fire_5', chance: 0.1 },            
+        { itemId: 'mat_fire_1', chance: 0.5 },            
+        { itemId: 'mat_fire_2', chance: 0.1 },            
         { itemId: 'con_soul_1', chance: 0.1 }            
       ]
     },
@@ -42,7 +42,7 @@ export const RAID_BOSS_DATABASE = {
       exp: 200,           // 승리 시의 약 20% 수준의 경험치
       dropItems: [
         { itemId: 'potion_exp_fire_small', chance: 0.5 }, // 50% 확률로 작은 경험치 포션
-        { itemId: 'mat_fire_4', chance: 0.05 }            // 5%의 매우 낮은 확률로 재료 아이템
+        { itemId: 'mat_fire_1', chance: 0.05 }            // 5%의 매우 낮은 확률로 재료 아이템
       ]
     },
   },
