@@ -46,4 +46,35 @@ export const RAID_BOSS_DATABASE = {
       ]
     },
   },
+  andromalius: {
+    id: 'andromalius',
+    name: '안드로말리우스 (Andromalius)',
+    title: '화염ㅎ연옥의 지배자',
+    element: 'fire',
+    image: '/bossraid/raidboss-andromalius.webp', // 💡 첨부해주신 이미지 경로
+    description: '용암이 흐르는 심연에서 눈을 뜬 지옥의 감시자.',
+    stats: {
+      maxHp: 6000,   // 단탈리온보다 조금 더 높은 체력
+      minAtk: 600,
+      maxAtk: 700,
+      defense: 120
+    },
+    rewards: {
+      gold: 25000,
+      exp: 5000,
+      dropItems: [
+        { itemId: 'mat_fire_3', chance: 1.0 }, // 코어 오브 플레임 100% 드랍
+        { itemId: 'mat_fire_4', chance: 0.3 }, // 희귀 재료 30% 드랍
+        { itemId: 'con_soul_1', chance: 0.5 }, // 화염 기사의 영혼석 50%
+        { itemId: 'potion_exp_fire_large', chance: 0.8 }
+      ]
+    },
+    defeatRewards: {
+      gold: 3000,
+      exp: 200,
+      dropItems: [
+        { itemId: 'mat_fire_3', chance: 0.2 } // 패배 시 위로 보상
+      ]
+    },
+  },
 };
