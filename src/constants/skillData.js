@@ -6,32 +6,32 @@ export const SKILL_DATABASE = {
   // ==========================================
   'passive_main_str': { 
     id: 'passive_main_str', name: '군단장의 함성', type: 'passive', 
-    icon: '/skills/passive_main_str.webp', description: '기사단 전체의 공격력이 5% 증가합니다.', 
+    icon: '/skill/군단장의함성.webp', description: '기사단 전체의 공격력이 5% 증가합니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'attack', value: 0.05 
   },
   'passive_main_vit': { 
     id: 'passive_main_vit', name: '체력 단련', type: 'passive', 
-    icon: '/skills/passive_main_vit.webp', description: '기사단 전체의 최대 체력이 5% 증가합니다.', 
+    icon: '/skill/체력단련.webp', description: '기사단 전체의 최대 체력이 5% 증가합니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'maxHp', value: 0.05 
   },
   'passive_main_agi': { 
     id: 'passive_main_agi', name: '능숙한 지휘', type: 'passive', 
-    icon: '/skills/passive_main_agi.webp', description: '기사단 전체의 회피율이 5% 증가합니다.', 
+    icon: '/skill/능숙한지휘.webp', description: '기사단 전체의 회피율이 5% 증가합니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'evasion', value: 5 
   },
-  'active_main_strike': { 
+  'active_main_strike_1': { 
     id: 'active_main_strike', name: '선봉장의 일격', type: 'active', subType: 'attack', 
-    icon: '/skills/active_main_strike.webp', description: '적에게 200%의 강력한 피해를 입힙니다.', 
+    icon: '/skill/선봉장의일격.webp', description: '적에게 200%의 강력한 피해를 입힙니다.', 
     mpCost: 60, element: 'neutral', power: 2.0 
   },
-    'active_main_strike': { 
+    'active_main_strike_2': { 
     id: 'active_main_strike', name: '동귀어진', type: 'active', subType: 'attack', 
-    icon: '/skills/active_main_strike.webp', description: '적에게 400의 강력한 고정 피해를 입힙니다.', 
+    icon: '/skill/동귀어진.webp', description: '적에게 400의 강력한 고정 피해를 입힙니다.', 
     mpCost: 60, element: 'neutral', flatDamage: 400 
   },
-    'active_main_strike': { 
+    'active_main_strike_3': { 
     id: 'active_main_strike', name: '영웅의 메아리', type: 'active', subType: 'buff', 
-    icon: '/skills/active_main_strike.webp', description: '사자후를 날려 2턴간 파티의 방어력을 20% 강화시킵니다.', 
+    icon: '/skill/영웅의메아리.webp', description: '사자후를 날려 2턴간 파티의 방어력을 20% 강화시킵니다.', 
     mpCost: 60, stat: 'defense', power: 0.2, duration: 2 
   },
 
