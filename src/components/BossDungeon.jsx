@@ -140,7 +140,7 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId, onSelectBatt
         </button>
       </div>
 
-      {/* 세부 보스 선택 리스트 */}
+{/* 세부 보스 선택 리스트 (동적 필터링 적용 완료) */}
       <div 
         className="relative z-10 w-full max-w-sm flex-1 overflow-y-auto pb-10 space-y-4 px-2 pt-4" 
         style={{ 
@@ -151,75 +151,57 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId, onSelectBatt
       >
         <style>{`::-webkit-scrollbar { display: none; }`}</style>
         
-        {/* 단탈리온 버튼 */}
-        <button 
-          onClick={() => setPreviewBossId('dantalion')} 
-          className="w-full relative group transition-all duration-200 active:scale-[0.98] select-none" 
-          style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
-        >
-          <div className="relative w-full aspect-[4/1] bg-black/60 rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.8)] flex items-center justify-between px-4">
-            <div 
-              className="absolute inset-0 bg-cover opacity-60 group-hover:opacity-90 transition-opacity duration-300" 
-              style={{ backgroundImage: "url('/bossraid/raidboss-dantalion.webp')", backgroundPosition: "center 20%" }}
-            ></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
-            
-            <div className="relative z-10 flex flex-col text-left">
-              <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest drop-shadow-md">Hell of Flame</span>
-              <span className="text-xl font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,1)] tracking-widest font-serif mt-0.5">Dantalion</span>
-            </div>
-            
-            <div className="relative z-10 w-12 h-12 flex items-center justify-center drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
-              <img src="/loading-icon.webp" alt="Enter" className="w-full h-full object-contain opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" draggable="false"/>
-            </div>
+        {/* 💡 선택된 던전(bossId)의 속성과 일치하는 보스만 필터링해서 동적으로 렌더링! */}
+        {Object.values(RAID_BOSS_DATABASE)
+          .filter(boss => boss.element === bossId)
+          .map(boss => {
+            // 속성별 컬러 테마 매핑
+            const theme = {
+              fire: { text: 'text-red-500', border: 'border-red-900/30 group-hover:border-red-500/80' },
+              water: { text: 'text-blue-500', border: 'border-blue-900/30 group-hover:border-blue-500/80' },
+              ice: { text: 'text-cyan-400', border: 'border-cyan-900/30 group-hover:border-cyan-400/80' },
+              poison: { text: 'text-green-500', border: 'border-green-900/30 group-hover:border-green-500/80' },
+              cure: { text: 'text-emerald-400', border: 'border-emerald-900/30 group-hover:border-emerald-400/80' },
+              vain: { text: 'text-purple-500', border: 'border-purple-900/30 group-hover:border-purple-500/80' },
+              light: { text: 'text-yellow-500', border: 'border-yellow-900/30 group-hover:border-yellow-500/80' }
+            }[boss.element] || { text: 'text-gray-400', border: 'border-gray-700/30 group-hover:border-gray-500/80' };
+
+            return (
+              <button 
+                key={boss.id}
+                onClick={() => setPreviewBossId(boss.id)} 
+                className="w-full relative group transition-all duration-200 active:scale-[0.98] select-none" 
+                style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+              >
+                <div className={`relative w-full aspect-[4/1] bg-black/60 rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.8)] flex items-center justify-between px-4 border-[1px] ${theme.border}`}>
+                  <div 
+                    className="absolute inset-0 bg-cover opacity-60 group-hover:opacity-90 transition-opacity duration-300" 
+                    style={{ backgroundImage: `url('${boss.image}')`, backgroundPosition: "center 20%" }}
+                  ></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
+                  
+                  <div className="relative z-10 flex flex-col text-left">
+                    <span className={`text-[10px] font-bold ${theme.text} uppercase tracking-widest drop-shadow-md`}>{DUNGEON_INFO[bossId]?.name}</span>
+                    {/* 💡 boss.name 속성을 불러와 대문자로 변환해 깔끔하게 렌더링 */}
+                    <span className="text-xl font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,1)] tracking-widest font-serif mt-0.5 capitalize">{boss.name || boss.id}</span>
+                  </div>
+                  
+                  <div className="relative z-10 w-12 h-12 flex items-center justify-center drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
+                    <img src="/loading-icon.webp" alt="Enter" className="w-full h-full object-contain opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" draggable="false"/>
+                  </div>
+                </div>
+              </button>
+            );
+          })
+        }
+
+        {/* 💡 아직 보스가 없는 속성 던전을 클릭했을 때의 안내 문구 */}
+        {Object.values(RAID_BOSS_DATABASE).filter(boss => boss.element === bossId).length === 0 && (
+          <div className="flex flex-col items-center justify-center h-40 opacity-60">
+            <svg className="w-8 h-8 text-[#a6845c] mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+            <span className="text-[#a6845c] text-xs font-black tracking-widest">강력한 악마가 부화 중입니다...</span>
           </div>
-        </button>
-        {/* 🔥 안드로말리우스 버튼 */}
-        <button 
-          onClick={() => setPreviewBossId('andromalius')} 
-          className="w-full relative group transition-all duration-200 active:scale-[0.98] select-none" 
-          style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
-        >
-          <div className="relative w-full aspect-[4/1] bg-black/60 rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.8)] flex items-center justify-between px-4">
-            <div 
-              className="absolute inset-0 bg-cover opacity-60 group-hover:opacity-90 transition-opacity duration-300" 
-              style={{ backgroundImage: "url('/bossraid/raidboss-andromalius.webp')", backgroundPosition: "center 30%" }}
-            ></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
-            
-            <div className="relative z-10 flex flex-col text-left">
-              <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest drop-shadow-md">Hell of Flame</span>
-              <span className="text-xl font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,1)] tracking-widest font-serif mt-0.5">Andromalius</span>
-            </div>
-            
-            <div className="relative z-10 w-12 h-12 flex items-center justify-center drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
-              <img src="/loading-icon.webp" alt="Enter" className="w-full h-full object-contain opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" draggable="false"/>
-            </div>
-          </div>
-        </button>
-        {/* 🔥 메피스토 버튼 */}
-        <button 
-          onClick={() => setPreviewBossId('mephisto')} 
-          className="w-full relative group transition-all duration-200 active:scale-[0.98] select-none" 
-          style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
-        >
-          <div className="relative w-full aspect-[4/1] bg-black/60 rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.8)] flex items-center justify-between px-4">
-            <div 
-              className="absolute inset-0 bg-cover opacity-60 group-hover:opacity-90 transition-opacity duration-300" 
-              style={{ backgroundImage: "url('/bossraid/raidboss-mephisto.webp')", backgroundPosition: "center 30%" }}
-            ></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
-            
-            <div className="relative z-10 flex flex-col text-left">
-              <span className="text-[10px] font-bold text-yellow-500 uppercase tracking-widest drop-shadow-md">Hell of Flame</span>
-              <span className="text-xl font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,1)] tracking-widest font-serif mt-0.5">Mephisto</span>
-            </div>
-            
-            <div className="relative z-10 w-12 h-12 flex items-center justify-center drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
-              <img src="/loading-icon.webp" alt="Enter" className="w-full h-full object-contain opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" draggable="false"/>
-            </div>
-          </div>
-        </button>
+        )}
       </div>
 
       {/* ========================================= */}
