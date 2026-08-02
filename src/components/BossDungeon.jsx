@@ -140,7 +140,7 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId, onSelectBatt
         </button>
       </div>
 
-{/* 세부 보스 선택 리스트 (동적 필터링 적용 완료) */}
+      {/* 세부 보스 선택 리스트 (원본 디자인 100% 복구 + 동적 필터링) */}
       <div 
         className="relative z-10 w-full max-w-sm flex-1 overflow-y-auto pb-10 space-y-4 px-2 pt-4" 
         style={{ 
@@ -151,20 +151,15 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId, onSelectBatt
       >
         <style>{`::-webkit-scrollbar { display: none; }`}</style>
         
-        {/* 💡 선택된 던전(bossId)의 속성과 일치하는 보스만 필터링해서 동적으로 렌더링! */}
+        {/* 💡 선택된 던전 속성과 일치하는 보스만 렌더링 */}
         {Object.values(RAID_BOSS_DATABASE)
           .filter(boss => boss.element === bossId)
           .map(boss => {
-            // 속성별 컬러 테마 매핑
-            const theme = {
-              fire: { text: 'text-red-500', border: 'border-red-900/30 group-hover:border-red-500/80' },
-              water: { text: 'text-blue-500', border: 'border-blue-900/30 group-hover:border-blue-500/80' },
-              ice: { text: 'text-cyan-400', border: 'border-cyan-900/30 group-hover:border-cyan-400/80' },
-              poison: { text: 'text-green-500', border: 'border-green-900/30 group-hover:border-green-500/80' },
-              cure: { text: 'text-emerald-400', border: 'border-emerald-900/30 group-hover:border-emerald-400/80' },
-              vain: { text: 'text-purple-500', border: 'border-purple-900/30 group-hover:border-purple-500/80' },
-              light: { text: 'text-yellow-500', border: 'border-yellow-900/30 group-hover:border-yellow-500/80' }
-            }[boss.element] || { text: 'text-gray-400', border: 'border-gray-700/30 group-hover:border-gray-500/80' };
+            // 💡 테두리 등 맘대로 넣은 거 다 빼고 원본 색상만 유지합니다
+            const textColor = {
+              fire: 'text-red-500', water: 'text-blue-500', ice: 'text-cyan-400',
+              poison: 'text-green-500', cure: 'text-emerald-400', vain: 'text-purple-500', light: 'text-yellow-500'
+            }[boss.element] || 'text-gray-400';
 
             return (
               <button 
@@ -173,7 +168,8 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId, onSelectBatt
                 className="w-full relative group transition-all duration-200 active:scale-[0.98] select-none" 
                 style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
               >
-                <div className={`relative w-full aspect-[4/1] bg-black/60 rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.8)] flex items-center justify-between px-4 border-[1px] ${theme.border}`}>
+                {/* 💡 원장님이 만드셨던 원본 그대로의 태그 (border 뺐습니다!) */}
+                <div className="relative w-full aspect-[4/1] bg-black/60 rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.8)] flex items-center justify-between px-4">
                   <div 
                     className="absolute inset-0 bg-cover opacity-60 group-hover:opacity-90 transition-opacity duration-300" 
                     style={{ backgroundImage: `url('${boss.image}')`, backgroundPosition: "center 20%" }}
@@ -181,9 +177,14 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId, onSelectBatt
                   <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
                   
                   <div className="relative z-10 flex flex-col text-left">
-                    <span className={`text-[10px] font-bold ${theme.text} uppercase tracking-widest drop-shadow-md`}>{DUNGEON_INFO[bossId]?.name}</span>
-                    {/* 💡 boss.name 속성을 불러와 대문자로 변환해 깔끔하게 렌더링 */}
-                    <span className="text-xl font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,1)] tracking-widest font-serif mt-0.5 capitalize">{boss.name || boss.id}</span>
+                    {/* 던전 영문 이름 */}
+                    <span className={`text-[10px] font-bold ${textColor} uppercase tracking-widest drop-shadow-md`}>
+                      {DUNGEON_INFO[bossId]?.name}
+                    </span>
+                    {/* 보스 영문 이름 (원래 쓰시던 것처럼 앞글자만 대문자로 예쁘게) */}
+                    <span className="text-xl font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,1)] tracking-widest font-serif mt-0.5">
+                      {boss.id.charAt(0).toUpperCase() + boss.id.slice(1)}
+                    </span>
                   </div>
                   
                   <div className="relative z-10 w-12 h-12 flex items-center justify-center drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
@@ -195,7 +196,7 @@ export default function BossDungeon({ hp, onBack, onLogout, bossId, onSelectBatt
           })
         }
 
-        {/* 💡 아직 보스가 없는 속성 던전을 클릭했을 때의 안내 문구 */}
+        {/* 업데이트 준비중 문구 */}
         {Object.values(RAID_BOSS_DATABASE).filter(boss => boss.element === bossId).length === 0 && (
           <div className="flex flex-col items-center justify-center h-40 opacity-60">
             <svg className="w-8 h-8 text-[#a6845c] mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
