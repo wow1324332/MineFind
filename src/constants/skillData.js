@@ -205,7 +205,7 @@ export const SKILL_DATABASE = {
   },
   'active_poison_trap_1': { 
     id: 'active_poison_trap_1', name: '맹독 덫', type: 'active', subType: 'debuff', 
-    icon: '/skill /poisonmine-poison-skill.webp', description: '맹독 덫을 설치하여 2턴 동안 보스의 공격력을 50% 감소시킵니다.', 
+    icon: '/skill/poisonmine-poison-skill.webp', description: '맹독 덫을 설치하여 2턴 동안 보스의 공격력을 50% 감소시킵니다.', 
     mpCost: 70, stat: 'attack', power: 0.5, duration: 2 
   },
 
@@ -225,7 +225,7 @@ export const SKILL_DATABASE = {
 
   'passive_light_atk_1': { 
     id: 'passive_light_atk_1', name: '광휘의 빛', type: 'passive', 
-    icon: '/skills/radiantlight-light-skill.webp', description: '파티 전체의 공격력을 5% 증가시킵니다.', 
+    icon: '/skill/radiantlight-light-skill.webp', description: '파티 전체의 공격력을 5% 증가시킵니다.', 
     target: 'ally', effectType: 'stat_up', stat: 'attack', value: 0.5 
   },
   'active_light_dmg_1': { 
@@ -404,7 +404,7 @@ export const SKILL_DATABASE = {
   },
   'active_vain_def_1': { 
     id: 'active_vain_def_1', name: '공허의 장막', type: 'active', subType: 'evade', 
-    icon: '/skill/공허의장막.webp', description: '1턴 동안 보스의 다음 공격을 완벽하게 회피합니다.', 
+    icon: '/skill/공허의장벽.webp', description: '1턴 동안 보스의 다음 공격을 완벽하게 회피합니다.', 
     mpCost: 60, duration: 1 
   },
 
